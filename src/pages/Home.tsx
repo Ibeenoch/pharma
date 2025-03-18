@@ -1,11 +1,13 @@
-import React from 'react'
+// displays home ui
 
-// displays home ui 
+import Header from "../components/layout/Header";
 
 const Home = () => {
   return (
-    <div>Home</div>
-  )
-}
+    <main className="home-main">
+      <Header />
+    </main>
+  );
+};
 
-export default Home
+export default Home;
