@@ -8,7 +8,7 @@ const Header = () => {
   const handleLogin = () => {};
   const handleRegister = () => {};
   return (
-    <header className="bg-white w-full flex p-4 items-center">
+    <header className="bg-white fixed w-full sm:w-[95%] flex p-4 items-center">
       <nav className="flex w-full items-center justify-between">
         <div className="flex items-center gap-1 cursor-pointer">
           <img

@@ -1,4 +1,5 @@
 import CustomText from "../common/Text";
+import Menu from "../../assets/icons/menu.svg?react";
 
 const MobileNav = () => {
   const links = [
@@ -10,8 +11,11 @@ const MobileNav = () => {
   ];
 
   return (
-    <nav className="sm:hidden fixed">
-      <ul className="flex flex-col flex-start items-center gap-4">
+    <nav className="sm:hidden">
+      <div className="p-6">
+        <Menu className="w-8 h-8" />
+      </div>
+      <ul className="flex absolute flex-col flex-start items-center gap-4">
         {links.map((link) => (
           <li>
             <CustomText

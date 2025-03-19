@@ -5,7 +5,7 @@ import Header from "../components/layout/Header";
 
 const Home = () => {
   return (
-    <main className="px-8 py-2">
+    <main className="sm:px-8 sm:py-4">
       <Header />
       <HeroSection />
     </main>
