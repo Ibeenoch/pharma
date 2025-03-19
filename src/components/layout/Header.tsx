@@ -1,27 +1,45 @@
 import CustomButton from "../common/Button";
+import CustomText from "../common/Text";
+import NavLinks from "../headers/NavLinks";
+import companyLogo from "../../assets/icons/pharmacy.svg";
+import MobileNav from "../headers/MobileNav";
 
 const Header = () => {
   const handleLogin = () => {};
   const handleRegister = () => {};
   return (
-    <header className="bg-whitebg w-full ">
+    <header className="bg-white w-full flex p-4 items-center">
       <nav className="flex w-full items-center justify-between">
-        <div>
-          <h1 className="text-xl font-extrabold">ChiMark Pharmacy</h1>
+        <div className="flex items-center gap-1 cursor-pointer">
+          <img
+            src={companyLogo}
+            alt="ChiMark Pharmacy logo"
+            className="w-6 h-6"
+          />
+          <CustomText
+            text="ChiMark Pharmacy"
+            textType="medium"
+            weightType="superbold"
+          />
         </div>
 
-        <ul className="flex items-center gap-4">
-          <li className="bg-black p-8 rounded-md text-white text-xs">Book</li>
-          <li>Manage</li>
-          <li>Experience</li>
-          <li>where </li>
-          <li>Book</li>
-        </ul>
+        <NavLinks />
 
-        <div className="flex gap-4">
-          <CustomButton text="Login" onClick={handleLogin} />
-          <CustomButton text="Register" onClick={handleRegister} />
+        <div className="hidden sm:flex items-center gap-5">
+          <CustomButton
+            text="Login"
+            type="button"
+            borderRadiusType="threecurved"
+            onClick={handleLogin}
+          />
+          <CustomButton
+            text="Register"
+            type="button"
+            onClick={handleRegister}
+          />
         </div>
+
+        <MobileNav />
       </nav>
     </header>
   );
