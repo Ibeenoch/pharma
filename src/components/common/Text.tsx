@@ -10,7 +10,7 @@ interface CustomTextProps{
 
 const CustomText: React.FC<CustomTextProps> = ({ textType = 'normal', weightType = 'normal', text, color = 'black', extraStyle }) => {
  let textWeight = weightType === 'bold' ? 'font-bold' : weightType === 'normal' ? 'font-normal' : weightType === 'medium' ? 'font-medium' : weightType === 'superbold' ? 'font-black' : 'font-light'; 
- let textColor = color === 'black' ? 'text-black' : 'text-gray-500';
+ let textColor = color === 'black' ? 'text-black' : color === 'gray' ? 'text-gray-500' : color ;
  return (
     textType === 'extrasmall' ? (
         <p className={`text-[9px]  ${textWeight} ${textColor} ${extraStyle}`}>{text} </p>

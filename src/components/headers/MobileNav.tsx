@@ -2,17 +2,19 @@ import CustomText from "../common/Text";
 import Menu from "../../assets/icons/menu.svg?react";
 import Cancel from "../../assets/icons/cancel-close.svg?react";
 import ArrowRight from "../../assets/icons/arrow-right-shorttail.svg?react";
+import SearchBar from "../../assets/icons/searchbar.svg?react";
 import { useState } from "react";
 import CustomButton from "../common/Button";
 
 const MobileNav = () => {
   const [ showSideBar, setShowSideBar ] = useState<boolean>(false);
-  const links = [
-    "Research",
-    "Treatments",
-    "Innovations",
-    "Patient Support",
-    "Contact",
+  const links = [ 
+    'Home',
+    'Products',
+    'Prescription',
+    'About',
+    'Contact',
+    'Support',
   ];
 
   const toggleSideBarItems = () => {
@@ -34,8 +36,15 @@ const MobileNav = () => {
       <div className={`lg:hidden ${showSideBar ? 'absolute w-full h-[100vh] bg-white z-50 left-0 top-0 p-6' : 'hidden'}`}>
 
         <div className={`lg:hidden ${showSideBar ? 'flex justify-end pb-4 ' : 'hidden' }`}>
-          <Cancel onClick={toggleSideBarItems} className="w-9 h-9" />
+          <Cancel onClick={toggleSideBarItems} className="w-8 h-8" />
         </div>
+
+        <form className="flex items-center mb-4">
+          <input type="search" name="search" id="search" placeholder="Search for any Product or Brand..." className=" lg:hidden w-full px-4 py-2 border border-gray-300 focus:border-gray-300 outline outline-gray-300 placeholder:text-xs" />
+          <div className="bg-gray-500 p-3 flex items-center justify-center cursor-pointer">
+            <SearchBar className="stroke-white w-5 h-5" />
+          </div>
+        </form>
 
         <ul className={` flex flex-col justify-start  gap-4`}>
           {links.map((link) => (
