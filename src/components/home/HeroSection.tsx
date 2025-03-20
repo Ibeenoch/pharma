@@ -5,8 +5,8 @@ import CustomButton from "../common/Button";
 const HeroSection = () => {
   const handleGetStarted = () => {};
   return (
-    <section className="grid grid-cols-2">
-      <article>
+    <section className="sm:grid sm:grid-cols-2 sm:mt-18 mt-24">
+      <article className="px-4">
         <div className="flex gap-2 items-center my-8">
           <div className="bg-black rounded-sm w-8 h-8"></div>
           <div className="flex flex-col gap-1">
@@ -76,11 +76,11 @@ const HeroSection = () => {
       </article>
 
       <article className="my-8">
-        <div className="absolute top-20 h-34 w-auto">
-          <img src={heroImage} alt="pharmacitical Hero Image" />
+        <div className="relative lg:absolute lg:top-28 h-34 h-auto w-auto z-0">
+          <img src={heroImage} alt="pharmacitical Hero Image" className="h-auto z-0" />
         </div>
 
-        <div className="p-8 bg-white w-max absolute top-[50%] right-[5%]">
+        <div className="p-8 bg-white w-max my-auto mx-auto lg:absolute top-[50%] right-[5%]">
           <div className="">
             <CustomText
               text="- New Arrivals"
@@ -123,6 +123,8 @@ const HeroSection = () => {
             />
           </div>
         </div>
+
+        
       </article>
     </section>
   );

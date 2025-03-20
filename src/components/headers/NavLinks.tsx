@@ -9,7 +9,7 @@ const NavLinks = () => {
     "Contact",
   ];
   return (
-    <ul className="hidden sm:flex items-center gap-4">
+    <ul className="hidden lg:flex items-center gap-4">
       {links.map((link) => (
         <li>
           <CustomText

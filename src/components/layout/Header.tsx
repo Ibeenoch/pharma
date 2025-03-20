@@ -8,7 +8,7 @@ const Header = () => {
   const handleLogin = () => {};
   const handleRegister = () => {};
   return (
-    <header className="bg-white fixed w-full sm:w-[95%] flex p-4 items-center">
+    <header className="bg-white fixed top-0 sm:top-5 z-50 w-full sm:w-[95%] flex p-4 items-center">
       <nav className="flex w-full items-center justify-between">
         <div className="flex items-center gap-1 cursor-pointer">
           <img
@@ -25,7 +25,7 @@ const Header = () => {
 
         <NavLinks />
 
-        <div className="hidden sm:flex items-center gap-5">
+        <div className="hidden lg:flex items-center gap-5">
           <CustomButton
             text="Login"
             type="button"
