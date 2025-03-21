@@ -1,4 +1,3 @@
-import React from "react";
 import CustomText from "../../components/common/Text";
 import painKiller1 from "../../assets/images/pr1.png";
 import fever1 from "../../assets/images/anti11.png";
@@ -34,27 +33,27 @@ const Category = () => {
     "Reproductive Health",
   ];
   return (
-    <section className="my-3">
+    <section className="border-b border-black mb-2 pb-4">
       <TwoTextSpan leftText="Categories" />
 
       <article className="flex gap-4 overflow-x-auto">
         {/* bg-[#e6e1d8] bg-[#b87a4c] */}
         {productImages.map((item, index) => (
-          <div className="cursor-pointer">
-            <div className=" rounded-xl p-5 bg-white mb-4">
+          <div className="cursor-pointer" key={index}>
+             <div className="h-22 w-20 md:h-30 md:w-28 lg:h-38 lg:w-32 xl:h-48 xl:w-42 flex items-center justify-center rounded-xl p-2 bg-white mb-4">
               <img
                 src={item}
                 alt="medication categories"
-                className="w-46 h-auto object-fit"
+                className="w-46 h-auto object-fill"
               />
             </div>
             <article>
               <CustomText
                 text={categories[index]}
-                textType="normal"
+                textType="small"
                 weightType="bold"
               />
-              <div className="flex gap-3 items-center">
+              {/* <div className="flex gap-3 items-center">
                 <CustomText
                   text="₦1500"
                   textType="small"
@@ -68,7 +67,7 @@ const Category = () => {
                   color="gray"
                   extraStyle="line-through"
                 />
-              </div>
+              </div> */}
             </article>
           </div>
         ))}

@@ -1,6 +1,7 @@
 import CustomText from "../common/Text";
 import heroImage from "../../assets/images/person3.png";
 import CustomButton from "../common/Button";
+import MedCross from '../../assets/icons/medical-cross.svg?react'
 
 const HeroSection = () => {
   const handleGetStarted = () => {};
@@ -8,7 +9,9 @@ const HeroSection = () => {
     <section className="sm:grid sm:grid-cols-2 sm:mt-28 mt-28 border-b-2 border-black">
       <article className="px-4">
         <div className="flex gap-2 items-center my-8">
-          <div className="bg-black rounded-sm w-8 h-8"></div>
+          <div className="bg-black rounded-sm w-8 h-8 flex items-center justify-center">
+            <MedCross className="w-3 h-3 fill-white"  />
+          </div>
           <div className="flex flex-col gap-1">
             <CustomText
               text="Trusted Online Pharmacy"

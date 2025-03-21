@@ -46,33 +46,34 @@ const Recommendation = () => {
   ];
 
   return (
-    <section>
-      <TwoTextSpan leftText="Recommendation" />
+    <section className="border-b border-black mb-2 pb-4">
+      <TwoTextSpan leftText="Recommendations" />
 
       <article className="flex gap-4 overflow-x-auto">
         {/* bg-[#e6e1d8] bg-[#b87a4c] */}
         {productImages.map((item, index) => (
-          <div className="cursor-pointer">
-            <div className="h-46 rounded-xl p-5 bg-white mb-4">
+          <div className="cursor-pointer" key={index}>
+            <div className="h-22 w-20 md:h-30 md:w-28 lg:h-38 lg:w-32 xl:h-48 xl:w-42 flex items-center justify-center rounded-xl p-2 bg-white mb-4">
               <img
                 src={item}
                 alt="medication categories"
-                className="w-46 h-auto object-fit"
+                className="w-46 h-auto object-fill"
               />
             </div>
             <article>
               {medications[index] && (
                 <CustomText
                   text={medications[index].name}
-                  textType="normal"
+                  textType="small"
                   weightType="bold"
+                  extraStyle="text-ellipsis"
                 />
               )}
               <div className="flex gap-3 items-center">
                 {medications[index] && (
                   <CustomText
                     text={`₦${String(medications[index].price)}`}
-                    textType="small"
+                    textType="extrasmall"
                     weightType="bold"
                     color="text-amber-500"
                   />
@@ -80,7 +81,7 @@ const Recommendation = () => {
                 {medications[index] && (
                   <CustomText
                     text={`₦${String(medications[index].oldprice)}`}
-                    textType="small"
+                    textType="extrasmall"
                     weightType="bold"
                     color="gray"
                     extraStyle="line-through"
