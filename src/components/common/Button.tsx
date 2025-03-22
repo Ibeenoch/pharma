@@ -12,6 +12,7 @@ interface ButtonProps {
   textSize?: "extrasmall" | "small" | "normal" | "large";
   weightType?: "thin" | "normal" | "medium" | "bold" | "superbold";
   borderColor?: string;
+  backgroundColor?: string;
 }
 
 const CustomButton: React.FC<ButtonProps> = ({
@@ -24,6 +25,7 @@ const CustomButton: React.FC<ButtonProps> = ({
   textSize = "small",
   weightType = "normal",
   borderColor,
+  backgroundColor = "bg-black",
 }) => {
   let textWeight =
     weightType === "bold"
@@ -41,7 +43,9 @@ const CustomButton: React.FC<ButtonProps> = ({
     <button
       type={type ? type : "button"}
       onClick={onClick}
-      className={`group ${borderColor ? borderColor : ''} bg-black text-white text-md font-normal px-8 py-2 flex items-center gap-4 ${
+      className={`group ${borderColor ? borderColor : ""} ${
+        backgroundColor !== "bg-black" ? backgroundColor : "bg-black"
+      }  text-white text-md font-normal px-8 py-2 flex items-center gap-4 ${
         borderRadiusType === "threecurved"
           ? "rounded-bl-3xl rounded-br-3xl rounded-tl-3xl"
           : borderRadiusType === "allcurved"

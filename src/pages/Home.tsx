@@ -12,10 +12,11 @@ import TopSelling from "../features/product/TopSelling";
 import Faq from "../components/home/Faq";
 import Footer from "../components/layout/Footer";
 import NavHelper from "../components/common/NavHelper";
+import { pageSpacing } from "../constants/appText";
 
 const Home = () => {
   return (
-    <main className="sm:px-8 sm:pt-4">
+    <main className={`${pageSpacing}`}>
       <Header />
       <HeroSection />
       <Category />

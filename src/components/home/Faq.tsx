@@ -2,6 +2,7 @@ import CustomText from "../common/Text";
 import Plus from "../../assets/icons/plus-slim.svg?react";
 import Cancel from "../../assets/icons/cancel-slim.svg?react";
 import { useEffect, useState } from "react";
+import CustomButton from "../common/Button";
 
 const Faq = () => {
   const [indexClicked, setIndexClicked] = useState<number | null>();
@@ -102,6 +103,16 @@ const Faq = () => {
             )}
           </article>
         ))}
+      </div>
+
+      <CustomText
+        text="Got any more questions?"
+        color="text-gray-400"
+        textType="small"
+        extraStyle="text-center"
+      />
+      <div className="flex justify-center my-2">
+        <CustomButton text="Get in touch" showArrow={true} />
       </div>
     </section>
   );

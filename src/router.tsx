@@ -1,13 +1,17 @@
 import { lazy } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-const Home = lazy(() => import('./pages/Home'))
+import { createBrowserRouter } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+const Home = lazy(() => import("./pages/Home"));
 
 const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Home />,
-    },
-
-  ]);
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+]);
 
 export default router;

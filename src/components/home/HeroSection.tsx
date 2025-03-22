@@ -1,16 +1,19 @@
 import CustomText from "../common/Text";
 import heroImage from "../../assets/images/person3.png";
 import CustomButton from "../common/Button";
-import MedCross from '../../assets/icons/medical-cross.svg?react'
+import MedCross from "../../assets/icons/medical-cross.svg?react";
+import { MARGIN_TOP } from "../../constants/appText";
 
 const HeroSection = () => {
   const handleGetStarted = () => {};
   return (
-    <section className="sm:grid sm:grid-cols-2 sm:mt-28 mt-28 border-b-2 border-black">
+    <section
+      className={`sm:grid sm:grid-cols-2 ${MARGIN_TOP} border-b-2 border-black`}
+    >
       <article className="px-4">
         <div className="flex gap-2 items-center my-8">
           <div className="bg-black rounded-sm w-8 h-8 flex items-center justify-center">
-            <MedCross className="w-3 h-3 fill-white"  />
+            <MedCross className="w-3 h-3 fill-white" />
           </div>
           <div className="flex flex-col gap-1">
             <CustomText
@@ -80,7 +83,11 @@ const HeroSection = () => {
 
       <article className="my-8">
         <div className="relative lg:absolute lg:top-32 h-34 h-auto w-auto z-0">
-          <img src={heroImage} alt="pharmacitical Hero Image" className="h-auto z-0" />
+          <img
+            src={heroImage}
+            alt="pharmacitical Hero Image"
+            className="h-auto z-0"
+          />
         </div>
 
         <div className="p-8 bg-white w-max my-auto mx-auto lg:absolute top-[40%] right-[3%]">
@@ -126,8 +133,6 @@ const HeroSection = () => {
             />
           </div>
         </div>
-
-        
       </article>
     </section>
   );
