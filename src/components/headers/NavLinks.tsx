@@ -1,5 +1,6 @@
 import CustomText from "../common/Text";
 import SearchBar from '../../assets/icons/searchbar.svg?react';
+import Lists from "../common/Lists";
 
 const NavLinks = () => {
   const links = [
@@ -18,18 +19,8 @@ const NavLinks = () => {
           <SearchBar className="stroke-white w-5 h-5" />
         </div>
       </form>
-      <ul className="hidden lg:flex items-center gap-4">
-        {links.map((link) => (
-          <li>
-            <CustomText
-              text={link}
-              textType="normal"
-              weightType="medium"
-              extraStyle="hover:border-b-2 hover:border-black cursor-pointer"
-            />
-          </li>
-        ))}
-      </ul>
+      <Lists lists={links} textType="normal" weightType="medium" extraStyle="hover:border-b-2 hover:border-amber-500 cursor-pointer" />
+     
     </div>
   );
 };

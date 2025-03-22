@@ -83,7 +83,7 @@ const HeroSection = () => {
           <img src={heroImage} alt="pharmacitical Hero Image" className="h-auto z-0" />
         </div>
 
-        <div className="p-8 bg-white w-max my-auto mx-auto lg:absolute top-[50%] right-[5%]">
+        <div className="p-8 bg-white w-max my-auto mx-auto lg:absolute top-[40%] right-[3%]">
           <div className="">
             <CustomText
               text="- New Arrivals"

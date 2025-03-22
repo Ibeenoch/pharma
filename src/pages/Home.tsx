@@ -10,10 +10,12 @@ import HotDeals from "../features/product/HotDeals";
 import DiscountBanner from "../components/home/DiscountBanner";
 import TopSelling from "../features/product/TopSelling";
 import Faq from "../components/home/Faq";
+import Footer from "../components/layout/Footer";
+import NavHelper from "../components/common/NavHelper";
 
 const Home = () => {
   return (
-    <main className="sm:px-8 sm:py-4">
+    <main className="sm:px-8 sm:pt-4">
       <Header />
       <HeroSection />
       <Category />
@@ -24,6 +26,8 @@ const Home = () => {
       <DiscountBanner />
       <Brands />
       <Faq />
+      <Footer />
+      <NavHelper />
     </main>
   );
 };
