@@ -112,7 +112,13 @@ const Faq = () => {
         extraStyle="text-center"
       />
       <div className="flex justify-center my-2">
-        <CustomButton text="Get in touch" showArrow={true} />
+        <CustomButton
+          text="Get in touch"
+          defaultBackgroundColor="bg-white hover:bg-black "
+          defaultBorderColor="border border-black"
+          defaultTextColor="text-black hover:text-white"
+          borderRadiusType="threecurved"
+        />
       </div>
     </section>
   );

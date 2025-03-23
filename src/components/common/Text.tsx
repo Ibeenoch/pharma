@@ -52,7 +52,7 @@ const CustomText: React.FC<CustomTextProps> = ({
       <p className={` ${textWeight} ${textColor} ${extraStyle}`}>{leftText}</p>
       <p
         onClick={rightTextFunc}
-        className={`  ${textWeight} text-amber-500 cursor-pointer ${extraStyle}`}
+        className={`  ${textWeight} text-amber-500 cursor-pointer font-bold ${extraStyle}`}
       >
         {rightText}
       </p>

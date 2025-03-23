@@ -75,7 +75,7 @@ const CartItems: React.FC<CartItemsProps> = ({ showCart, hideShowCart }) => {
           text="View Cart"
           showArrow={true}
           textSize="normal"
-          backgroundColor="bg-gray-400"
+          defaultBackgroundColor="bg-gray-400"
         />
         <CustomButton text="Checkout" showArrow={true} textSize="normal" />
       </div>

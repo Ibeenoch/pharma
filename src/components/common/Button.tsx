@@ -1,5 +1,5 @@
-import { useState } from "react";
 import LongRightArrow from "../../assets/icons/arrow-right.svg?react";
+import LoadingSpinner from "../../assets/icons/circle-spinner.svg?react";
 
 // reuseable components
 interface ButtonProps {
@@ -9,10 +9,12 @@ interface ButtonProps {
   type?: "button" | "submit" | "reset" | undefined;
   borderRadiusType?: "allcurved" | "threecurved" | "none";
   showArrow?: boolean;
+  isLoading?: boolean;
   textSize?: "extrasmall" | "small" | "normal" | "large";
   weightType?: "thin" | "normal" | "medium" | "bold" | "superbold";
-  borderColor?: string;
-  backgroundColor?: string;
+  defaultBorderColor?: string;
+  defaultBackgroundColor?: string;
+  defaultTextColor?: string;
 }
 
 const CustomButton: React.FC<ButtonProps> = ({
@@ -22,10 +24,12 @@ const CustomButton: React.FC<ButtonProps> = ({
   type,
   borderRadiusType = "none",
   showArrow = false,
+  isLoading = false,
   textSize = "small",
   weightType = "normal",
-  borderColor,
-  backgroundColor = "bg-black",
+  defaultBorderColor,
+  defaultBackgroundColor = "default",
+  defaultTextColor = "default",
 }) => {
   let textWeight =
     weightType === "bold"
@@ -43,18 +47,25 @@ const CustomButton: React.FC<ButtonProps> = ({
     <button
       type={type ? type : "button"}
       onClick={onClick}
-      className={`group ${borderColor ? borderColor : ""} ${
-        backgroundColor !== "bg-black" ? backgroundColor : "bg-black"
-      }  text-white text-md font-normal px-8 py-2 flex items-center gap-4 ${
+      className={`group ${defaultBorderColor ? defaultBorderColor : ""} ${
+        defaultBackgroundColor !== "default"
+          ? defaultBackgroundColor
+          : "bg-black hover:bg-white hover:text-black hover:border hover:border-black"
+      }  ${
+        defaultTextColor === "default" ? "text-white" : defaultTextColor
+      } text-md font-normal px-8 py-2 flex justify-center items-center gap-4 ${
         borderRadiusType === "threecurved"
           ? "rounded-bl-3xl rounded-br-3xl rounded-tl-3xl"
           : borderRadiusType === "allcurved"
           ? "rounded-2xl"
           : ""
-      }  hover:bg-white hover:text-black hover:border hover:border-black cursor-pointer ${className}`}
+      }    cursor-pointer ${className}`}
     >
+      {isLoading && <LoadingSpinner className="w-5 h-5" />}
       <p
-        className={`group-hover:text-black ${textWeight} ${
+        className={`${
+          defaultTextColor === "default" ? "group-hover:text-black" : ""
+        }  ${textWeight} ${
           textSize === "extrasmall"
             ? "text-[8px]"
             : textSize === "small"
@@ -66,9 +77,9 @@ const CustomButton: React.FC<ButtonProps> = ({
             : "text-[20px]"
         }`}
       >
-        {" "}
-        {text}{" "}
+        {text}
       </p>
+
       {showArrow && (
         <LongRightArrow
           className={`w-6 h-6 border-none fill-white  group-hover:fill-black `}
