@@ -10,6 +10,7 @@ import PaymentCard from "../../assets/icons/payment-card-white.svg?react";
 import Help from "../../assets/icons/help-white.svg?react";
 import ProfileList from "../../components/auth/ProfileList";
 import { useNavigate } from "react-router-dom";
+import LargeImageSize from "../../components/common/LargeImageSize";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -26,13 +27,8 @@ const Profile = () => {
   };
   return (
     <main className="block lg:grid lg:grid-cols-2">
-      <section className="h-[70%] lg:h-full  w-full bg-amber-500">
-        <img
-          src={img2}
-          alt="profile full image"
-          className="w-full h-[70%] lg:h-full  bg-amber-500"
-        />
-      </section>
+      <LargeImageSize img={img2} />
+
       <section className="p-4">
         <div className=" flex justify-between items-center">
           <div className="flex items-center gap-2">

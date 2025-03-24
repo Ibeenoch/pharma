@@ -1,10 +1,32 @@
-import CustomInput from "../../components/common/Input";
+import cartImg from "../../assets/images/anti11.png";
 import CustomText from "../../components/common/Text";
+import SingleProduct from "../../components/common/SIngleProduct";
+import SingleCategoryItem from "../../components/common/SingleCategoryItem";
 
 const Categories = () => {
   return (
-    <main className={`block md:grid mt-20 md:grid-cols-[20%_80%]`}>
-      <section className="p-4 bg-white">
+    <main
+      className={`block mt-20 mb-1 md:grid md:grid-cols-[20%_80%] h-screen gap-2`}
+    >
+      {/* for mobile device */}
+      <section className="md:hidden overflow-x-auto">
+        <CustomText
+          text="Product Categories"
+          textType="medium"
+          weightType="bold"
+          extraStyle="border-b border-black w-max mx-auto"
+        />
+        <div className="flex gap-2 items-center m-2">
+          <p className="text-xs font-normal text-white bg-black flex justify-center items-cennter p-2 w-max rounded-lg">
+            All
+          </p>
+          <p className="text-xs font-normal text-white bg-gray-500 flex justify-center items-cennter p-2 w-max rounded-lg">
+            Pain Killers
+          </p>
+        </div>
+      </section>
+      {/* for large screen size  */}
+      <section className="hidden md:block p-4 bg-white">
         <div>
           <CustomText
             text="Product Categories"
@@ -12,23 +34,22 @@ const Categories = () => {
             weightType="bold"
             extraStyle="border-b border-black w-max"
           />
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              value={"Skin Care"}
-              name="categories"
-              id="categories"
-            />
-            <CustomText
-              text="Skin Care"
-              textType="small"
-              weightType="bold"
-              extraStyle="my-2"
-            />
-          </div>
+          {/* product category  */}
+          <SingleCategoryItem name="Skin Care" />
+          <SingleCategoryItem name="Fever And Pain" />
         </div>
       </section>
-      <section></section>
+      <section className="">
+        <div className="grid grid-cols-3 gap-4">
+          {/* map through cart item  */}
+          <SingleProduct
+            productImage={cartImg}
+            textTitle="Facial Cleaner"
+            textDesc="Facial cleaner for facial treatment..."
+            price="₦2500"
+          />
+        </div>
+      </section>
     </main>
   );
 };
