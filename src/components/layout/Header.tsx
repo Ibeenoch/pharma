@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 const Header = () => {
   const [showCart, setShowCart] = useState<boolean>(false);
   const navigate = useNavigate();
+
   const displayShowCart = () => setShowCart(true);
   const hideShowCart = () => setShowCart(false);
 

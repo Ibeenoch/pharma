@@ -6,7 +6,6 @@ import CustomButton from "../common/Button";
 
 interface CartItemsProps {
   showCart: boolean;
-  //   setShowCart: React.Dispatch<React.SetStateAction<boolean>>;
   hideShowCart: () => void;
 }
 

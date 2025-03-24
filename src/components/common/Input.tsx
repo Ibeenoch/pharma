@@ -5,7 +5,7 @@ import EyeOff from "../../assets/icons/eye-off.svg?react";
 interface CustomInputProps {
   label?: string;
   labelStyle?: string;
-  type: "text" | "email" | "password" | "tel";
+  type: "text" | "email" | "password" | "tel" | "date";
   placeholder?: string;
   value: string;
   onChange: (value: React.SetStateAction<string>) => void;
@@ -27,7 +27,7 @@ interface CustomInputProps {
 
 const CustomInput: React.FC<CustomInputProps> = ({
   label,
-  labelStyle,
+  labelStyle = "default",
   type,
   placeholder,
   value,
@@ -60,7 +60,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
     <div className="w-full">
       {label && (
         <label
-          className={`block mt-3 mb-1 flex gap-1  ${labelStyle}`}
+          className={`block mt-3 mb-1 flex gap-1  ${
+            labelStyle === "default" ? "text-sm font-bold mb-2" : labelStyle
+          }`}
           htmlFor={Id}
         >
           {label}{" "}
@@ -106,7 +108,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
         {showSideBtn && sideBtn}
       </div>
       {hasError && (
-        <p className="text-red-500 my-1 text-[9px]">{errorMessage}</p>
+        <p className="text-red-500 mt-[0.3px] text-[12px] font-medium">
+          {errorMessage}
+        </p>
       )}
     </div>
   );

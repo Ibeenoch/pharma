@@ -10,7 +10,7 @@ interface CustomTextProps {
     | "extralarge"
     | "huge"
     | "superhuge";
-  weightType?: "thin" | "normal" | "medium" | "bold" | "superbold";
+  weightType?: "thin" | "normal" | "medium" | "semibold" | "bold" | "superbold";
   text?: string;
   color?: string;
   extraStyle?: string;
@@ -36,6 +36,8 @@ const CustomText: React.FC<CustomTextProps> = ({
       ? "font-bold"
       : weightType === "normal"
       ? "font-normal"
+      : weightType === "semibold"
+      ? "font-semibold"
       : weightType === "medium"
       ? "font-medium"
       : weightType === "superbold"
