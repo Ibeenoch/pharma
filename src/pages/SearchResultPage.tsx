@@ -11,8 +11,8 @@ const SearchResultPage = () => {
     <main className={`${pageSpacing}`}>
       <Header />
       <SearchResult />
-      <Footer />
       <NavHelper />
+      <Footer />
     </main>
   );
 };

@@ -1,7 +1,7 @@
 import CustomText from "../common/Text";
 import cartImg from "../../assets/images/anti11.png";
-import Cart from "../../assets/icons/cart-fill2-white.svg?react";
-import Fave from "../../assets/icons/heart-alt-white.svg?react";
+import Cart from "../../assets/icons/cart-fill-3.svg?react";
+import Fave from "../../assets/icons/heart-fill-3.svg?react";
 
 const SearchResult = () => {
   return (
@@ -33,11 +33,11 @@ const SearchResult = () => {
               <div className="flex justify-between items-center">
                 <CustomText text="₦2500" textType="medium" weightType="bold" />
                 <div className="flex gap-3 items-center">
-                  <span className="p-2 bg-black rounded-full group">
-                    <Fave className="w-4 h-4 group-hover:stroke-black" />
+                  <span className="p-2 bg-black text-white hover:bg-white hover:border hover:border-black rounded-full group">
+                    <Fave className="w-4 h-4 group-hover:text-black" />
                   </span>
-                  <span className="p-2 bg-black rounded-full group">
-                    <Cart className="w-4 h-4 group-hover:fill-black" />
+                  <span className="p-2 bg-black text-white hover:bg-white hover:border hover:border-black rounded-full group">
+                    <Cart className="w-4 h-4 group-hover:text-black" />
                   </span>
                 </div>
               </div>

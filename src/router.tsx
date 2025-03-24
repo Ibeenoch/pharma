@@ -6,6 +6,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import ProfilePage from "./pages/ProfilePage";
 import SearchResultPage from "./pages/SearchResultPage";
+import CategoriesPage from "./pages/CategoriesPage";
 const Home = lazy(() => import("./pages/Home"));
 
 const router = createBrowserRouter([
@@ -30,8 +31,8 @@ const router = createBrowserRouter([
     element: <ResetPasswordPage />,
   },
   {
-    path: "/profile",
-    element: <ProfilePage />,
+    path: "/categories",
+    element: <CategoriesPage />,
   },
   {
     path: "/search_result",

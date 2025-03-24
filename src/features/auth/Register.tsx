@@ -10,6 +10,7 @@ import User from "../../assets/icons/user.svg?react";
 import Date from "../../assets/icons/date.svg?react";
 import Gender from "../../assets/icons/gender.svg?react";
 import Lock from "../../assets/icons/lock.svg?react";
+import Role from "../../assets/icons/user-role.svg?react";
 import CustomButton from "../../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { validator } from "../../utils/validator";
@@ -20,6 +21,8 @@ const Register = () => {
   const [lastName, setLastName] = useState<string>("");
   const [dob, setDob] = useState<string>("");
   const [gender, setGender] = useState<string>("");
+  const [role, setRole] = useState<string>("");
+  const [passcode, setPasscode] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<{
@@ -29,6 +32,8 @@ const Register = () => {
     gender?: string;
     email?: string;
     password?: string;
+    role?: string;
+    passcode?: string;
   }>({});
   const navigate = useNavigate();
 
@@ -37,6 +42,12 @@ const Register = () => {
     { value: "Male", label: "Male" },
     { value: "Female", label: "Female" },
     { value: "Others", label: "Others" },
+  ];
+  const roleOptions = [
+    { value: "", label: "Select Role" },
+    { value: "Customer", label: "Customer" },
+    { value: "Pharmarcist", label: "Pharmarcist" },
+    { value: "Admin", label: "Admin" },
   ];
   const switchToLoginPage = () => {
     navigate("/login");
@@ -51,6 +62,8 @@ const Register = () => {
     const genderValid = validator(gender, "others");
     const emailValid = validator(email, "email");
     const passwordValid = validator(password, "password");
+    const roleValid = validator(role, "role");
+    const passcodeValid = validator(passcode, "passcode");
 
     if (
       !firstNameValid ||
@@ -58,7 +71,8 @@ const Register = () => {
       !dobValid ||
       !genderValid ||
       !emailValid ||
-      !passwordValid
+      !passwordValid ||
+      !role
     ) {
       setError({
         firstName: firstNameValid ? undefined : "First name is required",
@@ -69,9 +83,26 @@ const Register = () => {
         password: passwordValid
           ? undefined
           : "Password must be at least 8 characters, include a number & special character",
+        role: roleValid ? undefined : "Role is required",
       });
       return;
     }
+    if (role === "Admin" && !passcode) {
+      setError({
+        passcode: passcodeValid ? undefined : "Passcode is required",
+      });
+      return;
+    }
+    console.log(
+      firstName,
+      lastName,
+      dob,
+      gender,
+      email,
+      password,
+      role,
+      passcode
+    );
   };
   return (
     <section className={`h-screen md:grid md:grid-cols-3 items-center `}>
@@ -177,6 +208,36 @@ const Register = () => {
               errorMessage={error.gender || "Select your gender"}
             />
           </div>
+          <div className="flex gap-3 items-center">
+            <CustomSelect
+              options={roleOptions}
+              value={role}
+              onChange={setRole}
+              label="Role"
+              required={true}
+              Id="role"
+              showFullWidth={true}
+              prefixIcon={<User className="w-4 h-4" />}
+              validate={(value) => validator(value, "others")}
+              errorMessage={error.role || "Select your role"}
+            />
+            {role === "Admin" && (
+              <CustomInput
+                prefixIcon={<Lock className="w-4 h-4" />}
+                label="Passcode"
+                Id="passcode"
+                type="text"
+                value={passcode}
+                onChange={setPasscode}
+                required={true}
+                showFullWidth={true}
+                placeholder="Enter Your Passcode"
+                validate={(value) => validator(value, "others")}
+                errorMessage={error.passcode || "Passcode is required"}
+              />
+            )}
+          </div>
+
           <CustomInput
             prefixIcon={<Email className="w-4 h-4" />}
             label="Email Address"
