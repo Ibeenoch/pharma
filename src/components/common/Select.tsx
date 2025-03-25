@@ -4,7 +4,6 @@ interface CustomSelectProps {
   options: { value: string; label: string }[]; // array of label and values
   value: string;
   onChange: (value: string) => void;
-  size?: "sm" | "md" | "lg";
   className?: string; // additional styles
   label?: string;
   labelStyle?: string;
@@ -22,7 +21,6 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   options,
   value,
   onChange,
-  size = "sm",
   className,
   label,
   labelStyle = "default",
@@ -31,7 +29,6 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   validate,
   showFullWidth = false,
   bgColor = "bg-white",
-  //   textColor = "text-gray-900",
   borderColor = "border-gray-300",
   prefixIcon,
   errorMessage,
@@ -41,11 +38,6 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   const isValid = validate ? validate(value) : true;
   const hasError = isTouch && !isValid;
 
-  const sizesClass = {
-    sm: "p-1 text-sm",
-    md: "p-2 text-base",
-    lg: "p-3 text-lg",
-  };
 
   return (
     <div className="w-full">
@@ -70,6 +62,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         >
           {prefixIcon && <span className="pr-2">{prefixIcon}</span>}
           <select
+         onBlur={() => setIsTouch(true)}
+         onFocus={() => setIsTouch(false)}
             value={value}
             name={value}
             id={value}

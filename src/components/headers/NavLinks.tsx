@@ -1,11 +1,6 @@
-import CustomText from "../common/Text";
 import SearchBar from "../../assets/icons/searchbar.svg?react";
-import Cancel from "../../assets/icons/cancel-close.svg?react";
-import CancelCircle from "../../assets/icons/trash-bin.svg?react";
 import Lists from "../common/Lists";
-import cartImg from "../../assets/images/anti11.png";
-import CustomButton from "../common/Button";
-import { useState } from "react";
+
 
 const NavLinks = () => {
   const links = [

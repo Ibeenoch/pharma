@@ -1,4 +1,3 @@
-import React from "react";
 import { MARGIN_TOP } from "../../constants/appText";
 import img from "../../assets/images/anti18.png";
 import img2 from "../../assets/images/anti17.png";

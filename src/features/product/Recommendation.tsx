@@ -6,12 +6,6 @@ import reco4 from "../../assets/images/reco4.png";
 import reco5 from "../../assets/images/reco5.png";
 import reco6 from "../../assets/images/reco6.png";
 import reco7 from "../../assets/images/reco7.png";
-import reco8 from "../../assets/images/reco8.png";
-import reco9 from "../../assets/images/reco9.png";
-import reco10 from "../../assets/images/reco10.png";
-import reco11 from "../../assets/images/reco11.png";
-import reco12 from "../../assets/images/reco12.png";
-import reco13 from "../../assets/images/reco13.png";
 import TwoTextSpan from "../../components/home/TwoTextSpan";
 
 const Recommendation = () => {

@@ -14,8 +14,8 @@ const Footer = () => {
 
   const validateEmail = (email: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const validatePhone = (phone: string) => /^\+?[0-9]{10,14}$/.test(phone);
-  const validatePassword = (password: string) => password.length >= 6;
+  // const validatePhone = (phone: string) => /^\+?[0-9]{10,14}$/.test(phone);
+  // const validatePassword = (password: string) => password.length >= 6;
 
   const socialIcons = [Facebook, Twitter, Instagram, Whatsapp];
   const siteMap = [
@@ -114,7 +114,7 @@ const Footer = () => {
               color="text-white"
             />
             <div className="flex gap-3 mt-2 items-center">
-              {socialIcons.map((Item, index) => (
+              {socialIcons.map((Item) => (
                 <Item className="w-4 h-4 fill-white cursor-pointer" />
               ))}
             </div>

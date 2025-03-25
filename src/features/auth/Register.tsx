@@ -10,7 +10,6 @@ import User from "../../assets/icons/user.svg?react";
 import Date from "../../assets/icons/date.svg?react";
 import Gender from "../../assets/icons/gender.svg?react";
 import Lock from "../../assets/icons/lock.svg?react";
-import Role from "../../assets/icons/user-role.svg?react";
 import CustomButton from "../../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { validator } from "../../utils/validator";
