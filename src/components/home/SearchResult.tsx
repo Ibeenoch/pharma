@@ -1,7 +1,5 @@
 import CustomText from "../common/Text";
 import cartImg from "../../assets/images/anti11.png";
-import Cart from "../../assets/icons/cart-fill-3.svg?react";
-import Fave from "../../assets/icons/heart-fill-3.svg?react";
 import SingleProduct from "../product/SingleProduct";
 
 const SearchResult = () => {
