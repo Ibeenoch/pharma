@@ -1,4 +1,4 @@
-import Cart from "../../assets/icons/cart-fill-3.svg?react";
+import Cart from '../../assets/icons/cart-fill-white.svg?react';
 import Fave from "../../assets/icons/heart-fill-3.svg?react";
 import CustomText from "../common/Text";
 import React from "react";
@@ -31,7 +31,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({
           <CustomText text={price} textType="medium" weightType="bold" />
           <div className="flex gap-3 items-center">
             <span className="p-2 bg-black text-white hover:bg-white hover:border hover:border-black rounded-full group">
-              <Fave className="w-4 h-4 group-hover:text-black" />
+              <Fave className="w-3 h-3 group-hover:text-black" />
             </span>
             <span className="p-2 bg-black text-white hover:bg-white hover:border hover:border-black rounded-full group">
               <Cart className="w-4 h-4 group-hover:text-black" />

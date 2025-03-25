@@ -9,9 +9,11 @@ interface ButtonProps {
   type?: "button" | "submit" | "reset" | undefined;
   borderRadiusType?: "allcurved" | "threecurved" | "none";
   showArrow?: boolean;
+  showIcon?: boolean;
+  BtnIcon?: React.ElementType;
   isLoading?: boolean;
   textSize?: "extrasmall" | "small" | "normal" | "large";
-  weightType?: "thin" | "normal" | "medium" | "bold" | "superbold";
+  weightType?: "thin" | "normal" | "medium" | 'semibold' | "bold" | "superbold";
   defaultBorderColor?: string;
   defaultBackgroundColor?: string;
   defaultTextColor?: string;
@@ -24,6 +26,8 @@ const CustomButton: React.FC<ButtonProps> = ({
   type,
   borderRadiusType = "none",
   showArrow = false,
+  showIcon = false,
+  BtnIcon,
   isLoading = false,
   textSize = "small",
   weightType = "normal",
@@ -34,6 +38,8 @@ const CustomButton: React.FC<ButtonProps> = ({
   let textWeight =
     weightType === "bold"
       ? "font-bold"
+      : weightType === "semibold"
+      ? "font-semibold"
       : weightType === "normal"
       ? "font-normal"
       : weightType === "medium"
@@ -79,8 +85,12 @@ const CustomButton: React.FC<ButtonProps> = ({
       >
         {text}
       </p>
-
-      {showArrow && (
+        {
+          showIcon && BtnIcon && (
+            <BtnIcon className={`w-6 h-6 border-none fill-white hover:fill-black  group-hover:fill-black `} />
+          )
+        }
+      {showArrow &&  (
         <LongRightArrow
           className={`w-6 h-6 border-none fill-white  group-hover:fill-black `}
         />

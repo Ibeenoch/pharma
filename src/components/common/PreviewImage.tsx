@@ -5,7 +5,7 @@ interface PreviewImageProps {
 }
 const PreviewImage: React.FC<PreviewImageProps> = ({ img, extraStyle }) => {
   return (
-    <div className="bg-white p-2 border border-gray-100">
+    <div className="bg-white p-2 border border-gray-200 cursor-pointer">
       <img
         src={img}
         alt="product image list item"
