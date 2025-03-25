@@ -1,6 +1,6 @@
 import Cart from "../../assets/icons/cart-fill-3.svg?react";
 import Fave from "../../assets/icons/heart-fill-3.svg?react";
-import CustomText from "../../components/common/Text";
+import CustomText from "../common/Text";
 import React from "react";
 
 interface SingleProductProps {

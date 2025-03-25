@@ -1,7 +1,7 @@
 import cartImg from "../../assets/images/anti11.png";
 import CustomText from "../../components/common/Text";
-import SingleProduct from "../../components/common/SIngleProduct";
-import SingleCategoryItem from "../../components/common/SingleCategoryItem";
+import SingleProduct from "../../components/product/SingleProduct";
+import SingleCategoryItem from "../../components/product/SingleCategoryItem";
 
 const Categories = () => {
   return (
