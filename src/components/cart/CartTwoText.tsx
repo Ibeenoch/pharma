@@ -20,9 +20,17 @@ const CartTwoText: React.FC<CartTwoTextProps> = ({
         showBorder ? `border-b` : ""
       } ${borderColor}`}
     >
-      <CustomText text={leftText} textType="medium" weightType="semibold" />
+      <CustomText text={leftText} textType="normal" weightType="semibold" />
 
-      <CustomText text={rightText} textType="medium" weightType="semibold" />
+      <div className="flex items-center gap-1">
+        <CustomText
+          text="NGN"
+          textType="small"
+          weightType="thin"
+          extraStyle="text-gray-400 mt-[0.5px]"
+        />
+        <CustomText text={rightText} textType="normal" weightType="semibold" />
+      </div>
     </div>
   );
 };

@@ -16,8 +16,8 @@ interface IconAndTextProps {
 
 const IconAndText: React.FC<IconAndTextProps> = ({ Icon, text, fillColor }) => {
   return (
-    <div className="flex items-center gap-2 cursor-pointer">
-      <Icon className={`w-7 h-7 stroke-red-500 ${fillColor}`} />
+    <div className="flex items-center gap-1 cursor-pointer">
+      <Icon className={`w-4 h-4`} />
       <CustomText
         text={text}
         textType="normal"

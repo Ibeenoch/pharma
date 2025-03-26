@@ -13,16 +13,23 @@ interface CartProps {
   isCheckOutPage?: boolean;
 }
 
-const Cart: React.FC<CartProps> = ({ showCheckOutBtn = true, isCheckOutPage=false }) => {
+const Cart: React.FC<CartProps> = ({
+  showCheckOutBtn = true,
+  isCheckOutPage = false,
+}) => {
   const [qty, setQty] = useState<number>(1);
 
   const increaseNum = () => setQty(qty + 1);
   const decreaseNum = () => setQty((prev) => Math.max(1, prev - 1));
   return (
-    <section className={`mt-20 my-10 ${ isCheckOutPage ? '' : 'md:w-[70%] md:mx-auto' }  p-4`}>
+    <section
+      className={`mt-20 my-10 ${
+        isCheckOutPage ? "" : "md:w-[70%] md:mx-auto"
+      }  p-4`}
+    >
       <div className="flex justify-between items-center my-2">
         <CustomText
-          text={ isCheckOutPage ? 'Review Your Cart' : 'Shopping Cart'}
+          text={isCheckOutPage ? "Review Your Cart" : "Shopping Cart"}
           textType="medium"
           weightType="semibold"
         />
@@ -31,6 +38,7 @@ const Cart: React.FC<CartProps> = ({ showCheckOutBtn = true, isCheckOutPage=fals
       </div>
 
       {/* map throught the cart items  */}
+
       <CartRowItem
         image={productImg1}
         itemTitle="Cough Syrup"
@@ -40,6 +48,7 @@ const Cart: React.FC<CartProps> = ({ showCheckOutBtn = true, isCheckOutPage=fals
         decreaseQty={decreaseNum}
         increaseQty={increaseNum}
       />
+
       <CartRowItem
         image={productImg2}
         itemTitle="Pain Killer"
@@ -54,7 +63,7 @@ const Cart: React.FC<CartProps> = ({ showCheckOutBtn = true, isCheckOutPage=fals
         <input
           type="text"
           placeholder="Promo code"
-          className="w-full p-4 bg-transparent border-none outline-none placeholder:text-gray-400"
+          className="w-full p-4 bg-transparent border-none outline-none placeholder:text-sm placeholder:text-gray-400"
         />
         <CustomButton
           text="Apply"
@@ -77,9 +86,17 @@ const Cart: React.FC<CartProps> = ({ showCheckOutBtn = true, isCheckOutPage=fals
         borderColor="border-white"
       />
       <CartTwoText leftText="Total" rightText="₦14,040.90" />
-    { showCheckOutBtn &&  <div className={`my-4 flex justify-center`}>
-        <CustomButton text="Proceed To Checkout" borderRadiusType="threecurved" textSize="normal" weightType="medium" showArrow={true}/>
-      </div>}
+      {showCheckOutBtn && (
+        <div className={`my-4 flex justify-center`}>
+          <CustomButton
+            text="Proceed To Checkout"
+            borderRadiusType="threecurved"
+            textSize="normal"
+            weightType="medium"
+            showArrow={true}
+          />
+        </div>
+      )}
     </section>
   );
 };

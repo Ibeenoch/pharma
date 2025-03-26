@@ -29,14 +29,14 @@ const CartRowItem: React.FC<CartRowItemProps> = ({
         <img src={image} alt="item in cart" className="w-full h-auto" />
       </div>
       <div className="m-auto ">
-        <CustomText text={itemTitle} textType="medium" weightType="semibold" />
+        <CustomText text={itemTitle} textType="normal" weightType="semibold" />
         <CustomText
           text={itemdesc ?? ""}
           textType="small"
           weightType="normal"
           extraStyle="text-gray-500 mt-2"
         />
-        <CustomText text={price} textType="medium" weightType="bold" />
+        <CustomText text={price} textType="normal" weightType="bold" />
       </div>
       <div className="hidden md:block md:w-max m-auto">
         <QtyUpdateBtn
