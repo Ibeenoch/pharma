@@ -25,7 +25,7 @@ const CartRowItem: React.FC<CartRowItemProps> = ({
 }) => {
   return (
     <div className="grid grid-cols-[33%_34%_33%] md:grid-cols-[20%_30%_30%_20%] gap-3 my-3 pb-2 border-b border-gray-300">
-      <div className=" h-auto bg-white p-2 rounded-xl">
+      <div className=" h-auto bg-white flex justify-center items-center p-2 rounded-xl">
         <img src={image} alt="item in cart" className="w-full h-auto" />
       </div>
       <div className="m-auto ">

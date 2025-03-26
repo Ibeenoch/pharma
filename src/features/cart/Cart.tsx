@@ -3,22 +3,26 @@ import Trash from "../../assets/icons/trash-bin.svg?react";
 import productImg1 from "../../assets/images/cc4.png";
 import productImg2 from "../../assets/images/cc3.png";
 import IconAndText from "../../components/cart/IconAndText";
-import QtyUpdateBtn from "../../components/product/QtyUpdateBtn";
 import { useState } from "react";
 import CartRowItem from "../../components/cart/CartRowItem";
 import CustomButton from "../../components/common/Button";
 import CartTwoText from "../../components/cart/CartTwoText";
 
-const Cart = () => {
+interface CartProps {
+  showCheckOutBtn?: boolean;
+  isCheckOutPage?: boolean;
+}
+
+const Cart: React.FC<CartProps> = ({ showCheckOutBtn = true, isCheckOutPage=false }) => {
   const [qty, setQty] = useState<number>(1);
 
   const increaseNum = () => setQty(qty + 1);
   const decreaseNum = () => setQty((prev) => Math.max(1, prev - 1));
   return (
-    <section className={`mt-20 my-10 h-screen md:w-[70%] md:mx-auto  p-4`}>
+    <section className={`mt-20 my-10 ${ isCheckOutPage ? '' : 'md:w-[70%] md:mx-auto' }  p-4`}>
       <div className="flex justify-between items-center my-2">
         <CustomText
-          text="Shopping Cart"
+          text={ isCheckOutPage ? 'Review Your Cart' : 'Shopping Cart'}
           textType="medium"
           weightType="semibold"
         />
@@ -68,11 +72,14 @@ const Cart = () => {
       />
       <CartTwoText
         leftText="Shipping"
-        rightText="₦1,500."
+        rightText="₦1,500"
         showBorder={true}
         borderColor="border-white"
       />
       <CartTwoText leftText="Total" rightText="₦14,040.90" />
+    { showCheckOutBtn &&  <div className={`my-4 flex justify-center`}>
+        <CustomButton text="Proceed To Checkout" borderRadiusType="threecurved" textSize="normal" weightType="medium" showArrow={true}/>
+      </div>}
     </section>
   );
 };

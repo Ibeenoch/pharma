@@ -104,7 +104,7 @@ const Register = () => {
     );
   };
   return (
-    <section className={`h-screen md:grid md:grid-cols-3 items-center `}>
+    <section className={`h-screen md:grid md:grid-cols-3 mt-10 items-center `}>
       <article className="hidden md:block">
         <CustomText text="Sign Up to" textType="huge" weightType="bold" />
         <CustomText

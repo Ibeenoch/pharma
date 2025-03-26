@@ -13,7 +13,7 @@ const QtyUpdateBtn: React.FC<QtyUpdateBtnProps> = ({
   increaseNum,
 }) => {
   return (
-    <div className="flex items-center  gap-3 ">
+    <div className="flex items-center gap-3 ">
       <div
         onClick={decreaseNum}
         className="group hover:bg-black hover:rounded-xl  border border-gray-300 rounded-xl cursor-pointer p-2"

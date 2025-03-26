@@ -9,6 +9,7 @@ import SearchResultPage from "./pages/SearchResultPage";
 import CategoriesPage from "./pages/CategoriesPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import CartPage from "./pages/CartPage";
+import CheckOutPage from "./pages/CheckOutPage";
 const Home = lazy(() => import("./pages/Home"));
 
 const router = createBrowserRouter([
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
   {
     path: "/cart",
     element: <CartPage />,
+  },
+  {
+    path: "/checkout",
+    element: <CheckOutPage />,
   },
 ]);
 
