@@ -10,6 +10,7 @@ interface ButtonProps {
   borderRadiusType?: "allcurved" | "threecurved" | "none";
   showArrow?: boolean;
   showIcon?: boolean;
+  fullwidth?: boolean;
   BtnIcon?: React.ElementType;
   isLoading?: boolean;
   textSize?: "extrasmall" | "small" | "normal" | "large";
@@ -29,11 +30,13 @@ const CustomButton: React.FC<ButtonProps> = ({
   showIcon = false,
   BtnIcon,
   isLoading = false,
+  fullwidth = false,
   textSize = "small",
   weightType = "normal",
   defaultBorderColor,
   defaultBackgroundColor = "default",
   defaultTextColor = "default",
+
 }) => {
   let textWeight =
     weightType === "bold"
@@ -59,7 +62,7 @@ const CustomButton: React.FC<ButtonProps> = ({
           : "bg-black hover:bg-white hover:text-black hover:border hover:border-black"
       }  ${
         defaultTextColor === "default" ? "text-white" : defaultTextColor
-      } text-md font-normal px-8 py-2 flex justify-center items-center gap-4 ${
+      } text-md font-normal ${ fullwidth ? 'w-full' : '' } px-8 py-2 flex justify-center items-center gap-4 ${
         borderRadiusType === "threecurved"
           ? "rounded-bl-3xl rounded-br-3xl rounded-tl-3xl"
           : borderRadiusType === "allcurved"

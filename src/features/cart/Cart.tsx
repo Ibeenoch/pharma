@@ -1,5 +1,6 @@
 import CustomText from "../../components/common/Text";
 import Trash from "../../assets/icons/trash-bin.svg?react";
+import Lock from "../../assets/icons/lock.svg?react";
 import productImg1 from "../../assets/images/cc4.png";
 import productImg2 from "../../assets/images/cc3.png";
 import IconAndText from "../../components/cart/IconAndText";
@@ -23,9 +24,9 @@ const Cart: React.FC<CartProps> = ({
   const decreaseNum = () => setQty((prev) => Math.max(1, prev - 1));
   return (
     <section
-      className={`mt-20 my-10 ${
-        isCheckOutPage ? "" : "md:w-[70%] md:mx-auto"
-      }  p-4`}
+      className={`mt-20 h-min ${
+        isCheckOutPage ? "bg-white" : "md:w-[70%] md:mx-auto"
+      }  rounded-xl p-4`}
     >
       <div className="flex justify-between items-center my-2">
         <CustomText
@@ -47,6 +48,7 @@ const Cart: React.FC<CartProps> = ({
         qty={qty}
         decreaseQty={decreaseNum}
         increaseQty={increaseNum}
+        isCheckOut={isCheckOutPage}
       />
 
       <CartRowItem
@@ -57,9 +59,10 @@ const Cart: React.FC<CartProps> = ({
         qty={qty}
         decreaseQty={decreaseNum}
         increaseQty={increaseNum}
+        isCheckOut={isCheckOutPage}
       />
 
-      <div className="bg-white flex justify-around items-center mx-auto py-2 px-4 rounded-xl my-3 ">
+      <div className={`${ isCheckOutPage ? 'bg-[#f4f4f4]' : 'bg-white'} flex justify-around items-center mx-auto py-2 px-4 rounded-xl my-3`}>
         <input
           type="text"
           placeholder="Promo code"
@@ -85,6 +88,12 @@ const Cart: React.FC<CartProps> = ({
         showBorder={true}
         borderColor="border-white"
       />
+      <CartTwoText
+        leftText="Discount"
+        rightText="₦0.00"
+        showBorder={true}
+        borderColor="border-white"
+      />
       <CartTwoText leftText="Total" rightText="₦14,040.90" />
       {showCheckOutBtn && (
         <div className={`my-4 flex justify-center`}>
@@ -94,8 +103,28 @@ const Cart: React.FC<CartProps> = ({
             textSize="normal"
             weightType="medium"
             showArrow={true}
+            fullwidth={true}
+            type="button"
           />
         </div>
+      )}
+      {!showCheckOutBtn && (
+        <>
+        <div className={`my-4 flex justify-center`}>
+          <CustomButton
+            text="Order Now"
+            borderRadiusType="threecurved"
+            textSize="normal"
+            weightType="medium"
+            showArrow={true}
+            fullwidth={true}
+            type="submit"
+          />
+        </div>
+        <IconAndText Icon={Lock} text="Secure Checkout - SSL Encrypted"/>
+        <CustomText text="Ensuring your financial and personal details are secure during every transaction" textType="small" color="text-gray-500" />
+
+        </>
       )}
     </section>
   );

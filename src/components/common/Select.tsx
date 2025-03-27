@@ -1,7 +1,12 @@
 import { useState } from "react";
 
 interface CustomSelectProps {
-  options: { value: string; label: string }[]; // array of label and values
+  options?: { value: string; label: string }[]; // array of label and values
+  countriesOptions?: {
+    name: string;
+    flag: string;
+}[]; // array of label and values
+  otherOptions? : string[];
   value: string;
   onChange: (value: string) => void;
   className?: string; // additional styles
@@ -19,6 +24,8 @@ interface CustomSelectProps {
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
   options,
+  countriesOptions,
+  otherOptions,
   value,
   onChange,
   className,
@@ -73,9 +80,19 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
             onChange={(e) => onChange(e.target.value)}
             aria-label={value}
           >
-            {options.map((option) => (
+            {options && options.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
+              </option>
+            ))}
+            {countriesOptions && countriesOptions.map((option) => (
+              <option key={option.name} value={option.name}>
+                {option.name}
+              </option>
+            ))}
+            {otherOptions && otherOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
               </option>
             ))}
           </select>

@@ -12,6 +12,7 @@ interface CartRowItemProps {
   qty: number;
   decreaseQty: () => void;
   increaseQty: () => void;
+  isCheckOut?: boolean;
 }
 
 const CartRowItem: React.FC<CartRowItemProps> = ({
@@ -22,10 +23,11 @@ const CartRowItem: React.FC<CartRowItemProps> = ({
   qty,
   decreaseQty,
   increaseQty,
+  isCheckOut = false,
 }) => {
   return (
     <div className="grid grid-cols-[33%_34%_33%] md:grid-cols-[20%_30%_30%_20%] gap-3 my-3 pb-2 border-b border-gray-300">
-      <div className=" h-auto bg-white flex justify-center items-center p-2 rounded-xl">
+      <div className={` h-auto ${isCheckOut ? 'bg-[#f4f4f4]' : 'bg-white'} flex justify-center items-center p-2 rounded-xl`}>
         <img src={image} alt="item in cart" className="w-full h-auto" />
       </div>
       <div className="m-auto ">
@@ -47,7 +49,12 @@ const CartRowItem: React.FC<CartRowItemProps> = ({
       </div>
 
       <div className="hidden md:block md:w-max m-auto">
-        <IconAndText text="Remove" Icon={Trash} />
+        {
+          isCheckOut ? (
+            <Trash className={`w-4 h-4`} />
+          ) : ( <IconAndText text="Remove" Icon={Trash} />)
+        }
+       
       </div>
       {/* for mobile device  */}
       <div className="md:hidden flex flex-col justify-around">

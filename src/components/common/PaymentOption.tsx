@@ -14,7 +14,7 @@ interface PaymentOptionProps {
 
 const PaymentOption: React.FC<PaymentOptionProps> = ({ Icon, active }) => {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 cursor-pointer">
       <div
         className={`p-3 border ${
           active ? "border-amber-500 " : "border-gray-200 "

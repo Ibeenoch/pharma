@@ -13,6 +13,9 @@ import Phone from "../../assets/icons/mobile-phone.svg?react";
 import Location from "../../assets/icons/maps-and-flags.svg?react";
 import Address from "../../assets/icons/home3.svg?react";
 import PaymentOption from "../../components/common/PaymentOption";
+import CustomSelect from "../../components/common/Select";
+import { countries } from "../../utils/countries";
+import { nigeriaStateAndLga } from "../../utils/nigeriaStateAndLgas";
 
 const CheckOut = () => {
   const [firstName, setFirstName] = useState<string>("");
@@ -31,6 +34,10 @@ const CheckOut = () => {
   };
 
   const IconLists = [Paystack, Flutterwave, BankTransfer];
+
+  const nigerianState = nigeriaStateAndLga.map((item) => item.state);
+  const stateLgas = nigeriaStateAndLga.find((item) => item.state === state)?.lgas || ['Select LGA'];
+
 
   const [error, setError] = useState<{
     firstName?: string;
@@ -145,46 +152,44 @@ const CheckOut = () => {
               validate={(value) => validator(value, "phone")}
               errorMessage={error.phone || "Phone Number is required"}
             />
-            <CustomInput
+             <CustomSelect
               prefixIcon={<Country className="w-4 h-4" />}
+              countriesOptions={countries}
               label="Country"
               Id="country"
-              type="text"
               value={country}
               onChange={setCountry}
               required={true}
               showFullWidth={true}
-              placeholder="Your country"
               validate={(value) => validator(value, "others")}
               errorMessage={error.country || "Country is required"}
             />
 
             <div className="md:flex gap-4 items-center">
-              <CustomInput
-                prefixIcon={<Location className="w-4 h-4" />}
-                label="State"
-                Id="state"
-                type="text"
-                value={state}
-                onChange={setState}
-                required={true}
-                showFullWidth={true}
-                placeholder="Your State"
-                validate={(value) => validator(value, "others")}
-                errorMessage={error.state || "State is required"}
-              />
-              <CustomInput
-                prefixIcon={<Location className="w-4 h-4" />}
-                label="LGA"
-                Id="lga"
-                type="text"
-                value={lga}
-                onChange={setLga}
-                required={true}
-                showFullWidth={true}
-                placeholder="Your LGA"
-                validate={(value) => validator(value, "others")}
-                errorMessage={error.lga || "LGA is required"}
+            <CustomSelect
+              prefixIcon={<Country className="w-4 h-4" />}
+              otherOptions={country === 'Nigeria' ? nigerianState : ['Select State']}
+              label="State"
+              Id="state"
+              value={state}
+              onChange={setState}
+              required={true}
+              showFullWidth={true}
+              validate={(value) => validator(value, "others")}
+              errorMessage={error.state || "State is required"}
+            />
+             
+              <CustomSelect
+                 prefixIcon={<Location className="w-4 h-4" />}
+                 otherOptions={stateLgas}
+                 label="LGA"
+                 Id="lga"
+                 value={lga}
+                 onChange={setLga}
+                 required={true}
+                 showFullWidth={true}
+                 validate={(value) => validator(value, "others")}
+                 errorMessage={error.lga || "LGA is required"}
               />
               <CustomInput
                 prefixIcon={<Address className="w-4 h-4" />}
@@ -245,7 +250,7 @@ const CheckOut = () => {
               extraStyle="my-3"
               color="text-gray-500"
             />
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center overflow-x-auto">
               {IconLists.map((Item, index) => (
                 <div onClick={() => setPaymentMethodIndex(index)}>
                   <PaymentOption Icon={Item} active={paymentIndex === index} />

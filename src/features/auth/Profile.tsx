@@ -2,7 +2,7 @@ import img2 from "../../assets/images/profile5.png";
 import CustomText from "../../components/common/Text";
 import Home from "../../assets/icons/home2.svg?react";
 import Cart from "../../assets/icons/cart-shopping.svg?react";
-import cup from "../../assets/images/cup.png";
+import cup from "../../assets/images/reward.png";
 import Heart from "../../assets/icons/heart-alt-white.svg?react";
 import Truck from "../../assets/icons/truck-white.svg?react";
 import Details from "../../assets/icons/contact-details-white.svg?react";
