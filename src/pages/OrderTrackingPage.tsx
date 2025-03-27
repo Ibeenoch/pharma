@@ -1,16 +1,16 @@
-import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import Header from "../components/layout/Header";
 import { pageSpacing } from "../constants/appText";
-import PaymentStatus from "../features/cart/PaymentStatus";
+import Order from "../features/order/Order";
 
-const PaymentStatusPage = () => {
+const OrderTrackingPage = () => {
   return (
     <main className={` ${pageSpacing}`}>
       <Header />
-      <PaymentStatus />
+      <Order />
       <Footer />
     </main>
   );
 };
 
-export default PaymentStatusPage;
+export default OrderTrackingPage;

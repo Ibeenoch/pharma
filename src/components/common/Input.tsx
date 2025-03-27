@@ -5,7 +5,7 @@ import EyeOff from "../../assets/icons/eye-off.svg?react";
 interface CustomInputProps {
   label?: string;
   labelStyle?: string;
-  type: "text" | "email" | "password" | "tel" | "date" | "radio";
+  type: "text" | "email" | "password" | "tel" | "date" | "radio" | "search";
   placeholder?: string;
   value: string;
   onChange: (value: React.SetStateAction<string>) => void;

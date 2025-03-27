@@ -11,6 +11,7 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 import CartPage from "./pages/CartPage";
 import CheckOutPage from "./pages/CheckOutPage";
 import PaymentStatusPage from "./pages/PaymentStatusPage";
+import OrderTrackingPage from "./pages/OrderTrackingPage";
 const Home = lazy(() => import("./pages/Home"));
 
 const router = createBrowserRouter([
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
   {
     path: "/payment_status",
     element: <PaymentStatusPage />,
+  },
+  {
+    path: "/order_tracking",
+    element: <OrderTrackingPage />,
   },
 ]);
 
