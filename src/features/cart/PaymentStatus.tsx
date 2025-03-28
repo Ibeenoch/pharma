@@ -58,17 +58,19 @@ const PaymentStatus = () => {
         <div
           className={` ${
             isSucessfully ? "justify-around" : "justify-center"
-          } flex items-center mt-4`}
+          } flex items-center gap-2 mt-4`}
         >
           <CustomButton
             text="Continue Shopping"
             type="button"
+            textSize="small"
             borderRadiusType="threecurved"
           />
           {isSucessfully && (
             <CustomButton
               text="Track Order"
               type="button"
+               textSize="small"
               showArrow={true}
               borderRadiusType="threecurved"
             />

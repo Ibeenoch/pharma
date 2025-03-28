@@ -62,7 +62,7 @@ const CustomButton: React.FC<ButtonProps> = ({
           : "bg-black hover:bg-white hover:text-black hover:border hover:border-black"
       }  ${
         defaultTextColor === "default" ? "text-white" : defaultTextColor
-      } text-md font-normal ${ fullwidth ? 'w-full' : '' } px-8 py-2 flex justify-center items-center gap-4 ${
+      } text-md font-normal ${ fullwidth ? 'w-full' : '' } px-4 md:px-8 py-2 flex justify-center items-center gap-4 ${
         borderRadiusType === "threecurved"
           ? "rounded-bl-3xl rounded-br-3xl rounded-tl-3xl"
           : borderRadiusType === "allcurved"
