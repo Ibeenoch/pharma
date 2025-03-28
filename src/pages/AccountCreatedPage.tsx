@@ -1,16 +1,8 @@
-import Header from '../components/layout/Header'
-import Footer from '../components/layout/Footer'
-import { pageSpacing } from '../constants/appText'
-import AccountCreated from '../features/auth/AccountCreated'
+import AccountCreated from "../features/auth/AccountCreated";
+import PageLayout from "../components/common/PageLayout";
 
 const AccountCreatedPage = () => {
-  return (
-    <main className={`sm:px-8 mt-10 ${pageSpacing}`}>
-    <Header />
-    <AccountCreated />
-    <Footer />
-  </main>
-  )
-}
+  return <PageLayout child={<AccountCreated />} />;
+};
 
-export default AccountCreatedPage
+export default AccountCreatedPage;

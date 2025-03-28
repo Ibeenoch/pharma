@@ -1,16 +1,8 @@
-import { pageSpacing } from '../constants/appText'
-import Header from '../components/layout/Header'
-import Footer from '../components/layout/Footer'
-import CheckOut from '../features/cart/CheckOut'
+import CheckOut from "../features/cart/CheckOut";
+import PageLayout from "../components/common/PageLayout";
 
 const CheckOutPage = () => {
-  return (
-     <main className={`sm:px-8 mt-10 ${pageSpacing}`}>
-          <Header />
-          <CheckOut />
-          <Footer />
-        </main>
-  )
-}
+  return <PageLayout child={<CheckOut />} />;
+};
 
-export default CheckOutPage
+export default CheckOutPage;

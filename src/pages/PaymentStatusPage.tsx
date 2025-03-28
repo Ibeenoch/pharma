@@ -1,16 +1,8 @@
-import Header from "../components/layout/Header";
-import Footer from "../components/layout/Footer";
-import { pageSpacing } from "../constants/appText";
 import PaymentStatus from "../features/cart/PaymentStatus";
+import PageLayout from "../components/common/PageLayout";
 
 const PaymentStatusPage = () => {
-  return (
-    <main className={` ${pageSpacing}`}>
-      <Header />
-      <PaymentStatus />
-      <Footer />
-    </main>
-  );
+  return <PageLayout child={<PaymentStatus />} />;
 };
 
 export default PaymentStatusPage;

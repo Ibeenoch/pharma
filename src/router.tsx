@@ -14,6 +14,8 @@ import PaymentStatusPage from "./pages/PaymentStatusPage";
 import OrderTrackingPage from "./pages/OrderTrackingPage";
 import OrderHistoryPage from "./pages/OrderHistoryPage";
 import AccountCreatedPage from "./pages/AccountCreatedPage";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
 const Home = lazy(() => import("./pages/Home"));
 
 const router = createBrowserRouter([
@@ -76,6 +78,14 @@ const router = createBrowserRouter([
   {
     path: "/account_created",
     element: <AccountCreatedPage />,
+  },
+  {
+    path: "/about",
+    element: <AboutPage />,
+  },
+  {
+    path: "/contact",
+    element: <ContactPage />,
   },
 ]);
 

@@ -1,16 +1,8 @@
-import Footer from "../components/layout/Footer";
-import Header from "../components/layout/Header";
-import { pageSpacing } from "../constants/appText";
+import PageLayout from "../components/common/PageLayout";
 import ForgotPassword from "../features/auth/ForgotPassword";
 
 const ForgotPasswordPage = () => {
-  return (
-    <main className={`${pageSpacing}`}>
-      <Header />
-      <ForgotPassword />
-      <Footer />
-    </main>
-  );
+  return <PageLayout child={<ForgotPassword />} />;
 };
 
 export default ForgotPasswordPage;
