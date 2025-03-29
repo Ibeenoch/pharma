@@ -2,7 +2,7 @@ import CustomText from "../common/Text";
 import Menu from "../../assets/icons/menu.svg?react";
 import Cancel from "../../assets/icons/cancel-close.svg?react";
 import ArrowRight from "../../assets/icons/arrow-right-shorttail.svg?react";
-import SearchBar from "../../assets/icons/searchbar.svg?react";
+import SearchBar from "../../assets/icons/search-alt-white.svg?react";
 import ShoppingCart from "../../assets/icons/cart-shopping.svg?react";
 import { useState } from "react";
 import CustomButton from "../common/Button";

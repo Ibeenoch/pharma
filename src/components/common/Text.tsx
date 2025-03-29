@@ -102,15 +102,15 @@ const CustomText: React.FC<CustomTextProps> = ({
       {text}{" "}
     </h2>
   ) : textType === "superhuge" ? (
-    <h2
+    <h1
       className={`text-[50px] sm:text-[56px]  ${textWeight} ${textColor} ${extraStyle}`}
     >
       {text}{" "}
-    </h2>
+    </h1>
   ) : (
-    <h1
+    <h3
       className={`text-[32px]  ${textWeight} ${textColor} ${extraStyle}`}
-    ></h1>
+    ></h3>
   );
 };
 

@@ -1,6 +1,5 @@
-import SearchBar from "../../assets/icons/searchbar.svg?react";
+import SearchBar from "../../assets/icons/search-alt-white.svg?react";
 import Lists from "../common/Lists";
-
 
 const NavLinks = () => {
   const links = [

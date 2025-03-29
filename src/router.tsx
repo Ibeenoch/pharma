@@ -16,6 +16,7 @@ import OrderHistoryPage from "./pages/OrderHistoryPage";
 import AccountCreatedPage from "./pages/AccountCreatedPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
+import DashBoardPage from "./pages/admin/DashBoardPage";
 const Home = lazy(() => import("./pages/Home"));
 
 const router = createBrowserRouter([
@@ -86,6 +87,10 @@ const router = createBrowserRouter([
   {
     path: "/contact",
     element: <ContactPage />,
+  },
+  {
+    path: "/admin/dashboard",
+    element: <DashBoardPage />,
   },
 ]);
 

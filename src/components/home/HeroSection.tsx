@@ -3,6 +3,8 @@ import heroImage from "../../assets/images/person3.png";
 import CustomButton from "../common/Button";
 import MedCross from "../../assets/icons/medical-cross.svg?react";
 import { MARGIN_TOP } from "../../constants/appText";
+import CountUp from "react-countup";
+import NumberCount from "./NumberCount";
 
 const HeroSection = () => {
   const handleGetStarted = () => {};
@@ -58,7 +60,8 @@ const HeroSection = () => {
 
         <div className="flex justify-around mt-8 mb-8">
           <div className="flex flex-col ">
-            <CustomText text="1000+" textType="large" weightType="medium" />
+            <NumberCount defaultStyle={true} end={1500} postfixText="+" />
+
             <CustomText
               text="Health & Wellness Products"
               textType="extrasmall"
@@ -70,7 +73,7 @@ const HeroSection = () => {
           <div className="border-2 border-gray-200 w-[0.3px]"></div>
 
           <div className="flex flex-col">
-            <CustomText text="156+" textType="large" weightType="medium" />
+            <NumberCount defaultStyle={true} end={156} postfixText="+" />
             <CustomText
               text="Pharmacy & Grocery Brands"
               textType="extrasmall"
