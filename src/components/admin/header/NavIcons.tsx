@@ -1,11 +1,11 @@
 import DashBoard from "../../../assets/icons/dashboard.svg?react";
 import User from "../../../assets/icons/users-2-black.svg?react";
-import Product from "../../../assets/icons/product.svg?react";
+import Product from "../../../assets/icons/product-tag.svg?react";
 import Order from "../../../assets/icons/order.svg?react";
 import Transaction from "../../../assets/icons/transaction.svg?react";
 import Settings from "../../../assets/icons/setting.svg?react";
 import CustomText from "../../common/Text";
-import { oliveColorBg } from "../../../constants/appColor";
+import { adminDefaultBgColor, oliveColorBg } from "../../../constants/appColor";
 
 interface NavIconsProps {
   indexClicked: number;
@@ -32,9 +32,9 @@ const NavIcons: React.FC<NavIconsProps> = ({
           className={`
             ${
               index === indexClicked - 1
-                ? "bg-[#fdebc7]"
+                ? `${adminDefaultBgColor}`
                 : index === indexClicked + 1
-                ? "bg-[#fdebc7]"
+                ? `${adminDefaultBgColor}`
                 : ""
             } 
         `}
@@ -42,7 +42,7 @@ const NavIcons: React.FC<NavIconsProps> = ({
           <div
             className={`flex items-center gap-2 cursor-pointer p-4 ${
               index === indexClicked
-                ? "bg-[#fdebc7] rounded-tl-4xl rounded-bl-4xl"
+                ? `${adminDefaultBgColor} rounded-tl-4xl rounded-bl-4xl`
                 : index === indexClicked - 1
                 ? `${oliveColorBg} rounded-br-4xl`
                 : index === indexClicked + 1
@@ -50,17 +50,23 @@ const NavIcons: React.FC<NavIconsProps> = ({
                 : ""
             }  `}
           >
-            <div className="p-3 bg-white rounded-full border-[0.001px] border-[#687451]">
+            <div
+              className={`p-3 ${
+                index === indexClicked ? "bg-white" : "bg-gray-100"
+              } rounded-full`}
+            >
               <Item.icons className="w-5 h-5" />
             </div>
-            <CustomText
-              text={Item.text}
-              textType="small"
-              weightType="medium"
-              color={`${
-                index === indexClicked ? "text-[#687451]" : "text-white"
-              }`}
-            />
+            <div className="hidden sm:block">
+              <CustomText
+                text={Item.text}
+                textType="small"
+                weightType="semibold"
+                color={`${
+                  index === indexClicked ? "text-gray-800" : "text-gray-800"
+                }`}
+              />
+            </div>
           </div>
         </div>
       ))}

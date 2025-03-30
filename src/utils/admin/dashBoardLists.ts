@@ -2,6 +2,20 @@ import Cross from "../../assets/icons/cross-fig.svg?react";
 import Cash from "../../assets/icons/cash.svg?react";
 import StockOut from "../../assets/icons/stock-out.svg?react";
 import Users from "../../assets/icons/users-2-yellow.svg?react";
+import {
+  darkblue,
+  darkblueText,
+  darkGreen,
+  darkGreenText,
+  darkOrange,
+  darkredText,
+  darkyellow,
+  darkyellowText,
+  lightBlueBgColor,
+  lightgreenBgColor,
+  lightredBgColor,
+  lightyellowBgColor,
+} from "../../constants/appColor";
 
 export const cardLists = [
   {
@@ -9,28 +23,32 @@ export const cardLists = [
     topText: "Medical Product",
     middleText: "517",
     endText: "Manage inventory",
-    color: "bg-[#3f3114]",
+    color: lightBlueBgColor,
+    textColor: darkblueText,
   },
   {
     Icon: Cash,
     topText: "Total Revenue",
     middleText: "₦705,360",
     endText: "View Details",
-    color: "bg-[#ab7843]",
+    color: lightgreenBgColor,
+    textColor: darkGreenText,
   },
   {
     Icon: Users,
     topText: "Total User",
     middleText: "15,124",
     endText: "View Details",
-    color: "bg-[#6d3914]",
+    color: lightyellowBgColor,
+    textColor: darkyellowText,
   },
   {
     Icon: StockOut,
     topText: "Low Stock",
     middleText: "8",
     endText: "Restock Now",
-    color: "bg-[#4c2b08]",
+    color: lightredBgColor,
+    textColor: darkredText,
   },
 ];
 
@@ -63,10 +81,10 @@ export const salesData = [
 ];
 
 export const inventoryData = [
-  { name: "Total Products", value: 500, color: "#3f3114" }, // Blue
-  { name: "Out of Stock", value: 80, color: "#ab7843" }, // Red
-  { name: "Expired", value: 50, color: "#6d3914" }, // Yellow
-  { name: "Returned", value: 30, color: "#4c2b08" }, // Green
+  { name: "Total Products", value: 500, color: darkblue },
+  { name: "Out of Stock", value: 80, color: darkGreen },
+  { name: "Expired", value: 50, color: darkOrange },
+  { name: "Returned", value: 30, color: darkyellow },
 ];
 
 export const recentPaymentData = [
@@ -76,7 +94,7 @@ export const recentPaymentData = [
     date: "22/10/2023",
     payment_method: "Card",
     price: "$65",
-    invoice: "Complete",
+    status: "Complete",
   },
   {
     order_id: "8596635",
@@ -84,7 +102,7 @@ export const recentPaymentData = [
     date: "22/10/2023",
     payment_method: "Card",
     price: "$54",
-    invoice: "Complete",
+    status: "Complete",
   },
   {
     order_id: "7589632",
@@ -92,7 +110,7 @@ export const recentPaymentData = [
     date: "21/10/2023",
     payment_method: "Bank Transfer",
     price: "$120",
-    invoice: "Pending",
+    status: "Pending",
   },
   {
     order_id: "6321458",
@@ -100,7 +118,7 @@ export const recentPaymentData = [
     date: "21/10/2023",
     payment_method: "Cash",
     price: "$45",
-    invoice: "Complete",
+    status: "Complete",
   },
   {
     order_id: "9517536",
@@ -108,7 +126,7 @@ export const recentPaymentData = [
     date: "20/10/2023",
     payment_method: "Card",
     price: "$88",
-    invoice: "Complete",
+    status: "Complete",
   },
   {
     order_id: "3571598",
@@ -116,7 +134,7 @@ export const recentPaymentData = [
     date: "19/10/2023",
     payment_method: "PayPal",
     price: "$77",
-    invoice: "Failed",
+    status: "Failed",
   },
   {
     order_id: "2648391",
@@ -124,7 +142,7 @@ export const recentPaymentData = [
     date: "18/10/2023",
     payment_method: "Card",
     price: "$92",
-    invoice: "Complete",
+    status: "Complete",
   },
   {
     order_id: "7984123",
@@ -132,7 +150,7 @@ export const recentPaymentData = [
     date: "17/10/2023",
     payment_method: "Bank Transfer",
     price: "$150",
-    invoice: "Pending",
+    status: "Pending",
   },
   {
     order_id: "6482917",
@@ -140,7 +158,7 @@ export const recentPaymentData = [
     date: "16/10/2023",
     payment_method: "Cash",
     price: "$39",
-    invoice: "Complete",
+    status: "Complete",
   },
   {
     order_id: "3857204",
@@ -148,6 +166,26 @@ export const recentPaymentData = [
     date: "15/10/2023",
     payment_method: "PayPal",
     price: "$110",
-    invoice: "Complete",
+    status: "Complete",
+  },
+];
+
+export const paymentColumns = [
+  { key: "order_id", label: "Order ID" },
+  { key: "customer_name", label: "Customer Name" },
+  { key: "date", label: "Date Paid" },
+  { key: "payment_method", label: "Payment Method" },
+  { key: "price", label: "Price" },
+  {
+    key: "status",
+    label: "Status",
+    conditionalFormat: (value: string) =>
+      value === "Pending"
+        ? "text-yellow-500"
+        : value === "Failed"
+        ? "text-red-500"
+        : value === "Complete"
+        ? "text-green-500"
+        : "",
   },
 ];

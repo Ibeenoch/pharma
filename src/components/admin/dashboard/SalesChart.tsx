@@ -8,6 +8,13 @@ import {
 } from "recharts";
 import CustomText from "../../common/Text";
 import { salesData } from "../../../utils/admin/dashBoardLists";
+import {
+  darkblue,
+  darkGreen,
+  darkOrange,
+  darkred,
+  darkyellow,
+} from "../../../constants/appColor";
 
 // Function to transform data into chart format
 const processData = (data: typeof salesData) => {
@@ -28,10 +35,10 @@ const data = processData(salesData);
 
 // Define colors for each category
 const categoryColors: { [key: string]: string } = {
-  Painkiller: "#3f3114",
-  Antibiotics: "#ab7843",
-  Vitamins: "#6d3914",
-  "Cough Syrup": "#4c2b08",
+  Painkiller: darkblue,
+  Antibiotics: darkred,
+  Vitamins: darkGreen,
+  "Cough Syrup": darkyellow,
 };
 
 // Custom legend component
