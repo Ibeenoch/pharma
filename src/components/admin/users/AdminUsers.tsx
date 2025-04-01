@@ -13,6 +13,7 @@ import UserAdmin from "./UserAdmin";
 import UserPharma from "./UserPharma";
 import UserCustomer from "./UserCustomer";
 import NavTab from "../NavTab";
+import DateFilter from "../DateFilter";
 
 const AdminUsers = () => {
   const [started, setStarted] = useState<string>("");
@@ -23,44 +24,21 @@ const AdminUsers = () => {
     dispatch(setAdminUserTabIndex(index));
   };
   return (
-    <main className={`mt-12 ${adminDefaultBgColor}`}>
-      <div className="flex flex-col md:flex-row items-center justify-between">
+    <main className={`md:mt-12 mt-20 ${adminDefaultBgColor}`}>
+      <div className="flex flex-col md:flex-row p-4 items-center justify-between">
         <NavTab
           handleTabclicked={handleUserTabs}
           indexClicked={adminUsertabIndex}
           navLists={userLists}
         />
 
-        <div className="flex items-center gap-6 overflow-x-auto">
-          <div className="flex gap-2 items-center">
-            <CustomText
-              text="Start"
-              textType="small"
-              weightType="semibold"
-              extraStyle="text-gray-500"
-            />
-            <CustomInput
-              value={started}
-              onChange={setStarted}
-              type="date"
-              Id="started"
-            />
-          </div>
-          <div className="flex gap-2 items-center">
-            <CustomText
-              text="End"
-              textType="small"
-              weightType="semibold"
-              extraStyle="text-gray-500"
-            />
-            <CustomInput
-              value={ended}
-              onChange={setEnded}
-              type="date"
-              Id="ended"
-            />
-          </div>
-        </div>
+        <DateFilter
+          applyCallback={() => {}}
+          ended={ended}
+          started={started}
+          setEnded={setEnded}
+          setStarted={setStarted}
+        />
       </div>
 
       <section>

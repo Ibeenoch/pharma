@@ -18,7 +18,7 @@ const NavItems = () => {
       {showSearchInput && (
         <div
           onMouseLeave={_hideSearchInput}
-          className="flex items-center cursor-pointer w-[350px]"
+          className="flex items-center cursor-pointer w-auto md:w-[350px]"
         >
           <CustomInput
             type="search"
@@ -38,23 +38,23 @@ const NavItems = () => {
           onMouseEnter={_showSearchInput}
           className="flex gap-2 items-center cursor-pointer"
         >
-          <CustomText text="Search" textType="small" />
-          <Search className="w-3 h-3 stroke-black" />
+          <CustomText text="Search" textType="normal" color="text-gray-900" />
+          <Search className="w-5 h-5 stroke-black" />
         </div>
       )}
 
       <div className="flex gap-4 items-center cursor-pointer">
         <div className="relative">
-          <Bell className="w-4 h-4" />
-          <span className="bg-red-500 w-2 h-2 rounded-full p-[6px] absolute -top-1 -left-1 flex justify-center items-center">
-            <p className="text-[7px] text-white">2</p>
+          <Bell className="w-5 h-5" />
+          <span className="bg-red-500 w-3 h-3 rounded-full p-[6px] absolute -top-1 -left-0 flex justify-center items-center">
+            <p className="text-[9px] text-white">2</p>
           </span>
         </div>
 
         <img
           src={profileImg}
           alt="dashboard image"
-          className="w-7 h-7 rounded-full object-cover cursor-pointer border border-white"
+          className="w-10 h-10 rounded-full object-cover cursor-pointer border border-white"
         />
       </div>
     </div>

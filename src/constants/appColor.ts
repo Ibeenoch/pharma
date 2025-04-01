@@ -20,6 +20,8 @@ export const lightorangeBgColor = "bg-[#faddd6]"; //
 export const lightgreenBgColor = "bg-[#d6edd6]"; //
 export const lightyellowBgColor = "bg-[#fff7d5]"; //
 export const lightredBgColor = "bg-[#ffcfc8]"; //
+export const lightgrayBgColor = "bg-[#f9f9f9]"; //
+export const mediumgrayBgColor = "bg-[#eeeeee]"; //
 
 // export const adminDefaultBgColor = "#ffedc9";
 // export const oliveColorBg = "bg-[#687451]";

@@ -17,14 +17,14 @@ const ProductManagement = () => {
   };
 
   return (
-    <main className="mt-12">
+    <main className="mt-12 pb-3">
       <NavTab
         handleTabclicked={handleProductTabs}
         indexClicked={adminProducttabIndex}
         navLists={navLists}
       />
 
-      <section>
+      <section className="my-3">
         {adminProducttabIndex === 0 ? (
           <AllProduct />
         ) : adminProducttabIndex === 1 ? (

@@ -1,4 +1,4 @@
-export const navLists = ["All Product", "Add Product", "Category", "Brand"];
+export const navLists = ["All Product", "Add Product"];
 // subtitle: 'fast relieve for headache',
 export const allproductLists = [
   {

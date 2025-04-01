@@ -5,8 +5,8 @@ interface CustomSelectProps {
   countriesOptions?: {
     name: string;
     flag: string;
-}[]; // array of label and values
-  otherOptions? : string[];
+  }[]; // array of label and values
+  otherOptions?: string[];
   value: string;
   onChange: (value: string) => void;
   className?: string; // additional styles
@@ -15,6 +15,8 @@ interface CustomSelectProps {
   Id?: string;
   required?: boolean;
   showFullWidth?: boolean;
+  showborder?: boolean;
+  roundedBorder?: boolean;
   borderColor?: string;
   bgColor?: string;
   errorMessage?: string;
@@ -35,6 +37,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   required,
   validate,
   showFullWidth = false,
+  showborder = true,
+  roundedBorder = false,
   bgColor = "bg-white",
   borderColor = "border-gray-300",
   prefixIcon,
@@ -44,7 +48,6 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
 
   const isValid = validate ? validate(value) : true;
   const hasError = isTouch && !isValid;
-
 
   return (
     <div className="w-full">
@@ -56,21 +59,23 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           htmlFor={Id}
         >
           {label}{" "}
-          {required && <p className="text-xs text-red-500 font-bold">*</p>}
+          {required && <p className="text-xs text-amber-500 font-bold">*</p>}
         </label>
       )}
       <div className="flex items-center">
         <div
           className={`flex items-center ${
             showFullWidth ? "w-full" : "w-max"
-          } p-[9px]  border ${borderColor} ${bgColor} ${
+          } p-[9px] ${showborder ? "border" : ""} ${
+            roundedBorder ? "rounded-md" : ""
+          } ${borderColor} ${bgColor} ${
             hasError ? "border-red-500" : ""
           } ${className} `}
         >
           {prefixIcon && <span className="pr-2">{prefixIcon}</span>}
           <select
-         onBlur={() => setIsTouch(true)}
-         onFocus={() => setIsTouch(false)}
+            onBlur={() => setIsTouch(true)}
+            onFocus={() => setIsTouch(false)}
             value={value}
             name={value}
             id={value}
@@ -80,21 +85,24 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
             onChange={(e) => onChange(e.target.value)}
             aria-label={value}
           >
-            {options && options.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-            {countriesOptions && countriesOptions.map((option) => (
-              <option key={option.name} value={option.name}>
-                {option.name}
-              </option>
-            ))}
-            {otherOptions && otherOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
+            {options &&
+              options.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            {countriesOptions &&
+              countriesOptions.map((option) => (
+                <option key={option.name} value={option.name}>
+                  {option.name}
+                </option>
+              ))}
+            {otherOptions &&
+              otherOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
           </select>
         </div>
       </div>

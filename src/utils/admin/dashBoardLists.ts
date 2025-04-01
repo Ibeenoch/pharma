@@ -16,6 +16,57 @@ import {
   lightredBgColor,
   lightyellowBgColor,
 } from "../../constants/appColor";
+import DashBoard from "../../assets/icons/dashboard.svg?react";
+import User from "../../assets/icons/users-2-black.svg?react";
+import Product from "../../assets/icons/product-tag.svg?react";
+import Order from "../../assets/icons/order.svg?react";
+import Transaction from "../../assets/icons/transaction.svg?react";
+import Settings from "../../assets/icons/setting.svg?react";
+import Admin from "../../assets/icons/admin2.svg?react";
+import Pharmacist from "../../assets/icons/pharmacist.svg?react";
+import AddProduct from "../../assets/icons/addproduct.svg?react";
+import Customer from "../../assets/icons/user.svg?react";
+import OrderActive from "../../assets/icons/activeorder.svg?react";
+import OrderCancelled from "../../assets/icons/ordercancelled.svg?react";
+import OrderCompleted from "../../assets/icons/completeorder.svg?react";
+import OrderPending from "../../assets/icons/order.svg?react";
+
+export const navIcons = [
+  { icons: DashBoard, text: "Dashboard" },
+  { icons: User, text: "User" },
+  { icons: Product, text: "Product" },
+  { icons: Order, text: "Order" },
+  { icons: Transaction, text: "Transaction" },
+  { icons: Settings, text: "Settings" },
+];
+export const subNavIcons = [
+  {
+    name: "User",
+    children: [
+      { icons: User, text: "All" },
+      { icons: Admin, text: "Admin" },
+      { icons: Pharmacist, text: "Pharmacist" },
+      { icons: Customer, text: "Customer" },
+    ],
+  },
+  {
+    name: "Product",
+    children: [
+      { icons: Product, text: "All" },
+      { icons: AddProduct, text: "Add" },
+    ],
+  },
+  {
+    name: "Order",
+    children: [
+      { icons: Order, text: "All" },
+      { icons: OrderActive, text: "Active" },
+      { icons: OrderPending, text: "Pending" },
+      { icons: OrderCompleted, text: "Completed" },
+      { icons: OrderCancelled, text: "Cancelled" },
+    ],
+  },
+];
 
 export const cardLists = [
   {
@@ -179,13 +230,5 @@ export const paymentColumns = [
   {
     key: "status",
     label: "Status",
-    conditionalFormat: (value: string) =>
-      value === "Pending"
-        ? "text-yellow-500"
-        : value === "Failed"
-        ? "text-red-500"
-        : value === "Complete"
-        ? "text-green-500"
-        : "",
   },
 ];

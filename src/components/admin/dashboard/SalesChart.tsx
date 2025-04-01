@@ -60,7 +60,7 @@ const CustomLegend: React.FC = () => {
 
 const SalesChart: React.FC = () => {
   return (
-    <div className="p-4 shadow-lg rounded-lg bg-neutral-50">
+    <div className="p-4 shadow-lg my-3 rounded-lg bg-neutral-50">
       <CustomText
         text="Sales Performance"
         textType="medium"

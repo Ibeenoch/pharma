@@ -19,6 +19,8 @@ import ContactPage from "./pages/ContactPage";
 import DashBoardPage from "./pages/admin/DashBoardPage";
 import UsersPage from "./pages/admin/UsersPage";
 import ProductPage from "./pages/admin/ProductPage";
+import OrderPage from "./pages/admin/OrderPage";
+import TransactionPage from "./pages/admin/TransactionPage";
 const Home = lazy(() => import("./pages/Home"));
 
 const router = createBrowserRouter([
@@ -101,6 +103,14 @@ const router = createBrowserRouter([
   {
     path: "/admin/product",
     element: <ProductPage />,
+  },
+  {
+    path: "/admin/order",
+    element: <OrderPage />,
+  },
+  {
+    path: "/admin/transaction",
+    element: <TransactionPage />,
   },
 ]);
 

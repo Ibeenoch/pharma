@@ -50,7 +50,7 @@ const BodyCard: React.FC<BodyCardProps> = ({
         </div>
 
         <div className="p-2 bg-white rounded-full">
-          <Icon className="w-7 h-7" />
+          <Icon className={`w-7 h-7 ${textcolor}`} />
         </div>
       </div>
       <div>

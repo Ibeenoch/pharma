@@ -1,12 +1,15 @@
 import React from "react";
-import View from "../../assets/icons/eye-show.svg?react";
+// import View from "../../assets/icons/eye-show.svg?react";
 import Trash from "../../assets/icons/trash-bin.svg?react";
-import Pen from "../../assets/icons/pen.svg?react";
+import Pen from "../../assets/icons/edit-clipboard.svg?react";
 import {
   lightgreenBgColor,
   lightredBgColor,
   lightyellowBgColor,
   adminDefaultBgColor,
+  darkredText,
+  darkyellowText,
+  darkGreenText,
 } from "../../constants/appColor";
 
 interface Columns {
@@ -45,7 +48,7 @@ const Table: React.FC<TableProps> = ({
             {columns.map((col) => (
               <th
                 key={col.key}
-                className={`text-[10px] sm:text-[14px] first:rounded-tl-xl last:rounded-tr-xl first:rounded-bl-xl last:rounded-br-xl font-normal p-3 border-0`}
+                className={`text-[10px] sm:text-[12px] first:rounded-tl-xl last:rounded-tr-xl first:rounded-bl-xl last:rounded-br-xl font-normal py-3 border-0`}
               >
                 {col.label}
               </th>
@@ -64,7 +67,7 @@ const Table: React.FC<TableProps> = ({
               {columns.map((col) => (
                 <td
                   key={col.key}
-                  className={`text-[10px] sm:text-[13px] text-black px-2 py-3 text-center border border-0 ${
+                  className={`text-[10px] sm:text-[12px] text-black px-2 py-2 text-center border border-0 ${
                     col.className || ""
                   } ${
                     col.conditionalFormat
@@ -74,33 +77,35 @@ const Table: React.FC<TableProps> = ({
                 >
                   {row[col.key] === "Actions" ? (
                     <div className="flex gap-2 items-center justify-center">
-                      <div className="cursor-pointer">
+                      {/* <div className="cursor-pointer">
                         <View className="w-4 h-4 text-green-500" />
+                      </div> */}
+                      <div className="cursor-pointer">
+                        <Pen className="w-5 h-5 text-blue-600" />
                       </div>
                       <div className="cursor-pointer">
-                        <Pen className="w-4 h-4 text-blue-600" />
-                      </div>
-                      <div className="cursor-pointer">
-                        <Trash className="w-4 h-4 stroke-red-600" />
+                        <Trash className="w-5 h-5 stroke-red-600" />
                       </div>
                     </div>
                   ) : row[col.key] === "Complete" ||
                     row[col.key] === "Delivered" ? (
                     <div
-                      className={`flex justify-center items-center p-1 rounded-md ${lightgreenBgColor}`}
+                      className={`flex justify-center items-center p-1 rounded-md ${darkGreenText} ${lightgreenBgColor}`}
                     >
                       <p>{row[col.key]}</p>
                     </div>
-                  ) : row[col.key] === "Pending" ? (
+                  ) : row[col.key] === "Pending" ||
+                    row[col.key] === "Processing" ||
+                    row[col.key] === "Shipped" ? (
                     <div
-                      className={`flex justify-center items-center p-1 rounded-md ${lightyellowBgColor}`}
+                      className={`flex justify-center items-center p-1 rounded-md ${darkyellowText} ${lightyellowBgColor}`}
                     >
                       <p>{row[col.key]}</p>
                     </div>
                   ) : row[col.key] === "Failed" ||
                     row[col.key] === "Cancelled" ? (
                     <div
-                      className={`flex justify-center items-center p-1 rounded-md ${lightredBgColor}`}
+                      className={`flex justify-center items-center p-1 rounded-md ${darkredText} ${lightredBgColor}`}
                     >
                       <p>{row[col.key]}</p>
                     </div>

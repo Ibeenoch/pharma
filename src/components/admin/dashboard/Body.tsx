@@ -7,9 +7,9 @@ import SalesChart from "./SalesChart";
 
 const Body = () => {
   return (
-    <main className={`w-full p-6 md:p-0 ${adminDefaultBgColor}`}>
+    <main className={`w-full p-4 md:p-0 ${adminDefaultBgColor}`}>
       {/* bg-[#329DFF] blue  bg-[#1EBFC4] cyan bg-[#FDD603] YELLOW bg-[#ed686c] red*/}
-      <div className="flex flex-col md:flex-row items-center gap-2 px-3 pt-7 mt-10 overflow-x-auto">
+      <div className="flex flex-col md:flex-row items-center gap-4 md:gap-2 px-3 pt-7 mt-10 overflow-x-auto">
         {cardLists.map((item, index) => (
           <BodyCard
             Icon={item.Icon}

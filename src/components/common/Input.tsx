@@ -21,6 +21,7 @@ interface CustomInputProps {
   bgColor?: string;
   textColor?: string;
   borderColor?: string;
+  showborder?: boolean;
   Id?: string;
   isPassword?: boolean;
 }
@@ -44,6 +45,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   bgColor = "bg-white",
   textColor = "text-gray-900",
   borderColor = "border-gray-300",
+  showborder = true,
   Id,
   isPassword = false,
 }) => {
@@ -66,16 +68,16 @@ const CustomInput: React.FC<CustomInputProps> = ({
           htmlFor={Id}
         >
           {label}{" "}
-          {required && <p className="text-xs text-red-500 font-bold">*</p>}
+          {required && <p className="text-xs text-amber-500 font-bold">*</p>}
         </label>
       )}
       <div className="flex items-center">
         <div
           className={`flex items-center ${
             showFullWidth ? "w-full" : "w-max"
-          } p-[9px] ${
-            roundedBorder ? "rounded-md" : ""
-          } border ${borderColor} ${bgColor} ${
+          } p-[9px] ${roundedBorder ? "rounded-md" : ""} ${
+            showborder ? "border" : "border-none"
+          } ${borderColor} ${bgColor} ${
             hasError ? "border-red-500" : ""
           } ${className} `}
         >
