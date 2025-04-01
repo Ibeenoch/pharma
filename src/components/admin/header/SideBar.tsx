@@ -3,11 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
   selectAdmin,
-  setShouldShowSubTitle,
   setSideBarIndex,
 } from "../../../features/admin/adminSlice";
 import CompanyLogo from "../../common/CompanyLogo";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { animateTransition } from "../../../constants/appText";
 
 interface SideBarProps {
@@ -15,18 +14,11 @@ interface SideBarProps {
 }
 
 const SideBar: React.FC<SideBarProps> = ({ shouldMinimize }) => {
-  const [toggleSideBar, settoggleSideBar] = useState<boolean>(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { sideBarIndex, shouldShowSubTitle } = useAppSelector(selectAdmin);
-
-  useEffect(() => {
-    dispatch(setShouldShowSubTitle(!shouldShowSubTitle));
-    console.log("toggleSideBar ", toggleSideBar, sideBarIndex);
-  }, [toggleSideBar]);
+  const { sideBarIndex } = useAppSelector(selectAdmin);
 
   const handleIndexClicked = (index: number) => {
-    settoggleSideBar(!toggleSideBar);
     dispatch(setSideBarIndex(index));
 
     switch (index) {

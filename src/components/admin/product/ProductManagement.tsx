@@ -17,7 +17,7 @@ const ProductManagement = () => {
   };
 
   return (
-    <main className="mt-12 pb-3">
+    <main className="mt-16 pb-3">
       <NavTab
         handleTabclicked={handleProductTabs}
         indexClicked={adminProducttabIndex}

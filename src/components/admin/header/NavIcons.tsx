@@ -2,11 +2,14 @@ import ArrowUp from "../../../assets/icons/arrow-upicon.svg?react";
 import ArrowDown from "../../../assets/icons/arrow-down.svg?react";
 import Logout from "../../../assets/icons/logout.svg?react";
 import CustomText from "../../common/Text";
-import { useEffect, useState } from "react";
 import { navIcons, subNavIcons } from "../../../utils/admin/dashBoardLists";
 import SubTitle from "./SubTitle";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
-import { selectAdmin } from "../../../features/admin/adminSlice";
+import {
+  selectAdmin,
+  setShouldShowSubTitle,
+  setTitleIndex,
+} from "../../../features/admin/adminSlice";
 
 interface NavIconsProps {
   indexClicked: number;
@@ -19,13 +22,22 @@ const NavIcons: React.FC<NavIconsProps> = ({
   handleIndexClicked,
   shouldMinimize = false,
 }) => {
-  const { shouldShowSubTitle } = useAppSelector(selectAdmin);
+  const { shouldShowSubTitle, titleIndex } = useAppSelector(selectAdmin);
+  const dispatch = useAppDispatch();
 
+  const toggleSideBar = (index: number) => {
+    dispatch(setTitleIndex(index));
+
+    dispatch(
+      setShouldShowSubTitle(titleIndex === index ? !shouldShowSubTitle : true)
+    );
+  };
   return (
     <div className={`flex flex-col `}>
       {navIcons.map((Item, index) => (
         <div onClick={() => handleIndexClicked(index)} className={``}>
           <div
+            onClick={() => toggleSideBar(index)}
             className={`flex items-center justify-between ${
               index === indexClicked ? "border-l-3 border-amber-500" : ""
             }`}
@@ -54,7 +66,7 @@ const NavIcons: React.FC<NavIconsProps> = ({
               )}
             </div>
 
-            {!shouldMinimize && (
+            {!shouldMinimize && index !== 0 && (
               <div className="pr-4">
                 {shouldShowSubTitle && indexClicked === index ? (
                   <ArrowUp
@@ -73,13 +85,19 @@ const NavIcons: React.FC<NavIconsProps> = ({
             )}
           </div>
 
-          {indexClicked === index && shouldShowSubTitle && (
+          {!shouldMinimize && indexClicked === index && shouldShowSubTitle && (
             <>
               {subNavIcons.map((subItem) => (
                 <>
                   {subItem.name === Item.text &&
                     subItem.children.map((sub, i) => (
-                      <SubTitle key={i} Icons={sub.icons} text={sub.text} />
+                      <SubTitle
+                        typeIndex={index}
+                        key={i}
+                        index={i}
+                        Icons={sub.icons}
+                        text={sub.text}
+                      />
                     ))}
                 </>
               ))}
@@ -90,12 +108,14 @@ const NavIcons: React.FC<NavIconsProps> = ({
 
       <div className="group flex items-center gap-1 absolute bottom-5 left-8 cursor-pointer">
         <Logout className={`w-5 h-5 text-white group-hover:text-amber-500`} />
-        <CustomText
-          text="Log out"
-          textType="normal"
-          weightType="medium"
-          color={` text-white group-hover:text-amber-500`}
-        />
+        {!shouldMinimize && (
+          <CustomText
+            text="Log out"
+            textType="normal"
+            weightType="medium"
+            color={` text-white group-hover:text-amber-500`}
+          />
+        )}
       </div>
     </div>
   );

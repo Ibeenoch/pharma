@@ -62,8 +62,8 @@ export const subNavIcons = [
       { icons: Order, text: "All" },
       { icons: OrderActive, text: "Active" },
       { icons: OrderPending, text: "Pending" },
-      { icons: OrderCompleted, text: "Completed" },
       { icons: OrderCancelled, text: "Cancelled" },
+      { icons: OrderCompleted, text: "Completed" },
     ],
   },
 ];
