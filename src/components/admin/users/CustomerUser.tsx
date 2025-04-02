@@ -1,17 +1,23 @@
 import { adminDefaultBgColor } from "../../../constants/appColor";
-import { userLists, userStatitics } from "../../../utils/admin/users";
+import {
+  allUsersColumn,
+  allUsersData,
+  userLists,
+  userStatitics,
+} from "../../../utils/admin/users";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
   selectAdmin,
   setAdminUserTabIndex,
 } from "../../../features/admin/adminSlice";
-import AllUsers from "./AllUsers";
 import CustomText from "../../common/Text";
 import { useState } from "react";
+
 import NavTab from "../NavTab";
 import DateFilter from "../DateFilter";
+import Table from "../../common/Table";
 
-const AdminUsers = () => {
+const CustomerUser = () => {
   const [started, setStarted] = useState<string>("");
   const [ended, setEnded] = useState<string>("");
   const dispatch = useAppDispatch();
@@ -19,6 +25,8 @@ const AdminUsers = () => {
   const handleUserTabs = (index: number) => {
     dispatch(setAdminUserTabIndex(index));
   };
+  const filteredData = allUsersData.filter((t) => t.role === "Customer");
+
   return (
     <main className={`md:mt-12 mt-20 p-4 ${adminDefaultBgColor}`}>
       <section className="lg:flex items-center gap-3 mx-3">
@@ -60,21 +68,16 @@ const AdminUsers = () => {
       </div>
 
       <section>
-        <AllUsers />
-        {/* {adminUsertabIndex === 0 ? (
-          <AllUsers />
-        ) : adminUsertabIndex === 1 ? (
-          <UserAdmin />
-        ) : adminUsertabIndex === 2 ? (
-          <UserPharma />
-        ) : adminUsertabIndex === 3 ? (
-          <UserCustomer />
-        ) : (
-          <div className="flex justify-center items-center">No User Found</div>
-        )} */}
+        <div className="p-4 my-3 bg-white rounded-xl">
+          <Table
+            columns={allUsersColumn}
+            data={filteredData}
+            tableHeaderTxtColor="text-black"
+          />
+        </div>
       </section>
     </main>
   );
 };
 
-export default AdminUsers;
+export default CustomerUser;

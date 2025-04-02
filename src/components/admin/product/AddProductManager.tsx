@@ -5,9 +5,9 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { navLists } from "../../../utils/admin/product/productList";
 import NavTab from "../NavTab";
-import AllProduct from "./AllProduct";
+import AddProduct from "./AddProduct";
 
-const ProductManagement = () => {
+const AddProductManager = () => {
   const dispatch = useAppDispatch();
   const { adminProducttabIndex } = useAppSelector(selectAdmin);
 
@@ -24,7 +24,7 @@ const ProductManagement = () => {
       />
 
       <section className="my-3">
-        <AllProduct />
+        <AddProduct />
         {/* {adminProducttabIndex === 0 ? (
           <AllProduct />
         ) : adminProducttabIndex === 1 ? (
@@ -41,4 +41,4 @@ const ProductManagement = () => {
   );
 };
 
-export default ProductManagement;
+export default AddProductManager;

@@ -9,13 +9,11 @@ import CompanyLogo from "../../common/CompanyLogo";
 import React from "react";
 import { animateTransition } from "../../../constants/appText";
 
-
 interface SideBarProps {
   shouldMinimize: boolean;
 }
 
 const SideBar: React.FC<SideBarProps> = ({ shouldMinimize }) => {
-
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { sideBarIndex } = useAppSelector(selectAdmin);
@@ -23,23 +21,23 @@ const SideBar: React.FC<SideBarProps> = ({ shouldMinimize }) => {
   const handleIndexClicked = (index: number) => {
     dispatch(setSideBarIndex(index));
 
-    switch (index) {
-      case 0:
-        navigate("/admin/dashboard");
-        break;
-      case 1:
-        navigate("/admin/users");
-        break;
-      case 2:
-        navigate("/admin/product");
-        break;
-      case 3:
-        navigate("/admin/order");
-        break;
-      default:
-        navigate("/admin/dashboard");
-        break;
-    }
+    // switch (index) {
+    //   case 0:
+    //     navigate("/admin/dashboard");
+    //     break;
+    //   case 1:
+    //     navigate("/admin/users");
+    //     break;
+    //   case 2:
+    //     navigate("/admin/product");
+    //     break;
+    //   case 3:
+    //     navigate("/admin/order");
+    //     break;
+    //   default:
+    //     navigate("/admin/dashboard");
+    //     break;
+    // }
   };
   return (
     <aside
@@ -64,7 +62,6 @@ const SideBar: React.FC<SideBarProps> = ({ shouldMinimize }) => {
           shouldMinimize={shouldMinimize}
         />
       </div>
-     
     </aside>
   );
 };

@@ -43,27 +43,35 @@ export const subNavIcons = [
   {
     name: "User",
     children: [
-      { icons: User, text: "All" },
-      { icons: Admin, text: "Admin" },
-      { icons: Pharmacist, text: "Pharmacist" },
-      { icons: Customer, text: "Customer" },
+      { icons: User, text: "All", route: "/admin/users/all" },
+      { icons: Admin, text: "Admin", route: "/admin/users/admin" },
+      { icons: Pharmacist, text: "Pharmacist", route: "/admin/users/pharmacy" }, // customer
+      { icons: Customer, text: "Customer", route: "/admin/users/customer" },
     ],
   },
   {
     name: "Product",
     children: [
-      { icons: Product, text: "All" },
-      { icons: AddProduct, text: "Add" },
+      { icons: Product, text: "All", route: "/admin/product/all" },
+      { icons: AddProduct, text: "Add", route: "/admin/product/add" },
     ],
   },
   {
     name: "Order",
     children: [
-      { icons: Order, text: "All" },
-      { icons: OrderActive, text: "Active" },
-      { icons: OrderPending, text: "Pending" },
-      { icons: OrderCancelled, text: "Cancelled" },
-      { icons: OrderCompleted, text: "Completed" },
+      { icons: Order, text: "All", route: "/admin/order/all" },
+      { icons: OrderActive, text: "Active", route: "/admin/order/active" },
+      { icons: OrderPending, text: "Pending", route: "/admin/order/pending" },
+      {
+        icons: OrderCancelled,
+        text: "Cancelled",
+        route: "/admin/order/cancelled",
+      },
+      {
+        icons: OrderCompleted,
+        text: "Completed",
+        route: "/admin/order/completed",
+      },
     ],
   },
 ];

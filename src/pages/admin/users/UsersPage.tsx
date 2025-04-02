@@ -1,5 +1,5 @@
 import React from "react";
-import Users from "../../features/admin/user/Users";
+import Users from "../../../features/admin/user/Users";
 
 const UsersPage = React.memo(() => {
   return <Users />;

@@ -5,7 +5,6 @@ import {
   selectAdmin,
   setAdminUserTabIndex,
 } from "../../../features/admin/adminSlice";
-import AllUsers from "./AllUsers";
 import CustomText from "../../common/Text";
 import { useState } from "react";
 import UserAdmin from "./UserAdmin";
@@ -24,21 +23,28 @@ const AdminUsers = () => {
   };
   return (
     <main className={`md:mt-12 mt-20 p-4 ${adminDefaultBgColor}`}>
-    <section className="lg:flex items-center gap-3 mx-3">
-      {
-        userStatitics.map((user) => (
+      <section className="lg:flex items-center gap-3 mx-3">
+        {userStatitics.map((user) => (
           <div className="rounded-xl bg-gradient-to-r from-amber-600 to-amber-300 p-4 w-1/2 h-[150px] my-2 flex justify-between gap-2 items-center">
             <div className="p-2 bg-white rounded-md flex items-center justify-center">
               <user.Icon className="w-8 h-8 text-amber-500" />
-              </div>
-              <div>
-                <CustomText text={user.text} textType="normal" weightType="normal" color="text-white"/>
-                <CustomText text={String(user.qty)} textType="large" weightType="normal" />
-              </div>
+            </div>
+            <div>
+              <CustomText
+                text={user.text}
+                textType="normal"
+                weightType="normal"
+                color="text-white"
+              />
+              <CustomText
+                text={String(user.qty)}
+                textType="large"
+                weightType="normal"
+              />
+            </div>
           </div>
-        ))
-      }
-    </section>
+        ))}
+      </section>
       <div className="flex flex-col md:flex-row  items-center justify-between">
         <NavTab
           handleTabclicked={handleUserTabs}
@@ -56,7 +62,8 @@ const AdminUsers = () => {
       </div>
 
       <section>
-        {adminUsertabIndex === 0 ? (
+        <UserAdmin />
+        {/* {adminUsertabIndex === 0 ? (
           <AllUsers />
         ) : adminUsertabIndex === 1 ? (
           <UserAdmin />
@@ -66,7 +73,7 @@ const AdminUsers = () => {
           <UserCustomer />
         ) : (
           <div className="flex justify-center items-center">No User Found</div>
-        )}
+        )} */}
       </section>
     </main>
   );

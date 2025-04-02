@@ -1,14 +1,8 @@
 import React from "react";
 import CustomText from "../../common/Text";
 import ArrowRight from "../../../assets/icons/arrow-right2.svg?react";
-import { useAppDispatch } from "../../../hooks/reduxHooks";
-import {
-  setAdminOrderTabIndex,
-  setAdminProductTabIndex,
-  setAdminTransactionTabIndex,
-  setAdminUserTabIndex,
-} from "../../../features/admin/adminSlice";
 import { animateTransition } from "../../../constants/appText";
+import { useNavigate } from "react-router-dom";
 
 interface SubTitleProps {
   Icons: React.FunctionComponent<
@@ -21,35 +15,35 @@ interface SubTitleProps {
   >;
   text: string;
   index: number;
+  route: string;
   typeIndex: number; // identify the title clicked through num e.g 0 for dashboard, 1 for user etc
 }
 const SubTitle: React.FC<SubTitleProps> = ({
   Icons,
   text,
-  index,
-  typeIndex,
+
+  route,
 }) => {
-  const dispatch = useAppDispatch();
-  const handleUserTabs = (type: number, index: number) => {
-    type === 1
-      ? dispatch(setAdminUserTabIndex(index))
-      : type === 2
-      ? dispatch(setAdminProductTabIndex(index))
-      : type === 3
-      ? dispatch(setAdminOrderTabIndex(index))
-      : type === 4
-      ? dispatch(setAdminTransactionTabIndex(index))
-      : "";
+  const navigate = useNavigate();
+
+  const handleUserTabs = (url: string) => {
+    navigate(`${url}`);
   };
   return (
     <div
-      onClick={() => handleUserTabs(typeIndex, index)}
+      onClick={() => handleUserTabs(route)}
       className={`group pl-10 flex justify-between items-center cursor-pointer ${animateTransition}`}
     >
       <div className="flex">
         <div className="h-6 w-3 border-l-2 border-b-2 border-gray-800 rounded-bl-lg"></div>
         <div className="flex items-center gap-1 pt-3 pl-2">
-          <Icons className={`w-4 h-4 lg:w-4 lg:h-4 ${text === 'Pharmacist' || text === 'Customer' ? 'fill-white group-hover:fill-amber-500' : ''} text-white group-hover:text-amber-500`} />
+          <Icons
+            className={`w-4 h-4 lg:w-4 lg:h-4 ${
+              text === "Pharmacist" || text === "Customer"
+                ? "fill-white group-hover:fill-amber-500"
+                : ""
+            } text-white group-hover:text-amber-500`}
+          />
           <CustomText
             text={text}
             textType="small"

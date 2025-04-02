@@ -98,6 +98,7 @@ const NavIcons: React.FC<NavIconsProps> = ({
                         index={i}
                         Icons={sub.icons}
                         text={sub.text}
+                        route={sub.route}
                       />
                     ))}
                 </>

@@ -17,10 +17,18 @@ import AccountCreatedPage from "./pages/AccountCreatedPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import DashBoardPage from "./pages/admin/DashBoardPage";
-import UsersPage from "./pages/admin/UsersPage";
-import ProductPage from "./pages/admin/ProductPage";
-import OrderPage from "./pages/admin/OrderPage";
 import TransactionPage from "./pages/admin/TransactionPage";
+import ALlUsersPage from "./pages/admin/users/AllUsersPage";
+import UsersAdminPage from "./pages/admin/users/UsersAdminPage";
+import PharmacyPage from "./pages/admin/users/PharmacyPage";
+import CustomerPage from "./pages/admin/users/CustomerPage";
+import ProductPage from "./pages/admin/products/ProductPage";
+import AddProductPage from "./pages/admin/products/AddProductPage";
+import OrderPage from "./pages/admin/orders/OrderPage";
+import ActiveOrderPage from "./pages/admin/orders/ActiveOrderPage";
+import CancelledOrderPage from "./pages/admin/orders/CancelledOrderPage";
+import PendingOrderPage from "./pages/admin/orders/PendingOrderPage";
+import CompletedOrderPage from "./pages/admin/orders/CompletedOrderPage";
 const Home = lazy(() => import("./pages/Home"));
 
 const router = createBrowserRouter([
@@ -96,17 +104,50 @@ const router = createBrowserRouter([
     path: "/admin/dashboard",
     element: <DashBoardPage />,
   },
+
   {
-    path: "/admin/users",
-    element: <UsersPage />,
+    path: "/admin/users/all",
+    element: <ALlUsersPage />,
   },
   {
-    path: "/admin/product",
+    path: "/admin/users/admin",
+    element: <UsersAdminPage />,
+  },
+  {
+    path: "/admin/users/pharmacy",
+    element: <PharmacyPage />,
+  },
+  {
+    path: "/admin/users/customer",
+    element: <CustomerPage />,
+  },
+  {
+    path: "/admin/product/all",
     element: <ProductPage />,
   },
   {
-    path: "/admin/order",
+    path: "/admin/product/add",
+    element: <AddProductPage />,
+  },
+  {
+    path: "/admin/order/all",
     element: <OrderPage />,
+  },
+  {
+    path: "/admin/order/active",
+    element: <ActiveOrderPage />,
+  },
+  {
+    path: "/admin/order/cancelled",
+    element: <CancelledOrderPage />,
+  },
+  {
+    path: "/admin/order/pending",
+    element: <PendingOrderPage />,
+  },
+  {
+    path: "/admin/order/completed",
+    element: <CompletedOrderPage />,
   },
   {
     path: "/admin/transaction",
