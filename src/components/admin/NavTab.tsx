@@ -17,7 +17,7 @@ const NavTab: React.FC<NavTabProps> = ({
         <li
           onClick={() => handleTabclicked(index)}
           className={`text-[13px] font-semibold ${
-            indexClicked === index ? `${defaultTextColor}` : ""
+            indexClicked === index ? `${defaultTextColor} border-b-2 border-amber-300` : ""
           }  p-1 cursor-pointer`}
         >
           {item}

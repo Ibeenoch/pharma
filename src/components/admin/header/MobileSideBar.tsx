@@ -5,17 +5,22 @@ import {
   selectAdmin,
   setSideBarIndex,
 } from "../../../features/admin/adminSlice";
-import MobileNavIcons from "./MobileNavIcons";
 import CompanyLogo from "../../common/CompanyLogo";
+import { animateTransition } from "../../../constants/appText";
+import MobileNavIcons from "./MobileNavIcons1";
+import CustomText from "../../common/Text";
 
 interface MobileSideBarProps {
   showSideBar: boolean;
   closeFunc: () => void;
+  shouldMinimize?: boolean;
+
 }
 
 const MobileSideBar: React.FC<MobileSideBarProps> = ({
   showSideBar,
   closeFunc,
+  shouldMinimize = true
 }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -44,27 +49,41 @@ const MobileSideBar: React.FC<MobileSideBarProps> = ({
   };
   return (
     <aside
-      className={`fixed left-0 ${
-        showSideBar ? "block" : "hidden"
-      } w-full top-0 h-full bg-white z-50`}
-    >
-      <div className={`mx-auto flex  px-8 pt-4 items-center justify-between`}>
-        <CompanyLogo />
+    className={`fixed left-0 ${animateTransition} ${
+      showSideBar ? "block" : "hidden"
+    } w-full top-0 h-full bg-black z-50`}
+  >
+    <div className={`mx-auto flex flex-col pb-5 justify-around items-center  pt-7 `}>
+     <div className="absolute top-7 left-7">
+
+      <CompanyLogo
+        fontWeight="normal"
+        textSize="medium"
+        textColor="text-white"
+        iconSize="w-7 h-7 text-amber-500"
+        showText={!shouldMinimize}
+      />
+     </div>
 
         <div
           onClick={closeFunc}
-          className="w-10 h-10 p-2 bg-gray-400 rounded-full absolute top-8 right-8 flex justify-center items-center"
+          className="w-10 h-10 p-3 bg-amber-500/50 rounded-full absolute top-7 right-7 flex justify-center items-center"
         >
-          <Cancel className="w-26 h-26 stroke-white" />
+          <Cancel className="w-20 h-20 text-white stroke-white" />
         </div>
-      </div>
-      <div className={`pl-[10%] h-full pt-12 pb-24`}>
-        <MobileNavIcons
-          indexClicked={sideBarIndex}
-          handleIndexClicked={handleIndexClicked}
-        />
-      </div>
-    </aside>
+    </div>
+
+    <div className={`h-full pt-15 pb-24`}>
+      <MobileNavIcons
+        indexClicked={sideBarIndex}
+        handleIndexClicked={handleIndexClicked}
+        shouldMinimize={shouldMinimize}
+      />
+    </div>
+   
+  </aside>
+
+ 
   );
 };
 

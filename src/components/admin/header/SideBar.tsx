@@ -9,11 +9,13 @@ import CompanyLogo from "../../common/CompanyLogo";
 import React from "react";
 import { animateTransition } from "../../../constants/appText";
 
+
 interface SideBarProps {
   shouldMinimize: boolean;
 }
 
 const SideBar: React.FC<SideBarProps> = ({ shouldMinimize }) => {
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { sideBarIndex } = useAppSelector(selectAdmin);
@@ -41,8 +43,8 @@ const SideBar: React.FC<SideBarProps> = ({ shouldMinimize }) => {
   };
   return (
     <aside
-      className={`fixed left-0 hidden md:block ${animateTransition} ${
-        shouldMinimize ? "md:w-[5%]" : "md:w-[15%]"
+      className={`fixed left-0 hidden lg:block ${animateTransition} ${
+        shouldMinimize ? "lg:w-[5%]" : "lg:w-[15%]"
       } top-0 h-full bg-black  z-50`}
     >
       <div className={`mx-auto flex flex-col pb-5 items-center  pt-7 `}>
@@ -62,6 +64,7 @@ const SideBar: React.FC<SideBarProps> = ({ shouldMinimize }) => {
           shouldMinimize={shouldMinimize}
         />
       </div>
+     
     </aside>
   );
 };

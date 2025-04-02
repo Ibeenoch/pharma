@@ -8,6 +8,7 @@ import {
   setAdminTransactionTabIndex,
   setAdminUserTabIndex,
 } from "../../../features/admin/adminSlice";
+import { animateTransition } from "../../../constants/appText";
 
 interface SubTitleProps {
   Icons: React.FunctionComponent<
@@ -43,12 +44,12 @@ const SubTitle: React.FC<SubTitleProps> = ({
   return (
     <div
       onClick={() => handleUserTabs(typeIndex, index)}
-      className="group pl-10 flex justify-between items-center cursor-pointer"
+      className={`group pl-10 flex justify-between items-center cursor-pointer ${animateTransition}`}
     >
       <div className="flex">
         <div className="h-6 w-3 border-l-2 border-b-2 border-gray-800 rounded-bl-lg"></div>
         <div className="flex items-center gap-1 pt-3 pl-2">
-          <Icons className="w-4 h-5 text-white group-hover:text-amber-500" />
+          <Icons className={`w-4 h-4 lg:w-4 lg:h-4 ${text === 'Pharmacist' || text === 'Customer' ? 'fill-white group-hover:fill-amber-500' : ''} text-white group-hover:text-amber-500`} />
           <CustomText
             text={text}
             textType="small"
@@ -57,8 +58,8 @@ const SubTitle: React.FC<SubTitleProps> = ({
           />
         </div>
       </div>
-      <div className="pr-4 pt-3 pl-1">
-        <ArrowRight className="w-4 h-5 text-white group-hover:text-amber-500" />
+      <div className="pr-4 pt-3 pl-1 cursor-pointer">
+        <ArrowRight className="w-5 h-5 text-white group-hover:text-amber-500" />
       </div>
     </div>
   );

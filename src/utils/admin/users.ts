@@ -1,9 +1,10 @@
+import Users from '../../assets/icons/users-2-black.svg?react'
+
 export const userLists = [
   "All Users",
   "Admins",
   "Pharmacists",
   "Customers",
-  "Banned Users",
 ];
 
 export const allUsersData = [
@@ -107,3 +108,21 @@ export const allUsersColumn = [
   { key: "role", label: "Role" },
   { key: "actions", label: "Actions" },
 ];
+
+export const userStatitics = [
+{
+  text: 'Total Users',
+  Icon: Users,
+  qty: 579,
+},
+{
+  text: 'New Users',
+  Icon: Users,
+  qty: 6,
+},
+{
+  text: 'Active Users',
+  Icon: Users,
+  qty: 88,
+},
+]
