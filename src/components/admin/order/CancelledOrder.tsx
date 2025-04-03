@@ -11,7 +11,8 @@ const CancelledOrder = () => {
   );
   return filteredOrder.length > 0 ? (
     <section>
-      <div className="p-4 my-3 bg-white rounded-xl">
+      <div className="p-4 my-3 bg-white 
+      rounded-xl">
         <Table
           columns={orderListsColumn}
           data={filteredOrder}

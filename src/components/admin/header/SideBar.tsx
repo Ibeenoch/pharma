@@ -21,23 +21,12 @@ const SideBar: React.FC<SideBarProps> = ({ shouldMinimize }) => {
   const handleIndexClicked = (index: number) => {
     dispatch(setSideBarIndex(index));
 
-    // switch (index) {
-    //   case 0:
-    //     navigate("/admin/dashboard");
-    //     break;
-    //   case 1:
-    //     navigate("/admin/users");
-    //     break;
-    //   case 2:
-    //     navigate("/admin/product");
-    //     break;
-    //   case 3:
-    //     navigate("/admin/order");
-    //     break;
-    //   default:
-    //     navigate("/admin/dashboard");
-    //     break;
-    // }
+    switch (index) {
+      case 0:
+        navigate("/admin/dashboard");
+        break;
+    
+    }
   };
   return (
     <aside

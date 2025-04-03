@@ -30,6 +30,11 @@ import OrderActive from "../../assets/icons/activeorder.svg?react";
 import OrderCancelled from "../../assets/icons/ordercancelled.svg?react";
 import OrderCompleted from "../../assets/icons/completeorder.svg?react";
 import OrderPending from "../../assets/icons/order.svg?react";
+import SuccessTran from '../../assets/icons/status-success.svg?react';
+import FailedTran from '../../assets/icons/failed-transaction.svg?react'
+import Pending from '../../assets/icons/system-pending.svg?react'
+import PendingTran from '../../assets/icons/contract-pending.svg?react'
+import AllTran from '../../assets/icons/allpayment.svg?react'
 
 export const navIcons = [
   { icons: DashBoard, text: "Dashboard" },
@@ -71,6 +76,23 @@ export const subNavIcons = [
         icons: OrderCompleted,
         text: "Completed",
         route: "/admin/order/completed",
+      },
+    ],
+  },
+  {
+    name: "Transaction",
+    children: [
+      { icons: AllTran, text: "All", route: "/admin/transaction/all" },
+      { icons: PendingTran, text: "Pending", route: "/admin/transaction/pending" },
+      {
+        icons: FailedTran,
+        text: "Cancelled",
+        route: "/admin/transaction/cancelled",
+      },
+      {
+        icons: SuccessTran,
+        text: "Completed",
+        route: "/admin/transaction/completed",
       },
     ],
   },

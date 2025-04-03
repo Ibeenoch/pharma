@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import NavTab from "../NavTab";
 import { adminDefaultBgColor } from "../../../constants/appColor";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
@@ -9,7 +9,11 @@ import {
 import DateFilter from "../DateFilter";
 import { transactionNavData } from "../../../utils/transactions/transactionsList";
 
-const TransactionManagement = () => {
+interface TransactionLayoutProps {
+  child: React.ReactNode;
+}
+
+const TransactionLayout: React.FC<TransactionLayoutProps> = ({ child }) => {
   const [started, setStarted] = useState<string>("");
   const [ended, setEnded] = useState<string>("");
   const dispatch = useAppDispatch();
@@ -36,22 +40,10 @@ const TransactionManagement = () => {
       </div>
 
       <section className="my-3">
-        {adminTransactiontabIndex === 0 ? (
-          <></>
-        ) : adminTransactiontabIndex === 1 ? (
-          <></>
-        ) : adminTransactiontabIndex === 2 ? (
-          <></>
-        ) : adminTransactiontabIndex === 3 ? (
-          <></>
-        ) : (
-          <div className="flex justify-center items-center">
-            No Record Found
-          </div>
-        )}
+        {child}
       </section>
     </main>
   );
 };
 
-export default TransactionManagement;
+export default TransactionLayout;

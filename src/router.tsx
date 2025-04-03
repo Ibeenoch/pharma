@@ -17,7 +17,7 @@ import AccountCreatedPage from "./pages/AccountCreatedPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import DashBoardPage from "./pages/admin/DashBoardPage";
-import TransactionPage from "./pages/admin/TransactionPage";
+import TransactionPage from "./pages/admin/transactions/TransactionPage";
 import ALlUsersPage from "./pages/admin/users/AllUsersPage";
 import UsersAdminPage from "./pages/admin/users/UsersAdminPage";
 import PharmacyPage from "./pages/admin/users/PharmacyPage";
@@ -150,7 +150,7 @@ const router = createBrowserRouter([
     element: <CompletedOrderPage />,
   },
   {
-    path: "/admin/transaction",
+    path: "/admin/transaction/all",
     element: <TransactionPage />,
   },
 ]);

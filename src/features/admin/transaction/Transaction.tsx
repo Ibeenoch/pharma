@@ -1,12 +1,8 @@
-import AdminLayout from "../dashboard/AdminLayout";
-import TransactionManagement from "../../../components/admin/transaction/TransactionManagement";
+import AllTransaction from "../../../components/admin/transaction/AllTransactionManagement";
 
 const Transaction = () => {
   return (
-    <AdminLayout
-      title="Transactions Management"
-      children={<TransactionManagement />}
-    />
+    <AllTransaction />
   );
 };
 

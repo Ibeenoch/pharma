@@ -1,9 +1,10 @@
 import AdminLayout from "../../../features/admin/dashboard/AdminLayout";
+import OrderLayout from "./OrderLayout";
 import OrderTabsManagement from "./OrderTabsManagement";
 
 const OrderManagement = () => {
   return (
-    <AdminLayout title="Order Management" children={<OrderTabsManagement />} />
+    <AdminLayout title="Order Management" children={<OrderLayout child={<OrderTabsManagement />} />} />
   );
 };
 
