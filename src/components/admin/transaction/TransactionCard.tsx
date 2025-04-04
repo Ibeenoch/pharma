@@ -1,7 +1,8 @@
 import React from 'react'
+import Menu from '../../../assets/icons/menu-vertical.svg?react'
 import CustomText from '../../common/Text'
 
-interface TransactionCardProps {
+export interface TransactionCardProps {
     image: string;
     shippingId?: string;
     shippingType?: string;
@@ -14,21 +15,26 @@ interface TransactionCardProps {
     paymentMethod: string;
     textColor: string;
     textBgColor: string;
+    onClick: () => void;
 }
 
-const TransactionCard: React.FC<TransactionCardProps> = ({ image, shippingId, shippingStatus, shippingType, itemQty, itemTitle, amount, orderDate, customerName, paymentMethod, textBgColor, textColor }) => {
+const TransactionCard: React.FC<TransactionCardProps> = ({ image, shippingId, shippingStatus, shippingType, itemQty, itemTitle, amount, orderDate, customerName, paymentMethod, textBgColor, textColor, onClick }) => {
   return (
-    <div className={`p-4 rounded-xl bg-white my-3 lg:my-0 `}>
+    <div className={`p-4 rounded-xl bg-white my-3 lg:my-0 hover:bg-white/50 group`}>
     <div className='flex justify-between items-center pb-3 border-b border-dashed border-gray-200'>
         <div className='flex items-center gap-1'>
             <CustomText text={shippingId} textType='small' weightType='semibold' color={textColor} />
             <div className='w-1 h-1 rounded-full bg-gray-300'></div>
             <CustomText text={shippingType} textType='small' weightType='semibold' color='text-gray-300' />
         </div>
-
+    <div className='flex gap-1 items-center'>
         <div className={`py-1 px-2 flex items-center justify-center rounded-xl ${textBgColor}`}>
             <CustomText text={shippingStatus} color={textColor} textType='small' weightType='semibold'  />
         </div>
+        <div onClick={onClick} className={`py-1 px-2 flex items-center justify-center rounded-xl cursor-pointer`}>
+            <Menu className='w-4 h-4' />
+        </div>
+    </div>
     </div>
 
 

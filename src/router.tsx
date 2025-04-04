@@ -29,6 +29,9 @@ import ActiveOrderPage from "./pages/admin/orders/ActiveOrderPage";
 import CancelledOrderPage from "./pages/admin/orders/CancelledOrderPage";
 import PendingOrderPage from "./pages/admin/orders/PendingOrderPage";
 import CompletedOrderPage from "./pages/admin/orders/CompletedOrderPage";
+import PendingTransactionPage from "./pages/admin/transactions/PendingTransactionPage";
+import CompletedTransactionPage from "./pages/admin/transactions/CompletedTransactionPage";
+import CancelledTransactionPage from "./pages/admin/transactions/CancelledTransactionPage";
 const Home = lazy(() => import("./pages/Home"));
 
 const router = createBrowserRouter([
@@ -152,6 +155,18 @@ const router = createBrowserRouter([
   {
     path: "/admin/transaction/all",
     element: <TransactionPage />,
+  },
+  {
+    path: "/admin/transaction/pending",
+    element: <PendingTransactionPage />,
+  },
+  {
+    path: "/admin/transaction/completed",
+    element: <CompletedTransactionPage />,
+  },
+  {
+    path: "/admin/transaction/cancelled",
+    element: <CancelledTransactionPage />,
   },
 ]);
 

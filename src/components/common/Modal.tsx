@@ -10,6 +10,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
   return (
     <div
+    onClick={onClose}
       style={{
         background: "rgba( 128, 128, 128, 0.5 )",
       }}
