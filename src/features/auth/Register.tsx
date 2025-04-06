@@ -14,6 +14,8 @@ import CustomButton from "../../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { validator } from "../../utils/validator";
 import CustomSelect from "../../components/common/Select";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { registerUser } from "./authSlice";
 
 const Register = () => {
   const [firstName, setFirstNamel] = useState<string>("");
@@ -24,6 +26,7 @@ const Register = () => {
   const [passcode, setPasscode] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<{
     firstName?: string;
     lastName?: string;
@@ -35,6 +38,7 @@ const Register = () => {
     passcode?: string;
   }>({});
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const genderOptions = [
     { value: "", label: "Select Gender" },
@@ -54,6 +58,7 @@ const Register = () => {
 
   const handleFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const firstNameValid = validator(firstName, "others");
     const lastNameValid = validator(lastName, "others");
@@ -84,14 +89,17 @@ const Register = () => {
           : "Password must be at least 8 characters, include a number & special character",
         role: roleValid ? undefined : "Role is required",
       });
+      setIsSubmitting(false);
       return;
     }
     if (role === "Admin" && !passcode) {
       setError({
         passcode: passcodeValid ? undefined : "Passcode is required",
       });
+      setIsSubmitting(false);
       return;
     }
+    // Passing!123&4
     console.log(
       firstName,
       lastName,
@@ -102,9 +110,23 @@ const Register = () => {
       role,
       passcode
     );
+    dispatch(
+      registerUser({
+        firstName,
+        lastName,
+        dob,
+        email,
+        gender,
+        passcode,
+        password,
+        role,
+      })
+    ).then((res) => {
+      res.payload !== undefined ? navigate("/") : setIsSubmitting(false);
+    });
   };
   return (
-    <section className={`h-screen md:grid md:grid-cols-3 mt-10 items-center `}>
+    <section className={`h-full md:grid md:grid-cols-3 mt-20 items-center `}>
       <article className="hidden md:block">
         <CustomText text="Sign Up to" textType="huge" weightType="bold" />
         <CustomText
@@ -151,7 +173,7 @@ const Register = () => {
 
       <section className={`px-7 mt-5 md:mt-0`}>
         <form onSubmit={handleFormSubmit}>
-          <div className="flex gap-3 items-center">
+          <div className="md:flex gap-3 items-center">
             <CustomInput
               prefixIcon={<User className="w-4 h-4" />}
               label="First Name"
@@ -180,7 +202,7 @@ const Register = () => {
             />
           </div>
 
-          <div className="flex gap-3 items-center">
+          <div className="md:flex gap-3 items-center">
             <CustomInput
               prefixIcon={<Date className="w-4 h-4" />}
               label="Date Of Birth"
@@ -265,7 +287,13 @@ const Register = () => {
             errorMessage={error.password || "Password is required"}
           />
 
-          <CustomButton text="Sign In" type="submit" className="w-full my-3" />
+          <CustomButton
+            text="Sign Up"
+            isLoading={isSubmitting}
+            type="submit"
+            className="w-full my-3"
+            // onClick={setIsSubmitting(true)}
+          />
         </form>
 
         <div className="flex gap-1 my-5 items-center justify-center">

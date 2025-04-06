@@ -10,12 +10,16 @@ import Lock from "../../assets/icons/lock.svg?react";
 import CustomButton from "../../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { validator } from "../../utils/validator";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { loginUser } from "./authSlice";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [isSubmitting, setisSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<{ email?: string; password?: string }>({});
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const switchToRegisterPage = () => {
     navigate("/register");
@@ -27,6 +31,7 @@ const Login = () => {
 
   const handleFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setisSubmitting(true);
     const emailValid = validator(email, "email");
     const passwordValid = validator(password, "password");
 
@@ -37,8 +42,17 @@ const Login = () => {
           ? undefined
           : "Password must be at least 8 characters, include a number & special character",
       });
+      setisSubmitting(false);
       return;
     }
+    dispatch(
+      loginUser({
+        email,
+        password,
+      })
+    ).then((res) =>
+      res.payload !== undefined ? navigate("/") : setisSubmitting(false)
+    );
   };
   return (
     <section className={`h-screen md:grid md:grid-cols-3 items-center `}>
@@ -131,7 +145,12 @@ const Login = () => {
             />
           </div>
 
-          <CustomButton text="Sign In" type="submit" className="w-full my-3" />
+          <CustomButton
+            text="Sign In"
+            isLoading={isSubmitting}
+            type="submit"
+            className="w-full my-3"
+          />
         </form>
 
         <div className="flex gap-1 my-5 items-center justify-center">

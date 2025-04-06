@@ -32,6 +32,8 @@ import CompletedOrderPage from "./pages/admin/orders/CompletedOrderPage";
 import PendingTransactionPage from "./pages/admin/transactions/PendingTransactionPage";
 import CompletedTransactionPage from "./pages/admin/transactions/CompletedTransactionPage";
 import CancelledTransactionPage from "./pages/admin/transactions/CancelledTransactionPage";
+import AccountSettingsPage from "./pages/admin/settings/AccountSettingsPage";
+import GeneralSettingsPage from "./pages/admin/settings/GeneralSettingsPage";
 const Home = lazy(() => import("./pages/Home"));
 
 const router = createBrowserRouter([
@@ -167,6 +169,14 @@ const router = createBrowserRouter([
   {
     path: "/admin/transaction/cancelled",
     element: <CancelledTransactionPage />,
+  },
+  {
+    path: "/admin/settings/account",
+    element: <AccountSettingsPage />,
+  },
+  {
+    path: "/admin/settings/general",
+    element: <GeneralSettingsPage />,
   },
 ]);
 

@@ -1,30 +1,37 @@
-import CustomText from "../common/Text";
 import Menu from "../../assets/icons/menu.svg?react";
 import Cancel from "../../assets/icons/cancel-close.svg?react";
-import ArrowRight from "../../assets/icons/arrow-right-shorttail.svg?react";
 import SearchBar from "../../assets/icons/search-alt-white.svg?react";
 import ShoppingCart from "../../assets/icons/cart-shopping.svg?react";
+import Home from "../../assets/icons/home2.svg?react";
+import Product from "../../assets/icons/product-tag.svg?react";
+import Call from "../../assets/icons/phone.svg?react";
+import Drug from "../../assets/icons/product.svg?react";
+import Support from "../../assets/icons/support.svg?react";
+import About from "../../assets/icons/about.svg?react";
 import { useState } from "react";
 import CustomButton from "../common/Button";
+import MobileNavList from "./MobileNavList";
+import { useNavigate } from "react-router-dom";
 
 const MobileNav = () => {
   const [showSideBar, setShowSideBar] = useState<boolean>(false);
+  const navigate = useNavigate();
   const links = [
-    "Home",
-    "Products",
-    "Prescription",
-    "About",
-    "Contact",
-    "Support",
+    { Icon: Home, title: "Home" },
+    { Icon: Product, title: "Products" },
+    { Icon: Drug, title: "Prescription" },
+    { Icon: About, title: "About" },
+    { Icon: Call, title: "Contact" },
+    { Icon: Support, title: "Support" },
   ];
 
   const toggleSideBarItems = () => {
     setShowSideBar(!showSideBar);
   };
 
-  const handleLogin = (): void => {};
+  const handleLogin = () => navigate("/login");
 
-  const handleRegister = (): void => {};
+  const handleRegister = () => navigate("/register");
 
   return (
     <nav className="lg:hidden w-full h-full p-6">
@@ -72,17 +79,8 @@ const MobileNav = () => {
         </form>
 
         <ul className={` flex flex-col justify-start  gap-4`}>
-          {links.map((link) => (
-            <li className="p-2 flex justify-between items-center">
-              <CustomText
-                text={link}
-                textType="normal"
-                weightType="medium"
-                extraStyle="hover:border-b-2 hover:border-black cursor-pointer"
-              />
-
-              <ArrowRight className="w-4 h-4" />
-            </li>
+          {links.map((link, index) => (
+            <MobileNavList key={index} Icon={link.Icon} text={link.title} />
           ))}
         </ul>
 
@@ -92,11 +90,13 @@ const MobileNav = () => {
             type="button"
             borderRadiusType="threecurved"
             onClick={handleLogin}
+            fullwidth={true}
           />
           <CustomButton
             text="Register"
             type="button"
             onClick={handleRegister}
+            fullwidth={true}
           />
         </div>
       </div>

@@ -40,17 +40,20 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title }) => {
         }  p-4`}
       >
         <NavBar title={title} enlarge={shouldMinimizeSideBar} />
-        <main className={`lg:w-full`}>{children}</main>
-        <div onClick={handleShowMobileSideBar} className={`flex lg:hidden absolute z-50 top-5 left-[5%]`}>
-            <HamburgerMenu className="w-9 h-9 text-gray-700" />
+        <main className={`w-full`}>{children}</main>
+        <div
+          onClick={handleShowMobileSideBar}
+          className={`flex lg:hidden absolute z-50 top-5 left-[5%]`}
+        >
+          <HamburgerMenu className="w-9 h-9 text-gray-700" />
         </div>
-      <div className="lg:hidden">
-            <MobileSideBar
-              showSideBar={showMobileSideBar}
-              closeFunc={handleHideMobileSideBar}
-              shouldMinimize={shouldMinimizeSideBar}
-            />
-          </div>
+        <div className="lg:hidden">
+          <MobileSideBar
+            showSideBar={showMobileSideBar}
+            closeFunc={handleHideMobileSideBar}
+            shouldMinimize={shouldMinimizeSideBar}
+          />
+        </div>
       </section>
       {shouldMinimizeSideBar ? (
         <ArrowMaximize
@@ -65,8 +68,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title }) => {
           showIcon={shouldMinimizeSideBar}
         />
       )}
-
-
     </main>
   );
 };

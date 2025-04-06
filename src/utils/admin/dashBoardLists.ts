@@ -30,11 +30,12 @@ import OrderActive from "../../assets/icons/activeorder.svg?react";
 import OrderCancelled from "../../assets/icons/ordercancelled.svg?react";
 import OrderCompleted from "../../assets/icons/completeorder.svg?react";
 import OrderPending from "../../assets/icons/order.svg?react";
-import SuccessTran from '../../assets/icons/status-success.svg?react';
-import FailedTran from '../../assets/icons/failed-transaction.svg?react'
-import Pending from '../../assets/icons/system-pending.svg?react'
-import PendingTran from '../../assets/icons/contract-pending.svg?react'
-import AllTran from '../../assets/icons/allpayment.svg?react'
+import SuccessTran from "../../assets/icons/status-success.svg?react";
+import FailedTran from "../../assets/icons/failed-transaction.svg?react";
+import PendingTran from "../../assets/icons/contract-pending.svg?react";
+import AllTran from "../../assets/icons/allpayment.svg?react";
+import Settings1 from "../../assets/icons/setting-1.svg?react";
+import Settings2 from "../../assets/icons/setting-2.svg?react";
 
 export const navIcons = [
   { icons: DashBoard, text: "Dashboard" },
@@ -83,7 +84,11 @@ export const subNavIcons = [
     name: "Transaction",
     children: [
       { icons: AllTran, text: "All", route: "/admin/transaction/all" },
-      { icons: PendingTran, text: "Pending", route: "/admin/transaction/pending" },
+      {
+        icons: PendingTran,
+        text: "Pending",
+        route: "/admin/transaction/pending",
+      },
       {
         icons: FailedTran,
         text: "Cancelled",
@@ -96,6 +101,13 @@ export const subNavIcons = [
       },
     ],
   },
+  {
+    name: "Settings",
+    children: [
+      { icons: Settings1, text: "General", route: "/admin/settings/general" },
+      { icons: Settings2, text: "Account", route: "/admin/settings/account" },
+    ],
+  },
 ];
 
 export const cardLists = [
@@ -104,32 +116,36 @@ export const cardLists = [
     topText: "Medical Product",
     middleText: "517",
     endText: "Manage inventory",
-    color: lightBlueBgColor,
+    color: `bg-gradient-to-r from-blue-300 to-blue-800`,
     textColor: darkblueText,
+    iconColor: darkblueText,
   },
   {
     Icon: Cash,
     topText: "Total Revenue",
     middleText: "₦705,360",
     endText: "View Details",
-    color: lightgreenBgColor,
+    color: `bg-gradient-to-r from-green-300 to-green-600`,
     textColor: darkGreenText,
+    iconColor: darkGreenText,
   },
   {
     Icon: Users,
     topText: "Total User",
     middleText: "15,124",
     endText: "View Details",
-    color: lightyellowBgColor,
+    color: `bg-gradient-to-r from-[#fff7d5] to-yellow-400`,
     textColor: darkyellowText,
+    iconColor: darkyellowText,
   },
   {
     Icon: StockOut,
     topText: "Low Stock",
     middleText: "8",
     endText: "Restock Now",
-    color: lightredBgColor,
+    color: `bg-gradient-to-r from-[#ffcfc8] to-red-700`,
     textColor: darkredText,
+    iconColor: darkredText,
   },
 ];
 

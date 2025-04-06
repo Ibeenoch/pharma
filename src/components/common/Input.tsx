@@ -24,6 +24,7 @@ interface CustomInputProps {
   showborder?: boolean;
   Id?: string;
   isPassword?: boolean;
+  disabled?: boolean;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -48,6 +49,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   showborder = true,
   Id,
   isPassword = false,
+  disabled = false,
 }) => {
   const [isTouch, setIsTouch] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -89,7 +91,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
             onChange={(e) => onChange(e.target.value)}
             onBlur={() => setIsTouch(true)}
             onFocus={() => setIsTouch(false)}
+            disabled={disabled}
             required={required}
+            id={Id}
             className={`${
               showFullWidth ? "w-full" : "w-auto"
             } text-xs bg-transparent outline-none focus-none placeholder-gray-400 ${textColor}`}
@@ -97,12 +101,12 @@ const CustomInput: React.FC<CustomInputProps> = ({
           {isPassword &&
             (showPassword ? (
               <EyeOff
-                className="w-4 h-4 cursor-pointer"
+                className="w-4 h-4 cursor-pointer text-gray-500"
                 onClick={toggleShowPassword}
               />
             ) : (
               <Eye
-                className="w-4 h-4 cursor-pointer"
+                className="w-4 h-4 cursor-pointer text-gray-500"
                 onClick={toggleShowPassword}
               />
             ))}
