@@ -10,7 +10,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
   return (
     <div
-    onClick={onClose}
+      onClick={onClose}
       style={{
         background: "rgba( 128, 128, 128, 0.5 )",
       }}
@@ -23,7 +23,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       >
         <div
           onClick={onClose}
-          className="absolute top-5 right-5 bg-black rounded-full p-[4px] cursor-pointer flex justify-center items-center"
+          className="absolute top-5 right-5 bg-gray-500/40 rounded-full p-[4px] cursor-pointer flex justify-center items-center"
         >
           <Cancel className="w-5 h-5 text-white" />
         </div>

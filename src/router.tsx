@@ -34,6 +34,8 @@ import CompletedTransactionPage from "./pages/admin/transactions/CompletedTransa
 import CancelledTransactionPage from "./pages/admin/transactions/CancelledTransactionPage";
 import AccountSettingsPage from "./pages/admin/settings/AccountSettingsPage";
 import GeneralSettingsPage from "./pages/admin/settings/GeneralSettingsPage";
+import EmailVerificationPendingPage from "./pages/EmailVerificationPendingPage";
+import EmailVerificationSuccessfulPage from "./pages/EmailVerificationSuccessfulPage";
 const Home = lazy(() => import("./pages/Home"));
 
 const router = createBrowserRouter([
@@ -48,6 +50,14 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterPage />,
+  },
+  {
+    path: "/verify/pending",
+    element: <EmailVerificationPendingPage />,
+  },
+  {
+    path: "/verify/successfully",
+    element: <EmailVerificationSuccessfulPage />,
   },
   {
     path: "/forgotpassword",

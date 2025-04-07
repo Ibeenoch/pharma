@@ -11,7 +11,7 @@ import CustomButton from "../../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { validator } from "../../utils/validator";
 import { useAppDispatch } from "../../hooks/reduxHooks";
-import { loginUser } from "./authSlice";
+import { facebookLogin, googleLogin, loginUser } from "./authSlice";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -54,6 +54,15 @@ const Login = () => {
       res.payload !== undefined ? navigate("/") : setisSubmitting(false)
     );
   };
+
+  const handleGoogleLogin = () => {
+    dispatch(googleLogin());
+  };
+
+  const handleFacebookLogin = () => {
+    dispatch(facebookLogin());
+  };
+
   return (
     <section className={`h-screen md:grid md:grid-cols-3 items-center `}>
       <article className="hidden md:block">
@@ -164,11 +173,17 @@ const Login = () => {
         </div>
 
         <div className="flex gap-4 items-center justify-center">
-          <div className="p-3 flex justify-center items-center bg-white cursor-pointer rounded-lg">
+          <div
+            onClick={handleGoogleLogin}
+            className="p-3 flex justify-center items-center bg-white cursor-pointer rounded-lg"
+          >
             <Google className="w-6 h-6" />
           </div>
 
-          <div className="p-3 flex justify-center items-center bg-white cursor-pointer rounded-lg">
+          <div
+            onClick={handleFacebookLogin}
+            className="p-3 flex justify-center items-center bg-white cursor-pointer rounded-lg"
+          >
             <Facebook className="w-6 h-6" />
           </div>
         </div>

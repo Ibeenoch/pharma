@@ -13,8 +13,18 @@ import Faq from "../components/home/Faq";
 import Footer from "../components/layout/Footer";
 import NavHelper from "../components/common/NavHelper";
 import { pageSpacing } from "../constants/appText";
+import { useEffect } from "react";
+import { useAppDispatch } from "../hooks/reduxHooks";
+import { getCuurentLoginUserData } from "../features/auth/authSlice";
 
 const Home = () => {
+  const dispatch = useAppDispatch();
+  const getCurrentUser = () => {
+    dispatch(getCuurentLoginUserData());
+  };
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
   return (
     <main className={`${pageSpacing}`}>
       <Header />

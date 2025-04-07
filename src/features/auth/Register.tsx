@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { validator } from "../../utils/validator";
 import CustomSelect from "../../components/common/Select";
 import { useAppDispatch } from "../../hooks/reduxHooks";
-import { registerUser } from "./authSlice";
+import { facebookLogin, googleLogin, registerUser } from "./authSlice";
 
 const Register = () => {
   const [firstName, setFirstNamel] = useState<string>("");
@@ -100,16 +100,8 @@ const Register = () => {
       return;
     }
     // Passing!123&4
-    console.log(
-      firstName,
-      lastName,
-      dob,
-      gender,
-      email,
-      password,
-      role,
-      passcode
-    );
+    // Ty2t8+!eyej7
+
     dispatch(
       registerUser({
         firstName,
@@ -122,12 +114,23 @@ const Register = () => {
         role,
       })
     ).then((res) => {
-      res.payload !== undefined ? navigate("/") : setIsSubmitting(false);
+      res.payload !== undefined
+        ? navigate("/verify/pending")
+        : setIsSubmitting(false);
     });
   };
+  //
+
+  const handleGoogleLogin = () => {
+    dispatch(googleLogin());
+  };
+
+  const handleFacebookLogin = () => {
+    dispatch(facebookLogin());
+  };
   return (
-    <section className={`h-full md:grid md:grid-cols-3 mt-20 items-center `}>
-      <article className="hidden md:block">
+    <section className={`h-full lg:grid lg:grid-cols-3 mt-20 items-center `}>
+      <article className="hidden lg:block">
         <CustomText text="Sign Up to" textType="huge" weightType="bold" />
         <CustomText
           text={`${COMPANY_NAME}`}
@@ -154,7 +157,7 @@ const Register = () => {
         />
       </article>
 
-      <article className={`block ${MARGIN_TOP} md:mt-0 md:hidden`}>
+      <article className={`block ${MARGIN_TOP} lg:mt-0 lg:hidden`}>
         <CustomText
           text={`Sign up to ${COMPANY_NAME}`}
           textType="medium"
@@ -163,17 +166,17 @@ const Register = () => {
         />
       </article>
 
-      <div className="flex justify-center md:block mx-auto">
+      <div className="flex justify-center lg:block mx-auto">
         <img
           src={manWalk}
           alt="man walking to store"
-          className="h-38 md:h-80 w-auto"
+          className="h-38 lg:h-80 w-auto"
         />
       </div>
 
-      <section className={`px-7 mt-5 md:mt-0`}>
+      <section className={`px-7 mt-5 lg:mt-0`}>
         <form onSubmit={handleFormSubmit}>
-          <div className="md:flex gap-3 items-center">
+          <div className="lg:flex gap-3 items-center">
             <CustomInput
               prefixIcon={<User className="w-4 h-4" />}
               label="First Name"
@@ -202,7 +205,7 @@ const Register = () => {
             />
           </div>
 
-          <div className="md:flex gap-3 items-center">
+          <div className="lg:flex gap-3 items-center">
             <CustomInput
               prefixIcon={<Date className="w-4 h-4" />}
               label="Date Of Birth"
@@ -307,11 +310,17 @@ const Register = () => {
         </div>
 
         <div className="flex gap-4 items-center justify-center">
-          <div className="p-3 flex justify-center items-center bg-white cursor-pointer rounded-lg">
+          <div
+            onClick={handleGoogleLogin}
+            className="p-3 flex justify-center items-center bg-white cursor-pointer rounded-lg"
+          >
             <Google className="w-6 h-6" />
           </div>
 
-          <div className="p-3 flex justify-center items-center bg-white cursor-pointer rounded-lg">
+          <div
+            onClick={handleFacebookLogin}
+            className="p-3 flex justify-center items-center bg-white cursor-pointer rounded-lg"
+          >
             <Facebook className="w-6 h-6" />
           </div>
         </div>

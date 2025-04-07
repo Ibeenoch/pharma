@@ -1,6 +1,8 @@
-import { Account, Databases, ID } from "appwrite";
+import { Account, Databases, ID, OAuthProvider } from "appwrite";
 import client from "../../lib/appwriteConfig";
 import { UserDataProps } from "../../types/auth/UserData";
+import { Query } from "node-appwrite";
+import { URL } from "../../constants/appGeneral";
 
 const account = new Account(client);
 const database = new Databases(client);
@@ -12,19 +14,21 @@ export const registerUser = async (userData: UserDataProps) => {
       userData.email,
       userData.password
     );
+
+    await account.createEmailPasswordSession(userData.email, userData.password);
+    const verify = await account.createVerification(
+      `${URL}/verify/successfully`
+    );
     console.log("User created successfully:", user);
     // After user creation, you can store additional data (like firstName, lastName, etc.)
     // You can use the Appwrite database service to store this information
-
-    // Generate a custom userId (example: take the email and replace special chars)
-    const userId = user.$id.replace(/[^a-zA-Z0-9_-]/g, "_").substring(0, 36);
 
     const userCreated = await database.createDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_COLLECTION_ID, // collection id
       ID.unique(),
       {
-        userId,
+        userId: user.$id,
         email: userData.email,
         firstName: userData.firstName,
         lastName: userData.lastName,
@@ -38,7 +42,7 @@ export const registerUser = async (userData: UserDataProps) => {
       }
     );
 
-    console.log("customUser created successfully:", userCreated);
+    console.log("customUser created successfully:", userCreated, verify);
     return {
       userId: user.$id,
       email: userData.email,
@@ -56,18 +60,171 @@ export const registerUser = async (userData: UserDataProps) => {
   }
 };
 
+export const loginWithGoogle = async () => {
+  try {
+    account.createOAuth2Session(
+      OAuthProvider.Google,
+      `${URL}/`, // success redirect
+      `${URL}/login`, // failure redirect
+      ["openid", "email", "profile"]
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const loginWithFacebook = async () => {
+  try {
+    account.createOAuth2Session(
+      OAuthProvider.Facebook,
+      `${URL}/`, // success redirect
+      `${URL}/login`, // failure redirect
+      ["email"]
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const loginUser = async (userData: UserDataProps) => {
   try {
-    const session = await account.createSession(
+    // 1. Log in and get the session
+    const usersession = await account.createEmailPasswordSession(
       userData.email,
       userData.password
     );
-    console.log("User login successfully:", session);
+    console.log("User login successfully:", usersession);
 
-    // Access token and refresh token are available in the session response
-    const accessToken = session.expire;
-    const refreshToken = session.secret;
+    const sessionId = usersession.$id; // can be treated as access token
+
+    // 2. Get logged in user's basic info (like $id)
+    const accountInfo = await account.get();
+    const userId = accountInfo.$id;
+
+    // 3. Fetch user's extra details from your custom collection
+    const result = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID,
+      import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+      [Query.equal("userId", userId)]
+    );
+    const customUserData = result.documents[0]; // Assuming only one per userId
+    return {
+      accessToken: sessionId,
+      userId,
+      email: accountInfo.email,
+      firstName: customUserData.firstName,
+      lastName: customUserData.lastName,
+      dob: customUserData.dob,
+      gender: customUserData.gender,
+      role: customUserData.role,
+      password: "",
+    } as UserDataProps;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const createActivateEmailVerification = async (verifyData: {
+  userId: string;
+  secret: string;
+}) => {
+  const userId = verifyData.userId,
+    secret = verifyData.secret;
+
+  const res = await account.updateVerification(userId, secret);
+  if (res) return true;
+};
+export const passwordRecoveryLink = async (email: string) => {
+  try {
+    const res = await account.createRecovery(email, `${URL}/resetpassword`);
+    if (res) return true;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const resetPassword = async (resetPasswordData: {
+  userId: string;
+  secret: string;
+  password: string;
+}) => {
+  try {
+    const password = resetPasswordData.password,
+      secret = resetPasswordData.secret,
+      userId = resetPasswordData.userId;
+    const res = await account.updateRecovery(userId, secret, password);
+    if (res) return true;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const logOut = async () => {
+  try {
+    const res = await account.deleteSessions();
+    if (res) {
+      return {
+        userId: "",
+        email: "",
+        firstName: "",
+        lastName: "",
+        dob: "",
+        role: "",
+        gender: "",
+        passcode: "",
+        password: "",
+      } as UserDataProps;
+    }
+  } catch (error) {
+    console.log("");
+  }
+};
+
+export const getCurrentLoginUser = async () => {
+  // get the current login user that is redirected from google or facebook
+  const user = await account.get();
+  console.log("Logged-in Google user:", user);
+  const res = await database.listDocuments(
+    import.meta.env.VITE_APPWRITE_DATABASE_ID,
+    import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+    [Query.equal("userId", user.$id)]
+  );
+  if (res.documents.length > 0) {
+    const userDoc = res.documents[0];
+    console.log("Custom user data:", userDoc);
+
+    // Access fields like:
+    const firstName = userDoc.firstName;
+    const lastName = userDoc.lastName;
+    const dob = userDoc.dob;
+    const email = userDoc.email;
+    const gender = userDoc.gender;
+    const role = userDoc.role;
+    const passcode = userDoc.passcode;
+    return {
+      firstName,
+      lastName,
+      dob,
+      gender,
+      email,
+      role,
+      passcode,
+    } as UserDataProps;
+  } else {
+    const userCreated = await database.createDocument(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_COLLECTION_ID, // collection id
+      ID.unique(),
+      {
+        userId: user.$id,
+        email: user.email,
+        firstName: user.name.split(" ")[1],
+        lastName: user.name.split(" ")[0],
+        dob: "n/a",
+        role: "n/a",
+        gender: "n/a",
+        passcode: "n/a",
+      }
+    );
   }
 };
