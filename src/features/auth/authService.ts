@@ -25,7 +25,7 @@ export const registerUser = async (userData: UserDataProps) => {
 
     const userCreated = await database.createDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
-      import.meta.env.VITE_APPWRITE_COLLECTION_ID, // collection id
+      import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID, // collection id
       ID.unique(),
       {
         userId: user.$id,
@@ -104,7 +104,7 @@ export const loginUser = async (userData: UserDataProps) => {
     // 3. Fetch user's extra details from your custom collection
     const result = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID,
-      import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+      import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID,
       [Query.equal("userId", userId)]
     );
     const customUserData = result.documents[0]; // Assuming only one per userId
@@ -186,7 +186,7 @@ export const getCurrentLoginUser = async () => {
   console.log("Logged-in Google user:", user);
   const res = await database.listDocuments(
     import.meta.env.VITE_APPWRITE_DATABASE_ID,
-    import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+    import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID,
     [Query.equal("userId", user.$id)]
   );
   if (res.documents.length > 0) {
@@ -213,7 +213,7 @@ export const getCurrentLoginUser = async () => {
   } else {
     const userCreated = await database.createDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
-      import.meta.env.VITE_APPWRITE_COLLECTION_ID, // collection id
+      import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID, // collection id
       ID.unique(),
       {
         userId: user.$id,
