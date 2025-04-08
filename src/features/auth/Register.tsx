@@ -114,9 +114,9 @@ const Register = () => {
         role,
       })
     ).then((res) => {
-      res.payload !== undefined
-        ? navigate("/verify/pending")
-        : setIsSubmitting(false);
+      const payload = res.payload as { role?: string };
+     payload === undefined ? setIsSubmitting(false) :  payload?.role === 'Admin' ?  navigate("/admin/dashboard") :  navigate("/verify/pending");
+      
     });
   };
   //
@@ -129,7 +129,7 @@ const Register = () => {
     dispatch(facebookLogin());
   };
   return (
-    <section className={`h-full lg:grid lg:grid-cols-3 mt-20 items-center `}>
+    <section className={`h-full lg:grid lg:grid-cols-3 mt-20 items-center pb-8`}>
       <article className="hidden lg:block">
         <CustomText text="Sign Up to" textType="huge" weightType="bold" />
         <CustomText

@@ -9,6 +9,9 @@ export const validator = (value: string | number, type: string) => {
     case "phone":
       return validatePhone(value as string);
       break;
+    case "passcode":
+      return validatePasscode(value as string);
+      break;
     default:
       return validateOther(value as any);
       break;
@@ -28,6 +31,10 @@ const validatePassword = (value: string) => {
   const hasSpecialChar = /[@$!%*?&]/.test(value); // At least one special character
 
   return minLength && hasLetter && hasNumber && hasSpecialChar;
+};
+
+const validatePasscode = (value: string) => {
+  return typeof value === "string" && value.trim() === import.meta.env.VITE_PASS_CODE; //  Always returns boolean
 };
 
 const validateOther = (value: any) => {

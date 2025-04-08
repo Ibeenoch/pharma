@@ -18,7 +18,7 @@ const MobileNavList: React.FC<MobileNavListProps> = ({ Icon, text }) => {
   return (
     <li className="p-2 flex justify-between items-center">
       <div className="flex gap-2 items-center">
-        <Icon className="w-4 h-4 text-gray-500" />
+        <Icon className="w-5 h-5 text-gray-500" />
         <CustomText
           text={text}
           textType="medium"
