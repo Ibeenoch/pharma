@@ -16,10 +16,16 @@ interface AddCategoryProps {
   onClick: () => void;
 }
 
-
-const AddCatagory: React.FC<AddCategoryProps> = ({ categoryName, setCategoryName, categoryImageUrl, setCategoryImageUrl, categoryImageRef, categoryImageFile, setCategoryImageFile, onClick}) => {
- 
-
+const AddCatagory: React.FC<AddCategoryProps> = ({
+  categoryName,
+  setCategoryName,
+  categoryImageUrl,
+  setCategoryImageUrl,
+  categoryImageRef,
+  categoryImageFile,
+  setCategoryImageFile,
+  onClick,
+}) => {
   const handleImageClicked = () => {
     categoryImageRef.current?.click();
   };
@@ -29,11 +35,11 @@ const AddCatagory: React.FC<AddCategoryProps> = ({ categoryName, setCategoryName
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setCategoryImageUrl(imageUrl);
-      setCategoryImageFile(file)
+      setCategoryImageFile(file);
     }
   };
   return (
-    <form className={`p-4 ${lightgrayBgColor} rounded-xl`}>
+    <section className={`p-4 ${lightgrayBgColor} rounded-xl`}>
       <CustomText
         text="Add Category"
         textType="medium"
@@ -87,7 +93,7 @@ const AddCatagory: React.FC<AddCategoryProps> = ({ categoryName, setCategoryName
         showArrow={true}
         onClick={onClick}
       />
-    </form>
+    </section>
   );
 };
 

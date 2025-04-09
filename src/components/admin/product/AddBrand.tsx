@@ -16,7 +16,16 @@ interface AddBrandProps {
   onClick: () => void;
 }
 
-const AddBrand: React.FC<AddBrandProps> = ( { brandName, setBrandImageUrl, brandImageUrl, onClick, setBrandName, brandImageRef, brandImageFile,setBrandImageFile }) => {
+const AddBrand: React.FC<AddBrandProps> = ({
+  brandName,
+  setBrandImageUrl,
+  brandImageUrl,
+  onClick,
+  setBrandName,
+  brandImageRef,
+  brandImageFile,
+  setBrandImageFile,
+}) => {
   // const [brandName, setBrandName] = useState<string>("");
   // const brandImageRef = useRef<HTMLInputElement>(null);
   // const [brandImageUrl, setBrandImageUrl] = useState<string>("");
@@ -31,11 +40,11 @@ const AddBrand: React.FC<AddBrandProps> = ( { brandName, setBrandImageUrl, brand
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setBrandImageUrl(imageUrl);
-      setBrandImageFile(file)
+      setBrandImageFile(file);
     }
   };
   return (
-    <form className={`p-4 ${lightgrayBgColor} rounded-xl`}>
+    <section className={`p-4 ${lightgrayBgColor} rounded-xl`}>
       <CustomText
         text="Add Brand"
         textType="medium"
@@ -62,7 +71,11 @@ const AddBrand: React.FC<AddBrandProps> = ( { brandName, setBrandImageUrl, brand
         className="w-full border border-dashed rounded-xl bg-white mb-6 border-gray-300 flex justify-center py-6 items-center mb-3"
       >
         {brandImageUrl ? (
-          <img className="w-22 h-22" src={brandImageUrl} alt="Brand image cover" />
+          <img
+            className="w-22 h-22"
+            src={brandImageUrl}
+            alt="Brand image cover"
+          />
         ) : (
           <Photo className="w-22 h-22 text-gray-300" />
         )}
@@ -85,7 +98,7 @@ const AddBrand: React.FC<AddBrandProps> = ( { brandName, setBrandImageUrl, brand
         showArrow={true}
         onClick={onClick}
       />
-    </form>
+    </section>
   );
 };
 

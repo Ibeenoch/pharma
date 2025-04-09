@@ -10,9 +10,10 @@ import Modal from "../../common/Modal";
 import AddCatagory from "./AddCatagory";
 import BrandOrCategory from "./BrandOrCategory";
 import AddBrand from "./AddBrand";
-import { useAppSelector } from "../../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { selectAuth } from "../../../features/auth/authSlice";
 import CustomButton from "../../common/Button";
+import { createProduct } from "../../../features/admin/product/productSlice";
 
 const AddProduct = () => {
   const imageRef = useRef<HTMLInputElement>(null);
@@ -41,6 +42,7 @@ const AddProduct = () => {
   const categoryImageRef = useRef<HTMLInputElement>(null);
   const [categoryImageUrl, setCategoryImageUrl] = useState<string>("");
   const [categoryImageFile, setCategoryImageFile] = useState<File>();
+  const [isFormSubmitting, setIsFormSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<{
     productName?: string;
     productDesc?: string;
@@ -51,10 +53,12 @@ const AddProduct = () => {
     productStockQty?: string;
   }>({});
   const { user } = useAppSelector(selectAuth);
+  const dispatch = useAppDispatch();
 
   const handleProductFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setIsFormSubmitting(true);
     const productNameValid = validator(productName, "others");
     const productDescValid = validator(productDesc, "others");
     const productCategoryValid = validator(productCategory, "others");
@@ -62,12 +66,9 @@ const AddProduct = () => {
     const productPriceValid = validator(productPrice, "others");
     const productStockUnitValid = validator(productStockUnit, "others");
     const productStockQtyValid = validator(productStockQty, "others");
-
     if (
       !productNameValid ||
       !productDescValid ||
-      !productCategoryValid ||
-      !productBrandValid ||
       !productPriceValid ||
       !productStockUnitValid ||
       !productStockQtyValid
@@ -77,12 +78,7 @@ const AddProduct = () => {
         productDesc: productDescValid
           ? undefined
           : "Product description is required",
-        productCategory: productCategoryValid
-          ? undefined
-          : "Product category is required",
-        productBrand: productBrandValid
-          ? undefined
-          : "Product brand is required",
+
         productPrice: productPriceValid
           ? undefined
           : "Product price is required",
@@ -91,10 +87,12 @@ const AddProduct = () => {
           : "Product Stock Unit is required",
         productStockQty: productStockQtyValid
           ? undefined
-          : "Product Stock Quntity is required",
+          : "Product Stock Quantity is required",
       });
+      setIsFormSubmitting(false);
       return;
     }
+    console.log("form submiti");
 
     console.log(
       productName,
@@ -113,26 +111,31 @@ const AddProduct = () => {
     const productData = new FormData();
     // Append each image file to FormData
     imageFiles.forEach((file) => {
-      productData.append('imageFiles' ,file)
-    })
-    productData.append('name', productName);
-    productData.append('description', productDesc);
-    productData.append('price', String(parseInt(productPrice)));
-    productData.append('qty', String(parseInt(productStockQty)));
-    productData.append('discount', String(parseInt(productDiscountPercent)));
-    productData.append('category', categoryName);
-    if(categoryImageFile)productData.append('categoryImage', categoryImageFile);
-    productData.append('brand', brandName);
-    if(brandImageFile)productData.append('brandImage', brandImageFile);
-    productData.append('expiration', productExpirationDate);
-    productData.append('serialNo', productStockUnit);
-    productData.append('additionalInfo', additionalInfo);
-    productData.append('creator', user.objectId ?? '');
+      productData.append("imageFiles", file);
+    });
+    productData.append("name", productName);
+    productData.append("description", productDesc);
+    productData.append("price", String(parseInt(productPrice)));
+    productData.append("qty", String(parseInt(productStockQty)));
+    productData.append("discount", String(parseInt(productDiscountPercent)));
+    productData.append("category", categoryName);
+    if (categoryImageFile)
+      productData.append("categoryImage", categoryImageFile);
+    productData.append("brand", brandName);
+    if (brandImageFile) productData.append("brandImage", brandImageFile);
+    productData.append("expiration", productExpirationDate);
+    productData.append("serialNo", productStockUnit);
+    productData.append("additionalInfo", additionalInfo);
+    productData.append("creator", user.objectId ?? "");
 
     // creator: string;
 
     // isHotDeal?: boolean;
     // imagesUrl: string[];
+    dispatch(createProduct(productData)).then((res) => {
+      console.log("product res: ", res.payload);
+      setIsFormSubmitting(false);
+    });
   };
 
   const handleShowCategoryModal = () => {
@@ -148,7 +151,7 @@ const AddProduct = () => {
     if (file) {
       const imageUrl = URL.createObjectURL(file); // create a preview able image
       setUploadedImages((prev) => [...prev, imageUrl]); // append each image string to the image array and show the image preview
-      setImageFiles((prev) => [...prev, file] ); // append each image file to the image array
+      setImageFiles((prev) => [...prev, file]); // append each image file to the image array
     }
   };
 
@@ -391,7 +394,6 @@ const AddProduct = () => {
           </div>
         </section>
 
-
         <BrandOrCategory
           isBrand={false}
           val={productCategory}
@@ -407,34 +409,42 @@ const AddProduct = () => {
           onChange={setProductBrand}
           errorMsg={error.productBrand}
         />
-       
       </div>
 
-      <CustomButton text="Create Product" type="submit" fullwidth={true} />
-      
+      <CustomButton
+        text="Create Product"
+        type="submit"
+        fullwidth={true}
+        isLoading={isFormSubmitting}
+      />
+
       <Modal
         isOpen={isModalOpen}
-        children={openBrandModal ? 
-        <AddBrand 
-          brandImageFile={brandImageFile}
-          brandImageRef={brandImageRef}
-          brandImageUrl={brandImageUrl}
-          brandName={brandName}
-          setBrandImageFile={setBrandImageFile}
-          setBrandImageUrl={setBrandImageUrl}
-          setBrandName={setBrandName} 
-          onClick={() => setIsModalOpen(false)}         
-          /> : 
-          <AddCatagory 
-          categoryImageUrl={categoryImageUrl}
-          categoryImageFile={categoryImageFile}
-          categoryImageRef={categoryImageRef}
-          categoryName={categoryName}
-          setCategoryImageFile={setCategoryImageFile}
-          setCategoryImageUrl={setCategoryImageUrl}
-          setCategoryName={setCategoryName}
-          onClick={() => setIsModalOpen(false)}
-          />}
+        children={
+          openBrandModal ? (
+            <AddBrand
+              brandImageFile={brandImageFile}
+              brandImageRef={brandImageRef}
+              brandImageUrl={brandImageUrl}
+              brandName={brandName}
+              setBrandImageFile={setBrandImageFile}
+              setBrandImageUrl={setBrandImageUrl}
+              setBrandName={setBrandName}
+              onClick={() => setIsModalOpen(false)}
+            />
+          ) : (
+            <AddCatagory
+              categoryImageUrl={categoryImageUrl}
+              categoryImageFile={categoryImageFile}
+              categoryImageRef={categoryImageRef}
+              categoryName={categoryName}
+              setCategoryImageFile={setCategoryImageFile}
+              setCategoryImageUrl={setCategoryImageUrl}
+              setCategoryName={setCategoryName}
+              onClick={() => setIsModalOpen(false)}
+            />
+          )
+        }
         onClose={() => setIsModalOpen(false)}
       />
     </form>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Eye from "../../assets/icons/eye-show.svg?react";
 import EyeOff from "../../assets/icons/eye-off.svg?react";
+import Warning from "../../assets/icons/caution.svg?react";
 
 interface CustomInputProps {
   label?: string;
@@ -114,9 +115,12 @@ const CustomInput: React.FC<CustomInputProps> = ({
         {showSideBtn && sideBtn}
       </div>
       {hasError && (
-        <p className="text-red-500 mt-[0.3px] text-[12px] font-medium">
-          {errorMessage}
-        </p>
+        <div className="pt-[0.5px] flex gap-1 item-center">
+          <Warning className="w-4 h-4 text-red-500" />
+          <p className="text-red-500  text-[12px] font-medium">
+            {errorMessage}
+          </p>
+        </div>
       )}
     </div>
   );

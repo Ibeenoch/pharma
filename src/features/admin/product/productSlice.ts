@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../../redux/store";
 import { productDataProps } from "../../../types/product/ProductData";
+import * as api from "./productService";
 
 interface productAdminState {
   status: "idle" | "loading" | "success" | "failure";
@@ -21,17 +22,37 @@ const initialState: productAdminState = {
     expiration: "",
     isHotDeal: false,
     serialNo: "",
-    creator: '',
-    imagesUrl: []
+    creator: "",
+    imagesUrl: [],
   },
 };
+
+export const createProduct = createAsyncThunk(
+  "product/create",
+  async (productData: FormData, { rejectWithValue }) => {
+    try {
+      return await api.createProduct(productData);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+);
 
 const productAdminSlice = createSlice({
   name: "productAdmin",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder;
+    builder
+      .addCase(createProduct.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(createProduct.fulfilled, (state, action) => {
+        state.status = "success";
+      })
+      .addCase(createProduct.rejected, (state) => {
+        state.status = "failure";
+      });
   },
 });
 
