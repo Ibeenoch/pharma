@@ -25,17 +25,7 @@ const AddProductManager = () => {
 
       <section className="my-3">
         <AddProduct />
-        {/* {adminProducttabIndex === 0 ? (
-          <AllProduct />
-        ) : adminProducttabIndex === 1 ? (
-          <AddProduct />
-        ) : adminProducttabIndex === 2 ? (
-          <></>
-        ) : adminProducttabIndex === 3 ? (
-          <></>
-        ) : (
-          <div className="flex justify-center items-center">No User Found</div>
-        )} */}
+       
       </section>
     </main>
   );

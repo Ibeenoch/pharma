@@ -16,15 +16,15 @@ const Toast: React.FC<ToastProps> = ({ isOpen, onClose, children }) => {
       {/* Toast content */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`${lightgrayBgColor} rounded-lg shadow-lg w-[400px] md:w-[550px] relative`}
+        className={`${lightgrayBgColor} flex items-center rounded-lg shadow-lg w-max relative pr-1`}
       >
+        {children}
         <div
           onClick={onClose}
-          className="absolute top-4 right-4 bg-gray-500/40 rounded-full p-[4px] cursor-pointer flex justify-center items-center"
+          className=" bg-gray-500/40 rounded-full p-[4px] cursor-pointer flex justify-center items-center"
         >
           <Cancel className="w-4 h-4 text-white" />
         </div>
-        {children}
       </div>
     </div>
   );

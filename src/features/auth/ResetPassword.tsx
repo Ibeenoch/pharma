@@ -22,6 +22,18 @@ const ResetPassword = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { passwordIsReset } = useAppSelector(selectAuth);
+  
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if(passwordIsReset){
+      timer = setTimeout(() => {
+        dispatch(hidePasswordResetModal(false));
+      }, 5000)
+    }
+
+    return () => clearTimeout(timer);
+  }, [passwordIsReset])
   const getQueryParams = () => {
     const params = new URLSearchParams(location.search);
     setUserId(params.get("userId") as string);
@@ -32,28 +44,7 @@ const ResetPassword = () => {
     getQueryParams();
   }, []);
 
-  // function to get the email via the userId
-  // const getUsersDetailByuserId = async (userId: string) => {
-  //   try {
-  //     const dataBase = new Databases(client);
-  //     const res = await dataBase.listDocuments(
-  //       import.meta.env.VITE_APPWRITE_DATABASE_ID,
-  //       import.meta.env.VITE_APPWRITE_COLLECTION_ID,
-  //       [
-  //         Query.equal("userId", userId), // filter doc by userId
-  //       ]
-  //     );
 
-  //     if (res.documents.length > 0) {
-  //       const user = res.documents[0];
-
-  //       console.log("user found", user);
-  //       return user;
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
   const handleFormSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     setisSubmitting(true);
@@ -75,7 +66,7 @@ const ResetPassword = () => {
       password,
     };
     dispatch(passwordReset(resetPasswordData)).then(
-      (res) => res.payload !== undefined && setisSubmitting(false)
+      () =>  setisSubmitting(false)
     );
   };
   const hideModal = () => {
@@ -144,7 +135,7 @@ const ResetPassword = () => {
           />
 
           <CustomButton
-            text="Sign In"
+            text="Reset Password"
             type="submit"
             className="w-full my-3"
             isLoading={isSubmitting}

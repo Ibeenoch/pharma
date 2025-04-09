@@ -1,11 +1,10 @@
 import { Account, Databases, ID, OAuthProvider } from "appwrite";
-import client from "../../lib/appwriteConfig";
+import client, { account, database } from "../../lib/appwriteConfig";
 import { UserDataProps } from "../../types/auth/UserData";
 import { Query } from "node-appwrite";
 import { URL } from "../../constants/appGeneral";
 
-const account = new Account(client);
-const database = new Databases(client);
+
 
 export const registerUser = async (userData: UserDataProps) => {
   try {
@@ -14,6 +13,8 @@ export const registerUser = async (userData: UserDataProps) => {
       userData.email,
       userData.password
     );
+
+    // after registering log the user in to create a section
 
     await account.createEmailPasswordSession(userData.email, userData.password);
     const verify = await account.createVerification(
@@ -56,6 +57,7 @@ export const registerUser = async (userData: UserDataProps) => {
       password: "", // Since password should not be returned, just leave it empty
     } as UserDataProps;
   } catch (error) {
+    throw error
     console.log(error);
   }
 };
@@ -121,6 +123,7 @@ export const loginUser = async (userData: UserDataProps) => {
     } as UserDataProps;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 };
 
@@ -228,3 +231,21 @@ export const getCurrentLoginUser = async () => {
     );
   }
 };
+
+export const checkIfUserExist = async(email: string) => {
+  try {
+    // fetch all users 
+    // account.listIdentities,  account.listLogs, account.listMfaFactors, account.listSessions
+    const users = await  database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID,
+      import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID,
+      [Query.equal("email", email)]
+    );
+
+    console.log('email found is ', users.total)
+  return users.total > 0 ? true : false
+  
+  } catch (error) {
+    throw error;
+  }
+}

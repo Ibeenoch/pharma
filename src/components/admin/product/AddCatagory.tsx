@@ -5,20 +5,31 @@ import CustomText from "../../common/Text";
 import Photo from "../../../assets/icons/picture-filled.svg?react";
 import CustomButton from "../../common/Button";
 
-const AddCatagory = () => {
-  const [name, setname] = useState<string>("");
-  const imageRef = useRef<HTMLInputElement>(null);
-  const [imageUrl, setImageUrl] = useState<string>("");
+interface AddCategoryProps {
+  categoryName: string;
+  setCategoryName: React.Dispatch<React.SetStateAction<string>>;
+  categoryImageUrl: string;
+  setCategoryImageUrl: React.Dispatch<React.SetStateAction<string>>;
+  categoryImageRef: React.RefObject<HTMLInputElement | null>;
+  categoryImageFile: File | undefined;
+  setCategoryImageFile: React.Dispatch<React.SetStateAction<File | undefined>>;
+  onClick: () => void;
+}
+
+
+const AddCatagory: React.FC<AddCategoryProps> = ({ categoryName, setCategoryName, categoryImageUrl, setCategoryImageUrl, categoryImageRef, categoryImageFile, setCategoryImageFile, onClick}) => {
+ 
 
   const handleImageClicked = () => {
-    imageRef.current?.click();
+    categoryImageRef.current?.click();
   };
 
   const handleImageUploaded = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
-      setImageUrl(imageUrl);
+      setCategoryImageUrl(imageUrl);
+      setCategoryImageFile(file)
     }
   };
   return (
@@ -31,8 +42,8 @@ const AddCatagory = () => {
       />
       <CustomInput
         label="Category Name"
-        value={name}
-        onChange={setname}
+        value={categoryName}
+        onChange={setCategoryName}
         type="text"
         showFullWidth={true}
         showborder={false}
@@ -48,17 +59,17 @@ const AddCatagory = () => {
         onClick={handleImageClicked}
         className="w-full border border-dashed rounded-xl bg-white mb-6 border-gray-300 flex justify-center py-6 items-center mb-3"
       >
-        {imageUrl ? (
+        {categoryImageUrl ? (
           <img
-            className="w-22 h-22"
-            src={imageUrl}
+            className="w-22 h-22 cursor-pointer"
+            src={categoryImageUrl}
             alt="category image cover"
           />
         ) : (
-          <Photo className="w-22 h-22 text-gray-300" />
+          <Photo className="w-22 h-22 text-gray-300 cursor-pointer" />
         )}
         <input
-          ref={imageRef}
+          ref={categoryImageRef}
           hidden
           type="file"
           name="uploadImage"
@@ -74,6 +85,7 @@ const AddCatagory = () => {
         weightType="medium"
         fullwidth={true}
         showArrow={true}
+        onClick={onClick}
       />
     </form>
   );

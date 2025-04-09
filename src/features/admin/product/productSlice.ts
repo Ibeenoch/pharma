@@ -1,15 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../redux/store";
-import { productDataProps } from "../../types/product/ProductData";
+import { RootState } from "../../../redux/store";
+import { productDataProps } from "../../../types/product/ProductData";
 
-interface productState {
+interface productAdminState {
   status: "idle" | "loading" | "success" | "failure";
-  product: productDataProps;
+  productAdmin: productDataProps;
 }
 
-const initialState: productState = {
+const initialState: productAdminState = {
   status: "idle",
-  product: {
+  productAdmin: {
     name: "",
     price: 0,
     description: "",
@@ -26,8 +26,8 @@ const initialState: productState = {
   },
 };
 
-const productSlice = createSlice({
-  name: "product",
+const productAdminSlice = createSlice({
+  name: "productAdmin",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -35,6 +35,6 @@ const productSlice = createSlice({
   },
 });
 
-export const selectproduct = (state: RootState) => state.product;
-export const {} = productSlice.actions;
-export default productSlice.reducer;
+export const selectproductAdmin = (state: RootState) => state.productAdmin;
+export const {} = productAdminSlice.actions;
+export default productAdminSlice.reducer;

@@ -1,8 +1,8 @@
 import { COMPANY_NAME, MARGIN_TOP } from "../../constants/appText";
 import manWalk from "../../assets/images/1547272465.png";
 import CustomInput from "../../components/common/Input";
-import { ChangeEvent, useState } from "react";
-import CustomText from "../../components/common/Text";
+import { ChangeEvent, lazy, useEffect, useState } from "react";
+const CustomText = lazy(() => import("../../components/common/Text"))
 import Email from "../../assets/icons/email.svg?react";
 import Google from "../../assets/icons/google-colored.svg?react";
 import Facebook from "../../assets/icons/facebook-colored.svg?react";
@@ -10,12 +10,14 @@ import User from "../../assets/icons/user.svg?react";
 import Date from "../../assets/icons/date.svg?react";
 import Gender from "../../assets/icons/gender.svg?react";
 import Lock from "../../assets/icons/lock.svg?react";
-import CustomButton from "../../components/common/Button";
+const CustomButton = lazy(() => import("../../components/common/Button"));
 import { useNavigate } from "react-router-dom";
 import { validator } from "../../utils/validator";
 import CustomSelect from "../../components/common/Select";
-import { useAppDispatch } from "../../hooks/reduxHooks";
-import { facebookLogin, googleLogin, registerUser } from "./authSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { checkIfUserExist, facebookLogin, googleLogin, registerUser, selectAuth } from "./authSlice";
+import Toast from "../../components/common/Toast";
+import AlertModal from "../../components/auth/AlertModal";
 
 const Register = () => {
   const [firstName, setFirstNamel] = useState<string>("");
@@ -26,7 +28,9 @@ const Register = () => {
   const [passcode, setPasscode] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [errMsg, setErrMsg] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [showErrModal, setShowErrModal] = useState<boolean>(false);
   const [error, setError] = useState<{
     firstName?: string;
     lastName?: string;
@@ -39,6 +43,23 @@ const Register = () => {
   }>({});
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { doUserExist } = useAppSelector(selectAuth)
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if(showErrModal){
+      timer = setTimeout(() => {
+        setShowErrModal(false)
+      }, 7000)
+    }
+    
+    return () => clearTimeout(timer);
+  }, [showErrModal])
+
+  const hideErrorModal = () => {
+    setShowErrModal(false)
+  }
 
   const genderOptions = [
     { value: "", label: "Select Gender" },
@@ -102,24 +123,38 @@ const Register = () => {
     // Passing!123&4
     // Ty2t8+!eyej7
 
-    dispatch(
-      registerUser({
-        firstName,
-        lastName,
-        dob,
-        email,
-        gender,
-        passcode,
-        password,
-        role,
-      })
-    ).then((res) => {
-      const payload = res.payload as { role?: string };
-     payload === undefined ? setIsSubmitting(false) :  payload?.role === 'Admin' ?  navigate("/admin/dashboard") :  navigate("/verify/pending");
-      
+    dispatch(checkIfUserExist(email)).then((res) => {
+      console.log('email status is ', res.payload)
+      if(res.payload === false){
+        dispatch(
+          registerUser({
+            firstName,
+            lastName,
+            dob,
+            email,
+            gender,
+            passcode,
+            password,
+            role,
+          })
+        ).then((res) => {
+          const payload = res.payload as { role?: string };
+          console.log('res payload', res.payload);
+         typeof payload === 'string' ? handleErrorSigningUp(payload) :  payload?.role === 'Admin' ?  navigate("/admin/dashboard") :  navigate("/verify/pending");
+          
+        });
+      }else{
+        handleErrorSigningUp('User already exist, please login to continue')
+      }
     });
+
   };
-  //
+
+  const handleErrorSigningUp = (payload: string) => {
+    setErrMsg(payload);
+    setShowErrModal(true);
+    setIsSubmitting(false);
+  }
 
   const handleGoogleLogin = () => {
     dispatch(googleLogin());
@@ -256,7 +291,7 @@ const Register = () => {
                 required={true}
                 showFullWidth={true}
                 placeholder="Enter Your Passcode"
-                validate={(value) => validator(value, "others")}
+                validate={(value) => validator(value, "passcode")}
                 errorMessage={error.passcode || "Passcode is required"}
               />
             )}
@@ -298,6 +333,11 @@ const Register = () => {
             // onClick={setIsSubmitting(true)}
           />
         </form>
+        {
+          showErrModal && (
+            <Toast isOpen={showErrModal} onClose={hideErrorModal} children={<AlertModal isSuccess={false} text={errMsg} />} />
+          )
+        }
 
         <div className="flex gap-1 my-5 items-center justify-center">
           <div className="w-[35%] border border-gray-300"></div>

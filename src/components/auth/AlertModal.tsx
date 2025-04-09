@@ -11,17 +11,17 @@ const AlertModal: React.FC<AlertModalProps> = ({ isSuccess, text }) => {
   return (
     <div className="flex items-center">
       <div
-        className={`p-2 flex justify-center w-14 h-14 ${
+        className={`px-2 flex justify-center w-10 h-10 ${
           isSuccess ? "bg-green-500" : "bg-red-500"
         } items-center rounded-lg`}
       >
         {isSuccess ? (
           <Mark className="w-5 h-5 text-white" />
         ) : (
-          <Danger className="w-5 h-5 text-white" />
+          <Danger className="w-4 h-4 text-white" />
         )}
       </div>
-      <p className="text-sm p-2">{text}</p>
+      <p className="text-xs px-2">{text}</p>
     </div>
   );
 };

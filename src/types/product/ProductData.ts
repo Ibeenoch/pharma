@@ -1,5 +1,5 @@
 export interface productDataProps {
-  productId?: string;
+  creator: string;
   name: string;
   description: string;
   price: number;
@@ -11,4 +11,5 @@ export interface productDataProps {
   serialNo?: string;
   additionalInfo?: string;
   isHotDeal?: boolean;
+  imagesUrl: string[];
 }

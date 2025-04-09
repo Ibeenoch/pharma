@@ -1,7 +1,7 @@
 import { MARGIN_TOP } from "../../constants/appText";
 import manWalk from "../../assets/images/forgetpassword1.png";
 import CustomInput from "../../components/common/Input";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import CustomText from "../../components/common/Text";
 import Email from "../../assets/icons/email.svg?react";
 import CustomButton from "../../components/common/Button";
@@ -22,9 +22,23 @@ const ForgotPassword = () => {
   const { sentRecoveryEmail } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    let timer : NodeJS.Timeout;
+
+    if(sentRecoveryEmail){
+      timer = setTimeout(() => {
+        hideModal()
+      }, 5000)
+    }
+
+    return () => clearTimeout(timer)
+
+  }, [sentRecoveryEmail])
+
   const hideModal = () => {
     dispatch(setRecoveryPasswordLink(false));
   };
+
   const handleFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -38,7 +52,7 @@ const ForgotPassword = () => {
       return;
     }
     dispatch(passwordRecoveryLink(email)).then(
-      (res) => res.payload !== undefined && setIsSubmitting(false)
+      () =>  setIsSubmitting(false)
     );
   };
   return (

@@ -1,7 +1,7 @@
 import { COMPANY_NAME, MARGIN_TOP } from "../../constants/appText";
 import manWalk from "../../assets/images/manwalk.png";
 import CustomInput from "../../components/common/Input";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import CustomText from "../../components/common/Text";
 import Email from "../../assets/icons/email.svg?react";
 import Google from "../../assets/icons/google-colored.svg?react";
@@ -10,16 +10,36 @@ import Lock from "../../assets/icons/lock.svg?react";
 import CustomButton from "../../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { validator } from "../../utils/validator";
-import { useAppDispatch } from "../../hooks/reduxHooks";
-import { facebookLogin, googleLogin, loginUser } from "./authSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { facebookLogin, googleLogin, loginUser, selectAuth } from "./authSlice";
+import Toast from "../../components/common/Toast";
+import AlertModal from "../../components/auth/AlertModal";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isSubmitting, setisSubmitting] = useState<boolean>(false);
+  const [openErrToast, setOpenErrToast] = useState<boolean>(false);
   const [error, setError] = useState<{ email?: string; password?: string }>({});
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if(openErrToast){
+     timer = setTimeout(() => {
+        setOpenErrToast(false);
+      }, 5000)
+    }
+
+      // Cleanup function to clear timeout when the component unmounts or openErrToast changes
+    return () => clearTimeout(timer)
+  }, [openErrToast])
+
+  const hideErrToast = () => {
+    setOpenErrToast(false)
+  }
 
   const switchToRegisterPage = () => {
     navigate("/register");
@@ -50,10 +70,18 @@ const Login = () => {
         email,
         password,
       })
-    ).then((res) =>
+    ).then((res) =>{
+      typeof res.payload === 'string'  ? handleErr() :
       res.payload !== undefined ? navigate("/") : setisSubmitting(false)
+    }
     );
   };
+
+  const handleErr = () => {
+    setOpenErrToast(true);
+    setisSubmitting(false);
+  }
+
 
   const handleGoogleLogin = () => {
     dispatch(googleLogin());
@@ -171,6 +199,11 @@ const Login = () => {
           />
           <div className="w-[35%] border border-gray-300"></div>
         </div>
+        {
+          openErrToast && (
+            <Toast isOpen={openErrToast} onClose={hideErrToast} children={<AlertModal isSuccess={false} text={'Invalid credentials. Please check the email and password.'} />}  />
+          )
+        }
 
         <div className="flex gap-4 items-center justify-center">
           <div

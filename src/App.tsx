@@ -5,13 +5,14 @@ import "./App.css";
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
 import CursorColor from "./components/common/CursorColor";
+import PageLoadingDisplay from "./components/common/pageLoadingDisplay";
 
 function App() {
   return (
     <>
       <div>
         {/* <h1 className='text-3xl font-bold underline'>company</h1> */}
-        <Suspense fallback={<div className="">Loading</div>}>
+        <Suspense fallback={<PageLoadingDisplay />}>
           <CursorColor />
           <RouterProvider router={router} />
         </Suspense>

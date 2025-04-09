@@ -11,6 +11,8 @@ interface authState {
   sentRecoveryEmail?: boolean;
   passwordIsReset: boolean;
   isEmailVerified: boolean;
+  errorMsg?: any;
+  doUserExist: boolean;
 }
 
 const initialState: authState = {
@@ -31,6 +33,8 @@ const initialState: authState = {
   sentRecoveryEmail: false,
   passwordIsReset: false,
   isEmailVerified: false,
+  errorMsg: '',
+  doUserExist: false,
 };
 
 export const registerUser = createAsyncThunk(
@@ -50,6 +54,7 @@ export const loginUser = createAsyncThunk(
     try {
       return await api.loginUser(userData);
     } catch (error: any) {
+      console.log('login user reject value', error)
       return rejectWithValue(error.message || "login failed");
     }
   }
@@ -115,6 +120,20 @@ export const passwordReset = createAsyncThunk(
       return await api.resetPassword(passwordResetData);
     } catch (error: any) {
       return rejectWithValue(error.message || "failed to reset password");
+    }
+  }
+);
+
+export const checkIfUserExist = createAsyncThunk(
+  "auth/checkIfUserExist",
+  async (
+    email: string,
+    { rejectWithValue }
+  ) => {
+    try {
+      return await api.checkIfUserExist(email);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "failed to find user");
     }
   }
 );
@@ -190,20 +209,34 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = "success";
-        if (action.payload) {
+        if (action.payload ) {
           state.user = action.payload;
         }
       })
-      .addCase(loginUser.rejected, (state) => {
+      .addCase(loginUser.rejected, (state, action) => {
         state.status = "failure";
+        state.errorMsg = action.payload;
+      })
+      .addCase(checkIfUserExist.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(checkIfUserExist.fulfilled, (state, action) => {
+        state.status = "success";
+        if (action.payload ) {
+          state.doUserExist = action.payload;
+        }
+      })
+      .addCase(checkIfUserExist.rejected, (state, action) => {
+        state.status = "failure";
+        state.errorMsg = action.payload;
       })
       .addCase(logoutUser.pending, (state) => {
         state.status = "loading";
       })
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.status = "success";
-        if (action.payload) {
-          // state.user = ;
+        if (state.status === 'success' && action.payload) {
+          state.user = action.payload;
         }
       })
       .addCase(logoutUser.rejected, (state) => {
@@ -256,7 +289,6 @@ const authSlice = createSlice({
       })
       .addCase(getCuurentLoginUserData.fulfilled, (state, action) => {
         state.status = "success";
-        console.log("loginuser data slice ", action.payload);
         if (action.payload) {
           state.user = action.payload;
         }

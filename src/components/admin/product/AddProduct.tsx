@@ -6,20 +6,21 @@ import { lightgrayBgColor } from "../../../constants/appColor";
 import CustomTextArea from "../../common/TextArea";
 import NoImage from "../../../assets/icons/picture-filled.svg?react";
 import Plus from "../../../assets/icons/plus-slim.svg?react";
-import CustomSelect from "../../common/Select";
-import CustomButton from "../../common/Button";
 import Modal from "../../common/Modal";
 import AddCatagory from "./AddCatagory";
 import BrandOrCategory from "./BrandOrCategory";
 import AddBrand from "./AddBrand";
+import { useAppSelector } from "../../../hooks/reduxHooks";
+import { selectAuth } from "../../../features/auth/authSlice";
+import CustomButton from "../../common/Button";
 
 const AddProduct = () => {
   const imageRef = useRef<HTMLInputElement>(null);
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imageIndexClicked, setimageIndexClicked] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [openBrandModal, setOpenBrandModal] = useState<boolean>(false);
-
   const [productName, setProductName] = useState<string>("");
   const [productDesc, setProductDesc] = useState<string>("");
   const [productCategory, setProductCategory] = useState<string>("");
@@ -32,6 +33,14 @@ const AddProduct = () => {
   const [productStockUnit, setProductStockUnit] = useState<string>("");
   const [productStockQty, setProductStockQty] = useState<string>("");
   const [additionalInfo, setadditionalInfo] = useState<string>("");
+  const [brandName, setBrandName] = useState<string>("");
+  const brandImageRef = useRef<HTMLInputElement>(null);
+  const [brandImageUrl, setBrandImageUrl] = useState<string>("");
+  const [brandImageFile, setBrandImageFile] = useState<File>();
+  const [categoryName, setCategoryName] = useState<string>("");
+  const categoryImageRef = useRef<HTMLInputElement>(null);
+  const [categoryImageUrl, setCategoryImageUrl] = useState<string>("");
+  const [categoryImageFile, setCategoryImageFile] = useState<File>();
   const [error, setError] = useState<{
     productName?: string;
     productDesc?: string;
@@ -41,6 +50,7 @@ const AddProduct = () => {
     productStockUnit?: string;
     productStockQty?: string;
   }>({});
+  const { user } = useAppSelector(selectAuth);
 
   const handleProductFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -88,12 +98,41 @@ const AddProduct = () => {
 
     console.log(
       productName,
-      productBrand,
-      productCategory,
       productDesc,
       productPrice,
-      productStockUnit
+      productBrand,
+      productCategory,
+      productStockUnit,
+      productStockQty,
+      productDiscountPercent,
+      productExpirationDate,
+      additionalInfo,
+      imageFiles
     );
+
+    const productData = new FormData();
+    // Append each image file to FormData
+    imageFiles.forEach((file) => {
+      productData.append('imageFiles' ,file)
+    })
+    productData.append('name', productName);
+    productData.append('description', productDesc);
+    productData.append('price', String(parseInt(productPrice)));
+    productData.append('qty', String(parseInt(productStockQty)));
+    productData.append('discount', String(parseInt(productDiscountPercent)));
+    productData.append('category', categoryName);
+    if(categoryImageFile)productData.append('categoryImage', categoryImageFile);
+    productData.append('brand', brandName);
+    if(brandImageFile)productData.append('brandImage', brandImageFile);
+    productData.append('expiration', productExpirationDate);
+    productData.append('serialNo', productStockUnit);
+    productData.append('additionalInfo', additionalInfo);
+    productData.append('creator', user.objectId ?? '');
+
+    // creator: string;
+
+    // isHotDeal?: boolean;
+    // imagesUrl: string[];
   };
 
   const handleShowCategoryModal = () => {
@@ -107,8 +146,9 @@ const AddProduct = () => {
   const handleImageUploaded = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setUploadedImages((prev) => [...prev, imageUrl]);
+      const imageUrl = URL.createObjectURL(file); // create a preview able image
+      setUploadedImages((prev) => [...prev, imageUrl]); // append each image string to the image array and show the image preview
+      setImageFiles((prev) => [...prev, file] ); // append each image file to the image array
     }
   };
 
@@ -247,7 +287,7 @@ const AddProduct = () => {
             />
             <CustomInput
               type="text"
-              label="Product Stock Number"
+              label="Product Stock Serial Number"
               onChange={setProductStockUnit}
               value={productStockUnit}
               Id="setProductStockUnit"
@@ -255,7 +295,7 @@ const AddProduct = () => {
               roundedBorder={true}
               showFullWidth={true}
               textColor="text-gray-500"
-              placeholder="Enter Product Stock Number"
+              placeholder="Enter Product Stock Serial Number"
             />
           </div>
 
@@ -351,6 +391,7 @@ const AddProduct = () => {
           </div>
         </section>
 
+
         <BrandOrCategory
           isBrand={false}
           val={productCategory}
@@ -366,11 +407,34 @@ const AddProduct = () => {
           onChange={setProductBrand}
           errorMsg={error.productBrand}
         />
+       
       </div>
 
+      <CustomButton text="Create Product" type="submit" fullwidth={true} />
+      
       <Modal
         isOpen={isModalOpen}
-        children={openBrandModal ? <AddBrand /> : <AddCatagory />}
+        children={openBrandModal ? 
+        <AddBrand 
+          brandImageFile={brandImageFile}
+          brandImageRef={brandImageRef}
+          brandImageUrl={brandImageUrl}
+          brandName={brandName}
+          setBrandImageFile={setBrandImageFile}
+          setBrandImageUrl={setBrandImageUrl}
+          setBrandName={setBrandName} 
+          onClick={() => setIsModalOpen(false)}         
+          /> : 
+          <AddCatagory 
+          categoryImageUrl={categoryImageUrl}
+          categoryImageFile={categoryImageFile}
+          categoryImageRef={categoryImageRef}
+          categoryName={categoryName}
+          setCategoryImageFile={setCategoryImageFile}
+          setCategoryImageUrl={setCategoryImageUrl}
+          setCategoryName={setCategoryName}
+          onClick={() => setIsModalOpen(false)}
+          />}
         onClose={() => setIsModalOpen(false)}
       />
     </form>

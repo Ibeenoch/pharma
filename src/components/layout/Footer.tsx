@@ -114,8 +114,8 @@ const Footer = () => {
               color="text-white"
             />
             <div className="flex gap-3 mt-2 items-center">
-              {socialIcons.map((Item) => (
-                <Item className="w-4 h-4 fill-white cursor-pointer" />
+              {socialIcons.map((Item, index) => (
+                <Item key={index} className="w-4 h-4 fill-white cursor-pointer" />
               ))}
             </div>
           </div>

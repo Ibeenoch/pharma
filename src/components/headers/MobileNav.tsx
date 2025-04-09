@@ -138,7 +138,7 @@ const MobileNav = () => {
           <input
             type="search"
             name="search"
-            id="search"
+            id="mobile-search"
             placeholder="Search for any Product or Brand..."
             className=" lg:hidden w-full px-4 py-2 border border-gray-300 focus:border-gray-300 outline outline-gray-300 placeholder:text-xs"
           />
