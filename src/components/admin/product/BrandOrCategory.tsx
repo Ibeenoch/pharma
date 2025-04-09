@@ -55,6 +55,7 @@ const BrandOrCategory: React.FC<BrandOrCategoryProps> = ({
         weightType="semibold"
         borderRadiusType="allcurved"
         className="mt-3"
+        type="button"
       />
     </section>
   );
