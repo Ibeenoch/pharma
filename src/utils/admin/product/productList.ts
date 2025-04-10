@@ -207,3 +207,175 @@ export const allproductColumn = [
   { key: "dateAdded", label: "Date Added" },
   { key: "actions", label: "Actions" },
 ];
+
+export const productCategories = [
+  "Pain Relievers",
+  "Cough and Cold Remedies",
+  "Vitamins and Supplements",
+  "Antibiotics",
+  "Antimalarials",
+  "Antifungals",
+  "Antivirals",
+  "Antihypertensives",
+  "Antidiabetics",
+  "Cardiovascular Drugs",
+  "Gastrointestinal Medications",
+  "Allergy and Antihistamines",
+  "Dermatological Products",
+  "Eye and Ear Preparations",
+  "Hormonal Therapy",
+  "Contraceptives",
+  "Psychiatric Medications",
+  "Respiratory Medications",
+  "Muscle Relaxants",
+  "Immunosuppressants",
+  "Pediatric Medications",
+  "Nutritional Supplements",
+  "Neurological Medications",
+  "Cancer Treatment Drugs",
+  "Veterinary Medicines"
+]
+
+export const productBrands = [
+  {
+    "value": "EmzorPharmaceuticalIndustriesLimited",
+    "label": "Emzor Pharmaceutical Industries Limited",
+    "companyImage": "https://www.emzor.com.ng/wp-content/uploads/2021/08/Emzor-Logo.png"
+  },
+  {
+    "value": "FidsonHealthcarePlc",
+    "label": "Fidson Healthcare Plc",
+    "companyImage": "https://fidson.com/wp-content/uploads/2020/09/fidson-logo.png"
+  },
+  {
+    "value": "MayAndBakerNigeriaPlc",
+    "label": "May & Baker Nigeria Plc",
+    "companyImage": "https://www.may-baker.com/wp-content/uploads/2019/06/may-and-baker-logo.png"
+  },
+  {
+    "value": "NeimethInternationalPharmaceuticalsPlc",
+    "label": "Neimeth International Pharmaceuticals Plc",
+    "companyImage": "https://neimethinternational.com/wp-content/uploads/2019/09/neimeth-logo.png"
+  },
+  {
+    "value": "SwissPharmaNigeriaLimited",
+    "label": "Swiss Pharma Nigeria Limited (Swipha)",
+    "companyImage": "https://www.swiphanigeria.com/wp-content/uploads/2019/12/swipha-logo.png"
+  },
+  {
+    "value": "MecureIndustriesPlc",
+    "label": "Mecure Industries Plc",
+    "companyImage": "https://www.mecure.com.ng/wp-content/uploads/2020/09/mercure-logo.png"
+  },
+  {
+    "value": "MorisonIndustriesPlc",
+    "label": "Morison Industries Plc",
+    "companyImage": "https://www.morison.com.ng/wp-content/uploads/2020/06/morison-logo.png"
+  },
+  {
+    "value": "DanaDrugsLimited",
+    "label": "Dana Drugs Limited",
+    "companyImage": "https://www.danadrugs.com/wp-content/uploads/2020/07/dana-drugs-logo.png"
+  },
+  {
+    "value": "DailyNeedIndustriesLimited",
+    "label": "Daily Need Industries Limited",
+    "companyImage": "https://www.dailyneedpharma.com/wp-content/uploads/2020/06/dailyneed-logo.png"
+  },
+  {
+    "value": "EvansMedicalPlc",
+    "label": "Evans Medical Plc",
+    "companyImage": "https://www.evansmedical.com/wp-content/uploads/2020/05/evans-logo.png"
+  },
+  {
+    "value": "JuhelNigeriaLimited",
+    "label": "Juhel Nigeria Limited",
+    "companyImage": "https://www.juhelgroup.com/wp-content/uploads/2020/10/juhel-logo.png"
+  },
+  {
+    "value": "GreenlifePharmaceuticalsLimited",
+    "label": "Greenlife Pharmaceuticals Limited",
+    "companyImage": "https://greenlifepharmaceuticals.com/wp-content/uploads/2020/06/greenlife-logo.png"
+  },
+  {
+    "value": "PharmatexNigeriaLimited",
+    "label": "Pharmatex Nigeria Limited",
+    "companyImage": "https://www.pharmatex.com.ng/wp-content/uploads/2020/08/pharmatex-logo.png"
+  },
+  {
+    "value": "ArachisPharmaceuticalNigeriaLimited",
+    "label": "Arachis Pharmaceutical Nigeria Limited",
+    "companyImage": "https://www.archypharma.com/wp-content/uploads/2020/06/archy-logo.png"
+  },
+ 
+  {
+    "value": "NigerianGermanChemicalsPlc",
+    "label": "Nigerian German Chemicals Plc",
+    "companyImage": "https://www.ngcplc.com/wp-content/uploads/2020/06/ngc-logo.png"
+  },
+  {
+    "value": "DGFPharmaNigeriaPlc",
+    "label": "DGF Pharma Nigeria Plc",
+    "companyImage": "https://www.dgfpharma.com/wp-content/uploads/2020/05/dgf-logo.png"
+  },
+  {
+    "value": "AdipharmPharmaceuticalsLimited",
+    "label": "Adipharm Pharmaceuticals Limited",
+    "companyImage": "https://www.adpharm.com.ng/wp-content/uploads/2020/09/adpharm-logo.png"
+  },
+  {
+    "value": "AlphaPharmacyAndStoresLimited",
+    "label": "Alpha Pharmacy and Stores Limited",
+    "companyImage": "https://www.alphapharmacy.com/wp-content/uploads/2020/07/alpha-logo.png"
+  },
+  {
+    "value": "ElbePharmaNigeriaLimited",
+    "label": "Elbe Pharma Nigeria Limited",
+    "companyImage": "https://www.elbepharma.com/wp-content/uploads/2020/08/elbe-logo.png"
+  },
+  {
+    "value": "GeneithPharmaceuticalsLimited",
+    "label": "Geneith Pharmaceuticals Limited",
+    "companyImage": "https://www.geneithpharma.com/wp-content/uploads/2020/06/geneith-logo.png"
+  },
+  {
+    "value": "HovidNigeriaLimited",
+    "label": "Hovid Nigeria Limited",
+    "companyImage": "https://www.hovid.com/wp-content/uploads/2020/05/hovid-logo.png"
+  },
+  {
+    "value": "MaydonPharmaceuticalsLimited",
+    "label": "Maydon Pharmaceuticals Limited",
+    "companyImage": "https://www.maydonpharma.com/wp-content/uploads/2020/07/maydon-logo.png"
+  },
+  {
+    "value": "NewHeightsPharmaceuticalsLimited",
+    "label": "New Heights Pharmaceuticals Limited",
+    "companyImage": "https://www.newheightspharma.com/wp-content/uploads/2020/08/newheights-logo.png"
+  },
+  {
+    "value": "PhamatexIndustriesLimited",
+    "label": "Phamatex Industries Limited",
+    "companyImage": "https://www.phamatex.com.ng/wp-content/uploads/2020/06/phamatex-logo.png"
+  },
+  {
+    "value": "RanbaxyNigeriaLimited",
+    "label": "Ranbaxy Nigeria Limited",
+    "companyImage": "https://www.ranbaxy.com/wp-content/uploads/2020/07/ranbaxy-logo.png"
+  },
+  {
+    "value": "SKGPharmaLimited",
+    "label": "SKG Pharma Limited",
+    "companyImage": "https://www.skgpharma.com/wp-content/uploads/2020/05/skg-logo.png"
+  },
+  {
+    "value": "VixaPharmaceuticalCompanyLimited",
+    "label": "Vixa Pharmaceutical Company Limited",
+    "companyImage": "https://www.vixapharma.com/wp-content/uploads/2020/10/vixa-logo.png"
+  },
+  {
+    "value": "ZolonHealthcareLimited",
+    "label": "Zolon Healthcare Limited",
+    "companyImage": "https://www.zolonhealthcare.com/wp-content/uploads/2020/09/zolon-logo.png"
+  }
+]

@@ -162,7 +162,6 @@ const AddProduct = () => {
   const imageClicked = (index: number) => {
     setimageIndexClicked(index);
   };
-  // name desc, categ, brand, price, expiredate, discount%, stockUnit num
 
   return (
     <form
@@ -364,7 +363,7 @@ const AddProduct = () => {
                     imageIndexClicked === index ? "border border-gray-300" : ""
                   }`}
                 >
-                  <img src={pic} alt="" className="w-18 h-18" />
+                  <img src={pic} alt="" className="w-18 h-18 cursor-pointer" />
                 </div>
               ))
             ) : (
@@ -376,7 +375,7 @@ const AddProduct = () => {
                 onClick={uploadImage}
                 className="p-2 w-23 h-23 flex justify-center items-center bg-white rounded-md border border-dashed border-gray-300"
               >
-                <span className="flex justify-center items-center bg-gray-200 p-2 rounded-full">
+                <span className="flex justify-center items-center bg-gray-200 p-2 rounded-full cursor-pointer">
                   <Plus className="w-4 h-4 text-white" />
                 </span>
                 <input

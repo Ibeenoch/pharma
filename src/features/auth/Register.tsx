@@ -124,7 +124,6 @@ const Register = () => {
     // Ty2t8+!eyej7
 
     dispatch(checkIfUserExist(email)).then((res) => {
-      console.log('email status is ', res.payload)
       if(res.payload === false){
         dispatch(
           registerUser({
@@ -140,7 +139,7 @@ const Register = () => {
         ).then((res) => {
           const payload = res.payload as { role?: string };
           console.log('res payload', res.payload);
-         typeof payload === 'string' ? handleErrorSigningUp(payload) :  payload?.role === 'Admin' ?  navigate("/admin/dashboard") :  navigate("/verify/pending");
+         typeof payload === 'string' ? handleErrorSigningUp(payload) :   navigate("/verify/pending");
           
         });
       }else{

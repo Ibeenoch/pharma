@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice,  } from "@reduxjs/toolkit";
 import { RootState } from "../../../redux/store";
 import { productDataProps } from "../../../types/product/ProductData";
 import * as api from "./productService";
@@ -47,7 +47,7 @@ const productAdminSlice = createSlice({
       .addCase(createProduct.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(createProduct.fulfilled, (state, action) => {
+      .addCase(createProduct.fulfilled, (state, ) => {
         state.status = "success";
       })
       .addCase(createProduct.rejected, (state) => {

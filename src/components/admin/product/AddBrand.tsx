@@ -77,7 +77,7 @@ const AddBrand: React.FC<AddBrandProps> = ({
             alt="Brand image cover"
           />
         ) : (
-          <Photo className="w-22 h-22 text-gray-300" />
+          <Photo className="w-22 h-22 text-gray-300 cursor-pointer" />
         )}
         <input
           ref={brandImageRef}

@@ -36,6 +36,7 @@ import AccountSettingsPage from "./pages/admin/settings/AccountSettingsPage";
 import GeneralSettingsPage from "./pages/admin/settings/GeneralSettingsPage";
 import EmailVerificationPendingPage from "./pages/EmailVerificationPendingPage";
 import EmailVerificationSuccessfulPage from "./pages/EmailVerificationSuccessfulPage";
+import SecureAdminPage from "./features/auth/SecureAdminPage";
 const Home = lazy(() => import("./pages/Home"));
 
 const router = createBrowserRouter([
@@ -117,76 +118,80 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin/dashboard",
-    element: <DashBoardPage />,
+    element: <SecureAdminPage child={<DashBoardPage />} /> ,
   },
 
   {
     path: "/admin/users/all",
-    element: <ALlUsersPage />,
+    element: <SecureAdminPage child={<ALlUsersPage />} /> ,
   },
   {
     path: "/admin/users/admin",
-    element: <UsersAdminPage />,
+    element: <SecureAdminPage child={<UsersAdminPage />} />,
   },
   {
     path: "/admin/users/pharmacy",
-    element: <PharmacyPage />,
+    element: <SecureAdminPage child={<PharmacyPage />} />,
   },
   {
     path: "/admin/users/customer",
-    element: <CustomerPage />,
+    element: <SecureAdminPage child={<CustomerPage />} />,
   },
   {
     path: "/admin/product/all",
-    element: <ProductPage />,
+    element: <SecureAdminPage child={<ProductPage />} />,
   },
   {
     path: "/admin/product/add",
-    element: <AddProductPage />,
+    element: <SecureAdminPage child={<AddProductPage />} />,
+  },
+  {
+    path: "/admin/product/update/:id",
+    element: <SecureAdminPage child={<AddProductPage />} />,
   },
   {
     path: "/admin/order/all",
-    element: <OrderPage />,
+    element: <SecureAdminPage child={<OrderPage />} />,
   },
   {
     path: "/admin/order/active",
-    element: <ActiveOrderPage />,
+    element: <SecureAdminPage child={<ActiveOrderPage />} />,
   },
   {
     path: "/admin/order/cancelled",
-    element: <CancelledOrderPage />,
+    element: <SecureAdminPage child={<CancelledOrderPage />} />,
   },
   {
     path: "/admin/order/pending",
-    element: <PendingOrderPage />,
+    element: <SecureAdminPage child={<PendingOrderPage />} />,
   },
   {
     path: "/admin/order/completed",
-    element: <CompletedOrderPage />,
+    element: <SecureAdminPage child={<CompletedOrderPage />} />,
   },
   {
     path: "/admin/transaction/all",
-    element: <TransactionPage />,
+    element: <SecureAdminPage child={<TransactionPage />} />,
   },
   {
     path: "/admin/transaction/pending",
-    element: <PendingTransactionPage />,
+    element: <SecureAdminPage child={<PendingTransactionPage />} />,
   },
   {
     path: "/admin/transaction/completed",
-    element: <CompletedTransactionPage />,
+    element: <SecureAdminPage child={<CompletedTransactionPage />} />,
   },
   {
     path: "/admin/transaction/cancelled",
-    element: <CancelledTransactionPage />,
+    element: <SecureAdminPage child={<CancelledTransactionPage />} />,
   },
   {
     path: "/admin/settings/account",
-    element: <AccountSettingsPage />,
+    element: <SecureAdminPage child={<AccountSettingsPage />} />,
   },
   {
     path: "/admin/settings/general",
-    element: <GeneralSettingsPage />,
+    element: <SecureAdminPage child={<GeneralSettingsPage />} />,
   },
 ]);
 

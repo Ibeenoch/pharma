@@ -71,8 +71,8 @@ const Login = () => {
         password,
       })
     ).then((res) =>{
-      typeof res.payload === 'string'  ? handleErr() :
-      res.payload !== undefined ? navigate("/") : setisSubmitting(false)
+      const payload = res.payload as { role?: string };
+      typeof res.payload === 'string'  ? handleErr() :  payload?.role === 'Admin' ?  navigate("/admin/dashboard") :  navigate("/");
     }
     );
   };

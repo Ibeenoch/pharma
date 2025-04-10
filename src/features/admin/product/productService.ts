@@ -24,17 +24,32 @@ export const createProduct = async (productData: FormData) => {
 
     // upload the product images
     const imageFiles = productData.getAll("imageFiles") as File[];
-    let uploadedImageFiles: any[] = [];
-    imageFiles.forEach(async (image) => {
-      const imageUploaded = await storage.createFile(
+    let uploadedProductImageFiles: { fileId: string; name: string; mimeType: string }[] = [];
+    for(const image of imageFiles){
+      const res =  await storage.createFile(
         import.meta.env.VITE_BUCKET_ID,
         ID.unique(),
         image
       );
-      uploadedImageFiles.push(imageUploaded);
-    });
 
-    console.log("product imageFiles", imageFiles);
+      uploadedProductImageFiles.push({
+        fileId: res.$id,
+        name: res.name,
+        mimeType: res.mimeType,
+      })
+    }
+ 
+    let productImages: string[] = []
+    for(const fileId of uploadedProductImageFiles){
+      const res = storage.getFileDownload(
+        import.meta.env.VITE_BUCKET_ID,
+        fileId.fileId,
+    );
+
+    productImages.push(res);
+    }
+
+    console.log("product imageFiles", productImages, );
 
     // upload category image
     const categoryImageFile = productData.get("categoryImage") as File;
@@ -43,7 +58,13 @@ export const createProduct = async (productData: FormData) => {
       ID.unique(),
       categoryImageFile
     );
-    console.log("categoryImageUploaded ", categoryImageUploaded);
+// fetch the category image url
+    const categoryImage = storage.getFileDownload(
+      import.meta.env.VITE_BUCKET_ID,
+      categoryImageUploaded.$id,
+  );
+    console.log("categoryImageUploaded ", categoryImage, typeof categoryImage);
+
 
     // upload brand image
     const brandImageFile = productData.get("brandImage") as File;
@@ -52,7 +73,12 @@ export const createProduct = async (productData: FormData) => {
       ID.unique(),
       brandImageFile
     );
-    console.log("brandImageFile ", brandImageFile);
+    // fetch the brand image url
+    const brandImage = storage.getFileDownload(
+      import.meta.env.VITE_BUCKET_ID,
+      brandImageUploaded.$id,
+  );
+    console.log("brandImageFile ", brandImage, typeof brandImage);
 
     const productCreation = await database.createDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
@@ -62,17 +88,17 @@ export const createProduct = async (productData: FormData) => {
         creator,
         name,
         description,
-        price,
-        qty,
-        discount,
+        price: parseInt(price),
+        quantity: parseInt(qty),
+        discount: parseInt(discount),
         category,
         brand,
-        expiration,
-        serialNo,
-        additionalInfo,
-        imagesUrl: uploadedImageFiles,
-        categoryimagesUrl: categoryImageUploaded,
-        brandimagesUrl: brandImageUploaded,
+        expirationDate: expiration,
+        productSerialNo: serialNo,
+        additionalInfo: additionalInfo,
+        imagesUrl: productImages,
+        categoryImage,
+        brandImage,
       }
     );
 

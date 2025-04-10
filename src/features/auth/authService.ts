@@ -1,5 +1,5 @@
-import { Account, Databases, ID, OAuthProvider } from "appwrite";
-import client, { account, database } from "../../lib/appwriteConfig";
+import {  ID, OAuthProvider } from "appwrite";
+import { account, database } from "../../lib/appwriteConfig";
 import { UserDataProps } from "../../types/auth/UserData";
 import { Query } from "node-appwrite";
 import { URL } from "../../constants/appGeneral";
@@ -9,7 +9,7 @@ import { URL } from "../../constants/appGeneral";
 export const registerUser = async (userData: UserDataProps) => {
   try {
     const user = await account.create(
-      "unique()",
+      ID.unique(),
       userData.email,
       userData.password
     );
@@ -214,7 +214,7 @@ export const getCurrentLoginUser = async () => {
       passcode,
     } as UserDataProps;
   } else {
-    const userCreated = await database.createDocument(
+     await database.createDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID, // collection id
       ID.unique(),
