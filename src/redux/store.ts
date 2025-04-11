@@ -4,11 +4,34 @@ import adminReducer from "../features/admin/adminSlice";
 import adminProduceReducer from "../features/admin/product/productSlice";
 import productReducer from "../features/product/productSlice";
 import storage from "redux-persist/lib/storage";
-import { persistReducer } from "redux-persist";
+import { createMigrate, persistReducer } from "redux-persist";
+
+//  What’s happening in your code?
+// 1. version: 1
+// You’re telling Redux Persist:
+
+// “Hey, this version of my state is version 1. If a user's saved state is older than this, run a migration to update it.”
+
+const migrations = {
+  1: (state: any) => {
+    return {
+      ...state,
+      productAdmin: {
+        ...state.productAdmin,
+        hasFetchAllProduct: false,
+        status: "idle",
+        productAdmin: [],
+        productIndexClicked: "",
+      },
+    };
+  },
+};
 
 const persistConfig = {
   key: "root",
   storage,
+  version: 1,
+  migrate: createMigrate(migrations, { debug: false }),
   // blackList: ["auth", "checkout"],
 };
 
@@ -23,6 +46,10 @@ const persistedReducer = persistReducer(persistConfig, reducers);
 
 export const store = configureStore({
   reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false, // required for redux-persist
+    }),
 });
 
 // export const store = configureStore({

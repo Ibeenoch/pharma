@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction,  } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../../redux/store";
 import { ProductDataProps } from "../../../types/product/ProductData";
 import * as api from "./productService";
@@ -14,7 +14,7 @@ const initialState: productAdminState = {
   status: "idle",
   productAdmin: [],
   hasFetchAllProduct: false,
-  productIndexClicked: '',
+  productIndexClicked: "",
 };
 
 export const createProduct = createAsyncThunk(
@@ -22,6 +22,17 @@ export const createProduct = createAsyncThunk(
   async (productData: FormData, { rejectWithValue }) => {
     try {
       return await api.createProduct(productData);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+);
+
+export const updateProduct = createAsyncThunk(
+  "product/updateProduct",
+  async (productData: FormData, { rejectWithValue }) => {
+    try {
+      return await api.updateProduct(productData);
     } catch (error: any) {
       return rejectWithValue(error.message || "Something went wrong");
     }
@@ -48,17 +59,29 @@ const productAdminSlice = createSlice({
     },
     setProductIndexClicked: (state, action: PayloadAction<string>) => {
       state.productIndexClicked = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(createProduct.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(createProduct.fulfilled, (state, ) => {
+      .addCase(createProduct.fulfilled, (state) => {
         state.status = "success";
       })
       .addCase(createProduct.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(updateProduct.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload !== undefined) {
+          // state.productAdmin.find
+        }
+      })
+      .addCase(updateProduct.rejected, (state) => {
         state.status = "failure";
       })
       .addCase(fetchAllUserProduct.pending, (state) => {
@@ -66,8 +89,8 @@ const productAdminSlice = createSlice({
       })
       .addCase(fetchAllUserProduct.fulfilled, (state, action) => {
         state.status = "success";
-        if(state.status === 'success' && action.payload !== undefined){
-          state.hasFetchAllProduct=true;
+        if (state.status === "success" && action.payload !== undefined) {
+          state.hasFetchAllProduct = true;
           state.productAdmin = action.payload;
         }
       })
@@ -78,5 +101,6 @@ const productAdminSlice = createSlice({
 });
 
 export const selectproductAdmin = (state: RootState) => state.productAdmin;
-export const { invalidateFetchAllProductCache, setProductIndexClicked } = productAdminSlice.actions;
+export const { invalidateFetchAllProductCache, setProductIndexClicked } =
+  productAdminSlice.actions;
 export default productAdminSlice.reducer;

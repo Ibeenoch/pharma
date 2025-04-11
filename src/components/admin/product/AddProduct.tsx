@@ -6,47 +6,88 @@ import { lightgrayBgColor } from "../../../constants/appColor";
 import CustomTextArea from "../../common/TextArea";
 import NoImage from "../../../assets/icons/picture-filled.svg?react";
 import Plus from "../../../assets/icons/plus-slim.svg?react";
-import Modal from "../../common/Modal";
-import AddCatagory from "./AddCatagory";
 import BrandOrCategory from "./BrandOrCategory";
-import AddBrand from "./AddBrand";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { selectAuth } from "../../../features/auth/authSlice";
 import CustomButton from "../../common/Button";
-import { createProduct, selectproductAdmin } from "../../../features/admin/product/productSlice";
+import {
+  createProduct,
+  invalidateFetchAllProductCache,
+  selectproductAdmin,
+  updateProduct,
+} from "../../../features/admin/product/productSlice";
 import { useParams } from "react-router-dom";
 
 const AddProduct = () => {
   const { user } = useAppSelector(selectAuth);
   const { productAdmin } = useAppSelector(selectproductAdmin);
   const { id } = useParams();
-  const singleProduct = productAdmin.find((p) => p.productId === id);
+  const singleProduct = (Array.isArray(productAdmin) &&
+    productAdmin.find((p) => p.productId === id)) || {
+    imagesUrl: [],
+    name: "",
+    description: "",
+    category: "",
+    brand: "",
+    price: null,
+    discount: null,
+    expirationDate: "",
+    productSerialNo: "",
+    additionalInfo: "",
+    quantity: null,
+  };
   const imageRef = useRef<HTMLInputElement>(null);
-  const [uploadedImages, setUploadedImages] = useState<string[]>( id ? singleProduct?.imagesUrl ?? [] : []);
+  const [uploadedImages, setUploadedImages] = useState<string[]>(
+    id ? singleProduct?.imagesUrl ?? [] : []
+  );
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imageIndexClicked, setimageIndexClicked] = useState<number>(0);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [openBrandModal, setOpenBrandModal] = useState<boolean>(false);
-  const [productName, setProductName] = useState<string>(id ? singleProduct?.name ?? '' : "");
-  const [productDesc, setProductDesc] = useState<string>(id ? singleProduct?.description ?? '' : "");
-  const [productCategory, setProductCategory] = useState<string>(id ? singleProduct?.category ?? '' : "");
-  const [productBrand, setProductBrand] = useState<string>(id ? singleProduct?.brand ?? '' : "");
-  const [productPrice, setProductPrice] = useState<string>(id ? (singleProduct?.price !== undefined ? singleProduct.price.toString() : "") : "");
-  const [productDiscountPercent, setProductDiscountPercent] =
-    useState<string>(id ? (singleProduct?.discount !== undefined ? singleProduct.discount.toString() : "") : "");
-  const [productExpirationDate, setProductExpirationDate] =
-    useState<string>(id ? singleProduct?.expirationDate ?? '' : "");
-  const [productStockUnit, setProductStockUnit] = useState<string>(id ? singleProduct?.productSerialNo ?? '' : "");
-  const [productStockQty, setProductStockQty] = useState<string>(id ? (singleProduct?.quantity !== undefined ? singleProduct.quantity.toString() : "") : "");
-  const [additionalInfo, setadditionalInfo] = useState<string>(id ? singleProduct?.additionalInfo ?? '' : "");
-  const [brandName, setBrandName] = useState<string>("");
-  const brandImageRef = useRef<HTMLInputElement>(null);
-  const [brandImageUrl, setBrandImageUrl] = useState<string>("");
-  const [brandImageFile, setBrandImageFile] = useState<File>();
-  const [categoryName, setCategoryName] = useState<string>("");
-  const categoryImageRef = useRef<HTMLInputElement>(null);
-  const [categoryImageUrl, setCategoryImageUrl] = useState<string>("");
-  const [categoryImageFile, setCategoryImageFile] = useState<File>();
+  const [productName, setProductName] = useState<string>(
+    id ? singleProduct?.name ?? "" : ""
+  );
+  const [productDesc, setProductDesc] = useState<string>(
+    id ? singleProduct?.description ?? "" : ""
+  );
+  const [productCategory, setProductCategory] = useState<string>(
+    id ? singleProduct?.category ?? "" : ""
+  );
+  const [productBrand, setProductBrand] = useState<string>(
+    id ? singleProduct?.brand ?? "" : ""
+  );
+  const [productPrice, setProductPrice] = useState<string>(
+    id
+      ? singleProduct?.price !== undefined && singleProduct?.price !== null
+        ? singleProduct.price.toString()
+        : ""
+      : ""
+  );
+  const [productDiscountPercent, setProductDiscountPercent] = useState<string>(
+    id
+      ? singleProduct?.discount !== undefined &&
+        singleProduct?.discount !== null
+        ? singleProduct.discount.toString()
+        : ""
+      : ""
+  );
+  const [productExpirationDate, setProductExpirationDate] = useState<string>(
+    id && singleProduct?.expirationDate
+      ? new Date(singleProduct.expirationDate).toISOString().split("T")[0]
+      : ""
+  );
+  const [productStockUnit, setProductStockUnit] = useState<string>(
+    id ? singleProduct?.productSerialNo ?? "" : ""
+  );
+  const [productStockQty, setProductStockQty] = useState<string>(
+    id
+      ? singleProduct?.quantity !== undefined &&
+        singleProduct?.quantity !== null
+        ? singleProduct.quantity.toString()
+        : ""
+      : ""
+  );
+  const [additionalInfo, setadditionalInfo] = useState<string>(
+    id ? singleProduct?.additionalInfo ?? "" : ""
+  );
   const [isFormSubmitting, setIsFormSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<{
     productName?: string;
@@ -57,12 +98,13 @@ const AddProduct = () => {
     productStockUnit?: string;
     productStockQty?: string;
   }>({});
- 
 
   const dispatch = useAppDispatch();
-
+  console.log(user);
   const handleProductFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!user || !user.userId || user.role?.toLowerCase() !== "admin") return;
+    console.log("productBrand ", productBrand);
 
     setIsFormSubmitting(true);
     const productNameValid = validator(productName, "others");
@@ -81,6 +123,12 @@ const AddProduct = () => {
     ) {
       setError({
         productName: productNameValid ? undefined : "Product name is required",
+        productCategory: productCategoryValid
+          ? undefined
+          : "Product category is required",
+        productBrand: productBrandValid
+          ? undefined
+          : "Product brand is required",
         productDesc: productDescValid
           ? undefined
           : "Product description is required",
@@ -98,7 +146,6 @@ const AddProduct = () => {
       setIsFormSubmitting(false);
       return;
     }
- 
 
     const productData = new FormData();
     // Append each image file to FormData
@@ -110,34 +157,31 @@ const AddProduct = () => {
     productData.append("price", String(parseInt(productPrice)));
     productData.append("qty", String(parseInt(productStockQty)));
     productData.append("discount", String(parseInt(productDiscountPercent)));
-    productData.append("category", categoryName);
-    if (categoryImageFile)
-      productData.append("categoryImage", categoryImageFile);
-    productData.append("brand", brandName);
-    if (brandImageFile) productData.append("brandImage", brandImageFile);
+    productData.append("category", productCategory);
+
+    productData.append("brand", productBrand);
     productData.append("expiration", productExpirationDate);
     productData.append("serialNo", productStockUnit);
     productData.append("additionalInfo", additionalInfo);
     productData.append("creator", user.userId ?? "");
 
-    // creator: string;
-
-    // isHotDeal?: boolean;
-    // imagesUrl: string[];
-    dispatch(createProduct(productData)).then((res) => {
-      console.log("product res: ", res.payload);
-      setIsFormSubmitting(false);
-    });
+    if (id) {
+      productData.append("productId", id);
+      productData.append("uploadedImages", JSON.stringify(uploadedImages));
+      dispatch(updateProduct(productData)).then((res) => {
+        console.log("product update res: ", res.payload);
+        setIsFormSubmitting(false);
+        dispatch(invalidateFetchAllProductCache(false));
+      });
+    } else {
+      dispatch(createProduct(productData)).then((res) => {
+        console.log("product res: ", res.payload);
+        setIsFormSubmitting(false);
+        dispatch(invalidateFetchAllProductCache(false));
+      });
+    }
   };
 
-  const handleShowCategoryModal = () => {
-    setIsModalOpen(true);
-    setOpenBrandModal(false);
-  };
-  const handleShowBrandModal = () => {
-    setIsModalOpen(true);
-    setOpenBrandModal(true);
-  };
   const handleImageUploaded = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -388,7 +432,6 @@ const AddProduct = () => {
         <BrandOrCategory
           isBrand={false}
           val={productCategory}
-          openModalFunc={handleShowCategoryModal}
           onChange={setProductCategory}
           errorMsg={error.productCategory}
         />
@@ -396,47 +439,16 @@ const AddProduct = () => {
         <BrandOrCategory
           isBrand={true}
           val={productBrand}
-          openModalFunc={handleShowBrandModal}
           onChange={setProductBrand}
           errorMsg={error.productBrand}
         />
       </div>
 
       <CustomButton
-        text="Create Product"
+        text={id ? "Update Document" : "Create Product"}
         type="submit"
         fullwidth={true}
         isLoading={isFormSubmitting}
-      />
-
-      <Modal
-        isOpen={isModalOpen}
-        children={
-          openBrandModal ? (
-            <AddBrand
-              brandImageFile={brandImageFile}
-              brandImageRef={brandImageRef}
-              brandImageUrl={brandImageUrl}
-              brandName={brandName}
-              setBrandImageFile={setBrandImageFile}
-              setBrandImageUrl={setBrandImageUrl}
-              setBrandName={setBrandName}
-              onClick={() => setIsModalOpen(false)}
-            />
-          ) : (
-            <AddCatagory
-              categoryImageUrl={categoryImageUrl}
-              categoryImageFile={categoryImageFile}
-              categoryImageRef={categoryImageRef}
-              categoryName={categoryName}
-              setCategoryImageFile={setCategoryImageFile}
-              setCategoryImageUrl={setCategoryImageUrl}
-              setCategoryName={setCategoryName}
-              onClick={() => setIsModalOpen(false)}
-            />
-          )
-        }
-        onClose={() => setIsModalOpen(false)}
       />
     </form>
   );

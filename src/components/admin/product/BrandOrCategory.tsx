@@ -1,5 +1,4 @@
 import React from "react";
-import CustomButton from "../../common/Button";
 import CustomSelect from "../../common/Select";
 import { lightgrayBgColor } from "../../../constants/appColor";
 import CustomText from "../../common/Text";
@@ -10,7 +9,6 @@ interface BrandOrCategoryProps {
   isBrand: boolean;
   onChange: React.Dispatch<React.SetStateAction<string>>;
   val: string;
-  openModalFunc: () => void;
   errorMsg: string | undefined;
 }
 
@@ -18,10 +16,11 @@ const BrandOrCategory: React.FC<BrandOrCategoryProps> = ({
   isBrand,
   onChange,
   val,
-  openModalFunc,
   errorMsg,
 }) => {
-  const filteredBrands: { value: string; label: string; }[] = productBrands.map((brand) => ({ value: brand.value, label: brand.label,}) )
+  const filteredBrands: { value: string; label: string }[] = productBrands.map(
+    (brand) => ({ value: brand.value, label: brand.label })
+  );
   return (
     <section className={`${lightgrayBgColor} p-4 rounded-xl mt-3  pb-8`}>
       <CustomText
@@ -38,7 +37,7 @@ const BrandOrCategory: React.FC<BrandOrCategoryProps> = ({
           required={true}
           showborder={false}
           roundedBorder={true}
-          options={isBrand ? filteredBrands: filteredBrands}
+          options={isBrand ? filteredBrands : filteredBrands}
           validate={(value) => validator(value, "others")}
           showFullWidth={true}
           errorMessage={
@@ -51,15 +50,6 @@ const BrandOrCategory: React.FC<BrandOrCategoryProps> = ({
           }
         />
       </div>
-      <CustomButton
-        onClick={openModalFunc}
-        text={`${isBrand ? "Add Brand" : "Add Category"}`}
-        textSize="small"
-        weightType="semibold"
-        borderRadiusType="allcurved"
-        className="mt-3"
-        type="button"
-      />
     </section>
   );
 };
