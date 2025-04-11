@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../redux/store";
-import { productDataProps } from "../../types/product/ProductData";
+import { ProductDataProps } from "../../types/product/ProductData";
 
 interface productState {
   status: "idle" | "loading" | "success" | "failure";
-  product: productDataProps;
+  product: ProductDataProps;
 }
 
 const initialState: productState = {
@@ -15,12 +15,12 @@ const initialState: productState = {
     description: "",
     brand: "",
     category: "",
-    qty: 0,
+    quantity: 0,
     additionalInfo: "",
     discount: 0,
-    expiration: "",
+    expirationDate: "",
     isHotDeal: false,
-    serialNo: "",
+    productSerialNo: "",
     creator: '',
     imagesUrl: []
   },
