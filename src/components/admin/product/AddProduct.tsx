@@ -13,27 +13,32 @@ import AddBrand from "./AddBrand";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { selectAuth } from "../../../features/auth/authSlice";
 import CustomButton from "../../common/Button";
-import { createProduct } from "../../../features/admin/product/productSlice";
+import { createProduct, selectproductAdmin } from "../../../features/admin/product/productSlice";
+import { useParams } from "react-router-dom";
 
 const AddProduct = () => {
+  const { user } = useAppSelector(selectAuth);
+  const { productAdmin } = useAppSelector(selectproductAdmin);
+  const { id } = useParams();
+  const singleProduct = productAdmin.find((p) => p.productId === id);
   const imageRef = useRef<HTMLInputElement>(null);
-  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<string[]>( id ? singleProduct?.imagesUrl ?? [] : []);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imageIndexClicked, setimageIndexClicked] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [openBrandModal, setOpenBrandModal] = useState<boolean>(false);
-  const [productName, setProductName] = useState<string>("");
-  const [productDesc, setProductDesc] = useState<string>("");
-  const [productCategory, setProductCategory] = useState<string>("");
-  const [productBrand, setProductBrand] = useState<string>("");
-  const [productPrice, setProductPrice] = useState<string>("");
+  const [productName, setProductName] = useState<string>(id ? singleProduct?.name ?? '' : "");
+  const [productDesc, setProductDesc] = useState<string>(id ? singleProduct?.description ?? '' : "");
+  const [productCategory, setProductCategory] = useState<string>(id ? singleProduct?.category ?? '' : "");
+  const [productBrand, setProductBrand] = useState<string>(id ? singleProduct?.brand ?? '' : "");
+  const [productPrice, setProductPrice] = useState<string>(id ? (singleProduct?.price !== undefined ? singleProduct.price.toString() : "") : "");
   const [productDiscountPercent, setProductDiscountPercent] =
-    useState<string>("");
+    useState<string>(id ? (singleProduct?.discount !== undefined ? singleProduct.discount.toString() : "") : "");
   const [productExpirationDate, setProductExpirationDate] =
-    useState<string>("");
-  const [productStockUnit, setProductStockUnit] = useState<string>("");
-  const [productStockQty, setProductStockQty] = useState<string>("");
-  const [additionalInfo, setadditionalInfo] = useState<string>("");
+    useState<string>(id ? singleProduct?.expirationDate ?? '' : "");
+  const [productStockUnit, setProductStockUnit] = useState<string>(id ? singleProduct?.productSerialNo ?? '' : "");
+  const [productStockQty, setProductStockQty] = useState<string>(id ? (singleProduct?.quantity !== undefined ? singleProduct.quantity.toString() : "") : "");
+  const [additionalInfo, setadditionalInfo] = useState<string>(id ? singleProduct?.additionalInfo ?? '' : "");
   const [brandName, setBrandName] = useState<string>("");
   const brandImageRef = useRef<HTMLInputElement>(null);
   const [brandImageUrl, setBrandImageUrl] = useState<string>("");
@@ -52,7 +57,8 @@ const AddProduct = () => {
     productStockUnit?: string;
     productStockQty?: string;
   }>({});
-  const { user } = useAppSelector(selectAuth);
+ 
+
   const dispatch = useAppDispatch();
 
   const handleProductFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
@@ -92,21 +98,7 @@ const AddProduct = () => {
       setIsFormSubmitting(false);
       return;
     }
-    console.log("form submiti");
-
-    console.log(
-      productName,
-      productDesc,
-      productPrice,
-      productBrand,
-      productCategory,
-      productStockUnit,
-      productStockQty,
-      productDiscountPercent,
-      productExpirationDate,
-      additionalInfo,
-      imageFiles
-    );
+ 
 
     const productData = new FormData();
     // Append each image file to FormData
@@ -126,7 +118,7 @@ const AddProduct = () => {
     productData.append("expiration", productExpirationDate);
     productData.append("serialNo", productStockUnit);
     productData.append("additionalInfo", additionalInfo);
-    productData.append("creator", user.objectId ?? "");
+    productData.append("creator", user.userId ?? "");
 
     // creator: string;
 

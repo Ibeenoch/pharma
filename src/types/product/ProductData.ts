@@ -1,15 +1,23 @@
-export interface productDataProps {
+export interface ProductDataProps {
+  productId?: string;
   creator: string;
   name: string;
   description: string;
   price: number;
-  qty: number;
+  quantity: number;
   discount?: number;
   category: string;
   brand: string;
-  expiration?: string;
-  serialNo?: string;
+  expirationDate?: string;
+  productSerialNo?: string;
   additionalInfo?: string;
   isHotDeal?: boolean;
   imagesUrl: string[];
+  createdAt?: string;
 }
+
+
+
+// owner: 
+// categoryImage,
+// brandImage,

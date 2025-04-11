@@ -1,6 +1,7 @@
 import { ID } from "node-appwrite";
-import { productDataProps } from "../../../types/product/ProductData";
 import { database, storage } from "../../../lib/appwriteConfig";
+import { Query } from "appwrite";
+import { ProductDataProps } from "../../../types/product/ProductData";
 
 export const createProduct = async (productData: FormData) => {
   try {
@@ -104,6 +105,41 @@ export const createProduct = async (productData: FormData) => {
 
     console.log("product created as ", productCreation);
   } catch (error) {
+    throw error
     console.log(error);
   }
 };
+
+export const allProduct = async (userId: string) => {
+  try {
+    let allproduct = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
+      [
+        Query.equal( 'creator', userId)
+      ]
+    );
+    console.log('product all ', allproduct)
+    const allProductList: ProductDataProps[] = allproduct.documents.map((product: any) => ({
+      creator: product?.creator,
+      name: product?.name,
+      description: product?.description,
+      brand: product?.brand,
+      category: product?.category,
+      imagesUrl: product?.imagesUrl,
+      price: product?.price,
+      quantity: product?.quantity,
+      additionalInfo: product?.additionalInfo,
+      discount: product?.discount,
+      expirationDate: product?.expirationDate,
+      isHotDeal: product?.isHotDeal,
+      productId: product?.$id,
+      productSerialNo: product?.productSerialNo,
+      createdAt: product?.$createdAt,
+    }));
+    return allProductList;
+   
+  } catch (error) {
+    throw error
+  }
+}

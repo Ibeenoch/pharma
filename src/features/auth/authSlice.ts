@@ -18,7 +18,7 @@ interface authState {
 const initialState: authState = {
   status: "idle",
   user: {
-    objectId: "",
+    userId: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -172,7 +172,7 @@ const authSlice = createSlice({
   reducers: {
     resetUserState: (state) => {
       state.user = {
-        objectId: "",
+        userId: "",
         firstName: "",
         lastName: "",
         email: "",

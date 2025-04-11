@@ -1,3 +1,33 @@
+import emzor from '../../../assets/images/b2_emzor.png';
+import fidson from '../../../assets/images/fidsonImg.png';
+import mayAndBayer from '../../../assets/images/may&bayerimg.png';
+import neimeth from '../../../assets/images/neimethImg.png';
+import swiss from '../../../assets/images/swissPharmaImg.png';
+import mecure from '../../../assets/images/mercureImg.png';
+import morison from '../../../assets/images/morisonImg.png';
+import dana from '../../../assets/images/danaImg.png';
+import dailyNeed from '../../../assets/images/dailyNeedImg.png';
+import evans from '../../../assets/images/evansImg.png';
+import juhel from '../../../assets/images/juhelImg.png';
+import greenlife from '../../../assets/images/greenLifeImg.png';
+import pharmatex from '../../../assets/images/pharmatexImg.png';
+import archy from '../../../assets/images/ArachisImg.png';
+import ngc from '../../../assets/images/NigerianGermanChemicalsPlcImg.png';
+import dgfpharma from '../../../assets/images/dfgImg.png';
+import adpharm from '../../../assets/images/adipharmaImg.png';
+import alphapharmacy from '../../../assets/images/alphapharmImg.png';
+import elbepharma from '../../../assets/images/eibeImg.png';
+import geneith from '../../../assets/images/geneithPharmImg.png';
+import hovid from '../../../assets/images/hovidImg.png';
+import maydon from '../../../assets/images/maydonImg.png';
+import newheights from '../../../assets/images/newheightPharImg.png';
+import phamatex from '../../../assets/images/phamatexImg.png';
+import ranbaxy from '../../../assets/images/ranbaxyImg.png';
+import skg from '../../../assets/images/skgImg.png';
+import vixa from '../../../assets/images/vixaImg.png';
+import zolon from '../../../assets/images/zolonImg.png';
+
+
 export const navLists = ["All Product", "Add Product"];
 // subtitle: 'fast relieve for headache',
 export const allproductLists = [
@@ -240,142 +270,142 @@ export const productBrands = [
   {
     "value": "EmzorPharmaceuticalIndustriesLimited",
     "label": "Emzor Pharmaceutical Industries Limited",
-    "companyImage": "https://www.emzor.com.ng/wp-content/uploads/2021/08/Emzor-Logo.png"
+    "companyImage": emzor,
   },
   {
     "value": "FidsonHealthcarePlc",
     "label": "Fidson Healthcare Plc",
-    "companyImage": "https://fidson.com/wp-content/uploads/2020/09/fidson-logo.png"
+    "companyImage": fidson,
   },
   {
     "value": "MayAndBakerNigeriaPlc",
     "label": "May & Baker Nigeria Plc",
-    "companyImage": "https://www.may-baker.com/wp-content/uploads/2019/06/may-and-baker-logo.png"
+    "companyImage": mayAndBayer,
   },
   {
     "value": "NeimethInternationalPharmaceuticalsPlc",
     "label": "Neimeth International Pharmaceuticals Plc",
-    "companyImage": "https://neimethinternational.com/wp-content/uploads/2019/09/neimeth-logo.png"
+    "companyImage": neimeth,
   },
   {
     "value": "SwissPharmaNigeriaLimited",
     "label": "Swiss Pharma Nigeria Limited (Swipha)",
-    "companyImage": "https://www.swiphanigeria.com/wp-content/uploads/2019/12/swipha-logo.png"
+    "companyImage": swiss,
   },
   {
     "value": "MecureIndustriesPlc",
     "label": "Mecure Industries Plc",
-    "companyImage": "https://www.mecure.com.ng/wp-content/uploads/2020/09/mercure-logo.png"
+    "companyImage": mecure,
   },
   {
     "value": "MorisonIndustriesPlc",
     "label": "Morison Industries Plc",
-    "companyImage": "https://www.morison.com.ng/wp-content/uploads/2020/06/morison-logo.png"
+    "companyImage": morison,
   },
   {
     "value": "DanaDrugsLimited",
     "label": "Dana Drugs Limited",
-    "companyImage": "https://www.danadrugs.com/wp-content/uploads/2020/07/dana-drugs-logo.png"
+    "companyImage": dana,
   },
   {
     "value": "DailyNeedIndustriesLimited",
     "label": "Daily Need Industries Limited",
-    "companyImage": "https://www.dailyneedpharma.com/wp-content/uploads/2020/06/dailyneed-logo.png"
+    "companyImage": dailyNeed,
   },
   {
     "value": "EvansMedicalPlc",
     "label": "Evans Medical Plc",
-    "companyImage": "https://www.evansmedical.com/wp-content/uploads/2020/05/evans-logo.png"
+    "companyImage": evans,
   },
   {
     "value": "JuhelNigeriaLimited",
     "label": "Juhel Nigeria Limited",
-    "companyImage": "https://www.juhelgroup.com/wp-content/uploads/2020/10/juhel-logo.png"
+    "companyImage": juhel,
   },
   {
     "value": "GreenlifePharmaceuticalsLimited",
     "label": "Greenlife Pharmaceuticals Limited",
-    "companyImage": "https://greenlifepharmaceuticals.com/wp-content/uploads/2020/06/greenlife-logo.png"
+    "companyImage": greenlife,
   },
   {
     "value": "PharmatexNigeriaLimited",
     "label": "Pharmatex Nigeria Limited",
-    "companyImage": "https://www.pharmatex.com.ng/wp-content/uploads/2020/08/pharmatex-logo.png"
+    "companyImage": pharmatex,
   },
   {
     "value": "ArachisPharmaceuticalNigeriaLimited",
     "label": "Arachis Pharmaceutical Nigeria Limited",
-    "companyImage": "https://www.archypharma.com/wp-content/uploads/2020/06/archy-logo.png"
+    "companyImage": archy,
   },
  
   {
     "value": "NigerianGermanChemicalsPlc",
     "label": "Nigerian German Chemicals Plc",
-    "companyImage": "https://www.ngcplc.com/wp-content/uploads/2020/06/ngc-logo.png"
+    "companyImage": ngc,
   },
   {
     "value": "DGFPharmaNigeriaPlc",
     "label": "DGF Pharma Nigeria Plc",
-    "companyImage": "https://www.dgfpharma.com/wp-content/uploads/2020/05/dgf-logo.png"
+    "companyImage": dgfpharma,
   },
   {
     "value": "AdipharmPharmaceuticalsLimited",
     "label": "Adipharm Pharmaceuticals Limited",
-    "companyImage": "https://www.adpharm.com.ng/wp-content/uploads/2020/09/adpharm-logo.png"
+    "companyImage": adpharm,
   },
   {
     "value": "AlphaPharmacyAndStoresLimited",
     "label": "Alpha Pharmacy and Stores Limited",
-    "companyImage": "https://www.alphapharmacy.com/wp-content/uploads/2020/07/alpha-logo.png"
+    "companyImage": alphapharmacy,
   },
   {
     "value": "ElbePharmaNigeriaLimited",
     "label": "Elbe Pharma Nigeria Limited",
-    "companyImage": "https://www.elbepharma.com/wp-content/uploads/2020/08/elbe-logo.png"
+    "companyImage": elbepharma,
   },
   {
     "value": "GeneithPharmaceuticalsLimited",
     "label": "Geneith Pharmaceuticals Limited",
-    "companyImage": "https://www.geneithpharma.com/wp-content/uploads/2020/06/geneith-logo.png"
+    "companyImage": geneith,
   },
   {
     "value": "HovidNigeriaLimited",
     "label": "Hovid Nigeria Limited",
-    "companyImage": "https://www.hovid.com/wp-content/uploads/2020/05/hovid-logo.png"
+    "companyImage": hovid,
   },
   {
     "value": "MaydonPharmaceuticalsLimited",
     "label": "Maydon Pharmaceuticals Limited",
-    "companyImage": "https://www.maydonpharma.com/wp-content/uploads/2020/07/maydon-logo.png"
+    "companyImage": maydon,
   },
   {
     "value": "NewHeightsPharmaceuticalsLimited",
     "label": "New Heights Pharmaceuticals Limited",
-    "companyImage": "https://www.newheightspharma.com/wp-content/uploads/2020/08/newheights-logo.png"
+    "companyImage": newheights,
   },
   {
     "value": "PhamatexIndustriesLimited",
     "label": "Phamatex Industries Limited",
-    "companyImage": "https://www.phamatex.com.ng/wp-content/uploads/2020/06/phamatex-logo.png"
+    "companyImage": phamatex,
   },
   {
     "value": "RanbaxyNigeriaLimited",
     "label": "Ranbaxy Nigeria Limited",
-    "companyImage": "https://www.ranbaxy.com/wp-content/uploads/2020/07/ranbaxy-logo.png"
+    "companyImage": ranbaxy,
   },
   {
     "value": "SKGPharmaLimited",
     "label": "SKG Pharma Limited",
-    "companyImage": "https://www.skgpharma.com/wp-content/uploads/2020/05/skg-logo.png"
+    "companyImage": skg,
   },
   {
     "value": "VixaPharmaceuticalCompanyLimited",
     "label": "Vixa Pharmaceutical Company Limited",
-    "companyImage": "https://www.vixapharma.com/wp-content/uploads/2020/10/vixa-logo.png"
+    "companyImage": vixa,
   },
   {
     "value": "ZolonHealthcareLimited",
     "label": "Zolon Healthcare Limited",
-    "companyImage": "https://www.zolonhealthcare.com/wp-content/uploads/2020/09/zolon-logo.png"
+    "companyImage": zolon,
   }
 ]

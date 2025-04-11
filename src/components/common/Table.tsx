@@ -11,12 +11,15 @@ import {
   darkyellowText,
   darkGreenText,
 } from "../../constants/appColor";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { selectproductAdmin, setProductIndexClicked } from "../../features/admin/product/productSlice";
 
 interface Columns {
   key: string;
   label: string;
   className?: string;
   conditionalFormat?: (value: any) => string; // function for conditional styling
+ 
 }
 
 interface TableProps {
@@ -26,6 +29,8 @@ interface TableProps {
   onRowClick?: (row: any) => void; // optional event clicked
   tableHeaderBg?: string;
   tableHeaderTxtColor?: string;
+  onEdit?: (id: string) => void;
+  onDelete?: (id: string) => void;
 }
 
 const Table: React.FC<TableProps> = ({
@@ -35,7 +40,11 @@ const Table: React.FC<TableProps> = ({
   onRowClick,
   tableHeaderBg,
   tableHeaderTxtColor,
+  onEdit,
+  onDelete,
 }) => {
+  const dispatch = useAppDispatch();
+  const { productIndexClicked } = useAppSelector(selectproductAdmin)
   return (
     <div className="w-full overflow-x-auto">
       <table className="min-w-full border-collapse border-none table-auto">
@@ -75,15 +84,23 @@ const Table: React.FC<TableProps> = ({
                       : ""
                   }`}
                 >
-                  {row[col.key] === "Actions" ? (
+                  { typeof row[col.key] === 'string' && row[col.key].includes('Actions') ? (
                     <div className="flex gap-2 items-center justify-center">
                       {/* <div className="cursor-pointer">
                         <View className="w-4 h-4 text-green-500" />
                       </div> */}
-                      <div className="cursor-pointer">
+                      <div onClick={() => {
+                        const id = row[col.key].split('_')[1];
+                        dispatch(setProductIndexClicked(id))
+                        productIndexClicked && onEdit?.(productIndexClicked);
+                        } } className="cursor-pointer">
                         <Pen className="w-5 h-5 text-blue-600" />
                       </div>
-                      <div className="cursor-pointer">
+                      <div  onClick={() => {
+                        const id = row[col.key].split('_')[1];
+                        dispatch(setProductIndexClicked(id))
+                        productIndexClicked && onDelete?.(productIndexClicked)
+                        } } className="cursor-pointer">
                         <Trash className="w-5 h-5 stroke-red-600" />
                       </div>
                     </div>

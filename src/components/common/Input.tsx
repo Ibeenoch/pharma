@@ -97,7 +97,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             id={Id}
             className={`${
               showFullWidth ? "w-full" : "w-auto"
-            } text-xs bg-transparent outline-none focus-none placeholder-gray-400 ${textColor}`}
+            } text-xs bg-transparent outline-none focus-none text-black placeholder-gray-500 ${textColor}`}
           />
           {isPassword &&
             (showPassword ? (
