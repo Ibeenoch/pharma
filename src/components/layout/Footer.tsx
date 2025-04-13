@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomInput from "../common/Input";
 import CustomText from "../common/Text";
 import Email from "../../assets/icons/email.svg?react";
@@ -8,9 +8,26 @@ import Facebook from "../../assets/icons/facebook.svg?react";
 import Twitter from "../../assets/icons/twitter.svg?react";
 import Instagram from "../../assets/icons/instagram.svg?react";
 import Whatsapp from "../../assets/icons/whatsapp.svg?react";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { selectCart, updateShowModal } from "../../features/cart/cartSlice";
+import Toast from "../common/Toast";
+import AlertModal from "../auth/AlertModal";
 
 const Footer = () => {
   const [email, setEmail] = useState<string>("");
+  const { showModal, isCart } = useAppSelector(selectCart);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (showModal) {
+      timer = setTimeout(() => {
+        dispatch(updateShowModal(false));
+      }, 1000);
+    }
+
+    return () => clearTimeout(timer);
+  }, [showModal]);
 
   const validateEmail = (email: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -32,6 +49,18 @@ const Footer = () => {
   ];
   return (
     <footer className="bg-black p-8">
+      {showModal && (
+        <Toast
+          isOpen={showModal}
+          onClose={() => {}}
+          children={
+            <AlertModal
+              isSuccess={true}
+              text={`${isCart ? "Added to Cart" : "Added to Favorite"}`}
+            />
+          }
+        />
+      )}
       <div className="grid grid-cols-2 lg:grid-cols-3 border-b border-gray-500 pb-4">
         <article>
           <CustomText
@@ -115,7 +144,10 @@ const Footer = () => {
             />
             <div className="flex gap-3 mt-2 items-center">
               {socialIcons.map((Item, index) => (
-                <Item key={index} className="w-4 h-4 fill-white cursor-pointer" />
+                <Item
+                  key={index}
+                  className="w-4 h-4 fill-white cursor-pointer"
+                />
               ))}
             </div>
           </div>

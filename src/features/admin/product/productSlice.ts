@@ -8,6 +8,8 @@ interface productAdminState {
   productAdmin: ProductDataProps[];
   hasFetchAllProduct: boolean;
   productIndexClicked: string;
+  productSubTabIndex: number;
+  productSubTabRoute: string;
 }
 
 const initialState: productAdminState = {
@@ -15,6 +17,8 @@ const initialState: productAdminState = {
   productAdmin: [],
   hasFetchAllProduct: false,
   productIndexClicked: "",
+  productSubTabIndex: 0,
+  productSubTabRoute: "",
 };
 
 export const createProduct = createAsyncThunk(
@@ -28,7 +32,11 @@ export const createProduct = createAsyncThunk(
   }
 );
 
-export const updateProduct = createAsyncThunk(
+export const updateProduct = createAsyncThunk<
+  ProductDataProps, // This is the type of the return value (action.payload)
+  FormData, // This is the input type (productData)
+  { rejectValue: string }
+>(
   "product/updateProduct",
   async (productData: FormData, { rejectWithValue }) => {
     try {
@@ -50,6 +58,17 @@ export const fetchAllUserProduct = createAsyncThunk(
   }
 );
 
+export const deleteproduct = createAsyncThunk(
+  "product/deleteproduct",
+  async (projectId: string, { rejectWithValue }) => {
+    try {
+      return await api.deleteProduct(projectId);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+);
+
 const productAdminSlice = createSlice({
   name: "productAdmin",
   initialState,
@@ -60,14 +79,23 @@ const productAdminSlice = createSlice({
     setProductIndexClicked: (state, action: PayloadAction<string>) => {
       state.productIndexClicked = action.payload;
     },
+    setProductSubTabIndex: (state, action: PayloadAction<number>) => {
+      state.productSubTabIndex = action.payload;
+    },
+    setProductSubTabRoute: (state, action: PayloadAction<string>) => {
+      state.productSubTabRoute = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(createProduct.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(createProduct.fulfilled, (state) => {
+      .addCase(createProduct.fulfilled, (state, action) => {
         state.status = "success";
+        if (state.status === "success" && action.payload !== undefined) {
+          state.productAdmin.push(action.payload);
+        }
       })
       .addCase(createProduct.rejected, (state) => {
         state.status = "failure";
@@ -78,10 +106,30 @@ const productAdminSlice = createSlice({
       .addCase(updateProduct.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
-          // state.productAdmin.find
+          const index = state.productAdmin.findIndex(
+            (p) => p.$id === action.payload?.$id
+          );
+          console.log("index update ", index);
+          state.productAdmin[index] = action.payload;
         }
       })
       .addCase(updateProduct.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(deleteproduct.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(deleteproduct.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload !== undefined) {
+          // const index = state.productAdmin.findIndex(
+          //   (p) => p.$id === action.payload?.$id
+          // );
+          // console.log("index update ", index);
+          // state.productAdmin.splice(index, 1);
+        }
+      })
+      .addCase(deleteproduct.rejected, (state) => {
         state.status = "failure";
       })
       .addCase(fetchAllUserProduct.pending, (state) => {
@@ -101,6 +149,10 @@ const productAdminSlice = createSlice({
 });
 
 export const selectproductAdmin = (state: RootState) => state.productAdmin;
-export const { invalidateFetchAllProductCache, setProductIndexClicked } =
-  productAdminSlice.actions;
+export const {
+  invalidateFetchAllProductCache,
+  setProductIndexClicked,
+  setProductSubTabIndex,
+  setProductSubTabRoute,
+} = productAdminSlice.actions;
 export default productAdminSlice.reducer;

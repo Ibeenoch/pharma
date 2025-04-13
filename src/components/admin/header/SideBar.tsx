@@ -25,9 +25,9 @@ const SideBar: React.FC<SideBarProps> = ({ shouldMinimize }) => {
       case 0:
         navigate("/admin/dashboard");
         break;
-    
     }
   };
+
   return (
     <aside
       className={`fixed left-0 hidden lg:block ${animateTransition} ${

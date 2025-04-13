@@ -11,6 +11,8 @@ import {
   setTitleIndex,
 } from "../../../features/admin/adminSlice";
 import { animateTransition } from "../../../constants/appText";
+import { logoutUser, resetUserState } from "../../../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
 interface NavIconsProps {
   indexClicked: number;
@@ -24,8 +26,9 @@ const NavIcons: React.FC<NavIconsProps> = ({
   shouldMinimize = false,
 }) => {
   const { shouldShowSubTitle, titleIndex } = useAppSelector(selectAdmin);
-  const dispatch = useAppDispatch();
 
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const toggleSideBar = (index: number) => {
     dispatch(setTitleIndex(index));
 
@@ -33,6 +36,13 @@ const NavIcons: React.FC<NavIconsProps> = ({
       setShouldShowSubTitle(titleIndex === index ? !shouldShowSubTitle : true)
     );
   };
+
+  const handleLogout = () => {
+    dispatch(logoutUser())
+      .then(() => dispatch(resetUserState()))
+      .then(() => navigate("/login"));
+  };
+
   return (
     <div className={`flex flex-col `}>
       {navIcons.map((Item, index) => (
@@ -108,14 +118,17 @@ const NavIcons: React.FC<NavIconsProps> = ({
         </div>
       ))}
 
-      <div className="group flex  gap-4 absolute bottom-5 left-8 cursor-pointer">
-        <Logout className={`w-5 h-5 text-white group-hover:text-amber-500`} />
+      <div
+        onClick={handleLogout}
+        className="group flex  gap-2 absolute bottom-5 left-8 cursor-pointer"
+      >
+        <Logout className={`w-5 h-5 text-red-500 group-hover:text-amber-500`} />
         {!shouldMinimize && (
           <CustomText
-            text="Log out"
-            textType="small"
+            text="Sign out"
+            textType="normal"
             weightType="medium"
-            color={` text-white group-hover:text-amber-500`}
+            color={` text-red-500 group-hover:text-amber-500`}
           />
         )}
       </div>

@@ -1,7 +1,6 @@
 import CustomButton from "../common/Button";
 import NavLinks from "../headers/NavLinks";
 import ShoppingCart from "../../assets/icons/cart-shopping.svg?react";
-import Logout from "../../assets/icons/logout.svg?react";
 import MobileNav from "../headers/MobileNav";
 import CartItems from "../home/CartItems";
 import { useEffect, useState } from "react";
@@ -18,14 +17,16 @@ import {
   selectAuth,
 } from "../../features/auth/authSlice";
 import noprofileImage from "../../assets/images/noprofileimage.png";
-import CustomText from "../common/Text";
+import Logout from "../common/Logout";
+import { selectCart } from "../../features/cart/cartSlice";
+import WishListItems from "../home/WishlistItems";
 
 const Header = () => {
   const [showCart, setShowCart] = useState<boolean>(false);
   const [showWishlist, setShowWishlist] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState<boolean>(false);
   const { user } = useAppSelector(selectAuth);
-  console.log("user from header navbar", user);
+  const { cart, wishlist } = useAppSelector(selectCart);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -42,6 +43,7 @@ const Header = () => {
   const displayShowCart = () => setShowCart(true);
   const displayShowWishlist = () => setShowWishlist(true);
   const hideShowCart = () => setShowCart(false);
+  const hideShowWishList = () => setShowWishlist(false);
 
   const handleLogin = () => {
     navigate("/login");
@@ -68,17 +70,7 @@ const Header = () => {
         <div className="hidden lg:flex lg:flex-col lg:items-center gap-5">
           {user && user.email ? (
             <div className="hidden lg:flex items-center gap-5">
-              <div
-                onClick={handleLogout}
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <Logout className="w-5 h-5" />
-                <CustomText
-                  text="Logout"
-                  textType="normal"
-                  weightType="medium"
-                />
-              </div>
+              <Logout handleLogout={handleLogout} />
               <img
                 src={noprofileImage}
                 alt="login user image"
@@ -104,18 +96,32 @@ const Header = () => {
           <div className="flex items-center gap-6">
             <WishList
               WishListIcon={Love}
-              WishListItemsQty={0}
-              displayShowWishList={displayShowWishlist}
+              WishListItemsQty={wishlist && wishlist.length}
+              displayShowWishList={
+                wishlist && wishlist.length > 0 ? displayShowWishlist : () => {}
+              }
             />
             <Cart
               CartIcon={ShoppingCart}
-              cartItemsQty={0}
-              displayShowCart={displayShowCart}
+              cartItemsQty={cart && cart.length}
+              displayShowCart={
+                cart && cart.length > 0 ? displayShowCart : () => {}
+              }
             />
           </div>
         </div>
 
-        <CartItems showCart={showCart} hideShowCart={hideShowCart} />
+        <CartItems
+          product={cart}
+          showCart={showCart}
+          hideShowCart={hideShowCart}
+        />
+
+        <WishListItems
+          product={wishlist}
+          showwishList={showWishlist}
+          hideShowwishList={hideShowWishList}
+        />
 
         <MobileNav />
       </nav>

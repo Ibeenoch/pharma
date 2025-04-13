@@ -10,9 +10,11 @@ interface CartRowItemProps {
   itemdesc?: string;
   price: string;
   qty: number;
-  decreaseQty: () => void;
-  increaseQty: () => void;
+  decreaseQty: (id: string) => void;
+  increaseQty: (id: string) => void;
+  removeItemFromCart: (id: string) => void;
   isCheckOut?: boolean;
+  id: string;
 }
 
 const CartRowItem: React.FC<CartRowItemProps> = ({
@@ -23,11 +25,17 @@ const CartRowItem: React.FC<CartRowItemProps> = ({
   qty,
   decreaseQty,
   increaseQty,
+  removeItemFromCart,
   isCheckOut = false,
+  id,
 }) => {
   return (
     <div className="grid grid-cols-[33%_34%_33%] md:grid-cols-[20%_30%_30%_20%] gap-3 my-3 pb-2 border-b border-gray-300">
-      <div className={` h-auto ${isCheckOut ? 'bg-[#f4f4f4]' : 'bg-white'} flex justify-center items-center p-2 rounded-xl`}>
+      <div
+        className={` h-auto ${
+          isCheckOut ? "bg-[#f4f4f4]" : "bg-white"
+        } flex justify-center items-center p-2 rounded-xl`}
+      >
         <img src={image} alt="item in cart" className="w-full h-auto" />
       </div>
       <div className="m-auto ">
@@ -42,19 +50,22 @@ const CartRowItem: React.FC<CartRowItemProps> = ({
       </div>
       <div className="hidden md:block md:w-max m-auto">
         <QtyUpdateBtn
-          decreaseNum={decreaseQty}
-          increaseNum={increaseQty}
+          decreaseNum={() => decreaseQty(id)}
+          increaseNum={() => increaseQty(id)}
           qty={qty}
+          id={id}
         />
       </div>
 
-      <div className="hidden md:block md:w-max m-auto">
-        {
-          isCheckOut ? (
-            <Trash className={`w-4 h-4`} />
-          ) : ( <IconAndText text="Remove" Icon={Trash} />)
-        }
-       
+      <div
+        onClick={() => removeItemFromCart(id)}
+        className="hidden md:block md:w-max m-auto"
+      >
+        {isCheckOut ? (
+          <Trash className={`w-4 h-4`} />
+        ) : (
+          <IconAndText text="Remove" Icon={Trash} />
+        )}
       </div>
       {/* for mobile device  */}
       <div className="md:hidden flex flex-col justify-around">
@@ -63,6 +74,7 @@ const CartRowItem: React.FC<CartRowItemProps> = ({
             decreaseNum={decreaseQty}
             increaseNum={increaseQty}
             qty={qty}
+            id={id}
           />
         </div>
 

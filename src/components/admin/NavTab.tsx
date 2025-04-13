@@ -1,26 +1,22 @@
 import React from "react";
 import { defaultTextColor } from "../../constants/appColor";
 interface NavTabProps {
-  navLists: string[];
+  navLists: { tabName: string; route: string }[];
   indexClicked: number;
-  handleTabclicked: (index: number) => void;
 }
 
-const NavTab: React.FC<NavTabProps> = ({
-  navLists,
-  indexClicked,
-  handleTabclicked,
-}) => {
+const NavTab: React.FC<NavTabProps> = ({ navLists, indexClicked }) => {
   return (
     <ul className="flex items-center gap-4 pl-5">
       {navLists.map((item, index) => (
         <li
-          onClick={() => handleTabclicked(index)}
           className={`text-[13px] font-semibold ${
-            indexClicked === index ? `${defaultTextColor} border-b-2 border-amber-300` : ""
+            indexClicked === index
+              ? `${defaultTextColor} border-b-2 border-amber-300`
+              : ""
           }  p-1 cursor-pointer`}
         >
-          {item}
+          {item.tabName}
         </li>
       ))}
     </ul>

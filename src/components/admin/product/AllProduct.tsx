@@ -8,14 +8,12 @@ import {
 } from "../../../features/admin/product/productSlice";
 import { selectAuth } from "../../../features/auth/authSlice";
 import { mapProductToTableData } from "../../../utils/admin/product/productMap";
-import { useNavigate } from "react-router-dom";
 import CustomText from "../../common/Text";
 
 const AllProduct = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { user } = useAppSelector(selectAuth);
-  const { productAdmin, hasFetchAllProduct, productIndexClicked } =
+  const { productAdmin, hasFetchAllProduct } =
     useAppSelector(selectproductAdmin);
 
   useEffect(() => {
@@ -23,20 +21,12 @@ const AllProduct = () => {
       user.userId &&
       hasFetchAllProduct === false &&
       dispatch(fetchAllUserProduct(user.userId));
-  }, []);
+  }, [user, hasFetchAllProduct]);
 
   const productData =
     productAdmin && Array.isArray(productAdmin)
       ? mapProductToTableData(productAdmin)
       : [];
-
-  const editProduct = (id: string) => {
-    navigate(`/admin/product/update/${id}`);
-  };
-
-  const deleteProduct = (id: string) => {
-    console.log("delete ", id);
-  };
 
   return (
     <section>
@@ -46,8 +36,7 @@ const AllProduct = () => {
             columns={allproductColumn}
             data={productData}
             tableHeaderTxtColor="text-gray-400"
-            onEdit={() => editProduct(productIndexClicked)}
-            onDelete={() => deleteProduct(productIndexClicked)}
+            whichTable="product"
           />
         ) : (
           <div className="flex items-center justify-center h-screen">

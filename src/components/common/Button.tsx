@@ -7,7 +7,7 @@ interface ButtonProps {
   onClick?: () => void;
   className?: string;
   type?: "button" | "submit" | "reset" | undefined;
-  borderRadiusType?: "allcurved" | "threecurved" | "none";
+  borderRadiusType?: "allcurved" | "threecurved" | "threecurvedright" | "none";
   showArrow?: boolean;
   showIcon?: boolean;
   fullwidth?: boolean;
@@ -82,6 +82,8 @@ const CustomButton: React.FC<ButtonProps> = ({
       } px-4 md:px-8 py-2 flex justify-center items-center gap-2 ${
         borderRadiusType === "threecurved"
           ? "rounded-bl-3xl rounded-br-3xl rounded-tl-3xl"
+          : borderRadiusType === "threecurvedright"
+          ? "rounded-bl-3xl rounded-br-3xl rounded-tr-3xl"
           : borderRadiusType === "allcurved"
           ? "rounded-2xl"
           : ""

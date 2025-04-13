@@ -1,34 +1,36 @@
-import emzor from '../../../assets/images/b2_emzor.png';
-import fidson from '../../../assets/images/fidsonImg.png';
-import mayAndBayer from '../../../assets/images/may&bayerimg.png';
-import neimeth from '../../../assets/images/neimethImg.png';
-import swiss from '../../../assets/images/swissPharmaImg.png';
-import mecure from '../../../assets/images/mercureImg.png';
-import morison from '../../../assets/images/morisonImg.png';
-import dana from '../../../assets/images/danaImg.png';
-import dailyNeed from '../../../assets/images/dailyNeedImg.png';
-import evans from '../../../assets/images/evansImg.png';
-import juhel from '../../../assets/images/juhelImg.png';
-import greenlife from '../../../assets/images/greenLifeImg.png';
-import pharmatex from '../../../assets/images/pharmatexImg.png';
-import archy from '../../../assets/images/ArachisImg.png';
-import ngc from '../../../assets/images/NigerianGermanChemicalsPlcImg.png';
-import dgfpharma from '../../../assets/images/dfgImg.png';
-import adpharm from '../../../assets/images/adipharmaImg.png';
-import alphapharmacy from '../../../assets/images/alphapharmImg.png';
-import elbepharma from '../../../assets/images/eibeImg.png';
-import geneith from '../../../assets/images/geneithPharmImg.png';
-import hovid from '../../../assets/images/hovidImg.png';
-import maydon from '../../../assets/images/maydonImg.png';
-import newheights from '../../../assets/images/newheightPharImg.png';
-import phamatex from '../../../assets/images/phamatexImg.png';
-import ranbaxy from '../../../assets/images/ranbaxyImg.png';
-import skg from '../../../assets/images/skgImg.png';
-import vixa from '../../../assets/images/vixaImg.png';
-import zolon from '../../../assets/images/zolonImg.png';
+import emzor from "../../../assets/images/b2_emzor.png";
+import fidson from "../../../assets/images/fidsonImg.png";
+import mayAndBayer from "../../../assets/images/may&bayerimg.png";
+import neimeth from "../../../assets/images/neimethImg.png";
+import swiss from "../../../assets/images/swissPharmaImg.png";
+import mecure from "../../../assets/images/mercureImg.png";
+import morison from "../../../assets/images/morisonImg.png";
+import dana from "../../../assets/images/danaImg.png";
+import dailyNeed from "../../../assets/images/dailyNeedImg.png";
+import evans from "../../../assets/images/evansImg.png";
+import juhel from "../../../assets/images/juhelImg.png";
+import greenlife from "../../../assets/images/greenLifeImg.png";
+import pharmatex from "../../../assets/images/pharmatexImg.png";
+import archy from "../../../assets/images/ArachisImg.png";
+import ngc from "../../../assets/images/NigerianGermanChemicalsPlcImg.png";
+import dgfpharma from "../../../assets/images/dfgImg.png";
+import adpharm from "../../../assets/images/adipharmaImg.png";
+import alphapharmacy from "../../../assets/images/alphapharmImg.png";
+import elbepharma from "../../../assets/images/eibeImg.png";
+import geneith from "../../../assets/images/geneithPharmImg.png";
+import hovid from "../../../assets/images/hovidImg.png";
+import maydon from "../../../assets/images/maydonImg.png";
+import newheights from "../../../assets/images/newheightPharImg.png";
+import phamatex from "../../../assets/images/phamatexImg.png";
+import ranbaxy from "../../../assets/images/ranbaxyImg.png";
+import skg from "../../../assets/images/skgImg.png";
+import vixa from "../../../assets/images/vixaImg.png";
+import zolon from "../../../assets/images/zolonImg.png";
 
-
-export const navLists = ["All Product", "Add Product"];
+export const navLists = [
+  { tabName: "All Product", route: "/admin/product/all" },
+  { tabName: "Add Product", route: "/admin/product/add" },
+];
 // subtitle: 'fast relieve for headache',
 export const allproductLists = [
   {
@@ -239,173 +241,329 @@ export const allproductColumn = [
 ];
 
 export const productCategories = [
-  "Pain Relievers",
-  "Cough and Cold Remedies",
-  "Vitamins and Supplements",
-  "Antibiotics",
-  "Antimalarials",
-  "Antifungals",
-  "Antivirals",
-  "Antihypertensives",
-  "Antidiabetics",
-  "Cardiovascular Drugs",
-  "Gastrointestinal Medications",
-  "Allergy and Antihistamines",
-  "Dermatological Products",
-  "Eye and Ear Preparations",
-  "Hormonal Therapy",
-  "Contraceptives",
-  "Psychiatric Medications",
-  "Respiratory Medications",
-  "Muscle Relaxants",
-  "Immunosuppressants",
-  "Pediatric Medications",
-  "Nutritional Supplements",
-  "Neurological Medications",
-  "Cancer Treatment Drugs",
-  "Veterinary Medicines"
-]
+  { value: "", label: "Select Category", image: "" },
+  { value: "Cough & Cold", label: "Cough & Cold", image: "cough.png" },
+  { value: "Anti-Malaria", label: "Anti-Malaria", image: "malaria.png" },
+  { value: "Antibiotics", label: "Antibiotics", image: "antibiotics.png" },
+  {
+    value: "Pain Relief & Analgesics",
+    label: "Pain Relief & Analgesics",
+    image: "pain.png",
+  },
+  {
+    value: "Vitamins & Supplements",
+    label: "Vitamins & Supplements",
+    image: "vitamins.png",
+  },
+  {
+    value: "Antifungal Medications",
+    label: "Antifungal Medications",
+    image: "antifungal.png",
+  },
+  {
+    value: "Antiviral Medications",
+    label: "Antiviral Medications",
+    image: "antiviral.png",
+  },
+  {
+    value: "Sexual Health & Libido",
+    label: "Sexual Health & Libido",
+    image: "sexual.png",
+  },
+  {
+    value: "Antacids & Ulcer Care",
+    label: "Antacids & Ulcer Care",
+    image: "ulcer.png",
+  },
+  {
+    value: "Blood Pressure Medications",
+    label: "Blood Pressure Medications",
+    image: "bp.png",
+  },
+  { value: "Diabetes Care", label: "Diabetes Care", image: "diabetes.png" },
+  { value: "Eye Care", label: "Eye Care", image: "eye.png" },
+  {
+    value: "Skin Care & Dermatologicals",
+    label: "Skin Care & Dermatologicals",
+    image: "skin.png",
+  },
+  {
+    value: "Pregnancy & Fertility",
+    label: "Pregnancy & Fertility",
+    image: "pregnancy.png",
+  },
+  {
+    value: "Baby & Child Health",
+    label: "Baby & Child Health",
+    image: "baby.png",
+  },
+  { value: "Women's Health", label: "Women's Health", image: "women.png" },
+  { value: "Men's Health", label: "Men's Health", image: "men.png" },
+  { value: "Immune Boosters", label: "Immune Boosters", image: "immune.png" },
+  {
+    value: "First Aid & Wound Care",
+    label: "First Aid & Wound Care",
+    image: "firstaid.png",
+  },
+  {
+    value: "Mental Health & Antidepressants",
+    label: "Mental Health & Antidepressants",
+    image: "mental.png",
+  },
+  {
+    value: "Allergy & Hay Fever",
+    label: "Allergy & Hay Fever",
+    image: "allergy.png",
+  },
+  {
+    value: "Asthma & Respiratory Care",
+    label: "Asthma & Respiratory Care",
+    image: "asthma.png",
+  },
+  {
+    value: "Digestive Health & Laxatives",
+    label: "Digestive Health & Laxatives",
+    image: "digestive.png",
+  },
+  {
+    value: "Cardiovascular Medications",
+    label: "Cardiovascular Medications",
+    image: "cardio.png",
+  },
+  {
+    value: "Weight Management",
+    label: "Weight Management",
+    image: "weight.png",
+  },
+  {
+    value: "Herbal & Natural Remedies",
+    label: "Herbal & Natural Remedies",
+    image: "herbal.png",
+  },
+  {
+    value: "Cancer Care Medications",
+    label: "Cancer Care Medications",
+    image: "cancer.png",
+  },
+  {
+    value: "Neurological Medications",
+    label: "Neurological Medications",
+    image: "neuro.png",
+  },
+  { value: "Ear Care", label: "Ear Care", image: "ear.png" },
+  {
+    value: "Oral & Dental Care",
+    label: "Oral & Dental Care",
+    image: "oral.png",
+  },
+  {
+    value: "HIV/AIDS Treatment",
+    label: "HIV/AIDS Treatment",
+    image: "hiv.png",
+  },
+  {
+    value: "Hepatitis Treatment",
+    label: "Hepatitis Treatment",
+    image: "hepatitis.png",
+  },
+  {
+    value: "Anti-Inflammatory Drugs",
+    label: "Anti-Inflammatory Drugs",
+    image: "inflammation.png",
+  },
+  {
+    value: "Surgical & Hospital Equipment",
+    label: "Surgical & Hospital Equipment",
+    image: "surgical.png",
+  },
+  {
+    value: "Diagnostic Tools & Kits",
+    label: "Diagnostic Tools & Kits",
+    image: "diagnostic.png",
+  },
+  {
+    value: "Injections & Infusions",
+    label: "Injections & Infusions",
+    image: "injection.png",
+  },
+  { value: "Vaccines", label: "Vaccines", image: "vaccine.png" },
+  {
+    value: "Anesthetics & Sedatives",
+    label: "Anesthetics & Sedatives",
+    image: "anesthesia.png",
+  },
+  {
+    value: "Bone & Joint Health",
+    label: "Bone & Joint Health",
+    image: "bone.png",
+  },
+  {
+    value: "Sleep Aids & Sedatives",
+    label: "Sleep Aids & Sedatives",
+    image: "sleep.png",
+  },
+  {
+    value: "others",
+    label: "others",
+    image: "sleep.png",
+  },
+];
 
 export const productBrands = [
   {
-    "value": "EmzorPharmaceuticalIndustriesLimited",
-    "label": "Emzor Pharmaceutical Industries Limited",
-    "companyImage": emzor,
+    value: "",
+    label: "Select Brand",
+    companyImage: emzor,
   },
   {
-    "value": "FidsonHealthcarePlc",
-    "label": "Fidson Healthcare Plc",
-    "companyImage": fidson,
+    value: "EmzorPharmaceuticalIndustriesLimited",
+    label: "Emzor Pharmaceutical Industries Limited",
+    companyImage: emzor,
   },
   {
-    "value": "MayAndBakerNigeriaPlc",
-    "label": "May & Baker Nigeria Plc",
-    "companyImage": mayAndBayer,
+    value: "BenylinPharmaceuticalIndustriesLimited",
+    label: "Benylin Pharmaceutical Industries Limited",
+    companyImage: emzor,
   },
   {
-    "value": "NeimethInternationalPharmaceuticalsPlc",
-    "label": "Neimeth International Pharmaceuticals Plc",
-    "companyImage": neimeth,
+    value: "FidsonHealthcarePlc",
+    label: "Fidson Healthcare Plc",
+    companyImage: fidson,
   },
   {
-    "value": "SwissPharmaNigeriaLimited",
-    "label": "Swiss Pharma Nigeria Limited (Swipha)",
-    "companyImage": swiss,
+    value: "MayAndBakerNigeriaPlc",
+    label: "May & Baker Nigeria Plc",
+    companyImage: mayAndBayer,
   },
   {
-    "value": "MecureIndustriesPlc",
-    "label": "Mecure Industries Plc",
-    "companyImage": mecure,
+    value: "NeimethInternationalPharmaceuticalsPlc",
+    label: "Neimeth International Pharmaceuticals Plc",
+    companyImage: neimeth,
   },
   {
-    "value": "MorisonIndustriesPlc",
-    "label": "Morison Industries Plc",
-    "companyImage": morison,
+    value: "SwissPharmaNigeriaLimited",
+    label: "Swiss Pharma Nigeria Limited (Swipha)",
+    companyImage: swiss,
   },
   {
-    "value": "DanaDrugsLimited",
-    "label": "Dana Drugs Limited",
-    "companyImage": dana,
+    value: "MecureIndustriesPlc",
+    label: "Mecure Industries Plc",
+    companyImage: mecure,
   },
   {
-    "value": "DailyNeedIndustriesLimited",
-    "label": "Daily Need Industries Limited",
-    "companyImage": dailyNeed,
+    value: "MorisonIndustriesPlc",
+    label: "Morison Industries Plc",
+    companyImage: morison,
   },
   {
-    "value": "EvansMedicalPlc",
-    "label": "Evans Medical Plc",
-    "companyImage": evans,
+    value: "DanaDrugsLimited",
+    label: "Dana Drugs Limited",
+    companyImage: dana,
   },
   {
-    "value": "JuhelNigeriaLimited",
-    "label": "Juhel Nigeria Limited",
-    "companyImage": juhel,
+    value: "DailyNeedIndustriesLimited",
+    label: "Daily Need Industries Limited",
+    companyImage: dailyNeed,
   },
   {
-    "value": "GreenlifePharmaceuticalsLimited",
-    "label": "Greenlife Pharmaceuticals Limited",
-    "companyImage": greenlife,
+    value: "EvansMedicalPlc",
+    label: "Evans Medical Plc",
+    companyImage: evans,
   },
   {
-    "value": "PharmatexNigeriaLimited",
-    "label": "Pharmatex Nigeria Limited",
-    "companyImage": pharmatex,
+    value: "JuhelNigeriaLimited",
+    label: "Juhel Nigeria Limited",
+    companyImage: juhel,
   },
   {
-    "value": "ArachisPharmaceuticalNigeriaLimited",
-    "label": "Arachis Pharmaceutical Nigeria Limited",
-    "companyImage": archy,
-  },
- 
-  {
-    "value": "NigerianGermanChemicalsPlc",
-    "label": "Nigerian German Chemicals Plc",
-    "companyImage": ngc,
+    value: "GreenlifePharmaceuticalsLimited",
+    label: "Greenlife Pharmaceuticals Limited",
+    companyImage: greenlife,
   },
   {
-    "value": "DGFPharmaNigeriaPlc",
-    "label": "DGF Pharma Nigeria Plc",
-    "companyImage": dgfpharma,
+    value: "PharmatexNigeriaLimited",
+    label: "Pharmatex Nigeria Limited",
+    companyImage: pharmatex,
   },
   {
-    "value": "AdipharmPharmaceuticalsLimited",
-    "label": "Adipharm Pharmaceuticals Limited",
-    "companyImage": adpharm,
+    value: "ArachisPharmaceuticalNigeriaLimited",
+    label: "Arachis Pharmaceutical Nigeria Limited",
+    companyImage: archy,
+  },
+
+  {
+    value: "NigerianGermanChemicalsPlc",
+    label: "Nigerian German Chemicals Plc",
+    companyImage: ngc,
   },
   {
-    "value": "AlphaPharmacyAndStoresLimited",
-    "label": "Alpha Pharmacy and Stores Limited",
-    "companyImage": alphapharmacy,
+    value: "DGFPharmaNigeriaPlc",
+    label: "DGF Pharma Nigeria Plc",
+    companyImage: dgfpharma,
   },
   {
-    "value": "ElbePharmaNigeriaLimited",
-    "label": "Elbe Pharma Nigeria Limited",
-    "companyImage": elbepharma,
+    value: "AdipharmPharmaceuticalsLimited",
+    label: "Adipharm Pharmaceuticals Limited",
+    companyImage: adpharm,
   },
   {
-    "value": "GeneithPharmaceuticalsLimited",
-    "label": "Geneith Pharmaceuticals Limited",
-    "companyImage": geneith,
+    value: "AlphaPharmacyAndStoresLimited",
+    label: "Alpha Pharmacy and Stores Limited",
+    companyImage: alphapharmacy,
   },
   {
-    "value": "HovidNigeriaLimited",
-    "label": "Hovid Nigeria Limited",
-    "companyImage": hovid,
+    value: "ElbePharmaNigeriaLimited",
+    label: "Elbe Pharma Nigeria Limited",
+    companyImage: elbepharma,
   },
   {
-    "value": "MaydonPharmaceuticalsLimited",
-    "label": "Maydon Pharmaceuticals Limited",
-    "companyImage": maydon,
+    value: "GeneithPharmaceuticalsLimited",
+    label: "Geneith Pharmaceuticals Limited",
+    companyImage: geneith,
   },
   {
-    "value": "NewHeightsPharmaceuticalsLimited",
-    "label": "New Heights Pharmaceuticals Limited",
-    "companyImage": newheights,
+    value: "HovidNigeriaLimited",
+    label: "Hovid Nigeria Limited",
+    companyImage: hovid,
   },
   {
-    "value": "PhamatexIndustriesLimited",
-    "label": "Phamatex Industries Limited",
-    "companyImage": phamatex,
+    value: "MaydonPharmaceuticalsLimited",
+    label: "Maydon Pharmaceuticals Limited",
+    companyImage: maydon,
   },
   {
-    "value": "RanbaxyNigeriaLimited",
-    "label": "Ranbaxy Nigeria Limited",
-    "companyImage": ranbaxy,
+    value: "NewHeightsPharmaceuticalsLimited",
+    label: "New Heights Pharmaceuticals Limited",
+    companyImage: newheights,
   },
   {
-    "value": "SKGPharmaLimited",
-    "label": "SKG Pharma Limited",
-    "companyImage": skg,
+    value: "PhamatexIndustriesLimited",
+    label: "Phamatex Industries Limited",
+    companyImage: phamatex,
   },
   {
-    "value": "VixaPharmaceuticalCompanyLimited",
-    "label": "Vixa Pharmaceutical Company Limited",
-    "companyImage": vixa,
+    value: "RanbaxyNigeriaLimited",
+    label: "Ranbaxy Nigeria Limited",
+    companyImage: ranbaxy,
   },
   {
-    "value": "ZolonHealthcareLimited",
-    "label": "Zolon Healthcare Limited",
-    "companyImage": zolon,
-  }
-]
+    value: "SKGPharmaLimited",
+    label: "SKG Pharma Limited",
+    companyImage: skg,
+  },
+  {
+    value: "VixaPharmaceuticalCompanyLimited",
+    label: "Vixa Pharmaceutical Company Limited",
+    companyImage: vixa,
+  },
+  {
+    value: "ZolonHealthcareLimited",
+    label: "Zolon Healthcare Limited",
+    companyImage: zolon,
+  },
+  {
+    value: "Others",
+    label: "Others",
+    companyImage: zolon,
+  },
+];

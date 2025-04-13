@@ -16,14 +16,14 @@ import {
   selectproductAdmin,
   updateProduct,
 } from "../../../features/admin/product/productSlice";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const AddProduct = () => {
   const { user } = useAppSelector(selectAuth);
   const { productAdmin } = useAppSelector(selectproductAdmin);
   const { id } = useParams();
   const singleProduct = (Array.isArray(productAdmin) &&
-    productAdmin.find((p) => p.productId === id)) || {
+    productAdmin.find((p) => p.$id === id)) || {
     imagesUrl: [],
     name: "",
     description: "",
@@ -100,11 +100,11 @@ const AddProduct = () => {
   }>({});
 
   const dispatch = useAppDispatch();
-  console.log(user);
+  const navigate = useNavigate();
+
   const handleProductFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!user || !user.userId || user.role?.toLowerCase() !== "admin") return;
-    console.log("productBrand ", productBrand);
 
     setIsFormSubmitting(true);
     const productNameValid = validator(productName, "others");
@@ -119,6 +119,8 @@ const AddProduct = () => {
       !productDescValid ||
       !productPriceValid ||
       !productStockUnitValid ||
+      !productCategoryValid ||
+      !productBrandValid ||
       !productStockQtyValid
     ) {
       setError({
@@ -169,15 +171,15 @@ const AddProduct = () => {
       productData.append("productId", id);
       productData.append("uploadedImages", JSON.stringify(uploadedImages));
       dispatch(updateProduct(productData)).then((res) => {
-        console.log("product update res: ", res.payload);
         setIsFormSubmitting(false);
-        dispatch(invalidateFetchAllProductCache(false));
+        dispatch(invalidateFetchAllProductCache(true));
+        navigate("/admin/product/all");
       });
     } else {
       dispatch(createProduct(productData)).then((res) => {
-        console.log("product res: ", res.payload);
         setIsFormSubmitting(false);
-        dispatch(invalidateFetchAllProductCache(false));
+        dispatch(invalidateFetchAllProductCache(true));
+        navigate("/admin/product/all");
       });
     }
   };

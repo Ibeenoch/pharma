@@ -78,6 +78,22 @@ export const createProduct = async (productData: FormData) => {
     );
 
     console.log("product created as ", productCreation);
+    return {
+      name: productCreation.name,
+      $id: productCreation.$id,
+      price: productCreation.price,
+      creator: productCreation.creator,
+      description: productCreation.description,
+      quantity: productCreation.quantity,
+      discount: productCreation.discount,
+      category: productCreation.category,
+      brand: productCreation.brand,
+      expirationDate: productCreation.expirationDate,
+      productSerialNo: productCreation.productSerialNo,
+      additionalInfo: productCreation.additionalInfo,
+      imagesUrl: productCreation.imagesUrl,
+      isHotDeal: productCreation.isHotDeal,
+    } as ProductDataProps;
   } catch (error) {
     throw error;
     console.log(error);
@@ -104,7 +120,7 @@ export const updateProduct = async (productData: FormData) => {
       additionalInfo,
       productId,
     } = data;
-    console.log("productId ", productId);
+
     // upload the product images
     const uploadedImagesJsonString = productData.get(
       "uploadedImages"
@@ -112,38 +128,40 @@ export const updateProduct = async (productData: FormData) => {
     const uploadedImages: string[] = JSON.parse(uploadedImagesJsonString);
     console.log("uploadedImages ", uploadedImages);
     const imageFiles = productData.getAll("imageFiles") as File[];
-    let uploadedProductImageFiles: {
-      fileId: string;
-      name: string;
-      mimeType: string;
-    }[] = [];
-    for (const image of imageFiles) {
-      const res = await storage.createFile(
-        import.meta.env.VITE_BUCKET_ID,
-        ID.unique(),
-        image
-      );
-
-      uploadedProductImageFiles.push({
-        fileId: res.$id,
-        name: res.name,
-        mimeType: res.mimeType,
-      });
-    }
-
     let productImages: string[] = [];
-    for (const fileId of uploadedProductImageFiles) {
-      const res = storage.getFileDownload(
-        import.meta.env.VITE_BUCKET_ID,
-        fileId.fileId
-      );
+    if (imageFiles) {
+      let uploadedProductImageFiles: {
+        fileId: string;
+        name: string;
+        mimeType: string;
+      }[] = [];
+      for (const image of imageFiles) {
+        const res = await storage.createFile(
+          import.meta.env.VITE_BUCKET_ID,
+          ID.unique(),
+          image
+        );
 
-      productImages.push(res);
+        uploadedProductImageFiles.push({
+          fileId: res.$id,
+          name: res.name,
+          mimeType: res.mimeType,
+        });
+      }
+
+      for (const fileId of uploadedProductImageFiles) {
+        const res = storage.getFileDownload(
+          import.meta.env.VITE_BUCKET_ID,
+          fileId.fileId
+        );
+
+        productImages.push(res);
+      }
+      console.log("product imageFiles", productImages);
     }
+    productImages = [...productImages, ...uploadedImages];
 
-    console.log("product imageFiles", productImages);
-
-    const productCreation = await database.updateDocument(
+    const productUpdate = await database.updateDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
       productId,
@@ -159,11 +177,42 @@ export const updateProduct = async (productData: FormData) => {
         expirationDate: expiration,
         productSerialNo: serialNo,
         additionalInfo: additionalInfo,
-        imagesUrl: productImages || uploadedImages,
+        imagesUrl: productImages,
       }
     );
 
-    console.log("product updated as ", productCreation);
+    console.log("product updated as ", productUpdate);
+    return {
+      name: productUpdate.name,
+      $id: productUpdate.$id,
+      price: productUpdate.price,
+      creator: productUpdate.creator,
+      description: productUpdate.description,
+      quantity: productUpdate.quantity,
+      discount: productUpdate.discount,
+      category: productUpdate.category,
+      brand: productUpdate.brand,
+      expirationDate: productUpdate.expirationDate,
+      productSerialNo: productUpdate.productSerialNo,
+      additionalInfo: productUpdate.additionalInfo,
+      imagesUrl: productUpdate.imagesUrl,
+      isHotDeal: productUpdate.isHotDeal,
+    } as ProductDataProps;
+  } catch (error) {
+    throw error;
+    console.log(error);
+  }
+};
+
+export const deleteProduct = async (productId: string) => {
+  try {
+    const productDeletion = await database.deleteDocument(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
+      productId
+    );
+
+    console.log("product deleted as ", productDeletion);
   } catch (error) {
     throw error;
     console.log(error);
@@ -192,7 +241,7 @@ export const allProduct = async (userId: string) => {
         discount: product?.discount,
         expirationDate: product?.expirationDate,
         isHotDeal: product?.isHotDeal,
-        productId: product?.$id,
+        $id: product?.$id,
         productSerialNo: product?.productSerialNo,
         createdAt: product?.$createdAt,
       })

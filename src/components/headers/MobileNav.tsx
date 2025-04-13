@@ -14,22 +14,27 @@ import MobileNavList from "./MobileNavList";
 import { useNavigate } from "react-router-dom";
 import WishList from "../common/WishList";
 import Cart from "../common/Cart";
-import Logout from "../../assets/icons/logout.svg?react";
 import Love from "../../assets/icons/heart.svg?react";
-import CustomText from "../common/Text";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { logoutUser, resetUserState, selectAuth } from "../../features/auth/authSlice";
-import noprofileImage from '../../assets/images/noprofileimage.png'
-
+import {
+  logoutUser,
+  resetUserState,
+  selectAuth,
+} from "../../features/auth/authSlice";
+import noprofileImage from "../../assets/images/noprofileimage.png";
+import Logout from "../common/Logout";
+import { selectCart } from "../../features/cart/cartSlice";
 
 const MobileNav = () => {
   const [showSideBar, setShowSideBar] = useState<boolean>(false);
   const [showCart, setShowCart] = useState<boolean>(false);
   const [showWishlist, setShowWishlist] = useState<boolean>(false);
+  const { cart, wishlist } = useAppSelector(selectCart);
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const { user } = useAppSelector(selectAuth)
+  const { user } = useAppSelector(selectAuth);
   const links = [
     { Icon: Home, title: "Home" },
     { Icon: Product, title: "Products" },
@@ -51,11 +56,11 @@ const MobileNav = () => {
   const displayShowWishlist = () => setShowWishlist(true);
   const hideShowCart = () => setShowCart(false);
 
-    const handleLogout = () => {
-      dispatch(logoutUser())
-        .then(() => dispatch(resetUserState()))
-        .then(() => navigate("/login"));
-    };
+  const handleLogout = () => {
+    dispatch(logoutUser())
+      .then(() => dispatch(resetUserState()))
+      .then(() => navigate("/login"));
+  };
 
   return (
     <nav className="lg:hidden w-full h-full p-6">
@@ -79,60 +84,32 @@ const MobileNav = () => {
             showSideBar ? "flex justify-between items-center pb-4 " : "hidden"
           }`}
         >
-            <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6">
             <WishList
               WishListIcon={Love}
-              WishListItemsQty={0}
+              WishListItemsQty={wishlist && wishlist.length}
               displayShowWishList={displayShowWishlist}
             />
             <Cart
               CartIcon={ShoppingCart}
-              cartItemsQty={0}
+              cartItemsQty={cart && cart.length}
               displayShowCart={displayShowCart}
             />
           </div>
           <Cancel onClick={toggleSideBarItems} className="w-6 h-6" />
         </div>
 
-        {
-          user && user.email ? (
-            <div className="flex lg:hidden justify-between py-4 items-center gap-5">
-            <div
-              onClick={handleLogout}
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <Logout className="w-5 h-5" />
-              <CustomText
-                text="Logout"
-                textType="medium"
-                weightType="medium"
-              />
-            </div>
+        {user && user.email && (
+          <div className="flex lg:hidden justify-between py-4 items-center gap-5">
+            <Logout handleLogout={handleLogout} />
+
             <img
               src={noprofileImage}
               alt="login user image"
               className="w-10 h-10 rounded-full border border-gray-200 cursor-pointer"
             />
           </div>
-
-          ) : (
-            <div className="lg:hidden mt-6 flex items-center gap-5">
-            <CustomButton
-              text="Login"
-              type="button"
-              borderRadiusType="threecurved"
-              onClick={handleLogin}
-              fullwidth={true}
-            />
-            <CustomButton
-              text="Register"
-              type="button"
-              onClick={handleRegister}
-              fullwidth={true}
-            />
-          </div>
-          )
-        }
+        )}
 
         <form className="flex items-center mb-4">
           <input
@@ -153,10 +130,23 @@ const MobileNav = () => {
           ))}
         </ul>
 
-      
-
-      
-      
+        {!user.email && (
+          <div className="lg:hidden mt-6 flex items-center gap-5">
+            <CustomButton
+              text="Login"
+              type="button"
+              borderRadiusType="threecurved"
+              onClick={handleLogin}
+              fullwidth={true}
+            />
+            <CustomButton
+              text="Register"
+              type="button"
+              onClick={handleRegister}
+              fullwidth={true}
+            />
+          </div>
+        )}
       </div>
     </nav>
   );

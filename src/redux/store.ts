@@ -3,6 +3,7 @@ import authReducer from "../features/auth/authSlice"; // Import reducer
 import adminReducer from "../features/admin/adminSlice";
 import adminProduceReducer from "../features/admin/product/productSlice";
 import productReducer from "../features/product/productSlice";
+import cartReducer from "../features/cart/cartSlice";
 import storage from "redux-persist/lib/storage";
 import { createMigrate, persistReducer } from "redux-persist";
 
@@ -13,7 +14,7 @@ import { createMigrate, persistReducer } from "redux-persist";
 // “Hey, this version of my state is version 1. If a user's saved state is older than this, run a migration to update it.”
 
 const migrations = {
-  1: (state: any) => {
+  6: (state: any) => {
     return {
       ...state,
       productAdmin: {
@@ -23,6 +24,16 @@ const migrations = {
         productAdmin: [],
         productIndexClicked: "",
       },
+      cart: {
+        cart: [{ item: {}, qty: 1 }],
+        wishlist: [{ item: {}, qty: 1 }],
+        cartQty: 0,
+        cartIndex: 0,
+        wishListQty: 0,
+        wishListIndex: 0,
+        subTotal: 0,
+        total: 0,
+      },
     };
   },
 };
@@ -30,7 +41,7 @@ const migrations = {
 const persistConfig = {
   key: "root",
   storage,
-  version: 1,
+  version: 6,
   migrate: createMigrate(migrations, { debug: false }),
   // blackList: ["auth", "checkout"],
 };
@@ -40,6 +51,7 @@ const reducers = combineReducers({
   admin: adminReducer,
   product: productReducer,
   productAdmin: adminProduceReducer,
+  cart: cartReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);
@@ -51,13 +63,6 @@ export const store = configureStore({
       serializableCheck: false, // required for redux-persist
     }),
 });
-
-// export const store = configureStore({
-//   reducer: {
-//     auth: authReducer,
-//     admin: adminReducer,
-//   },
-// });
 
 // Define RootState and AppDispatch types
 export type RootState = ReturnType<typeof store.getState>;

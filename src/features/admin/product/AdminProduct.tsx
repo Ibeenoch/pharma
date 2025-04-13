@@ -2,9 +2,7 @@ import ProductManagement from "../../../components/admin/product/ProductManageme
 import AdminLayout from "../dashboard/AdminLayout";
 
 const AdminProduct = () => {
-  return (
-    <AdminLayout title="Product Management" children={<ProductManagement />} />
-  );
+  return <AdminLayout title="All Product" children={<ProductManagement />} />;
 };
 
 export default AdminProduct;

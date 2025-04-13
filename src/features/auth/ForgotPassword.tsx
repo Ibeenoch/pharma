@@ -23,17 +23,16 @@ const ForgotPassword = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    let timer : NodeJS.Timeout;
+    let timer: NodeJS.Timeout;
 
-    if(sentRecoveryEmail){
+    if (sentRecoveryEmail) {
       timer = setTimeout(() => {
-        hideModal()
-      }, 5000)
+        hideModal();
+      }, 5000);
     }
 
-    return () => clearTimeout(timer)
-
-  }, [sentRecoveryEmail])
+    return () => clearTimeout(timer);
+  }, [sentRecoveryEmail]);
 
   const hideModal = () => {
     dispatch(setRecoveryPasswordLink(false));
@@ -51,13 +50,11 @@ const ForgotPassword = () => {
       setIsSubmitting(false);
       return;
     }
-    dispatch(passwordRecoveryLink(email)).then(
-      () =>  setIsSubmitting(false)
-    );
+    dispatch(passwordRecoveryLink(email)).then(() => setIsSubmitting(false));
   };
   return (
     <section
-      className={`h-screen pt-15 lg:pt-0 lg:grid lg:grid-cols-3 items-center `}
+      className={`h-full pb-6 pt-15 lg:pt-0 lg:grid lg:grid-cols-3 items-center`}
     >
       <article className=" lg:block">
         <CustomText

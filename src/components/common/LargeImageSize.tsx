@@ -12,7 +12,7 @@ const LargeImageSize: React.FC<LargeImageSizeProps> = ({
 }) => {
   return (
     <section
-      className={`h-[70%] lg:h-full max-h-[550px] w-full ${
+      className={`h-[70%] lg:h-full max-h-[550px] w-full pt-5 ${
         bg === "default" ? "bg-[#e6e1d8]" : bg
       } `}
     >

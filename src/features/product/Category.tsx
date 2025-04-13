@@ -37,10 +37,10 @@ const Category = () => {
       <TwoTextSpan leftText="Categories" />
 
       <article className="flex gap-4 overflow-x-auto">
-        {/* bg-[#e6e1d8] bg-[#b87a4c] */}
+        {/* {productImages.map((item, index) => ( */}
         {productImages.map((item, index) => (
           <div className="cursor-pointer" key={index}>
-             <div className="h-22 w-20 md:h-30 md:w-28 lg:h-38 lg:w-32 xl:h-48 xl:w-42 flex items-center justify-center rounded-xl p-2 bg-white mb-4">
+            <div className="h-22 w-20 md:h-30 md:w-28 lg:h-38 lg:w-32 xl:h-48 xl:w-42 flex items-center justify-center rounded-xl p-2 bg-white mb-4">
               <img
                 src={item}
                 alt="medication categories"
@@ -53,21 +53,6 @@ const Category = () => {
                 textType="small"
                 weightType="bold"
               />
-              {/* <div className="flex gap-3 items-center">
-                <CustomText
-                  text="₦1500"
-                  textType="small"
-                  weightType="bold"
-                  color="text-amber-500"
-                />
-                <CustomText
-                  text="₦2000"
-                  textType="small"
-                  weightType="bold"
-                  color="gray"
-                  extraStyle="line-through"
-                />
-              </div> */}
             </article>
           </div>
         ))}

@@ -37,6 +37,7 @@ import GeneralSettingsPage from "./pages/admin/settings/GeneralSettingsPage";
 import EmailVerificationPendingPage from "./pages/EmailVerificationPendingPage";
 import EmailVerificationSuccessfulPage from "./pages/EmailVerificationSuccessfulPage";
 import SecureAdminPage from "./features/auth/SecureAdminPage";
+import FavePage from "./pages/FavePage";
 const Home = lazy(() => import("./pages/Home"));
 
 const router = createBrowserRouter([
@@ -77,7 +78,7 @@ const router = createBrowserRouter([
     element: <SearchResultPage />,
   },
   {
-    path: "/product_details",
+    path: "/product_details/:id",
     element: <ProductDetailsPage />,
   },
   {
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
   {
     path: "/cart",
     element: <CartPage />,
+  },
+  {
+    path: "/wishlist",
+    element: <FavePage />,
   },
   {
     path: "/checkout",
@@ -118,12 +123,12 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin/dashboard",
-    element: <SecureAdminPage child={<DashBoardPage />} /> ,
+    element: <SecureAdminPage child={<DashBoardPage />} />,
   },
 
   {
     path: "/admin/users/all",
-    element: <SecureAdminPage child={<ALlUsersPage />} /> ,
+    element: <SecureAdminPage child={<ALlUsersPage />} />,
   },
   {
     path: "/admin/users/admin",

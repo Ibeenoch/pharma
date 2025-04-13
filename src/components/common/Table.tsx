@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // import View from "../../assets/icons/eye-show.svg?react";
 import Trash from "../../assets/icons/trash-bin.svg?react";
 import Pen from "../../assets/icons/edit-clipboard.svg?react";
@@ -12,14 +12,25 @@ import {
   darkGreenText,
 } from "../../constants/appColor";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { selectproductAdmin, setProductIndexClicked } from "../../features/admin/product/productSlice";
+import {
+  deleteproduct,
+  invalidateFetchAllProductCache,
+  selectproductAdmin,
+  setProductIndexClicked,
+} from "../../features/admin/product/productSlice";
+import { useNavigate } from "react-router-dom";
+import {
+  mappedProductProps,
+  ProductDataProps,
+} from "../../types/product/ProductData";
+import Modal from "./Modal";
+import ProductDetails from "../admin/product/ProductDetails";
 
 interface Columns {
   key: string;
   label: string;
   className?: string;
   conditionalFormat?: (value: any) => string; // function for conditional styling
- 
 }
 
 interface TableProps {
@@ -29,8 +40,7 @@ interface TableProps {
   onRowClick?: (row: any) => void; // optional event clicked
   tableHeaderBg?: string;
   tableHeaderTxtColor?: string;
-  onEdit?: (id: string) => void;
-  onDelete?: (id: string) => void;
+  whichTable: string;
 }
 
 const Table: React.FC<TableProps> = ({
@@ -40,11 +50,41 @@ const Table: React.FC<TableProps> = ({
   onRowClick,
   tableHeaderBg,
   tableHeaderTxtColor,
-  onEdit,
-  onDelete,
+  whichTable,
 }) => {
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [product, setProduct] = useState<mappedProductProps>({
+    id: "",
+    $id: "",
+    name: "",
+    category: "",
+    brand: "",
+    stock: 0,
+    qtysold: 0,
+    expired: "",
+    unitPrice: "",
+    dateAdded: "",
+    imagesUrl: [],
+    description: "",
+    discount: 0,
+    additionalInfo: "",
+    price: 0,
+    productSerialNo: "",
+  });
   const dispatch = useAppDispatch();
-  const { productIndexClicked } = useAppSelector(selectproductAdmin)
+  const navigate = useNavigate();
+  const previewRow = (row: any, rowIndex: number) => {
+    if (whichTable.toLowerCase() === "product") {
+      let productPreview = row as mappedProductProps;
+
+      productPreview && productPreview?.id && setProduct(productPreview);
+      setShowModal(true);
+    }
+  };
+
+  console.log("previewROw ", product, showModal);
+
+  const hideProductModal = () => setShowModal(false);
   return (
     <div className="w-full overflow-x-auto">
       <table className="min-w-full border-collapse border-none table-auto">
@@ -71,7 +111,7 @@ const Table: React.FC<TableProps> = ({
             <tr
               key={rowIndex}
               className={`border-0 ${rowClassname} hover:bg-gray-50 cursor-pointer`}
-              onClick={() => onRowClick && onRowClick(row)}
+              onClick={() => previewRow(row, rowIndex)}
             >
               {columns.map((col) => (
                 <td
@@ -82,25 +122,48 @@ const Table: React.FC<TableProps> = ({
                     col.conditionalFormat
                       ? col.conditionalFormat(row[col.key])
                       : ""
-                  }`}
+                  }  ${row[col.key]?.length > 8 ? "truncate" : ""}`}
+                  style={{
+                    maxWidth: "15ch",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
                 >
-                  { typeof row[col.key] === 'string' && row[col.key].includes('Actions') ? (
+                  {typeof row[col.key] === "string" &&
+                  row[col.key].includes("Actions") ? (
                     <div className="flex gap-2 items-center justify-center">
-                      {/* <div className="cursor-pointer">
-                        <View className="w-4 h-4 text-green-500" />
-                      </div> */}
-                      <div onClick={() => {
-                        const id = row[col.key].split('_')[1];
-                        dispatch(setProductIndexClicked(id))
-                        productIndexClicked && onEdit?.(productIndexClicked);
-                        } } className="cursor-pointer">
+                      <div
+                        onClick={() => {
+                          const id = row[col.key].split("_")[1];
+                          navigate(id);
+                        }}
+                        className="cursor-pointer"
+                      >
                         <Pen className="w-5 h-5 text-blue-600" />
                       </div>
-                      <div  onClick={() => {
-                        const id = row[col.key].split('_')[1];
-                        dispatch(setProductIndexClicked(id))
-                        productIndexClicked && onDelete?.(productIndexClicked)
-                        } } className="cursor-pointer">
+                      <div
+                        onClick={() => {
+                          const id = row[col.key].split("/").pop();
+                          if (!id) return;
+                          if (whichTable.toLowerCase() === "product") {
+                            const deleteProduct = (id: string) => {
+                              let confirmDelete = window.confirm(
+                                `Do you really want to delete this item?\nThis action cannot be undo!`
+                              );
+                              if (confirmDelete) proceedTodeleteProduct(id);
+                            };
+
+                            const proceedTodeleteProduct = (id: string) => {
+                              dispatch(deleteproduct(id)).then(() =>
+                                dispatch(invalidateFetchAllProductCache(false))
+                              );
+                            };
+
+                            deleteProduct(id);
+                          }
+                        }}
+                        className="cursor-pointer"
+                      >
                         <Trash className="w-5 h-5 stroke-red-600" />
                       </div>
                     </div>
@@ -135,6 +198,13 @@ const Table: React.FC<TableProps> = ({
           ))}
         </tbody>
       </table>
+      {showModal && (
+        <Modal
+          isOpen={showModal}
+          onClose={hideProductModal}
+          children={<ProductDetails product={product} />}
+        />
+      )}
     </div>
   );
 };
