@@ -12,11 +12,13 @@ interface MobileNavListProps {
     }
   >;
   text: string;
+  route: string;
+  onClick: (route: string) => void
 }
 
-const MobileNavList: React.FC<MobileNavListProps> = ({ Icon, text }) => {
+const MobileNavList: React.FC<MobileNavListProps> = ({ Icon, text, onClick, route }) => {
   return (
-    <li className="p-2 flex justify-between items-center">
+    <li onClick={() => onClick(route)} className="p-2 flex justify-between items-center">
       <div className="flex gap-2 items-center">
         <Icon className="w-5 h-5 text-gray-500" />
         <CustomText

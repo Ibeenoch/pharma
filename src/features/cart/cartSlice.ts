@@ -13,6 +13,8 @@ interface cartState {
   isCart: boolean;
   subTotal: number;
   total: number;
+  hasItemBeenAddedToCart: boolean;
+  hasItemBeenAddedToWishlist: boolean;
 }
 
 const initialState: cartState = {
@@ -26,6 +28,8 @@ const initialState: cartState = {
   isCart: true,
   subTotal: 0,
   total: 0,
+  hasItemBeenAddedToCart: false,
+  hasItemBeenAddedToWishlist: false,
 };
 
 const cartSlice = createSlice({
@@ -33,13 +37,14 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<cartProps>) => {
-      const exists = state.cart.some((i) => {
-        i.item.$id === action.payload.item.$id;
+      const exists = state.cart.findIndex((i) => {
+      return  i.item.$id === action.payload.item.$id;
       });
-      if (!exists) {
-        state.cart.push(action.payload);
+      // add it to cart if it doesn't exist
+      if (exists === -1) {
         state.showModal = true;
         state.isCart = true;
+        state.cart.push(action.payload);
       }
     },
     increaseCartQty: (state, action: PayloadAction<string>) => {
@@ -49,12 +54,7 @@ const cartSlice = createSlice({
       if (index !== -1) {
         state.cart[index].qty++;
       }
-      console.log(
-        "increaseCartQty ",
-        Array.isArray(state.cart),
-        index,
-        state.cart[index].qty
-      );
+     
     },
     decreaseCartQty: (state, action: PayloadAction<string>) => {
       const index = state.cart.findIndex(
@@ -65,7 +65,6 @@ const cartSlice = createSlice({
           state.cart[index].qty -= 1;
         }
       }
-      console.log("decreaseCartQty ", state.cart, index, state.cart[index].qty);
     },
     increaseOrDecreaseCartQty: (
       state,
@@ -73,12 +72,9 @@ const cartSlice = createSlice({
     ) => {
       const { id, val } = action.payload;
       const index = state.cart.findIndex((item) => item.item.$id === id);
-      console.log({ id, val, index });
       if (index !== -1 && val > 0) {
-        console.log("lolook");
         state.cart[index].qty = val;
       }
-      console.log("upadteCartQty ", index, state.cart[index].qty);
     },
     removeFromCart: (state, action: PayloadAction<string>) => {
       const index = state.cart.findIndex((c) => c.item.$id === action.payload);
@@ -94,13 +90,14 @@ const cartSlice = createSlice({
       state.cartIndex = action.payload;
     },
     addTowishlist: (state, action: PayloadAction<cartProps>) => {
-      const exists = state.wishlist.some(
-        (item) => item.item.$id === action.payload.item.$id
-      );
-      if (!exists) {
-        state.wishlist.push(action.payload);
+      const exists = state.wishlist.findIndex((i) => {
+        return  i.item.$id === action.payload.item.$id;
+        });
+
+      if (exists === -1) {
         state.showModal = true;
         state.isCart = false;
+        state.wishlist.push(action.payload);
       }
     },
     removeFromwishlist: (state, action: PayloadAction<string>) => {
@@ -153,19 +150,30 @@ const cartSlice = createSlice({
     },
     calculateSubTotal: (state) => {
       state.subTotal = state.cart.reduce((acc, curr) => {
-        let price = curr.item.price,
+        let price = curr.item.price 
+        let discount = curr.item.discount ?? 1,
           quantity = curr.qty;
-        return acc + price * quantity;
+        return acc + (price - ((discount / 100) * price) ) * quantity;
       }, 0);
     },
-    //     const subTotal = product.reduce((acc, p, i) => {
-    //   let q = cartIndex === i ? cartQty : 1;
-    //   const price =
-    //     p && p.item && p.item.price && p.item.discount
-    //       ? p.item.price * Math.abs(1 - p.item.discount)
-    //       : p.item.price || 1;
-    //   return acc + price * q;
-    // }, 0);
+    calculateTotal: (state, action: PayloadAction<number>) => {
+      state.total  = state.subTotal + action.payload;
+    },
+    checkIfItemHasBeenAddedToCheck: (state, action: PayloadAction<string>) => {
+      const exists = state.cart.findIndex((i) => {
+        return  i.item.$id === action.payload;
+        });
+        console.log('exists in cart', exists);
+        if(exists !== -1)state.hasItemBeenAddedToCart = true;
+    },
+    checkIfItemHasBeenAddedToWishlist: (state, action: PayloadAction<string>) => {
+      const exists = state.wishlist.findIndex((i) => {
+        return  i.item.$id === action.payload;
+        });
+        console.log('exists in wishlist', exists);
+        if(exists !== -1)state.hasItemBeenAddedToWishlist = true;
+    },
+  
   },
 });
 
@@ -188,5 +196,8 @@ export const {
   decreasewishlistQty,
   increaseOrDecreaseCartQty,
   calculateSubTotal,
+  calculateTotal,
+  checkIfItemHasBeenAddedToCheck,
+  checkIfItemHasBeenAddedToWishlist
 } = cartSlice.actions;
 export default cartSlice.reducer;

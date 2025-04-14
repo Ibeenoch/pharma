@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { selectCart, updateShowModal } from "../../features/cart/cartSlice";
 import Toast from "../common/Toast";
 import AlertModal from "../auth/AlertModal";
+import AnimatedToast from "../common/AnimatedToast";
 
 const Footer = () => {
   const [email, setEmail] = useState<string>("");
@@ -47,20 +48,14 @@ const Footer = () => {
     "Health & Wellness",
     "Skincare & Beauty",
   ];
+  console.log('showModal ', showModal)
   return (
     <footer className="bg-black p-8">
       {showModal && (
-        <Toast
-          isOpen={showModal}
-          onClose={() => {}}
-          children={
-            <AlertModal
-              isSuccess={true}
-              text={`${isCart ? "Added to Cart" : "Added to Favorite"}`}
-            />
-          }
-        />
+        <AnimatedToast start={showModal} text={`${isCart ? "Added to Cart" : "Added to Favorite"}`} IconType={`${isCart ? "cart": 'fave'}`} />
       )}
+
+      
       <div className="grid grid-cols-2 lg:grid-cols-3 border-b border-gray-500 pb-4">
         <article>
           <CustomText

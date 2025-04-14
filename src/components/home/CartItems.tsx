@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { useNavigate } from "react-router-dom";
 import {
   calculateSubTotal,
+  checkIfItemHasBeenAddedToCheck,
   increaseOrDecreaseCartQty,
   removeAllItemsInCart,
   removeFromCart,
@@ -14,7 +15,7 @@ import {
   updateCartIndex,
   updateCartQty,
 } from "../../features/cart/cartSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface CartItemsProps {
   showCart: boolean;
@@ -33,6 +34,12 @@ const CartItems: React.FC<CartItemsProps> = ({
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  
+  useEffect(() => {
+    dispatch(calculateSubTotal())
+  }, [showCart])
+
+
   const handleQtySelected = (
     e: React.ChangeEvent<HTMLSelectElement>,
     i: number,
@@ -46,6 +53,7 @@ const CartItems: React.FC<CartItemsProps> = ({
 
   const handleRemoveFromCart = (id: string, i: number) => {
     dispatch(removeFromCart(id));
+    dispatch(checkIfItemHasBeenAddedToCheck(id))
     cart.length === 1 && hideShowCart();
   };
 
@@ -116,9 +124,7 @@ const CartItems: React.FC<CartItemsProps> = ({
                       p.item &&
                       p.item.price &&
                       p.item.discount &&
-                      p.item.price *
-                        Math.abs(1 - p.item.discount) *
-                        (i === cartIndex ? cartQty : 1)
+                      p.item.price - ((p.item.discount/100) * p.item.price) 
                     }`}
                     textType="normal"
                     weightType="thin"

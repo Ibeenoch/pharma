@@ -33,6 +33,7 @@ interface ButtonProps {
   defaultBorderColor?: string;
   defaultBackgroundColor?: string;
   defaultTextColor?: string;
+  defaultArrowColor?: string;
 }
 
 const CustomButton: React.FC<ButtonProps> = ({
@@ -47,6 +48,7 @@ const CustomButton: React.FC<ButtonProps> = ({
   PreFixIcon,
   isLoading = false,
   fullwidth = false,
+  defaultArrowColor = 'default',
   textSize = "small",
   weightType = "normal",
   defaultBorderColor,
@@ -121,7 +123,7 @@ const CustomButton: React.FC<ButtonProps> = ({
       )}
       {showArrow && (
         <LongRightArrow
-          className={`w-6 h-6 border-none fill-white  group-hover:fill-black `}
+          className={`w-6 h-6 border-none ${defaultArrowColor === 'default' ? 'fill-white  group-hover:fill-black' : defaultArrowColor }   `}
         />
       )}
     </button>

@@ -3,6 +3,7 @@ import CustomText from "../../components/common/Text";
 import Trash from "../../assets/icons/trash-bin.svg?react";
 import IconAndText from "../../components/cart/IconAndText";
 import QtyUpdateBtn from "../../components/product/QtyUpdateBtn";
+import { useNavigate } from "react-router-dom";
 
 interface CartRowItemProps {
   image: string;
@@ -29,12 +30,14 @@ const CartRowItem: React.FC<CartRowItemProps> = ({
   isCheckOut = false,
   id,
 }) => {
+  const navigate = useNavigate()
   return (
     <div className="grid grid-cols-[33%_34%_33%] md:grid-cols-[20%_30%_30%_20%] gap-3 my-3 pb-2 border-b border-gray-300">
       <div
+      onClick={() => navigate(`/product_details/${id}`)}
         className={` h-auto ${
           isCheckOut ? "bg-[#f4f4f4]" : "bg-white"
-        } flex justify-center items-center p-2 rounded-xl`}
+        } flex justify-center items-center p-2 cursor-pointer rounded-xl`}
       >
         <img src={image} alt="item in cart" className="w-full h-auto" />
       </div>

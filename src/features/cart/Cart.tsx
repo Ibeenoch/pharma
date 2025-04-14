@@ -8,6 +8,8 @@ import CartTwoText from "../../components/cart/CartTwoText";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import {
   calculateSubTotal,
+  calculateTotal,
+  checkIfItemHasBeenAddedToCheck,
   decreaseCartQty,
   increaseCartQty,
   removeAllItemsInCart,
@@ -15,6 +17,7 @@ import {
   selectCart,
 } from "./cartSlice";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface CartProps {
   showCheckOutBtn?: boolean;
@@ -26,8 +29,8 @@ const Cart: React.FC<CartProps> = ({
   isCheckOutPage = false,
 }) => {
   const dispatch = useAppDispatch();
-  const { cart, subTotal } = useAppSelector(selectCart);
-
+  const navigate = useNavigate();
+  const { cart, subTotal, total, hasItemBeenAddedToCart, hasItemBeenAddedToWishlist } = useAppSelector(selectCart);
   const increaseQty = (id: string) => {
     dispatch(increaseCartQty(id));
     dispatch(calculateSubTotal());
@@ -39,14 +42,18 @@ const Cart: React.FC<CartProps> = ({
   };
   const handleRemoveAllFromCart = () => {
     dispatch(removeAllItemsInCart());
+    dispatch(calculateSubTotal());
   };
 
   useEffect(() => {
     dispatch(calculateSubTotal());
-  }, []);
+    dispatch(calculateTotal(0))
+  }, [subTotal]);
 
   const removeItemFromCart = (id: string) => {
     dispatch(removeFromCart(id));
+    dispatch(checkIfItemHasBeenAddedToCheck(id))
+    dispatch(calculateSubTotal());
   };
   return (
     <section
@@ -85,8 +92,9 @@ const Cart: React.FC<CartProps> = ({
               }}
               image={c && c.item && c.item.imagesUrl && c.item.imagesUrl[0]}
               itemTitle={c && c.item && c.item.name}
-              itemdesc="Size: 250ml"
-              price={`₦${
+              itemdesc={`Unit Price: ₦${c && c.item && c.item.price}`}
+              price={`
+                Total: ₦${
                 c &&
                 c.item &&
                 c.item.price &&
@@ -153,7 +161,7 @@ const Cart: React.FC<CartProps> = ({
             showBorder={true}
             borderColor="border-white"
           />
-          <CartTwoText leftText="Total" rightText="₦14,040.90" />
+          <CartTwoText leftText="Total" rightText={`₦${total}`} />
           {showCheckOutBtn && (
             <div className={`my-4 flex justify-center`}>
               <CustomButton
@@ -164,6 +172,7 @@ const Cart: React.FC<CartProps> = ({
                 showArrow={true}
                 fullwidth={true}
                 type="button"
+                onClick={() => navigate('/')}
               />
             </div>
           )}

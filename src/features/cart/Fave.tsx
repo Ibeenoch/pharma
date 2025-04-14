@@ -10,6 +10,7 @@ import CustomButton from "../../components/common/Button";
 import CartTwoText from "../../components/cart/CartTwoText";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import {
+  checkIfItemHasBeenAddedToWishlist,
   decreasewishlistQty,
   increasewishlistQty,
   removeFromwishlist,
@@ -39,6 +40,7 @@ const Fave: React.FC<FaveProps> = ({
   };
   const removeItemFromWishlist = (id: string) => {
     dispatch(removeFromwishlist(id));
+    dispatch(checkIfItemHasBeenAddedToWishlist(id))
   };
   return (
     <section
