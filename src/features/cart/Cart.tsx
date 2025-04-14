@@ -16,21 +16,31 @@ import {
   removeFromCart,
   selectCart,
 } from "./cartSlice";
-import { useEffect } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface CartProps {
   showCheckOutBtn?: boolean;
   isCheckOutPage?: boolean;
+  submitOrder: boolean;
+  setSubmitOrder: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Cart: React.FC<CartProps> = ({
   showCheckOutBtn = true,
   isCheckOutPage = false,
+  submitOrder,
+  setSubmitOrder,
 }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { cart, subTotal, total, hasItemBeenAddedToCart, hasItemBeenAddedToWishlist } = useAppSelector(selectCart);
+  const {
+    cart,
+    subTotal,
+    total,
+    hasItemBeenAddedToCart,
+    hasItemBeenAddedToWishlist,
+  } = useAppSelector(selectCart);
   const increaseQty = (id: string) => {
     dispatch(increaseCartQty(id));
     dispatch(calculateSubTotal());
@@ -47,14 +57,15 @@ const Cart: React.FC<CartProps> = ({
 
   useEffect(() => {
     dispatch(calculateSubTotal());
-    dispatch(calculateTotal(0))
+    dispatch(calculateTotal(0));
   }, [subTotal]);
 
   const removeItemFromCart = (id: string) => {
     dispatch(removeFromCart(id));
-    dispatch(checkIfItemHasBeenAddedToCheck(id))
+    dispatch(checkIfItemHasBeenAddedToCheck(id));
     dispatch(calculateSubTotal());
   };
+
   return (
     <section
       className={`mt-20 h-min ${
@@ -95,12 +106,12 @@ const Cart: React.FC<CartProps> = ({
               itemdesc={`Unit Price: ₦${c && c.item && c.item.price}`}
               price={`
                 Total: ₦${
-                c &&
-                c.item &&
-                c.item.price &&
-                c.item.discount &&
-                c.item.price * Math.abs(1 - c.item.discount / 100) * c.qty
-              }`}
+                  c &&
+                  c.item &&
+                  c.item.price &&
+                  c.item.discount &&
+                  c.item.price * Math.abs(1 - c.item.discount / 100) * c.qty
+                }`}
               qty={c && c.qty}
               decreaseQty={() => {
                 c &&
@@ -172,7 +183,7 @@ const Cart: React.FC<CartProps> = ({
                 showArrow={true}
                 fullwidth={true}
                 type="button"
-                onClick={() => navigate('/')}
+                onClick={() => navigate("/")}
               />
             </div>
           )}
@@ -186,7 +197,8 @@ const Cart: React.FC<CartProps> = ({
                   weightType="medium"
                   showArrow={true}
                   fullwidth={true}
-                  type="submit"
+                  type="button"
+                  onClick={() => setSubmitOrder(true)}
                 />
               </div>
               <IconAndText Icon={Lock} text="Secure Checkout - SSL Encrypted" />

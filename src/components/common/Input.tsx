@@ -26,6 +26,7 @@ interface CustomInputProps {
   Id?: string;
   isPassword?: boolean;
   disabled?: boolean;
+  max?: number | undefined;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -51,6 +52,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   Id,
   isPassword = false,
   disabled = false,
+  max,
 }) => {
   const [isTouch, setIsTouch] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -93,6 +95,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             onBlur={() => setIsTouch(true)}
             onFocus={() => setIsTouch(false)}
             disabled={disabled}
+            maxLength={max}
             required={required}
             id={Id}
             className={`${

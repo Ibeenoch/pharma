@@ -16,17 +16,25 @@ import PaymentOption from "../../components/common/PaymentOption";
 import CustomSelect from "../../components/common/Select";
 import { countries } from "../../utils/countries";
 import { nigeriaStateAndLga } from "../../utils/nigeriaStateAndLgas";
+import { useAppSelector } from "../../hooks/reduxHooks";
+import { selectAuth } from "../auth/authSlice";
 
 const CheckOut = () => {
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
+  const { user } = useAppSelector(selectAuth);
+  const [firstName, setFirstName] = useState<string>(
+    user && user.firstName ? user.firstName : ""
+  );
+  const [lastName, setLastName] = useState<string>(
+    user && user.lastName ? user.lastName : ""
+  );
   const [phone, setPhone] = useState<string>("");
-  const [country, setCountry] = useState<string>("");
+  const [country, setCountry] = useState<string>("Nigeria");
   const [state, setState] = useState<string>("");
   const [lga, setLga] = useState<string>("");
   const [zipcode, setZipcode] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [saveShippingAddress, setSaveShippingAddress] = useState<boolean>(true);
+  const [submitOrder, setSubmitOrder] = useState<boolean>(true);
   const [paymentIndex, setPaymentIndex] = useState<number>(0);
 
   const setPaymentMethodIndex = (index: number) => {
@@ -36,8 +44,8 @@ const CheckOut = () => {
   const IconLists = [Paystack, Flutterwave, BankTransfer];
 
   const nigerianState = nigeriaStateAndLga.map((item) => item.state);
-  const stateLgas = nigeriaStateAndLga.find((item) => item.state === state)?.lgas || ['Select LGA'];
-
+  const stateLgas = nigeriaStateAndLga.find((item) => item.state === state)
+    ?.lgas || ["Select LGA"];
 
   const [error, setError] = useState<{
     firstName?: string;
@@ -97,6 +105,8 @@ const CheckOut = () => {
     );
   };
 
+  //  submitOrder && handleFormSubmit()
+
   return (
     <section
       className={`mt-20 ${pageSpacing} my-10  p-4 md:grid md:grid-cols-[60%_40%] md:gap-4`}
@@ -147,12 +157,13 @@ const CheckOut = () => {
               value={phone}
               onChange={setPhone}
               required={true}
+              max={11}
               showFullWidth={true}
               placeholder="Your Phone Number"
               validate={(value) => validator(value, "phone")}
               errorMessage={error.phone || "Phone Number is required"}
             />
-             <CustomSelect
+            <CustomSelect
               prefixIcon={<Country className="w-4 h-4" />}
               countriesOptions={countries}
               label="Country"
@@ -166,30 +177,32 @@ const CheckOut = () => {
             />
 
             <div className="md:flex gap-4 items-center">
-            <CustomSelect
-              prefixIcon={<Country className="w-4 h-4" />}
-              otherOptions={country === 'Nigeria' ? nigerianState : ['Select State']}
-              label="State"
-              Id="state"
-              value={state}
-              onChange={setState}
-              required={true}
-              showFullWidth={true}
-              validate={(value) => validator(value, "others")}
-              errorMessage={error.state || "State is required"}
-            />
-             
               <CustomSelect
-                 prefixIcon={<Location className="w-4 h-4" />}
-                 otherOptions={stateLgas}
-                 label="LGA"
-                 Id="lga"
-                 value={lga}
-                 onChange={setLga}
-                 required={true}
-                 showFullWidth={true}
-                 validate={(value) => validator(value, "others")}
-                 errorMessage={error.lga || "LGA is required"}
+                prefixIcon={<Country className="w-4 h-4" />}
+                otherOptions={
+                  country === "Nigeria" ? nigerianState : ["Select State"]
+                }
+                label="State"
+                Id="state"
+                value={state}
+                onChange={setState}
+                required={true}
+                showFullWidth={true}
+                validate={(value) => validator(value, "others")}
+                errorMessage={error.state || "State is required"}
+              />
+
+              <CustomSelect
+                prefixIcon={<Location className="w-4 h-4" />}
+                otherOptions={stateLgas}
+                label="LGA"
+                Id="lga"
+                value={lga}
+                onChange={setLga}
+                required={true}
+                showFullWidth={true}
+                validate={(value) => validator(value, "others")}
+                errorMessage={error.lga || "LGA is required"}
               />
               <CustomInput
                 prefixIcon={<Address className="w-4 h-4" />}
@@ -218,6 +231,17 @@ const CheckOut = () => {
               validate={(value) => validator(value, "others")}
               errorMessage={error.address || "Address is required"}
             />
+          </div>
+
+          <div className="flex gap-2 items-center my-2">
+            <input
+              type="checkbox"
+              checked={saveShippingAddress}
+              onChange={() => setSaveShippingAddress(true)}
+              name="saveShippingAddress"
+              id="saveShippingAddress"
+            />
+            <p className="text-sm font-semibold">Save Shipping Address</p>
           </div>
 
           <div className="bg-white rounded-xl p-4 md:p-6 my-5">
@@ -260,7 +284,12 @@ const CheckOut = () => {
           </div>
         </form>
       </section>
-      <Cart isCheckOutPage={true} showCheckOutBtn={false} />
+      <Cart
+        isCheckOutPage={true}
+        showCheckOutBtn={false}
+        submitOrder={submitOrder}
+        setSubmitOrder={setSubmitOrder}
+      />
     </section>
   );
 };
