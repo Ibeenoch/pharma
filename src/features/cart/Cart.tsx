@@ -22,15 +22,11 @@ import { useNavigate } from "react-router-dom";
 interface CartProps {
   showCheckOutBtn?: boolean;
   isCheckOutPage?: boolean;
-  submitOrder: boolean;
-  setSubmitOrder: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Cart: React.FC<CartProps> = ({
   showCheckOutBtn = true,
   isCheckOutPage = false,
-  submitOrder,
-  setSubmitOrder,
 }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -197,8 +193,7 @@ const Cart: React.FC<CartProps> = ({
                   weightType="medium"
                   showArrow={true}
                   fullwidth={true}
-                  type="button"
-                  onClick={() => setSubmitOrder(true)}
+                  type="submit"
                 />
               </div>
               <IconAndText Icon={Lock} text="Secure Checkout - SSL Encrypted" />

@@ -34,7 +34,9 @@ const validatePassword = (value: string) => {
 };
 
 const validatePasscode = (value: string) => {
-  return typeof value === "string" && value.trim() === import.meta.env.VITE_PASS_CODE; //  Always returns boolean
+  return (
+    typeof value === "string" && value.trim() === import.meta.env.VITE_PASS_CODE
+  ); //  Always returns boolean
 };
 
 const validateOther = (value: any) => {
@@ -43,7 +45,6 @@ const validateOther = (value: any) => {
 
 const validatePhone = (value: string) => {
   const nigeriaPhoneRegex =
-    /^(?:\+234|0)(70|80|81|90|91|701|702|703|704|705|706|707|708|709|802|803|804|805|806|807|808|809|810|811|812|813|814|815|816|817|818|819|901|902|903|904|905|906|907|908|909|911|912|913|914|915|916|917|918|919)\d{6}$/;
-
+    /^\+?(\d{1,4})?[-.\s]?(\(?\d{3}\)?)[-.\s]?\d{3}[-.\s]?\d{4}$/;
   return nigeriaPhoneRegex.test(value);
 };

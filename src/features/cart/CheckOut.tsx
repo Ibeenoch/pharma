@@ -60,7 +60,7 @@ const CheckOut = () => {
 
   const handleFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    console.log("submitt");
     const firstNameValid = validator(firstName, "others");
     const lastNameValid = validator(lastName, "others");
     const phoneValid = validator(phone, "phone");
@@ -101,18 +101,20 @@ const CheckOut = () => {
       state,
       lga,
       address,
-      zipcode
+      zipcode,
+      paymentIndex
     );
   };
 
   //  submitOrder && handleFormSubmit()
 
   return (
-    <section
+    <form
+      onSubmit={handleFormSubmit}
       className={`mt-20 ${pageSpacing} my-10  p-4 md:grid md:grid-cols-[60%_40%] md:gap-4`}
     >
       <section className="">
-        <form onChange={handleFormSubmit} className="">
+        <div className="">
           <div className="bg-white p-4 md:p-6 rounded-xl">
             <CustomText
               text="Shipping Details"
@@ -282,15 +284,10 @@ const CheckOut = () => {
               ))}
             </div>
           </div>
-        </form>
+        </div>
       </section>
-      <Cart
-        isCheckOutPage={true}
-        showCheckOutBtn={false}
-        submitOrder={submitOrder}
-        setSubmitOrder={setSubmitOrder}
-      />
-    </section>
+      <Cart isCheckOutPage={true} showCheckOutBtn={false} />
+    </form>
   );
 };
 
