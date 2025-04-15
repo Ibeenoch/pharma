@@ -27,6 +27,8 @@ interface ButtonProps {
       descId?: string;
     }
   >;
+  PreFixIconWeight?: string;
+  PreFixIconStyle?: string;
   isLoading?: boolean;
   textSize?: "extrasmall" | "small" | "normal" | "large";
   weightType?: "thin" | "normal" | "medium" | "semibold" | "bold" | "superbold";
@@ -48,12 +50,14 @@ const CustomButton: React.FC<ButtonProps> = ({
   PreFixIcon,
   isLoading = false,
   fullwidth = false,
-  defaultArrowColor = 'default',
+  defaultArrowColor = "default",
   textSize = "small",
   weightType = "normal",
   defaultBorderColor,
   defaultBackgroundColor = "default",
   defaultTextColor = "default",
+  PreFixIconWeight,
+  PreFixIconStyle,
 }) => {
   let textWeight =
     weightType === "bold"
@@ -96,12 +100,18 @@ const CustomButton: React.FC<ButtonProps> = ({
       )}
       {showIcon && PreFixIcon && (
         <PreFixIcon
-          className={`w-5 h-5 border-none fill-white hover:fill-black  group-hover:fill-black `}
+          className={`w-5 h-5 border-none ${PreFixIconWeight} ${
+            PreFixIconStyle
+              ? PreFixIconStyle
+              : "fill-white hover:fill-black  group-hover:fill-black"
+          } `}
         />
       )}
       <p
         className={`${
-          defaultTextColor === "default" ? "group-hover:text-black" : ""
+          defaultTextColor === "default"
+            ? "group-hover:text-black"
+            : defaultTextColor
         }  ${textWeight} ${
           textSize === "extrasmall"
             ? "text-[8px]"
@@ -123,7 +133,11 @@ const CustomButton: React.FC<ButtonProps> = ({
       )}
       {showArrow && (
         <LongRightArrow
-          className={`w-6 h-6 border-none ${defaultArrowColor === 'default' ? 'fill-white  group-hover:fill-black' : defaultArrowColor }   `}
+          className={`w-6 h-6 border-none ${
+            defaultArrowColor === "default"
+              ? "fill-white  group-hover:fill-black"
+              : defaultArrowColor
+          }   `}
         />
       )}
     </button>

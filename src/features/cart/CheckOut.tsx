@@ -8,6 +8,7 @@ import User from "../../assets/icons/user.svg?react";
 import Paystack from "../../assets/icons/paystack-logo-vector.svg?react";
 import Flutterwave from "../../assets/icons/flutterwave.svg?react";
 import BankTransfer from "../../assets/icons/bank-transfer.svg?react";
+import Cancel from "../../assets/icons/cancel-close.svg?react";
 import Country from "../../assets/icons/globe.svg?react";
 import Phone from "../../assets/icons/mobile-phone.svg?react";
 import Location from "../../assets/icons/maps-and-flags.svg?react";
@@ -18,6 +19,8 @@ import { countries } from "../../utils/countries";
 import { nigeriaStateAndLga } from "../../utils/nigeriaStateAndLgas";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { selectAuth } from "../auth/authSlice";
+import { selectCart } from "./cartSlice";
+import CustomButton from "../../components/common/Button";
 
 const CheckOut = () => {
   const { user } = useAppSelector(selectAuth);
@@ -36,6 +39,7 @@ const CheckOut = () => {
   const [saveShippingAddress, setSaveShippingAddress] = useState<boolean>(true);
   const [submitOrder, setSubmitOrder] = useState<boolean>(true);
   const [paymentIndex, setPaymentIndex] = useState<number>(0);
+  const { cart, total } = useAppSelector(selectCart);
 
   const setPaymentMethodIndex = (index: number) => {
     setPaymentIndex(index);
@@ -60,7 +64,7 @@ const CheckOut = () => {
 
   const handleFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("submitt");
+
     const firstNameValid = validator(firstName, "others");
     const lastNameValid = validator(lastName, "others");
     const phoneValid = validator(phone, "phone");
@@ -90,6 +94,7 @@ const CheckOut = () => {
         address: addressValid ? undefined : "Address is required",
         zipcode: zipcodeValid ? undefined : "Zipcode is required",
       });
+
       return;
     }
 
@@ -102,8 +107,13 @@ const CheckOut = () => {
       lga,
       address,
       zipcode,
-      paymentIndex
+      paymentIndex,
+      cart,
+      total
     );
+    // create shipping address
+
+    // update shipping address
   };
 
   //  submitOrder && handleFormSubmit()
@@ -233,6 +243,29 @@ const CheckOut = () => {
               validate={(value) => validator(value, "others")}
               errorMessage={error.address || "Address is required"}
             />
+            <div className="flex gap-4 items-center my-3">
+              <CustomButton
+                text="Save Address"
+                type="button"
+                fullwidth={true}
+                showArrow={true}
+                borderRadiusType="threecurved"
+              />
+              {/* <CustomButton
+                text="Cancel"
+                type="button"
+                weightType="medium"
+                defaultBackgroundColor="bg-red-600 hover:bg-red-600/10"
+                defaultBorderColor="hover:border hover:border-red-600"
+                fullwidth={true}
+                showIcon={true}
+                PreFixIcon={Cancel}
+                PreFixIconWeight="stroke-2"
+                PreFixIconStyle="fill-white group-hover:text-red-600"
+                borderRadiusType="threecurved"
+                defaultTextColor="text-white group-hover:text-red-600"
+              /> */}
+            </div>
           </div>
 
           <div className="flex gap-2 items-center my-2">

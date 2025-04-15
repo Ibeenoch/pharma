@@ -16,6 +16,7 @@ interface CartRowItemProps {
   removeItemFromCart: (id: string) => void;
   isCheckOut?: boolean;
   id: string;
+  isCheckOutPage?: boolean;
 }
 
 const CartRowItem: React.FC<CartRowItemProps> = ({
@@ -28,13 +29,14 @@ const CartRowItem: React.FC<CartRowItemProps> = ({
   increaseQty,
   removeItemFromCart,
   isCheckOut = false,
+  isCheckOutPage,
   id,
 }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <div className="grid grid-cols-[33%_34%_33%] md:grid-cols-[20%_30%_30%_20%] gap-3 my-3 pb-2 border-b border-gray-300">
       <div
-      onClick={() => navigate(`/product_details/${id}`)}
+        onClick={() => navigate(`/product_details/${id}`)}
         className={` h-auto ${
           isCheckOut ? "bg-[#f4f4f4]" : "bg-white"
         } flex justify-center items-center p-2 cursor-pointer rounded-xl`}
@@ -78,6 +80,7 @@ const CartRowItem: React.FC<CartRowItemProps> = ({
             increaseNum={increaseQty}
             qty={qty}
             id={id}
+            isCheckOutPage={isCheckOutPage}
           />
         </div>
 

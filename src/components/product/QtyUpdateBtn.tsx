@@ -8,6 +8,7 @@ interface QtyUpdateBtnProps {
   increaseNum: (id: string) => void;
   id: string;
   size?: "big" | "normal";
+  isCheckOutPage?: boolean;
 }
 const QtyUpdateBtn: React.FC<QtyUpdateBtnProps> = ({
   qty,
@@ -15,6 +16,7 @@ const QtyUpdateBtn: React.FC<QtyUpdateBtnProps> = ({
   increaseNum,
   id,
   size = "normal",
+  isCheckOutPage = "false",
 }) => {
   return (
     <div
@@ -33,7 +35,11 @@ const QtyUpdateBtn: React.FC<QtyUpdateBtnProps> = ({
         <Minus
           className={`${
             size === "normal" ? "w-3 h-3" : "w-5 h-5"
-          } cursor-pointer text-white group-hover:text-white group-hover:stroke-white`}
+          } cursor-pointer ${
+            isCheckOutPage
+              ? "text-black  group-hover:text-white"
+              : "text-white group-hover:text-white group-hover:stroke-white"
+          } `}
         />
       </div>
       <p
@@ -52,7 +58,11 @@ const QtyUpdateBtn: React.FC<QtyUpdateBtnProps> = ({
         <Plus
           className={`${
             size === "normal" ? "w-3 h-3" : "w-5 h-5"
-          }  cursor-pointer text-white group-hover:text-white group-hover:stroke-white`}
+          }  cursor-pointer  ${
+            isCheckOutPage
+              ? "text-black group-hover:text-white"
+              : "text-white group-hover:text-white group-hover:stroke-white"
+          }`}
         />
       </div>
     </div>

@@ -30,13 +30,7 @@ const Cart: React.FC<CartProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const {
-    cart,
-    subTotal,
-    total,
-    hasItemBeenAddedToCart,
-    hasItemBeenAddedToWishlist,
-  } = useAppSelector(selectCart);
+  const { cart, subTotal, total } = useAppSelector(selectCart);
   const increaseQty = (id: string) => {
     dispatch(increaseCartQty(id));
     dispatch(calculateSubTotal());
@@ -91,6 +85,7 @@ const Cart: React.FC<CartProps> = ({
           c.item &&
           c.item.$id && (
             <CartRowItem
+              isCheckOutPage={isCheckOutPage}
               removeItemFromCart={() => {
                 c &&
                   c.item &&

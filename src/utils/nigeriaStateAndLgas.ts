@@ -1,8 +1,12 @@
 export const nigeriaStateAndLga = [
   {
-    "state": "Adamawa",
-    "alias": "adamawa",
-    "lgas": [
+    state: "Select State",
+    alias: "Select State",
+  },
+  {
+    state: "Adamawa",
+    alias: "adamawa",
+    lgas: [
       "Demsa",
       "Fufure",
       "Ganye",
@@ -23,13 +27,13 @@ export const nigeriaStateAndLga = [
       "Song",
       "Toungo",
       "Yola North",
-      "Yola South"
-    ]
+      "Yola South",
+    ],
   },
   {
-    "state": "Akwa Ibom",
-    "alias": "akwa_ibom",
-    "lgas": [
+    state: "Akwa Ibom",
+    alias: "akwa_ibom",
+    lgas: [
       "Abak",
       "Eastern Obolo",
       "Eket",
@@ -60,13 +64,13 @@ export const nigeriaStateAndLga = [
       "Oruk Anam",
       "Uruan",
       "Urue-Offong/Oruko",
-      "Uyo"
-    ]
+      "Uyo",
+    ],
   },
   {
-    "state": "Anambra",
-    "alias": "anambra",
-    "lgas": [
+    state: "Anambra",
+    alias: "anambra",
+    lgas: [
       "Aguata",
       "Anambra East",
       "Anaocha",
@@ -87,13 +91,13 @@ export const nigeriaStateAndLga = [
       "Onitsha South",
       "Orumba North",
       "Orumba South",
-      "Oyi"
-    ]
+      "Oyi",
+    ],
   },
   {
-    "state": "Ogun",
-    "alias": "ogun",
-    "lgas": [
+    state: "Ogun",
+    alias: "ogun",
+    lgas: [
       "Abeokuta North",
       "Abeokuta South",
       "Ado-Odo/Ota",
@@ -113,13 +117,13 @@ export const nigeriaStateAndLga = [
       "Odogbolu",
       "Remo North",
       "Ogun Waterside",
-      "Shagamu"
-    ]
+      "Shagamu",
+    ],
   },
   {
-    "state": "Ondo",
-    "alias": "ondo",
-    "lgas": [
+    state: "Ondo",
+    alias: "ondo",
+    lgas: [
       "Akoko North-East",
       "Akoko North-West",
       "Akoko South-West",
@@ -137,13 +141,13 @@ export const nigeriaStateAndLga = [
       "Ondo West",
       "Ose",
       "Ondo East",
-      "Owo"
-    ]
+      "Owo",
+    ],
   },
   {
-    "state": "Rivers",
-    "alias": "rivers",
-    "lgas": [
+    state: "Rivers",
+    alias: "rivers",
+    lgas: [
       "Abua/Odual",
       "Ahoada East",
       "Ahoada West",
@@ -166,13 +170,13 @@ export const nigeriaStateAndLga = [
       "Opobo/Nkoro",
       "Oyigbo",
       "Port Harcourt",
-      "Tai"
-    ]
+      "Tai",
+    ],
   },
   {
-    "state": "Bauchi",
-    "alias": "bauchi",
-    "lgas": [
+    state: "Bauchi",
+    alias: "bauchi",
+    lgas: [
       "Alkaleri",
       "Bauchi",
       "Bogoro",
@@ -192,13 +196,13 @@ export const nigeriaStateAndLga = [
       "Tafawa Balewa",
       "Toro",
       "Warji",
-      "Zaki"
-    ]
+      "Zaki",
+    ],
   },
   {
-    "state": "Benue",
-    "alias": "benue",
-    "lgas": [
+    state: "Benue",
+    alias: "benue",
+    lgas: [
       "Agatu",
       "Apa",
       "Ado",
@@ -221,13 +225,13 @@ export const nigeriaStateAndLga = [
       "Tarka",
       "Ukum",
       "Ushongo",
-      "Vandeikya"
-    ]
+      "Vandeikya",
+    ],
   },
   {
-    "state": "Borno",
-    "alias": "borno",
-    "lgas": [
+    state: "Borno",
+    alias: "borno",
+    lgas: [
       "Abadam",
       "Askira/Uba",
       "Bama",
@@ -254,13 +258,13 @@ export const nigeriaStateAndLga = [
       "Monguno",
       "Ngala",
       "Nganzai",
-      "Shani"
-    ]
+      "Shani",
+    ],
   },
   {
-    "state": "Bayelsa",
-    "alias": "bayelsa",
-    "lgas": [
+    state: "Bayelsa",
+    alias: "bayelsa",
+    lgas: [
       "Brass",
       "Ekeremor",
       "Kolokuma/Opokuma",
@@ -268,13 +272,13 @@ export const nigeriaStateAndLga = [
       "Ogbia",
       "Sagbama",
       "Southern Ijaw",
-      "Yenagoa"
-    ]
+      "Yenagoa",
+    ],
   },
   {
-    "state": "Cross River",
-    "alias": "cross_river",
-    "lgas": [
+    state: "Cross River",
+    alias: "cross_river",
+    lgas: [
       "Abi",
       "Akamkpa",
       "Akpabuyo",
@@ -292,13 +296,13 @@ export const nigeriaStateAndLga = [
       "Odukpani",
       "Ogoja",
       "Yakuur",
-      "Yala"
-    ]
+      "Yala",
+    ],
   },
   {
-    "state": "Delta",
-    "alias": "delta",
-    "lgas": [
+    state: "Delta",
+    alias: "delta",
+    lgas: [
       "Aniocha North",
       "Aniocha South",
       "Bomadi",
@@ -323,13 +327,13 @@ export const nigeriaStateAndLga = [
       "Uvwie",
       "Warri North",
       "Warri South",
-      "Warri South West"
-    ]
+      "Warri South West",
+    ],
   },
   {
-    "state": "Ebonyi",
-    "alias": "ebonyi",
-    "lgas": [
+    state: "Ebonyi",
+    alias: "ebonyi",
+    lgas: [
       "Abakaliki",
       "Afikpo North",
       "Ebonyi",
@@ -342,13 +346,13 @@ export const nigeriaStateAndLga = [
       "Izzi",
       "Ohaozara",
       "Ohaukwu",
-      "Onicha"
-    ]
+      "Onicha",
+    ],
   },
   {
-    "state": "Edo",
-    "alias": "edo",
-    "lgas": [
+    state: "Edo",
+    alias: "edo",
+    lgas: [
       "Akoko-Edo",
       "Egor",
       "Esan Central",
@@ -366,13 +370,13 @@ export const nigeriaStateAndLga = [
       "Ovia South-West",
       "Owan East",
       "Owan West",
-      "Uhunmwonde"
-    ]
+      "Uhunmwonde",
+    ],
   },
   {
-    "state": "Ekiti",
-    "alias": "ekiti",
-    "lgas": [
+    state: "Ekiti",
+    alias: "ekiti",
+    lgas: [
       "Ado Ekiti",
       "Efon",
       "Ekiti East",
@@ -388,13 +392,13 @@ export const nigeriaStateAndLga = [
       "Ikole",
       "Ise/Orun",
       "Moba",
-      "Oye"
-    ]
+      "Oye",
+    ],
   },
   {
-    "state": "Enugu",
-    "alias": "enugu",
-    "lgas": [
+    state: "Enugu",
+    alias: "enugu",
+    lgas: [
       "Awgu",
       "Aninri",
       "Enugu East",
@@ -411,25 +415,25 @@ export const nigeriaStateAndLga = [
       "Udenu",
       "Oji River",
       "Uzo Uwani",
-      "Udi"
-    ]
+      "Udi",
+    ],
   },
   {
-    "state": "Federal Capital Territory",
-    "alias": "abuja",
-    "lgas": [
+    state: "Federal Capital Territory",
+    alias: "abuja",
+    lgas: [
       "Abaji",
       "Bwari",
       "Gwagwalada",
       "Kuje",
       "Kwali",
-      "Municipal Area Council"
-    ]
+      "Municipal Area Council",
+    ],
   },
   {
-    "state": "Gombe",
-    "alias": "gombe",
-    "lgas": [
+    state: "Gombe",
+    alias: "gombe",
+    lgas: [
       "Akko",
       "Balanga",
       "Billiri",
@@ -440,13 +444,13 @@ export const nigeriaStateAndLga = [
       "Kwami",
       "Nafada",
       "Shongom",
-      "Yamaltu/Deba"
-    ]
+      "Yamaltu/Deba",
+    ],
   },
   {
-    "state": "Jigawa",
-    "alias": "jigawa",
-    "lgas": [
+    state: "Jigawa",
+    alias: "jigawa",
+    lgas: [
       "Auyo",
       "Babura",
       "Buji",
@@ -473,13 +477,13 @@ export const nigeriaStateAndLga = [
       "Roni",
       "Ringim",
       "Yankwashi",
-      "Taura"
-    ]
+      "Taura",
+    ],
   },
   {
-    "state": "Oyo",
-    "alias": "oyo",
-    "lgas": [
+    state: "Oyo",
+    alias: "oyo",
+    lgas: [
       "Afijio",
       "Akinyele",
       "Atiba",
@@ -512,13 +516,13 @@ export const nigeriaStateAndLga = [
       "Oyo East",
       "Saki East",
       "Saki West",
-      "Surulere Oyo State"
-    ]
+      "Surulere Oyo State",
+    ],
   },
   {
-    "state": "Imo",
-    "alias": "imo",
-    "lgas": [
+    state: "Imo",
+    alias: "imo",
+    lgas: [
       "Aboh Mbaise",
       "Ahiazu Mbaise",
       "Ehime Mbano",
@@ -545,13 +549,13 @@ export const nigeriaStateAndLga = [
       "Owerri Municipal",
       "Owerri North",
       "Unuimo",
-      "Owerri West"
-    ]
+      "Owerri West",
+    ],
   },
   {
-    "state": "Kaduna",
-    "alias": "kaduna",
-    "lgas": [
+    state: "Kaduna",
+    alias: "kaduna",
+    lgas: [
       "Birnin Gwari",
       "Chikun",
       "Giwa",
@@ -574,13 +578,13 @@ export const nigeriaStateAndLga = [
       "Sanga",
       "Soba",
       "Zangon Kataf",
-      "Zaria"
-    ]
+      "Zaria",
+    ],
   },
   {
-    "state": "Kebbi",
-    "alias": "kebbi",
-    "lgas": [
+    state: "Kebbi",
+    alias: "kebbi",
+    lgas: [
       "Aleiro",
       "Argungu",
       "Arewa Dandi",
@@ -601,13 +605,13 @@ export const nigeriaStateAndLga = [
       "Sakaba",
       "Wasagu/Danko",
       "Yauri",
-      "Zuru"
-    ]
+      "Zuru",
+    ],
   },
   {
-    "state": "Kano",
-    "alias": "kano",
-    "lgas": [
+    state: "Kano",
+    alias: "kano",
+    lgas: [
       "Ajingi",
       "Albasu",
       "Bagwai",
@@ -651,13 +655,13 @@ export const nigeriaStateAndLga = [
       "Tudun Wada",
       "Ungogo",
       "Warawa",
-      "Wudil"
-    ]
+      "Wudil",
+    ],
   },
   {
-    "state": "Kogi",
-    "alias": "kogi",
-    "lgas": [
+    state: "Kogi",
+    alias: "kogi",
+    lgas: [
       "Ajaokuta",
       "Adavi",
       "Ankpa",
@@ -678,13 +682,13 @@ export const nigeriaStateAndLga = [
       "Olamaboro",
       "Omala",
       "Yagba East",
-      "Yagba West"
-    ]
+      "Yagba West",
+    ],
   },
   {
-    "state": "Osun",
-    "alias": "osun",
-    "lgas": [
+    state: "Osun",
+    alias: "osun",
+    lgas: [
       "Aiyedire",
       "Atakunmosa West",
       "Atakunmosa East",
@@ -714,13 +718,13 @@ export const nigeriaStateAndLga = [
       "Olorunda",
       "Oriade",
       "Orolu",
-      "Osogbo"
-    ]
+      "Osogbo",
+    ],
   },
   {
-    "state": "Sokoto",
-    "alias": "sokoto",
-    "lgas": [
+    state: "Sokoto",
+    alias: "sokoto",
+    lgas: [
       "Gudu",
       "Gwadabawa",
       "Illela",
@@ -743,13 +747,13 @@ export const nigeriaStateAndLga = [
       "Bodinga",
       "Dange Shuni",
       "Goronyo",
-      "Gada"
-    ]
+      "Gada",
+    ],
   },
   {
-    "state": "Plateau",
-    "alias": "plateau",
-    "lgas": [
+    state: "Plateau",
+    alias: "plateau",
+    lgas: [
       "Bokkos",
       "Barkin Ladi",
       "Bassa",
@@ -766,13 +770,13 @@ export const nigeriaStateAndLga = [
       "Qua'an Pan",
       "Riyom",
       "Shendam",
-      "Wase"
-    ]
+      "Wase",
+    ],
   },
   {
-    "state": "Taraba",
-    "alias": "taraba",
-    "lgas": [
+    state: "Taraba",
+    alias: "taraba",
+    lgas: [
       "Ardo Kola",
       "Bali",
       "Donga",
@@ -788,13 +792,13 @@ export const nigeriaStateAndLga = [
       "Ussa",
       "Wukari",
       "Yorro",
-      "Zing"
-    ]
+      "Zing",
+    ],
   },
   {
-    "state": "Yobe",
-    "alias": "yobe",
-    "lgas": [
+    state: "Yobe",
+    alias: "yobe",
+    lgas: [
       "Bade",
       "Bursari",
       "Damaturu",
@@ -811,13 +815,13 @@ export const nigeriaStateAndLga = [
       "Potiskum",
       "Tarmuwa",
       "Yunusari",
-      "Yusufari"
-    ]
+      "Yusufari",
+    ],
   },
   {
-    "state": "Zamfara",
-    "alias": "zamfara",
-    "lgas": [
+    state: "Zamfara",
+    alias: "zamfara",
+    lgas: [
       "Anka",
       "Birnin Magaji/Kiyaw",
       "Bakura",
@@ -831,13 +835,13 @@ export const nigeriaStateAndLga = [
       "Maru",
       "Talata Mafara",
       "Tsafe",
-      "Zurmi"
-    ]
+      "Zurmi",
+    ],
   },
   {
-    "state": "Lagos",
-    "alias": "lagos",
-    "lgas": [
+    state: "Lagos",
+    alias: "lagos",
+    lgas: [
       "Agege",
       "Ajeromi-Ifelodun",
       "Alimosho",
@@ -857,13 +861,13 @@ export const nigeriaStateAndLga = [
       "Ojo",
       "Oshodi-Isolo",
       "Shomolu",
-      "Surulere Lagos State"
-    ]
+      "Surulere Lagos State",
+    ],
   },
   {
-    "state": "Katsina",
-    "alias": "katsina",
-    "lgas": [
+    state: "Katsina",
+    alias: "katsina",
+    lgas: [
       "Bakori",
       "Batagarawa",
       "Batsari",
@@ -897,13 +901,13 @@ export const nigeriaStateAndLga = [
       "Sabuwa",
       "Safana",
       "Sandamu",
-      "Zango"
-    ]
+      "Zango",
+    ],
   },
   {
-    "state": "Kwara",
-    "alias": "kwara",
-    "lgas": [
+    state: "Kwara",
+    alias: "kwara",
+    lgas: [
       "Asa",
       "Baruten",
       "Edu",
@@ -919,13 +923,13 @@ export const nigeriaStateAndLga = [
       "Offa",
       "Oke Ero",
       "Oyun",
-      "Pategi"
-    ]
+      "Pategi",
+    ],
   },
   {
-    "state": "Nasarawa",
-    "alias": "nasarawa",
-    "lgas": [
+    state: "Nasarawa",
+    alias: "nasarawa",
+    lgas: [
       "Akwanga",
       "Awe",
       "Doma",
@@ -938,13 +942,13 @@ export const nigeriaStateAndLga = [
       "Nasarawa",
       "Obi",
       "Toto",
-      "Wamba"
-    ]
+      "Wamba",
+    ],
   },
   {
-    "state": "Niger",
-    "alias": "niger",
-    "lgas": [
+    state: "Niger",
+    alias: "niger",
+    lgas: [
       "Agaie",
       "Agwara",
       "Bida",
@@ -969,13 +973,13 @@ export const nigeriaStateAndLga = [
       "Shiroro",
       "Suleja",
       "Tafa",
-      "Wushishi"
-    ]
+      "Wushishi",
+    ],
   },
   {
-    "state": "Abia",
-    "alias": "abia",
-    "lgas": [
+    state: "Abia",
+    alias: "abia",
+    lgas: [
       "Aba North",
       "Arochukwu",
       "Aba South",
@@ -992,7 +996,7 @@ export const nigeriaStateAndLga = [
       "Ukwa West",
       "Umuahia North",
       "Umuahia South",
-      "Umu Nneochi"
-    ]
-  }
+      "Umu Nneochi",
+    ],
+  },
 ];

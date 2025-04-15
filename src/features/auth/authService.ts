@@ -1,10 +1,8 @@
-import {  ID, OAuthProvider } from "appwrite";
+import { ID, OAuthProvider } from "appwrite";
 import { account, database } from "../../lib/appwriteConfig";
 import { UserDataProps } from "../../types/auth/UserData";
 import { Query } from "node-appwrite";
 import { URL } from "../../constants/appGeneral";
-
-
 
 export const registerUser = async (userData: UserDataProps) => {
   try {
@@ -20,7 +18,6 @@ export const registerUser = async (userData: UserDataProps) => {
     const verify = await account.createVerification(
       `${URL}/verify/successfully`
     );
-    console.log("User created successfully:", user);
     // After user creation, you can store additional data (like firstName, lastName, etc.)
     // You can use the Appwrite database service to store this information
 
@@ -46,18 +43,20 @@ export const registerUser = async (userData: UserDataProps) => {
     console.log("customUser created successfully:", userCreated, verify);
     return {
       userId: user.$id,
-      email: userData.email,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      dob: userData.dob,
-      role: userData.role,
-      gender: userData.gender,
+      email: userCreated.email,
+      firstName: userCreated.firstName,
+      lastName: userCreated.lastName,
+      dob: userCreated.dob,
+      role: userCreated.role,
+      gender: userCreated.gender,
       passcode:
-        userData.role?.toLowerCase() === "admin" ? userData.passcode : "N/A",
+        userCreated.role?.toLowerCase() === "admin"
+          ? userCreated.passcode
+          : "N/A",
       password: "", // Since password should not be returned, just leave it empty
     } as UserDataProps;
   } catch (error) {
-    throw error
+    throw error;
     console.log(error);
   }
 };
@@ -214,7 +213,7 @@ export const getCurrentLoginUser = async () => {
       passcode,
     } as UserDataProps;
   } else {
-     await database.createDocument(
+    await database.createDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID, // collection id
       ID.unique(),
@@ -232,20 +231,19 @@ export const getCurrentLoginUser = async () => {
   }
 };
 
-export const checkIfUserExist = async(email: string) => {
+export const checkIfUserExist = async (email: string) => {
   try {
-    // fetch all users 
+    // fetch all users
     // account.listIdentities,  account.listLogs, account.listMfaFactors, account.listSessions
-    const users = await  database.listDocuments(
+    const users = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID,
       import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID,
       [Query.equal("email", email)]
     );
 
-    console.log('email found is ', users.total)
-  return users.total > 0 ? true : false
-  
+    console.log("email found is ", users.total);
+    return users.total > 0 ? true : false;
   } catch (error) {
     throw error;
   }
-}
+};
