@@ -5,13 +5,14 @@ import LoginPage from '../../pages/LoginPage';
 
 interface SecureUserPageProps {
     child: React.ReactNode;
+    redirectUrl?: string
 }
 
-const SecureUserPage: React.FC<SecureUserPageProps> = ({ child }) => {
+const SecureUserPage: React.FC<SecureUserPageProps> = ({ child, redirectUrl }) => {
     const { user } = useAppSelector(selectAuth);
   return (
    
-      user && user.email ? child : ( <LoginPage /> )
+      user && user.email ? child : ( <LoginPage redirectUrl={redirectUrl} /> )
    
   )
 }

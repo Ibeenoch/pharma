@@ -123,32 +123,32 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin/dashboard",
-    element: <SecureAdminPage child={<DashBoardPage />} />,
+    element: <SecureAdminPage child={<DashBoardPage />} redirectUrl="/admin/dashboard" />,
   },
 
   {
     path: "/admin/users/all",
-    element: <SecureAdminPage child={<ALlUsersPage />} />,
+    element: <SecureAdminPage child={<ALlUsersPage />} redirectUrl="/admin/users/all" />,
   },
   {
     path: "/admin/users/admin",
-    element: <SecureAdminPage child={<UsersAdminPage />} />,
+    element: <SecureAdminPage child={<UsersAdminPage />} redirectUrl="/admin/users/admin"/>,
   },
   {
     path: "/admin/users/pharmacy",
-    element: <SecureAdminPage child={<PharmacyPage />} />,
+    element: <SecureAdminPage child={<PharmacyPage />} redirectUrl="/admin/users/pharmacy" />,
   },
   {
     path: "/admin/users/customer",
-    element: <SecureAdminPage child={<CustomerPage />} />,
+    element: <SecureAdminPage child={<CustomerPage />} redirectUrl="/admin/users/customer" />,
   },
   {
     path: "/admin/product/all",
-    element: <SecureAdminPage child={<ProductPage />} />,
+    element: <SecureAdminPage child={<ProductPage />} redirectUrl="/admin/product/all" />,
   },
   {
     path: "/admin/product/add",
-    element: <SecureAdminPage child={<AddProductPage />} />,
+    element: <SecureAdminPage child={<AddProductPage />} redirectUrl="/admin/product/add" />,
   },
   {
     path: "/admin/product/update/:id",
@@ -156,47 +156,47 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin/order/all",
-    element: <SecureAdminPage child={<OrderPage />} />,
+    element: <SecureAdminPage child={<OrderPage />} redirectUrl="/admin/order/all" />,
   },
   {
     path: "/admin/order/active",
-    element: <SecureAdminPage child={<ActiveOrderPage />} />,
+    element: <SecureAdminPage child={<ActiveOrderPage />} redirectUrl="/admin/order/active" />,
   },
   {
     path: "/admin/order/cancelled",
-    element: <SecureAdminPage child={<CancelledOrderPage />} />,
+    element: <SecureAdminPage child={<CancelledOrderPage />} redirectUrl="/admin/order/cancelled" />,
   },
   {
     path: "/admin/order/pending",
-    element: <SecureAdminPage child={<PendingOrderPage />} />,
+    element: <SecureAdminPage child={<PendingOrderPage />} redirectUrl="/admin/order/pending" />,
   },
   {
     path: "/admin/order/completed",
-    element: <SecureAdminPage child={<CompletedOrderPage />} />,
+    element: <SecureAdminPage child={<CompletedOrderPage />} redirectUrl="/admin/order/completed" />,
   },
   {
     path: "/admin/transaction/all",
-    element: <SecureAdminPage child={<TransactionPage />} />,
+    element: <SecureAdminPage child={<TransactionPage />} redirectUrl="/admin/transaction/all" />,
   },
   {
     path: "/admin/transaction/pending",
-    element: <SecureAdminPage child={<PendingTransactionPage />} />,
+    element: <SecureAdminPage child={<PendingTransactionPage />} redirectUrl="/admin/transaction/pending" />,
   },
   {
     path: "/admin/transaction/completed",
-    element: <SecureAdminPage child={<CompletedTransactionPage />} />,
+    element: <SecureAdminPage child={<CompletedTransactionPage />} redirectUrl="/admin/transaction/completed" />,
   },
   {
     path: "/admin/transaction/cancelled",
-    element: <SecureAdminPage child={<CancelledTransactionPage />} />,
+    element: <SecureAdminPage child={<CancelledTransactionPage />} redirectUrl="/admin/transaction/cancelled" />,
   },
   {
     path: "/admin/settings/account",
-    element: <SecureAdminPage child={<AccountSettingsPage />} />,
+    element: <SecureAdminPage child={<AccountSettingsPage />} redirectUrl="/admin/settings/account" />,
   },
   {
     path: "/admin/settings/general",
-    element: <SecureAdminPage child={<GeneralSettingsPage />} />,
+    element: <SecureAdminPage child={<GeneralSettingsPage />} redirectUrl="/admin/settings/general"/>,
   },
 ]);
 
