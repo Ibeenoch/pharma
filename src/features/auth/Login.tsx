@@ -15,7 +15,11 @@ import { facebookLogin, googleLogin, loginUser, selectAuth } from "./authSlice";
 import Toast from "../../components/common/Toast";
 import AlertModal from "../../components/auth/AlertModal";
 
-const Login = () => {
+interface LoginProps{
+  redirectUrl?: string
+}
+
+const Login: React.FC<LoginProps> = ({ redirectUrl }) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isSubmitting, setisSubmitting] = useState<boolean>(false);
@@ -72,7 +76,7 @@ const Login = () => {
       })
     ).then((res) =>{
       const payload = res.payload as { role?: string };
-      typeof res.payload === 'string'  ? handleErr() :  payload?.role === 'Admin' ?  navigate("/admin/dashboard") :  navigate("/");
+      typeof res.payload === 'string'  ? handleErr() :  payload?.role === 'Admin' ?  redirectUrl ? navigate(redirectUrl) : navigate("/admin/dashboard") :  redirectUrl ? navigate(redirectUrl) :  navigate("/");
     }
     );
   };
