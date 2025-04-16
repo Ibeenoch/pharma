@@ -203,6 +203,7 @@ export const getCurrentLoginUser = async () => {
     const gender = userDoc.gender;
     const role = userDoc.role;
     const passcode = userDoc.passcode;
+    const userId = userDoc.userId;
     return {
       firstName,
       lastName,
@@ -211,6 +212,7 @@ export const getCurrentLoginUser = async () => {
       email,
       role,
       passcode,
+      userId
     } as UserDataProps;
   } else {
     await database.createDocument(

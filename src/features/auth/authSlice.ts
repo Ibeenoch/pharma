@@ -210,6 +210,7 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = "success";
         if (action.payload ) {
+          console.log('login data ', action.payload)
           state.user = action.payload;
         }
       })

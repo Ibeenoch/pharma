@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Cart from "./Cart";
 import { pageSpacing } from "../../constants/appText";
 import CustomText from "../../components/common/Text";
@@ -8,7 +8,7 @@ import User from "../../assets/icons/user.svg?react";
 import Paystack from "../../assets/icons/paystack-logo-vector.svg?react";
 import Flutterwave from "../../assets/icons/flutterwave.svg?react";
 import BankTransfer from "../../assets/icons/bank-transfer.svg?react";
-import Cancel from "../../assets/icons/cancel-close.svg?react";
+import Check from "../../assets/icons/check-mark.svg?react";
 import Country from "../../assets/icons/globe.svg?react";
 import Phone from "../../assets/icons/mobile-phone.svg?react";
 import Location from "../../assets/icons/maps-and-flags.svg?react";
@@ -17,33 +17,63 @@ import PaymentOption from "../../components/common/PaymentOption";
 import CustomSelect from "../../components/common/Select";
 import { countries } from "../../utils/countries";
 import { nigeriaStateAndLga } from "../../utils/nigeriaStateAndLgas";
-import { useAppSelector } from "../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { selectAuth } from "../auth/authSlice";
 import { selectCart } from "./cartSlice";
 import CustomButton from "../../components/common/Button";
+import { getShippingDetails, postShippingDetails, selectOrder, updateShippingDetails } from "../order/orderSlice";
+import { ShippingDetailsProps, UpdateShippingArgs } from "../../types/order/OrderType";
 
 const CheckOut = () => {
   const { user } = useAppSelector(selectAuth);
+  const dispatch = useAppDispatch();
   const [firstName, setFirstName] = useState<string>(
     user && user.firstName ? user.firstName : ""
   );
   const [lastName, setLastName] = useState<string>(
     user && user.lastName ? user.lastName : ""
   );
-  const [phone, setPhone] = useState<string>("");
-  const [country, setCountry] = useState<string>("Nigeria");
-  const [state, setState] = useState<string>("");
-  const [lga, setLga] = useState<string>("");
-  const [zipcode, setZipcode] = useState<string>("");
-  const [address, setAddress] = useState<string>("");
-  const [saveShippingAddress, setSaveShippingAddress] = useState<boolean>(true);
-  const [submitOrder, setSubmitOrder] = useState<boolean>(true);
+  const { status, hasPreviousShippingDetails, shippingDetail } = useAppSelector(selectOrder);
+  
+    useEffect(() => {
+      user && user.userId && hasPreviousShippingDetails === false &&  dispatch(getShippingDetails(user && user.userId))
+    }, [hasPreviousShippingDetails, shippingDetail])
+
+  const [phone, setPhone] = useState<string>(shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0] && shippingDetail[0].phoneNumber ? shippingDetail[0].phoneNumber : "");
+  const [country, setCountry] = useState<string>(shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0] && shippingDetail[0].country ? shippingDetail[0].country : "Nigeria");
+  const [state, setState] = useState<string>(shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0] && shippingDetail[0].state ? shippingDetail[0].state : "");
+  const [lga, setLga] = useState<string>(shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0] && shippingDetail[0].lga ? shippingDetail[0].lga : "");
+  const [zipcode, setZipcode] = useState<string>(shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0] && shippingDetail[0].zipcode ? shippingDetail[0].zipcode : "");
+  const [address, setAddress] = useState<string>(shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0] && shippingDetail[0].address ? shippingDetail[0].address : "");
+  const [showUpdateShippingDetails, setShowUpdateShippingDetails] = useState<boolean>(true);
   const [paymentIndex, setPaymentIndex] = useState<number>(0);
   const { cart, total } = useAppSelector(selectCart);
-
+  console.log(cart, total)
   const setPaymentMethodIndex = (index: number) => {
     setPaymentIndex(index);
   };
+  
+const shouldUpdateShippingDetails = () => {
+  let s = shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0];
+  if(
+    s && s.phoneNumber !== phone ||
+    s && s.country !== country ||
+    s && s.state !== state ||
+    s && s.lga !== lga ||
+    s && s.zipcode !== zipcode ||
+    s && s.address !== address
+  ){
+
+  setShowUpdateShippingDetails(true);
+  }else{
+    setShowUpdateShippingDetails(false)
+  }
+}
+
+useEffect(() => {
+  shouldUpdateShippingDetails();
+
+}, [phone, country, state, lga, zipcode, address])
 
   const IconLists = [Paystack, Flutterwave, BankTransfer];
 
@@ -62,61 +92,109 @@ const CheckOut = () => {
     zipcode?: string;
   }>({});
 
+  const loadPayStackScript = (src: string) => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = resolve;
+      document.body.append(script);
+    });
+  }
+
+  const handlePayStack = async() => {
+    await loadPayStackScript("https://js.paystack.co/v1/inline.js");
+    const handler = (window as any).PaystackPop.setup({
+      key: "your_public_key",
+      email: user && user.email,
+      amount: 10000, // in kobo
+      currency: "NGN",
+      ref: `PS-${Date.now()}`,
+      callback: function (response: any) {
+        alert(`Payment complete! Reference: ${response.reference}`);
+      },
+      onClose: function () {
+        alert("Transaction was not completed");
+      },
+    })
+  }
+
   const handleFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const firstNameValid = validator(firstName, "others");
-    const lastNameValid = validator(lastName, "others");
-    const phoneValid = validator(phone, "phone");
-    const countryValid = validator(country, "others");
-    const stateValid = validator(state, "others");
-    const lgaValid = validator(lga, "others");
-    const addressValid = validator(address, "others");
-    const zipcodeValid = validator(zipcode, "others");
+   
 
-    if (
-      !firstNameValid ||
-      !lastNameValid ||
-      !phoneValid ||
-      !countryValid ||
-      !stateValid ||
-      !lgaValid ||
-      !addressValid ||
-      !zipcodeValid
-    ) {
-      setError({
-        firstName: firstNameValid ? undefined : "First name is required",
-        lastName: lastNameValid ? undefined : "Last name is required",
-        phone: phoneValid ? undefined : "Phone number is required",
-        country: countryValid ? undefined : "Country is required",
-        state: stateValid ? undefined : "State is required",
-        lga: lgaValid ? undefined : "Lga is required",
-        address: addressValid ? undefined : "Address is required",
-        zipcode: zipcodeValid ? undefined : "Zipcode is required",
-      });
+  };
 
-      return;
-    }
+ const handleShippingDetails = ( shippingID?: string) => {
+  const firstNameValid = validator(firstName, "others");
+  const lastNameValid = validator(lastName, "others");
+  const phoneValid = validator(phone, "phone");
+  const countryValid = validator(country, "others");
+  const stateValid = validator(state, "others");
+  const lgaValid = validator(lga, "others");
+  const addressValid = validator(address, "others");
+  const zipcodeValid = validator(zipcode, "others");
 
-    console.log(
-      firstName,
-      lastName,
-      phone,
+  if (
+    !firstNameValid ||
+    !lastNameValid ||
+    !phoneValid ||
+    !countryValid ||
+    !stateValid ||
+    !lgaValid ||
+    !addressValid ||
+    !zipcodeValid
+  ) {
+    setError({
+      firstName: firstNameValid ? undefined : "First name is required",
+      lastName: lastNameValid ? undefined : "Last name is required",
+      phone: phoneValid ? undefined : "Phone number is required",
+      country: countryValid ? undefined : "Country is required",
+      state: stateValid ? undefined : "State is required",
+      lga: lgaValid ? undefined : "Lga is required",
+      address: addressValid ? undefined : "Address is required",
+      zipcode: zipcodeValid ? undefined : "Zipcode is required",
+    });
+
+    return;
+  }
+
+  // update shipping address
+  if(user && user.userId && typeof shippingID === 'string' && shippingID.length > 0){
+    const shippingDetails: ShippingDetailsProps =  {
+      userId: user && user.userId,
+      phoneNumber: phone,
       country,
       state,
       lga,
-      address,
       zipcode,
-      paymentIndex,
-      cart,
-      total
-    );
-    // create shipping address
+      address,
+    }
+    const updateShippindData: UpdateShippingArgs = {
+      shippingDetails: shippingDetails,
+      shippingId: shippingID
+    }
+      dispatch(updateShippingDetails(updateShippindData)).then((res) => {
+        res && res.payload && res.payload !== undefined && setShowUpdateShippingDetails(false);
+      })
+  }
+  // create shipping address
+  if(user && user.userId && typeof shippingID === 'object') {
+    const shippingDetails: ShippingDetailsProps =  {userId: user && user.userId,
+      phoneNumber: phone,
+      country,
+      state,
+      lga,
+      zipcode,
+      address,}
+      dispatch(postShippingDetails(shippingDetails)).then((res) => {
+        res && res.payload && res.payload !== undefined && setShowUpdateShippingDetails(false);
+      })
+  }  
 
-    // update shipping address
-  };
+ }
 
-  //  submitOrder && handleFormSubmit()
+
 
   return (
     <form
@@ -145,6 +223,7 @@ const CheckOut = () => {
                 placeholder="Your First Name"
                 validate={(value) => validator(value, "others")}
                 errorMessage={error.firstName || "First name is required"}
+                disabled={true}
               />
               <CustomInput
                 prefixIcon={<User className="w-4 h-4" />}
@@ -158,6 +237,7 @@ const CheckOut = () => {
                 placeholder="Your Last Name"
                 validate={(value) => validator(value, "others")}
                 errorMessage={error.lastName || "Lastname name is required"}
+                disabled={true}
               />
             </div>
 
@@ -244,13 +324,44 @@ const CheckOut = () => {
               errorMessage={error.address || "Address is required"}
             />
             <div className="flex gap-4 items-center my-3">
-              <CustomButton
-                text="Save Address"
-                type="button"
-                fullwidth={true}
-                showArrow={true}
-                borderRadiusType="threecurved"
-              />
+              {
+                shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0] && shippingDetail[0].$id ? (
+                  <>
+                  { 
+                showUpdateShippingDetails ? (
+                  <CustomButton
+                  text="Update Address"
+                  type="button"
+                  fullwidth={true}
+                  showArrow={true}
+                  borderRadiusType="threecurved"
+                  isLoading={status === 'loading'}
+                  onClick={() => {shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0] && shippingDetail[0] && handleShippingDetails(shippingDetail && shippingDetail[0] && shippingDetail[0].$id)}}
+                />
+                ) : (
+
+                  <div className="bg-green-500/30 p-2 rounded-lg flex items-center gap-2">
+                    <Check className="w-4 h-4 text-green-500" />
+                    <CustomText text="Shipping Details Up To Date" color="text-green-500" />
+                  </div>
+                )  
+                  }
+                  </>
+                ) : (
+                  <CustomButton
+                  text="Save Address"
+                  type="button"
+                  fullwidth={true}
+                  showArrow={true}
+                  borderRadiusType="threecurved"
+                  isLoading={status === 'loading'}
+                  onClick={handleShippingDetails}
+                />
+  
+                )
+              }
+            
+
               {/* <CustomButton
                 text="Cancel"
                 type="button"
@@ -268,16 +379,6 @@ const CheckOut = () => {
             </div>
           </div>
 
-          <div className="flex gap-2 items-center my-2">
-            <input
-              type="checkbox"
-              checked={saveShippingAddress}
-              onChange={() => setSaveShippingAddress(true)}
-              name="saveShippingAddress"
-              id="saveShippingAddress"
-            />
-            <p className="text-sm font-semibold">Save Shipping Address</p>
-          </div>
 
           <div className="bg-white rounded-xl p-4 md:p-6 my-5">
             <CustomText
@@ -297,7 +398,7 @@ const CheckOut = () => {
 
           <div className="bg-white rounded-xl p-4 md:p-6">
             <CustomText
-              text="Payment Method"
+              text="Select Payment Method"
               textType="medium"
               weightType="semibold"
               extraStyle="my-5"

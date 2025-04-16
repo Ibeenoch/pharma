@@ -174,7 +174,7 @@ const Cart: React.FC<CartProps> = ({
                 showArrow={true}
                 fullwidth={true}
                 type="button"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/checkout")}
               />
             </div>
           )}

@@ -258,6 +258,7 @@ const ProductDetails = () => {
               <div>
                 {product && product.item && product.item.$id && (
                   <QtyUpdateBtn
+                  isCheckOutPage={false}
                     decreaseNum={() => {
                       product &&
                         product.item &&
