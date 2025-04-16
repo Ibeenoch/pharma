@@ -175,7 +175,20 @@ const CheckOut = () => {
 
   const handleFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    initializePayment({ onSuccess, onClose });
+    if (
+      cart &&
+      Array.isArray(cart) &&
+      cart.length >= 1 &&
+      shippingDetail &&
+      Array.isArray(shippingDetail) &&
+      shippingDetail[0] &&
+      shippingDetail[0].$id
+    ) {
+      if (paymentIndex === 0) {
+        // paystack payment
+        initializePayment({ onSuccess, onClose });
+      }
+    }
   };
 
   const handleShippingDetails = (shippingID?: string) => {
