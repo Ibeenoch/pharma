@@ -16,8 +16,10 @@ import {
   removeFromCart,
   selectCart,
 } from "./cartSlice";
-import { ChangeEvent, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { selectAuth } from "../auth/authSlice";
+import { getShippingDetails, selectOrder } from "../order/orderSlice";
 
 interface CartProps {
   showCheckOutBtn?: boolean;
@@ -31,6 +33,8 @@ const Cart: React.FC<CartProps> = ({
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { cart, subTotal, total } = useAppSelector(selectCart);
+  const { hasPreviousShippingDetails } = useAppSelector(selectOrder);
+  const { user } = useAppSelector(selectAuth);
   const increaseQty = (id: string) => {
     dispatch(increaseCartQty(id));
     dispatch(calculateSubTotal());
@@ -54,6 +58,14 @@ const Cart: React.FC<CartProps> = ({
     dispatch(removeFromCart(id));
     dispatch(checkIfItemHasBeenAddedToCheck(id));
     dispatch(calculateSubTotal());
+  };
+
+  const proceedCheckOutPage = () => {
+    user &&
+      user.userId &&
+      hasPreviousShippingDetails === false &&
+      dispatch(getShippingDetails(user && user.userId));
+    navigate("/checkout");
   };
 
   return (
@@ -80,7 +92,7 @@ const Cart: React.FC<CartProps> = ({
 
       {/* map throught the cart items  */}
       {cart.map(
-        (c, i) =>
+        (c) =>
           c &&
           c.item &&
           c.item.$id && (
@@ -174,7 +186,7 @@ const Cart: React.FC<CartProps> = ({
                 showArrow={true}
                 fullwidth={true}
                 type="button"
-                onClick={() => navigate("/checkout")}
+                onClick={proceedCheckOutPage}
               />
             </div>
           )}

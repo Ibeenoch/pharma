@@ -1,6 +1,9 @@
 import { ID, Query } from "appwrite";
 import { database } from "../../lib/appwriteConfig";
-import { ShippingDetailsProps, UpdateShippingArgs } from "../../types/order/OrderType";
+import {
+  ShippingDetailsProps,
+  UpdateShippingArgs,
+} from "../../types/order/OrderType";
 
 // service order
 export const addShippingDetails = async (
@@ -32,7 +35,8 @@ export const addShippingDetails = async (
 export const updateShippingDetails = async (
   shippingDetails: UpdateShippingArgs
 ) => {
-  const updatedShippingDetails = shippingDetails.shippingDetails, shippingDetailsId = shippingDetails.shippingId;
+  const updatedShippingDetails = shippingDetails.shippingDetails,
+    shippingDetailsId = shippingDetails.shippingId;
   try {
     const shippingAddressUpdated = await database.updateDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
@@ -49,7 +53,7 @@ export const updateShippingDetails = async (
       }
     );
     console.log("shippingAddressUpdated ", shippingAddressUpdated);
-    if (shippingAddressUpdated){
+    if (shippingAddressUpdated) {
       return {
         userId: shippingAddressUpdated.userId,
         phoneNumber: shippingAddressUpdated.phoneNumber,
@@ -91,3 +95,11 @@ export const getShippingDetails = async (userId: string) => {
     throw error;
   }
 };
+
+// export const saveTransaction = async() => {
+//   try {
+
+//   } catch (error) {
+//     throw error;
+//   }
+// }

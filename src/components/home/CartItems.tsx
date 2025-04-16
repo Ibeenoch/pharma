@@ -16,6 +16,11 @@ import {
   updateCartQty,
 } from "../../features/cart/cartSlice";
 import { useEffect, useState } from "react";
+import { selectAuth } from "../../features/auth/authSlice";
+import {
+  getShippingDetails,
+  selectOrder,
+} from "../../features/order/orderSlice";
 
 interface CartItemsProps {
   showCart: boolean;
@@ -28,17 +33,18 @@ const CartItems: React.FC<CartItemsProps> = ({
   hideShowCart,
   product,
 }) => {
-  const { cartQty, cartIndex, subTotal, cart } = useAppSelector(selectCart);
+  const { subTotal, cart } = useAppSelector(selectCart);
+  const { user } = useAppSelector(selectAuth);
+  const { hasPreviousShippingDetails } = useAppSelector(selectOrder);
+
   const [cQty, setCQty] = useState<number>(0);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  
   useEffect(() => {
-    dispatch(calculateSubTotal())
-  }, [showCart])
-
+    dispatch(calculateSubTotal());
+  }, [showCart]);
 
   const handleQtySelected = (
     e: React.ChangeEvent<HTMLSelectElement>,
@@ -53,7 +59,7 @@ const CartItems: React.FC<CartItemsProps> = ({
 
   const handleRemoveFromCart = (id: string, i: number) => {
     dispatch(removeFromCart(id));
-    dispatch(checkIfItemHasBeenAddedToCheck(id))
+    dispatch(checkIfItemHasBeenAddedToCheck(id));
     cart.length === 1 && hideShowCart();
   };
 
@@ -67,6 +73,10 @@ const CartItems: React.FC<CartItemsProps> = ({
   };
 
   const proceedToCheckOut = () => {
+    user &&
+      user.userId &&
+      hasPreviousShippingDetails === false &&
+      dispatch(getShippingDetails(user && user.userId));
     navigate("/checkout");
   };
   return (
@@ -124,7 +134,7 @@ const CartItems: React.FC<CartItemsProps> = ({
                       p.item &&
                       p.item.price &&
                       p.item.discount &&
-                      p.item.price - ((p.item.discount/100) * p.item.price) 
+                      p.item.price - (p.item.discount / 100) * p.item.price
                     }`}
                     textType="normal"
                     weightType="thin"

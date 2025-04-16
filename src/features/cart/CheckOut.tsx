@@ -21,59 +21,140 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { selectAuth } from "../auth/authSlice";
 import { selectCart } from "./cartSlice";
 import CustomButton from "../../components/common/Button";
-import { getShippingDetails, postShippingDetails, selectOrder, updateShippingDetails } from "../order/orderSlice";
-import { ShippingDetailsProps, UpdateShippingArgs } from "../../types/order/OrderType";
+import {
+  getShippingDetails,
+  postShippingDetails,
+  selectOrder,
+  updateShippingDetails,
+} from "../order/orderSlice";
+import {
+  ShippingDetailsProps,
+  UpdateShippingArgs,
+} from "../../types/order/OrderType";
+import { PaystackButton, usePaystackPayment } from "react-paystack";
 
 const CheckOut = () => {
   const { user } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
+  const config = {
+    reference: new Date().getTime().toString(),
+    email: user && user.email,
+    amount: 20000, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+    publicKey: import.meta.env.VITE_TEST_PUBLIC_KEY,
+  };
+
+  const onSuccess = (reference: any) => {
+    // Implementation for whatever you want to do with reference and after success call.
+    console.log("reference ", reference);
+
+    // bank auth res
+    // message: "Approved"
+    // redirecturl: "?trxref=1744836356976&reference=1744836356976"
+    // reference: "1744836356976"
+    // status: "success"
+    // trans: "4879373753"
+    // transaction: "4879373753"
+    // trxref: "1744836356976"
+  };
+
+  const onClose = () => {
+    // implementation for  whatever you want to do when the Paystack dialog closed.
+    console.log("closed");
+  };
+  const initializePayment = usePaystackPayment(config);
   const [firstName, setFirstName] = useState<string>(
     user && user.firstName ? user.firstName : ""
   );
   const [lastName, setLastName] = useState<string>(
     user && user.lastName ? user.lastName : ""
   );
-  const { status, hasPreviousShippingDetails, shippingDetail } = useAppSelector(selectOrder);
-  
-    useEffect(() => {
-      user && user.userId && hasPreviousShippingDetails === false &&  dispatch(getShippingDetails(user && user.userId))
-    }, [hasPreviousShippingDetails, shippingDetail])
+  const { status, hasPreviousShippingDetails, shippingDetail } =
+    useAppSelector(selectOrder);
 
-  const [phone, setPhone] = useState<string>(shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0] && shippingDetail[0].phoneNumber ? shippingDetail[0].phoneNumber : "");
-  const [country, setCountry] = useState<string>(shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0] && shippingDetail[0].country ? shippingDetail[0].country : "Nigeria");
-  const [state, setState] = useState<string>(shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0] && shippingDetail[0].state ? shippingDetail[0].state : "");
-  const [lga, setLga] = useState<string>(shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0] && shippingDetail[0].lga ? shippingDetail[0].lga : "");
-  const [zipcode, setZipcode] = useState<string>(shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0] && shippingDetail[0].zipcode ? shippingDetail[0].zipcode : "");
-  const [address, setAddress] = useState<string>(shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0] && shippingDetail[0].address ? shippingDetail[0].address : "");
-  const [showUpdateShippingDetails, setShowUpdateShippingDetails] = useState<boolean>(true);
+  useEffect(() => {
+    user &&
+      user.userId &&
+      hasPreviousShippingDetails === false &&
+      dispatch(getShippingDetails(user && user.userId));
+  }, [hasPreviousShippingDetails, shippingDetail]);
+
+  const [phone, setPhone] = useState<string>(
+    shippingDetail &&
+      Array.isArray(shippingDetail) &&
+      shippingDetail[0] &&
+      shippingDetail[0].phoneNumber
+      ? shippingDetail[0].phoneNumber
+      : ""
+  );
+  const [country, setCountry] = useState<string>(
+    shippingDetail &&
+      Array.isArray(shippingDetail) &&
+      shippingDetail[0] &&
+      shippingDetail[0].country
+      ? shippingDetail[0].country
+      : "Nigeria"
+  );
+  const [state, setState] = useState<string>(
+    shippingDetail &&
+      Array.isArray(shippingDetail) &&
+      shippingDetail[0] &&
+      shippingDetail[0].state
+      ? shippingDetail[0].state
+      : ""
+  );
+  const [lga, setLga] = useState<string>(
+    shippingDetail &&
+      Array.isArray(shippingDetail) &&
+      shippingDetail[0] &&
+      shippingDetail[0].lga
+      ? shippingDetail[0].lga
+      : ""
+  );
+  const [zipcode, setZipcode] = useState<string>(
+    shippingDetail &&
+      Array.isArray(shippingDetail) &&
+      shippingDetail[0] &&
+      shippingDetail[0].zipcode
+      ? shippingDetail[0].zipcode
+      : ""
+  );
+  const [address, setAddress] = useState<string>(
+    shippingDetail &&
+      Array.isArray(shippingDetail) &&
+      shippingDetail[0] &&
+      shippingDetail[0].address
+      ? shippingDetail[0].address
+      : ""
+  );
+  const [showUpdateShippingDetails, setShowUpdateShippingDetails] =
+    useState<boolean>(true);
   const [paymentIndex, setPaymentIndex] = useState<number>(0);
   const { cart, total } = useAppSelector(selectCart);
-  console.log(cart, total)
+  console.log(cart, total);
   const setPaymentMethodIndex = (index: number) => {
     setPaymentIndex(index);
   };
-  
-const shouldUpdateShippingDetails = () => {
-  let s = shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0];
-  if(
-    s && s.phoneNumber !== phone ||
-    s && s.country !== country ||
-    s && s.state !== state ||
-    s && s.lga !== lga ||
-    s && s.zipcode !== zipcode ||
-    s && s.address !== address
-  ){
 
-  setShowUpdateShippingDetails(true);
-  }else{
-    setShowUpdateShippingDetails(false)
-  }
-}
+  const shouldUpdateShippingDetails = () => {
+    let s =
+      shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0];
+    if (
+      (s && s.phoneNumber !== phone) ||
+      (s && s.country !== country) ||
+      (s && s.state !== state) ||
+      (s && s.lga !== lga) ||
+      (s && s.zipcode !== zipcode) ||
+      (s && s.address !== address)
+    ) {
+      setShowUpdateShippingDetails(true);
+    } else {
+      setShowUpdateShippingDetails(false);
+    }
+  };
 
-useEffect(() => {
-  shouldUpdateShippingDetails();
-
-}, [phone, country, state, lga, zipcode, address])
+  useEffect(() => {
+    shouldUpdateShippingDetails();
+  }, [phone, country, state, lga, zipcode, address]);
 
   const IconLists = [Paystack, Flutterwave, BankTransfer];
 
@@ -92,109 +173,91 @@ useEffect(() => {
     zipcode?: string;
   }>({});
 
-  const loadPayStackScript = (src: string) => {
-    return new Promise((resolve) => {
-      const script = document.createElement('script');
-      script.src = src;
-      script.onload = resolve;
-      document.body.append(script);
-    });
-  }
-
-  const handlePayStack = async() => {
-    await loadPayStackScript("https://js.paystack.co/v1/inline.js");
-    const handler = (window as any).PaystackPop.setup({
-      key: "your_public_key",
-      email: user && user.email,
-      amount: 10000, // in kobo
-      currency: "NGN",
-      ref: `PS-${Date.now()}`,
-      callback: function (response: any) {
-        alert(`Payment complete! Reference: ${response.reference}`);
-      },
-      onClose: function () {
-        alert("Transaction was not completed");
-      },
-    })
-  }
-
   const handleFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-   
-
+    initializePayment({ onSuccess, onClose });
   };
 
- const handleShippingDetails = ( shippingID?: string) => {
-  const firstNameValid = validator(firstName, "others");
-  const lastNameValid = validator(lastName, "others");
-  const phoneValid = validator(phone, "phone");
-  const countryValid = validator(country, "others");
-  const stateValid = validator(state, "others");
-  const lgaValid = validator(lga, "others");
-  const addressValid = validator(address, "others");
-  const zipcodeValid = validator(zipcode, "others");
+  const handleShippingDetails = (shippingID?: string) => {
+    const firstNameValid = validator(firstName, "others");
+    const lastNameValid = validator(lastName, "others");
+    const phoneValid = validator(phone, "phone");
+    const countryValid = validator(country, "others");
+    const stateValid = validator(state, "others");
+    const lgaValid = validator(lga, "others");
+    const addressValid = validator(address, "others");
+    const zipcodeValid = validator(zipcode, "others");
 
-  if (
-    !firstNameValid ||
-    !lastNameValid ||
-    !phoneValid ||
-    !countryValid ||
-    !stateValid ||
-    !lgaValid ||
-    !addressValid ||
-    !zipcodeValid
-  ) {
-    setError({
-      firstName: firstNameValid ? undefined : "First name is required",
-      lastName: lastNameValid ? undefined : "Last name is required",
-      phone: phoneValid ? undefined : "Phone number is required",
-      country: countryValid ? undefined : "Country is required",
-      state: stateValid ? undefined : "State is required",
-      lga: lgaValid ? undefined : "Lga is required",
-      address: addressValid ? undefined : "Address is required",
-      zipcode: zipcodeValid ? undefined : "Zipcode is required",
-    });
+    if (
+      !firstNameValid ||
+      !lastNameValid ||
+      !phoneValid ||
+      !countryValid ||
+      !stateValid ||
+      !lgaValid ||
+      !addressValid ||
+      !zipcodeValid
+    ) {
+      setError({
+        firstName: firstNameValid ? undefined : "First name is required",
+        lastName: lastNameValid ? undefined : "Last name is required",
+        phone: phoneValid ? undefined : "Phone number is required",
+        country: countryValid ? undefined : "Country is required",
+        state: stateValid ? undefined : "State is required",
+        lga: lgaValid ? undefined : "Lga is required",
+        address: addressValid ? undefined : "Address is required",
+        zipcode: zipcodeValid ? undefined : "Zipcode is required",
+      });
 
-    return;
-  }
-
-  // update shipping address
-  if(user && user.userId && typeof shippingID === 'string' && shippingID.length > 0){
-    const shippingDetails: ShippingDetailsProps =  {
-      userId: user && user.userId,
-      phoneNumber: phone,
-      country,
-      state,
-      lga,
-      zipcode,
-      address,
+      return;
     }
-    const updateShippindData: UpdateShippingArgs = {
-      shippingDetails: shippingDetails,
-      shippingId: shippingID
-    }
+
+    // update shipping address
+    if (
+      user &&
+      user.userId &&
+      typeof shippingID === "string" &&
+      shippingID.length > 0
+    ) {
+      const shippingDetails: ShippingDetailsProps = {
+        userId: user && user.userId,
+        phoneNumber: phone,
+        country,
+        state,
+        lga,
+        zipcode,
+        address,
+      };
+      const updateShippindData: UpdateShippingArgs = {
+        shippingDetails: shippingDetails,
+        shippingId: shippingID,
+      };
       dispatch(updateShippingDetails(updateShippindData)).then((res) => {
-        res && res.payload && res.payload !== undefined && setShowUpdateShippingDetails(false);
-      })
-  }
-  // create shipping address
-  if(user && user.userId && typeof shippingID === 'object') {
-    const shippingDetails: ShippingDetailsProps =  {userId: user && user.userId,
-      phoneNumber: phone,
-      country,
-      state,
-      lga,
-      zipcode,
-      address,}
+        res &&
+          res.payload &&
+          res.payload !== undefined &&
+          setShowUpdateShippingDetails(false);
+      });
+    }
+    // create shipping address
+    if (user && user.userId && typeof shippingID === "object") {
+      const shippingDetails: ShippingDetailsProps = {
+        userId: user && user.userId,
+        phoneNumber: phone,
+        country,
+        state,
+        lga,
+        zipcode,
+        address,
+      };
       dispatch(postShippingDetails(shippingDetails)).then((res) => {
-        res && res.payload && res.payload !== undefined && setShowUpdateShippingDetails(false);
-      })
-  }  
-
- }
-
-
+        res &&
+          res.payload &&
+          res.payload !== undefined &&
+          setShowUpdateShippingDetails(false);
+      });
+    }
+  };
 
   return (
     <form
@@ -324,43 +387,52 @@ useEffect(() => {
               errorMessage={error.address || "Address is required"}
             />
             <div className="flex gap-4 items-center my-3">
-              {
-                shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0] && shippingDetail[0].$id ? (
-                  <>
-                  { 
-                showUpdateShippingDetails ? (
-                  <CustomButton
-                  text="Update Address"
-                  type="button"
-                  fullwidth={true}
-                  showArrow={true}
-                  borderRadiusType="threecurved"
-                  isLoading={status === 'loading'}
-                  onClick={() => {shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0] && shippingDetail[0] && handleShippingDetails(shippingDetail && shippingDetail[0] && shippingDetail[0].$id)}}
-                />
-                ) : (
-
-                  <div className="bg-green-500/30 p-2 rounded-lg flex items-center gap-2">
-                    <Check className="w-4 h-4 text-green-500" />
-                    <CustomText text="Shipping Details Up To Date" color="text-green-500" />
-                  </div>
-                )  
-                  }
-                  </>
-                ) : (
-                  <CustomButton
+              {shippingDetail &&
+              Array.isArray(shippingDetail) &&
+              shippingDetail[0] &&
+              shippingDetail[0].$id ? (
+                <>
+                  {showUpdateShippingDetails ? (
+                    <CustomButton
+                      text="Update Address"
+                      type="button"
+                      fullwidth={true}
+                      showArrow={true}
+                      borderRadiusType="threecurved"
+                      isLoading={status === "loading"}
+                      onClick={() => {
+                        shippingDetail &&
+                          Array.isArray(shippingDetail) &&
+                          shippingDetail[0] &&
+                          shippingDetail[0] &&
+                          handleShippingDetails(
+                            shippingDetail &&
+                              shippingDetail[0] &&
+                              shippingDetail[0].$id
+                          );
+                      }}
+                    />
+                  ) : (
+                    <div className="bg-green-500/30 p-2 rounded-lg flex items-center gap-2">
+                      <Check className="w-4 h-4 text-green-500" />
+                      <CustomText
+                        text="Shipping Details Up To Date"
+                        color="text-green-500"
+                      />
+                    </div>
+                  )}
+                </>
+              ) : (
+                <CustomButton
                   text="Save Address"
                   type="button"
                   fullwidth={true}
                   showArrow={true}
                   borderRadiusType="threecurved"
-                  isLoading={status === 'loading'}
+                  isLoading={status === "loading"}
                   onClick={handleShippingDetails}
                 />
-  
-                )
-              }
-            
+              )}
 
               {/* <CustomButton
                 text="Cancel"
@@ -378,7 +450,6 @@ useEffect(() => {
               /> */}
             </div>
           </div>
-
 
           <div className="bg-white rounded-xl p-4 md:p-6 my-5">
             <CustomText
