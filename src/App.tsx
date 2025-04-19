@@ -5,7 +5,7 @@ import "./App.css";
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
 import CursorColor from "./components/common/CursorColor";
-import PageLoadingDisplay from "./components/common/pageLoadingDisplay";
+import PageLoadingDisplay from "./components/common/PageLoadingDisplay";
 
 function App() {
   return (

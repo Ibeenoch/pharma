@@ -1,4 +1,4 @@
-import { Account, Client, Databases, Storage, UploadProgress,  } from "appwrite";
+import { Account, Client, Databases, Storage } from "appwrite";
 
 const client = new Client();
 client
