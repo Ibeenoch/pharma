@@ -9,6 +9,7 @@ import {
   setProductSubTabIndex,
   setProductSubTabRoute,
 } from "../../../features/admin/product/productSlice";
+import { selectAuth } from "../../../features/auth/authSlice";
 
 interface SubTitleProps {
   Icons: React.FunctionComponent<
@@ -28,11 +29,12 @@ const SubTitle: React.FC<SubTitleProps> = ({ Icons, text, index, route }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { productSubTabIndex } = useAppSelector(selectproductAdmin);
+  const { user } = useAppSelector(selectAuth);
 
   const handleUserTabs = (url: string, index: number, route: string) => {
     dispatch(setProductSubTabIndex(index));
-    dispatch(setProductSubTabRoute(route));
-    navigate(`${url}`);
+    dispatch(setProductSubTabRoute(route + `/${user && user.userId}`));
+    navigate(`${url}/${user && user.userId}`);
   };
   return (
     <div

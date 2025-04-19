@@ -40,7 +40,7 @@ const Recommendation = () => {
   ];
 
   return (
-    <section className="border-b border-black mb-2 pb-4">
+    <section className="border-b border-black mb-2 pb-4 animate-on-scroll">
       <TwoTextSpan leftText="Recommendations" />
 
       <article className="flex gap-4 overflow-x-auto">

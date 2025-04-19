@@ -5,7 +5,7 @@ import CustomText from "../common/Text";
 const DiscountBanner = () => {
   return (
     <div
-      className={`w-full h-[350px] my-8 bg-amber-500  sm:grid sm:grid-cols-2 items-center bg-opacity-50 p-8 `}
+      className={`w-full h-[350px] my-8 bg-amber-500  sm:grid sm:grid-cols-2 items-center bg-opacity-50 p-8 animate-on-scroll`}
     >
       <div>
         <h2 className="text-[20px] sm:text-[30px] md:text-[38px] lg:text-[48px] font-bold">

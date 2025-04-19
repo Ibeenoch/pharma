@@ -2,6 +2,7 @@ import { ID } from "node-appwrite";
 import { database, storage } from "../../../lib/appwriteConfig";
 import { Query } from "appwrite";
 import { ProductDataProps } from "../../../types/product/ProductData";
+import { UpdateProductCart } from "../../../types/cart/CartData";
 
 export const createProduct = async (productData: FormData) => {
   try {
@@ -247,6 +248,48 @@ export const allProduct = async (userId: string) => {
       })
     );
     return allProductList;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateProductStockQty = async (stockData: UpdateProductCart) => {
+  try {
+    const { productId, qty } = stockData;
+    // Step 1: Get the current product to read its quantity
+    const product = await database.getDocument(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID,
+      import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID,
+      productId
+    );
+
+    const currentQty = product.quantity; // assuming 'quantity' is a number
+
+    const productUpdate = await database.updateDocument(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
+      productId,
+      {
+        quantity: currentQty > 0 ? currentQty - qty : 0,
+      }
+    );
+
+    return {
+      name: productUpdate.name,
+      $id: productUpdate.$id,
+      price: productUpdate.price,
+      creator: productUpdate.creator,
+      description: productUpdate.description,
+      quantity: productUpdate.quantity,
+      discount: productUpdate.discount,
+      category: productUpdate.category,
+      brand: productUpdate.brand,
+      expirationDate: productUpdate.expirationDate,
+      productSerialNo: productUpdate.productSerialNo,
+      additionalInfo: productUpdate.additionalInfo,
+      imagesUrl: productUpdate.imagesUrl,
+      isHotDeal: productUpdate.isHotDeal,
+    } as ProductDataProps;
   } catch (error) {
     throw error;
   }

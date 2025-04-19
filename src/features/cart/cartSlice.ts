@@ -1,8 +1,11 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { cartProps, ProductDataProps } from "../../types/product/ProductData";
 import { RootState } from "../../redux/store";
+import { CartOrderedPropsData } from "../../types/cart/CartData";
+import * as api from "./cartService";
 
 interface cartState {
+  status: "idle" | "loading" | "success" | "failure";
   cart: { item: ProductDataProps; qty: number }[];
   wishlist: { item: ProductDataProps; qty: number }[];
   cartQty: number;
@@ -15,9 +18,11 @@ interface cartState {
   total: number;
   hasItemBeenAddedToCart: boolean;
   hasItemBeenAddedToWishlist: boolean;
+  postedCart: CartOrderedPropsData[];
 }
 
 const initialState: cartState = {
+  status: "idle",
   cart: [],
   wishlist: [],
   cartQty: 0,
@@ -30,7 +35,30 @@ const initialState: cartState = {
   total: 0,
   hasItemBeenAddedToCart: false,
   hasItemBeenAddedToWishlist: false,
+  postedCart: [],
 };
+
+export const postACart = createAsyncThunk(
+  "cart/post",
+  async (cart: cartProps[], { rejectWithValue }) => {
+    try {
+      return await api.postCartOrdered(cart);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "failed to post cart");
+    }
+  }
+);
+
+export const getCart = createAsyncThunk(
+  "cart/get",
+  async (cartId: string, { rejectWithValue }) => {
+    try {
+      return await api.getCartOrdered(cartId);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "failed to get cart");
+    }
+  }
+);
 
 const cartSlice = createSlice({
   name: "cart",
@@ -52,7 +80,10 @@ const cartSlice = createSlice({
         (item) => item.item.$id === action.payload
       );
       if (index !== -1) {
-        state.cart[index].qty++;
+        // if the product stock is less than zero don't increase the quantity the customer wants
+        state.cart[index].item.quantity <= 1
+          ? (state.cart[index].qty = 1)
+          : state.cart[index].qty++;
       }
     },
     decreaseCartQty: (state, action: PayloadAction<string>) => {
@@ -175,6 +206,35 @@ const cartSlice = createSlice({
       console.log("exists in wishlist", exists);
       if (exists !== -1) state.hasItemBeenAddedToWishlist = true;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(postACart.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(postACart.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload !== undefined) {
+          console.log("action payload post cart", action.payload);
+          state.postedCart = action.payload;
+        }
+      })
+      .addCase(postACart.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(getCart.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getCart.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload !== undefined) {
+          console.log("action payload get cart", action.payload);
+          state.postedCart = action.payload;
+        }
+      })
+      .addCase(getCart.rejected, (state) => {
+        state.status = "failure";
+      });
   },
 });
 

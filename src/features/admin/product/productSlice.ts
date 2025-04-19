@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../../redux/store";
 import { ProductDataProps } from "../../../types/product/ProductData";
 import * as api from "./productService";
+import { UpdateProductCart } from "../../../types/cart/CartData";
 
 interface productAdminState {
   status: "idle" | "loading" | "success" | "failure";
@@ -41,6 +42,17 @@ export const updateProduct = createAsyncThunk<
   async (productData: FormData, { rejectWithValue }) => {
     try {
       return await api.updateProduct(productData);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+);
+
+export const updateProductStockQuantity = createAsyncThunk(
+  "product/updateProductStockQuantity",
+  async (stockData: UpdateProductCart, { rejectWithValue }) => {
+    try {
+      return await api.updateProductStockQty(stockData);
     } catch (error: any) {
       return rejectWithValue(error.message || "Something went wrong");
     }
@@ -109,11 +121,31 @@ const productAdminSlice = createSlice({
           const index = state.productAdmin.findIndex(
             (p) => p.$id === action.payload?.$id
           );
-          console.log("index update ", index);
           state.productAdmin[index] = action.payload;
         }
       })
       .addCase(updateProduct.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(updateProductStockQuantity.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(updateProductStockQuantity.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload !== undefined) {
+          const index = state.productAdmin.findIndex(
+            (p) => p.$id === action.payload?.$id
+          );
+          console.log(
+            "index update ",
+            index,
+            "updateProductStockQuantity ",
+            action.payload
+          );
+          state.productAdmin[index] = action.payload;
+        }
+      })
+      .addCase(updateProductStockQuantity.rejected, (state) => {
         state.status = "failure";
       })
       .addCase(deleteproduct.pending, (state) => {

@@ -5,8 +5,14 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
+  nowhiteBg?: boolean;
 }
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  children,
+  nowhiteBg = false,
+}) => {
   if (!isOpen) return null;
   return (
     <div
@@ -17,18 +23,22 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       className="fixed inset-0 flex items-center justify-center bg-opacity-10 z-60 backdrop-blur-sm"
     >
       {/* Modal content */}
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className={`${lightgrayBgColor} p-4 rounded-lg shadow-lg w-[400px] md:w-[550px] relative`}
-      >
+      {nowhiteBg ? (
+        <div>{children}</div>
+      ) : (
         <div
-          onClick={onClose}
-          className="absolute top-5 right-5 bg-gray-500/40 rounded-full p-[4px] cursor-pointer flex justify-center items-center"
+          onClick={(e) => e.stopPropagation()}
+          className={`${lightgrayBgColor} p-4 rounded-lg shadow-lg w-[400px] md:w-[550px] relative`}
         >
-          <Cancel className="w-5 h-5 text-white" />
+          <div
+            onClick={onClose}
+            className="absolute top-5 right-5 bg-gray-500/40 rounded-full p-[4px] cursor-pointer flex justify-center items-center"
+          >
+            <Cancel className="w-5 h-5 text-white" />
+          </div>
+          {children}
         </div>
-        {children}
-      </div>
+      )}
     </div>
   );
 };

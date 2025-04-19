@@ -14,9 +14,10 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { facebookLogin, googleLogin, loginUser, selectAuth } from "./authSlice";
 import Toast from "../../components/common/Toast";
 import AlertModal from "../../components/auth/AlertModal";
+import { UserDataProps } from "../../types/auth/UserData";
 
-interface LoginProps{
-  redirectUrl?: string
+interface LoginProps {
+  redirectUrl?: string;
 }
 
 const Login: React.FC<LoginProps> = ({ redirectUrl }) => {
@@ -31,19 +32,19 @@ const Login: React.FC<LoginProps> = ({ redirectUrl }) => {
   useEffect(() => {
     let timer: NodeJS.Timeout;
 
-    if(openErrToast){
-     timer = setTimeout(() => {
+    if (openErrToast) {
+      timer = setTimeout(() => {
         setOpenErrToast(false);
-      }, 5000)
+      }, 5000);
     }
 
-      // Cleanup function to clear timeout when the component unmounts or openErrToast changes
-    return () => clearTimeout(timer)
-  }, [openErrToast])
+    // Cleanup function to clear timeout when the component unmounts or openErrToast changes
+    return () => clearTimeout(timer);
+  }, [openErrToast]);
 
   const hideErrToast = () => {
-    setOpenErrToast(false)
-  }
+    setOpenErrToast(false);
+  };
 
   const switchToRegisterPage = () => {
     navigate("/register");
@@ -74,18 +75,25 @@ const Login: React.FC<LoginProps> = ({ redirectUrl }) => {
         email,
         password,
       })
-    ).then((res) =>{
-      const payload = res.payload as { role?: string };
-      typeof res.payload === 'string'  ? handleErr() :  payload?.role === 'Admin' ?  redirectUrl ? navigate(redirectUrl) : navigate("/admin/dashboard") :  redirectUrl ? navigate(redirectUrl) :  navigate("/");
-    }
-    );
+    ).then((res) => {
+      console.log("login ", res);
+      const payload = res.payload as UserDataProps;
+      typeof res.payload === "string"
+        ? handleErr()
+        : payload?.role === "Admin"
+          ? redirectUrl
+            ? navigate(redirectUrl)
+            : navigate(`/admin/dashboard/${payload.userId}`)
+          : redirectUrl
+            ? navigate(redirectUrl)
+            : navigate("/");
+    });
   };
 
   const handleErr = () => {
     setOpenErrToast(true);
     setisSubmitting(false);
-  }
-
+  };
 
   const handleGoogleLogin = () => {
     dispatch(googleLogin());
@@ -203,11 +211,20 @@ const Login: React.FC<LoginProps> = ({ redirectUrl }) => {
           />
           <div className="w-[35%] border border-gray-300"></div>
         </div>
-        {
-          openErrToast && (
-            <Toast isOpen={openErrToast} onClose={hideErrToast} children={<AlertModal isSuccess={false} text={'Invalid credentials. Please check the email and password.'} />}  />
-          )
-        }
+        {openErrToast && (
+          <Toast
+            isOpen={openErrToast}
+            onClose={hideErrToast}
+            children={
+              <AlertModal
+                isSuccess={false}
+                text={
+                  "Invalid credentials. Please check the email and password."
+                }
+              />
+            }
+          />
+        )}
 
         <div className="flex gap-4 items-center justify-center">
           <div

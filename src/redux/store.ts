@@ -15,7 +15,7 @@ import { createMigrate, persistReducer } from "redux-persist";
 // “Hey, this version of my state is version 1. If a user's saved state is older than this, run a migration to update it.”
 
 const migrations = {
-  6.1: (state: any) => {
+  6.8: (state: any) => {
     return {
       ...state,
       productAdmin: {
@@ -37,6 +37,84 @@ const migrations = {
         hasItemBeenAddedToCart: false,
         hasItemBeenAddedToWishlist: false,
       },
+      order: {
+        totalOrderPage: 0,
+        hasPreviousShippingDetails: false,
+        shippingDetail: {
+          userId: "",
+          address: "",
+          country: "",
+          lga: "",
+          phoneNumber: "",
+          state: "",
+          zipcode: "",
+        },
+        order: {
+          $id: "",
+          cart: [],
+          shippingDetail: {
+            userId: "",
+            address: "",
+            country: "",
+            lga: "",
+            phoneNumber: "",
+            state: "",
+            zipcode: "",
+          },
+          transaction: {
+            $id: "",
+            status: "",
+            transactionId: "",
+            amount: 0,
+            transactionRef: "",
+            createdAt: "",
+            payerId: "",
+            payMethod: "",
+          },
+        },
+        orders: [
+          {
+            $id: "",
+            cart: [],
+            shippingDetail: {
+              userId: "",
+              address: "",
+              country: "",
+              lga: "",
+              phoneNumber: "",
+              state: "",
+              zipcode: "",
+            },
+            transaction: {
+              $id: "",
+              status: "",
+              transactionId: "",
+              amount: 0,
+              transactionRef: "",
+              createdAt: "",
+              payerId: "",
+              payMethod: "",
+            },
+          },
+        ],
+        refreshOrder: false,
+        refreshAnOrder: false,
+        refreshTransaction: false,
+        refreshATransaction: false,
+        hasShippingDetailsSubmitted: false,
+        status: "idle",
+        transaction: {
+          amount: 0,
+          payerId: "",
+          status: "",
+          transactionId: "",
+          transactionRef: "",
+          $id: "",
+          createdAt: "",
+          payMethod: "",
+        },
+        transactions: [],
+      },
     };
   },
 };
@@ -44,7 +122,7 @@ const migrations = {
 const persistConfig = {
   key: "root",
   storage,
-  version: 6.1,
+  version: 6.8,
   migrate: createMigrate(migrations, { debug: false }),
   // blackList: ["auth", "checkout"],
 };

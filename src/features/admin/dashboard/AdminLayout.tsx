@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../../../components/admin/header/NavBar";
 import SideBar from "../../../components/admin/header/SideBar";
 import { adminDefaultBgColor } from "../../../constants/appColor";
@@ -10,6 +10,12 @@ import ArrowMaximize from "../../../components/admin/dashboard/ArrowMaximize";
 import ArrowMinimize from "../../../components/admin/dashboard/ArrowMinimize";
 import HamburgerMenu from "../../../assets/icons/menu-align-left.svg?react";
 import MobileSideBar from "../../../components/admin/header/MobileSideBar";
+import { getAllUser, selectAuth } from "../../auth/authSlice";
+import {
+  calcualateTotalRevenue,
+  getAllTransaction,
+  selectOrder,
+} from "../../order/orderSlice";
 interface AdminLayoutProps {
   children: React.ReactNode;
   title: string;
@@ -24,10 +30,20 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title }) => {
     setShowMobileSideBar(false);
   };
   const dispatch = useAppDispatch();
+  const { refreshAllUsers } = useAppSelector(selectAuth);
+  const { refreshTransaction } = useAppSelector(selectOrder);
   const { shouldMinimizeSideBar } = useAppSelector(selectAdmin);
   const toggleMinimizeSideBar = () => {
     dispatch(setShouldAdminSideBarMinimize(!shouldMinimizeSideBar));
   };
+
+  useEffect(() => {
+    refreshAllUsers && dispatch(getAllUser());
+    refreshTransaction &&
+      dispatch(getAllTransaction()).then(() => {
+        dispatch(calcualateTotalRevenue());
+      });
+  }, []);
 
   return (
     <main className={`${adminDefaultBgColor} min-h-screen flex`}>

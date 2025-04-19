@@ -1,13 +1,28 @@
 import CustomText from "../../components/common/Text";
 import CustomInput from "../../components/common/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomButton from "../../components/common/Button";
 import Table from "../../components/common/Table";
 import { orderColumns, orderRowsData } from "../../utils/orders/order";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { getAllOrder, selectOrder } from "./orderSlice";
+import { useParams } from "react-router-dom";
+import { mapOrderHistory } from "../../utils/orders/orderHistoryMap";
 
 const OrderHistory = () => {
   const [started, setStarted] = useState<string>("");
   const [ended, setEnded] = useState<string>("");
+  const { orders, refreshOrder } = useAppSelector(selectOrder);
+  const dispatch = useAppDispatch();
+  const { userId } = useParams();
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(getAllOrder(userId));
+    }
+  }, [refreshOrder]);
+
+  const mappedOrder = mapOrderHistory(orders);
 
   // ₦
 
@@ -23,7 +38,7 @@ const OrderHistory = () => {
       <div className="md:flex md:justify-between">
         <div className="flex items-center gap-6 overflow-x-auto">
           <CustomText
-            text="All Orders(20)"
+            text={`All Orders(${mappedOrder.length})`}
             textType="normal"
             weightType="semibold"
             color="text-amber-500"
@@ -86,60 +101,11 @@ const OrderHistory = () => {
 
       <Table
         columns={orderColumns}
-        data={orderRowsData}
+        data={mappedOrder}
         tableHeaderBg="bg-white"
         tableHeaderTxtColor="text-black"
+        whichTable="order"
       />
-      {/* <div className="w-full overflow-x-auto">
-        <table className="min-w-full table-auto">
-          <thead className="overflow-x-auto">
-            <tr className="border border-gray-300 ">
-              <th className={`text-[10px] sm:text-[14px] p-2 `}>ID</th>
-              <th className={`text-[10px] sm:text-[14px] p-2 `}>Product Qty</th>
-              <th className={`text-[10px] sm:text-[14px] p-2 `}>
-                Payment Method
-              </th>
-              <th className={`text-[10px] sm:text-[14px] p-2 `}>Status</th>
-              <th className={`text-[10px] sm:text-[14px] p-2 `}>Total</th>
-              <th className={`text-[10px] sm:text-[14px] p-2 `}>Actions</th>
-            </tr>
-          </thead>
-          <tbody className="overflow-x-auto">
-            {tableData.map((order, index) => (
-              <tr className="border-b pb-2 border-gray-300">
-                <th className="text-sm text-black font-medium p-4">
-                  {order.id}
-                </th>
-                <th className="text-sm text-black font-medium p-4">
-                  {order.qty}
-                </th>
-                <th className="text-sm text-black font-medium p-4">
-                  {order.paymentMethod}
-                </th>
-                <th
-                  className={`text-sm ${
-                    order && order.status === "Pending"
-                      ? "text-amber-500"
-                      : order.status === "Cancelled"
-                      ? "text-red-500"
-                      : order.status === "Delivered"
-                      ? "text-[#45ce76]"
-                      : ""
-                  } font-medium p-4`}
-                >
-                  {order.status}
-                </th>
-                <th className="text-sm text-black font-medium p-4">
-                  ${order.total}
-                </th>
-                <th className="text-sm text-black font-medium p-4 cursor-pointer hover:text-amber-500">
-                  View Details
-                </th>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div> */}
 
       <CustomButton
         text="Show next 10 orders"

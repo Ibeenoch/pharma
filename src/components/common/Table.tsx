@@ -25,6 +25,8 @@ import {
 } from "../../types/product/ProductData";
 import Modal from "./Modal";
 import ProductDetails from "../admin/product/ProductDetails";
+import { mappedAllOrdersProps } from "../../types/order/OrderType";
+import OrderDetails from "../admin/order/OrderDetails";
 
 interface Columns {
   key: string;
@@ -53,6 +55,7 @@ const Table: React.FC<TableProps> = ({
   whichTable,
 }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showOrderModal, setShowOrderModal] = useState<boolean>(false);
   const [product, setProduct] = useState<mappedProductProps>({
     id: "",
     $id: "",
@@ -71,20 +74,38 @@ const Table: React.FC<TableProps> = ({
     price: 0,
     productSerialNo: "",
   });
+  const [orderPreview, setOrderPreview] = useState<mappedAllOrdersProps>({
+    image: "",
+    address: "",
+    customerName: "",
+    email: "",
+    orderDate: "",
+    orderId: "",
+    paymentMethod: "",
+    phone: "",
+    status: "",
+    totalAmount: "",
+    totalItems: 0,
+    $id: "",
+  });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const previewRow = (row: any, rowIndex: number) => {
+    // preview product table
     if (whichTable.toLowerCase() === "product") {
       let productPreview = row as mappedProductProps;
 
       productPreview && productPreview?.id && setProduct(productPreview);
       setShowModal(true);
+    } else if (whichTable.toLowerCase() === "order") {
+      let order = row as mappedAllOrdersProps;
+      order && order?.$id && setOrderPreview(order);
+      setShowOrderModal(true);
     }
   };
 
-  console.log("previewROw ", product, showModal);
-
   const hideProductModal = () => setShowModal(false);
+  const hideOrderModal = () => setShowOrderModal(false);
   return (
     <div className="w-full overflow-x-auto">
       <table className="min-w-full border-collapse border-none table-auto">
@@ -142,6 +163,7 @@ const Table: React.FC<TableProps> = ({
                         <Pen className="w-5 h-5 text-blue-600" />
                       </div>
                       <div
+                        // handle logic for deleting a row
                         onClick={() => {
                           const id = row[col.key].split("/").pop();
                           if (!id) return;
@@ -167,7 +189,10 @@ const Table: React.FC<TableProps> = ({
                         <Trash className="w-5 h-5 stroke-red-600" />
                       </div>
                     </div>
-                  ) : row[col.key] === "Complete" ||
+                  ) : // handle logic for status
+                  row[col.key] === "Complete" ||
+                    String(row[col.key]).toLowerCase() === "success" ||
+                    String(row[col.key]).toLowerCase() === "successful" ||
                     row[col.key] === "Delivered" ? (
                     <div
                       className={`flex justify-center items-center p-1 rounded-md ${darkGreenText} ${lightgreenBgColor}`}
@@ -203,6 +228,13 @@ const Table: React.FC<TableProps> = ({
           isOpen={showModal}
           onClose={hideProductModal}
           children={<ProductDetails product={product} />}
+        />
+      )}
+      {showOrderModal && (
+        <Modal
+          isOpen={showOrderModal}
+          onClose={hideOrderModal}
+          children={<OrderDetails order={orderPreview} />}
         />
       )}
     </div>

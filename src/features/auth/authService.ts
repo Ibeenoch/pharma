@@ -212,7 +212,7 @@ export const getCurrentLoginUser = async () => {
       email,
       role,
       passcode,
-      userId
+      userId,
     } as UserDataProps;
   } else {
     await database.createDocument(
@@ -245,6 +245,31 @@ export const checkIfUserExist = async (email: string) => {
 
     console.log("email found is ", users.total);
     return users.total > 0 ? true : false;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAllUsers = async () => {
+  try {
+    // fetch all users
+    // account.listIdentities,  account.listLogs, account.listMfaFactors, account.listSessions
+    const user = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID,
+      import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID
+    );
+    const userFound: UserDataProps[] = user.documents.map((u) => ({
+      userId: u.userId,
+      email: u.email,
+      firstName: u.firstName,
+      lastName: u.lastName,
+      dob: u.dob,
+      role: u.role,
+      gender: u.gender,
+      passcode: u.passcode,
+      password: u.password,
+    }));
+    return userFound;
   } catch (error) {
     throw error;
   }

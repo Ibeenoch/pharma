@@ -57,7 +57,7 @@ const Faq = () => {
     setIndexClicked(null);
   };
   return (
-    <section className="my-6 lg:px-[30%] p-5">
+    <section className="my-6 lg:px-[30%] p-5 animate-on-scroll">
       <CustomText
         text="We're here to answer all your questions."
         textType="extralarge"

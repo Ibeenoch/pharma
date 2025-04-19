@@ -2,7 +2,7 @@ import { COMPANY_NAME, MARGIN_TOP } from "../../constants/appText";
 import manWalk from "../../assets/images/1547272465.png";
 import CustomInput from "../../components/common/Input";
 import { ChangeEvent, lazy, useEffect, useState } from "react";
-const CustomText = lazy(() => import("../../components/common/Text"))
+const CustomText = lazy(() => import("../../components/common/Text"));
 import Email from "../../assets/icons/email.svg?react";
 import Google from "../../assets/icons/google-colored.svg?react";
 import Facebook from "../../assets/icons/facebook-colored.svg?react";
@@ -15,7 +15,13 @@ import { useNavigate } from "react-router-dom";
 import { validator } from "../../utils/validator";
 import CustomSelect from "../../components/common/Select";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { checkIfUserExist, facebookLogin, googleLogin, registerUser, selectAuth } from "./authSlice";
+import {
+  checkIfUserExist,
+  facebookLogin,
+  googleLogin,
+  registerUser,
+  selectAuth,
+} from "./authSlice";
 import Toast from "../../components/common/Toast";
 import AlertModal from "../../components/auth/AlertModal";
 
@@ -43,23 +49,23 @@ const Register = () => {
   }>({});
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { doUserExist } = useAppSelector(selectAuth)
+  const { doUserExist } = useAppSelector(selectAuth);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
 
-    if(showErrModal){
+    if (showErrModal) {
       timer = setTimeout(() => {
-        setShowErrModal(false)
-      }, 7000)
+        setShowErrModal(false);
+      }, 7000);
     }
-    
+
     return () => clearTimeout(timer);
-  }, [showErrModal])
+  }, [showErrModal]);
 
   const hideErrorModal = () => {
-    setShowErrModal(false)
-  }
+    setShowErrModal(false);
+  };
 
   const genderOptions = [
     { value: "", label: "Select Gender" },
@@ -124,7 +130,7 @@ const Register = () => {
     // Ty2t8+!eyej7
 
     dispatch(checkIfUserExist(email)).then((res) => {
-      if(res.payload === false){
+      if (res.payload === false) {
         dispatch(
           registerUser({
             firstName,
@@ -138,22 +144,22 @@ const Register = () => {
           })
         ).then((res) => {
           const payload = res.payload as { role?: string };
-          console.log('res payload', res.payload);
-         typeof payload === 'string' ? handleErrorSigningUp(payload) :   navigate("/verify/pending");
-          
+          console.log("res payload", res.payload);
+          typeof payload === "string"
+            ? handleErrorSigningUp(payload)
+            : navigate("/verify/pending");
         });
-      }else{
-        handleErrorSigningUp('User already exist, please login to continue')
+      } else {
+        handleErrorSigningUp("User already exist, please login to continue");
       }
     });
-
   };
 
   const handleErrorSigningUp = (payload: string) => {
     setErrMsg(payload);
     setShowErrModal(true);
     setIsSubmitting(false);
-  }
+  };
 
   const handleGoogleLogin = () => {
     dispatch(googleLogin());
@@ -163,7 +169,9 @@ const Register = () => {
     dispatch(facebookLogin());
   };
   return (
-    <section className={`h-full lg:grid lg:grid-cols-3 mt-20 items-center pb-8`}>
+    <section
+      className={`h-full lg:grid lg:grid-cols-3 mt-20 items-center pb-8`}
+    >
       <article className="hidden lg:block">
         <CustomText text="Sign Up to" textType="huge" weightType="bold" />
         <CustomText
@@ -332,11 +340,13 @@ const Register = () => {
             // onClick={setIsSubmitting(true)}
           />
         </form>
-        {
-          showErrModal && (
-            <Toast isOpen={showErrModal} onClose={hideErrorModal} children={<AlertModal isSuccess={false} text={errMsg} />} />
-          )
-        }
+        {showErrModal && (
+          <Toast
+            isOpen={showErrModal}
+            onClose={hideErrorModal}
+            children={<AlertModal isSuccess={false} text={errMsg} />}
+          />
+        )}
 
         <div className="flex gap-1 my-5 items-center justify-center">
           <div className="w-[35%] border border-gray-300"></div>

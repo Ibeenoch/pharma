@@ -1,11 +1,43 @@
+import { useEffect } from "react";
 import { adminDefaultBgColor } from "../../../constants/appColor";
+import { selectproductAdmin } from "../../../features/admin/product/productSlice";
+import {
+  calcualateTotalRevenue,
+  getAllTransaction,
+  selectOrder,
+} from "../../../features/order/orderSlice";
+import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { cardLists } from "../../../utils/admin/dashBoardLists";
 import BodyCard from "./BodyCard";
 import InventoryPieChart from "./InventoryPieChart";
 import RecentPayment from "./RecentPayment";
 import SalesChart from "./SalesChart";
+import { formatWithCommas } from "../../../utils/formatAmount";
+import { getAllUser, selectAuth } from "../../../features/auth/authSlice";
 
 const Body = () => {
+  const dispatch = useAppDispatch();
+  const { productAdmin } = useAppSelector(selectproductAdmin);
+  const { users, refreshAllUsers } = useAppSelector(selectAuth);
+  const { transactions, transaction, totalRevenue, refreshTransaction } =
+    useAppSelector(selectOrder);
+  console.log("all user refresh ", users, refreshAllUsers);
+
+  const middletext = (word: string, num: number): string => {
+    switch (num) {
+      case 0:
+        return `${formatWithCommas(productAdmin.length)}`;
+        break;
+      case 1:
+        return `₦${formatWithCommas(totalRevenue)}`;
+        break;
+      case 2:
+        return `${formatWithCommas(users.length)}`;
+        break;
+      default:
+        return word;
+    }
+  };
   return (
     <main className={`w-full p-4 md:p-0 ${adminDefaultBgColor}`}>
       {/* bg-[#329DFF] blue  bg-[#1EBFC4] cyan bg-[#FDD603] YELLOW bg-[#ed686c] red*/}
@@ -17,7 +49,7 @@ const Body = () => {
             color={item.color}
             endText={item.endText}
             topText={item.topText}
-            middleText={item.middleText}
+            middleText={middletext(item.middleText, index)}
             textcolor={item.textColor}
           />
         ))}

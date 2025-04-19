@@ -11,10 +11,6 @@ import {
   darkredText,
   darkyellow,
   darkyellowText,
-  lightBlueBgColor,
-  lightgreenBgColor,
-  lightredBgColor,
-  lightyellowBgColor,
 } from "../../constants/appColor";
 import DashBoard from "../../assets/icons/dashboard.svg?react";
 import User from "../../assets/icons/users-2-black.svg?react";

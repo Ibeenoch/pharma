@@ -8,6 +8,7 @@ import {
 import CompanyLogo from "../../common/CompanyLogo";
 import React from "react";
 import { animateTransition } from "../../../constants/appText";
+import { selectAuth } from "../../../features/auth/authSlice";
 
 interface SideBarProps {
   shouldMinimize: boolean;
@@ -17,13 +18,16 @@ const SideBar: React.FC<SideBarProps> = ({ shouldMinimize }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { sideBarIndex } = useAppSelector(selectAdmin);
+  const { user } = useAppSelector(selectAuth);
 
   const handleIndexClicked = (index: number) => {
     dispatch(setSideBarIndex(index));
 
     switch (index) {
       case 0:
-        navigate("/admin/dashboard");
+        navigate(
+          `/admin/dashboard/${user && user.role?.toLowerCase() === "admin" && user.userId}`
+        );
         break;
     }
   };

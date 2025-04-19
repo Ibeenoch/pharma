@@ -56,6 +56,13 @@ const Header = () => {
       .then(() => dispatch(resetUserState()))
       .then(() => navigate("/login"));
   };
+  const handleProfile = () => {
+    if (user && user.role && user.role?.toLowerCase() === "admin") {
+      navigate(`/admin/dashboard/${user && user.userId}`);
+    } else {
+      navigate(`/profile/${user && user.userId}`);
+    }
+  };
   return (
     <header
       className={`bg-white fixed top-0 ${
@@ -71,11 +78,13 @@ const Header = () => {
           {user && user.email ? (
             <div className="hidden lg:flex items-center gap-5">
               <Logout handleLogout={handleLogout} />
-              <img
-                src={noprofileImage}
-                alt="login user image"
-                className="w-10 h-10 rounded-full border border-gray-200 cursor-pointer"
-              />
+              <div onClick={handleProfile}>
+                <img
+                  src={noprofileImage}
+                  alt="login user image"
+                  className="w-10 h-10 rounded-full border border-gray-200 cursor-pointer"
+                />
+              </div>
             </div>
           ) : (
             <div className="hidden lg:flex items-center gap-5">

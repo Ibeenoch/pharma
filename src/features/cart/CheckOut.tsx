@@ -1,14 +1,15 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Cart from "./Cart";
 import { pageSpacing } from "../../constants/appText";
 import CustomText from "../../components/common/Text";
 import CustomInput from "../../components/common/Input";
 import { validator } from "../../utils/validator";
 import User from "../../assets/icons/user.svg?react";
+import CompanyIcon from "../../assets/icons/pharmacy.svg?react";
 import Paystack from "../../assets/icons/paystack-logo-vector.svg?react";
 import Flutterwave from "../../assets/icons/flutterwave.svg?react";
-import BankTransfer from "../../assets/icons/bank-transfer.svg?react";
 import Check from "../../assets/icons/check-mark.svg?react";
+import Reset from "../../assets/icons/reset.svg?react";
 import Country from "../../assets/icons/globe.svg?react";
 import Phone from "../../assets/icons/mobile-phone.svg?react";
 import Location from "../../assets/icons/maps-and-flags.svg?react";
@@ -19,125 +20,185 @@ import { countries } from "../../utils/countries";
 import { nigeriaStateAndLga } from "../../utils/nigeriaStateAndLgas";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { selectAuth } from "../auth/authSlice";
-import { selectCart } from "./cartSlice";
+import { postACart, removeAllItemsInCart, selectCart } from "./cartSlice";
 import CustomButton from "../../components/common/Button";
+import Spinner from "../../assets/icons/circle-spinner.svg?react";
 import {
   getShippingDetails,
+  postOrder,
   postShippingDetails,
+  postTransaction,
+  resetShippingDetails,
   selectOrder,
   updateShippingDetails,
 } from "../order/orderSlice";
 import {
+  OrderProps,
+  OrderReturnProps,
   ShippingDetailsProps,
   UpdateShippingArgs,
 } from "../../types/order/OrderType";
-import { PaystackButton, usePaystackPayment } from "react-paystack";
+import { usePaystackPayment } from "react-paystack";
+import { loadFlutterwaveScript } from "../../utils/loadFlutterWave";
+import {
+  FlutterWaveDataProps,
+  PayStackProps,
+  TransactionProps,
+} from "../../types/payment/FlutterwavePaymentType";
+import {
+  CartOrderedPropsData,
+  UpdateProductCart,
+} from "../../types/cart/CartData";
+import { useNavigate, useParams } from "react-router-dom";
+import Modal from "../../components/common/Modal";
+import { updateProductStockQuantity } from "../admin/product/productSlice";
 
 const CheckOut = () => {
   const { user } = useAppSelector(selectAuth);
+  const { userId } = useParams();
   const dispatch = useAppDispatch();
-  const config = {
+  const navigate = useNavigate();
+  const [paymentProcessing, setPaymentProcessing] = useState<boolean>(false);
+  const { cart, total } = useAppSelector(selectCart);
+  const { transaction } = useAppSelector(selectOrder);
+  const { status, hasPreviousShippingDetails, shippingDetail } =
+    useAppSelector(selectOrder);
+  const payStackConfig = {
     reference: new Date().getTime().toString(),
     email: user && user.email,
-    amount: 20000, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
-    publicKey: import.meta.env.VITE_TEST_PUBLIC_KEY,
+    amount: total * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+    publicKey: import.meta.env.VITE_PAYSTACK_TEST_PUBLIC_KEY,
   };
 
-  const onSuccess = (reference: any) => {
-    // Implementation for whatever you want to do with reference and after success call.
-    console.log("reference ", reference);
+  // handle successful transaction
+  const onSuccess = (reference: PayStackProps) => {
+    setPaymentProcessing(true);
+    if (userId) {
+      const transactionDetails: TransactionProps = {
+        amount: total,
+        payerId: userId,
+        status: reference.status,
+        transactionId: reference.transaction,
+        transactionRef: reference.trxref,
+        payMethod: "Paystack",
+      };
 
-    // bank auth res
-    // message: "Approved"
-    // redirecturl: "?trxref=1744836356976&reference=1744836356976"
-    // reference: "1744836356976"
-    // status: "success"
-    // trans: "4879373753"
-    // transaction: "4879373753"
-    // trxref: "1744836356976"
+      // dispatch the transaction
+      dispatch(postTransaction(transactionDetails)).then(() => {
+        // dispatch the cart
+        dispatch(postACart(cart)).then((res) => {
+          if (res.payload !== undefined) {
+            let cartRes = res.payload as CartOrderedPropsData[];
+            const cartIds: string[] = cartRes.map((c) => c.$id);
+            if (
+              transaction &&
+              transaction.$id &&
+              shippingDetail &&
+              shippingDetail.$id &&
+              cartIds.length > 0
+            ) {
+              const order: OrderProps = {
+                cart: cartIds,
+                userId,
+                transaction: transaction.$id,
+                shippingDetail: shippingDetail,
+              };
+              dispatch(postOrder(order)).then((res) => {
+                let response = res.payload as OrderReturnProps;
+                console.log("order payload", response);
+                if (
+                  response &&
+                  response.transaction &&
+                  response.cart &&
+                  response.shippingDetail
+                ) {
+                  console.log("order payload inner", response.cart);
+                  setPaymentProcessing(false);
+                  // reduce stock quantity
+                  cartRes.forEach((c) => {
+                    let qty = c.quantity;
+                    const productId = c.productId;
+                    let productStockUpdataData: UpdateProductCart = {
+                      qty,
+                      productId,
+                    };
+                    dispatch(
+                      updateProductStockQuantity(productStockUpdataData)
+                    ).then((res) => {
+                      if (res.payload) {
+                        console.log("res.payload product update ", res.payload);
+                        dispatch(removeAllItemsInCart());
+                        navigate(`/payment_status/${userId}/${response.$id}`);
+                      }
+                    });
+                  });
+                }
+              });
+            }
+          }
+        });
+      });
+    }
   };
 
   const onClose = () => {
+    setPaymentProcessing(false);
     // implementation for  whatever you want to do when the Paystack dialog closed.
-    console.log("closed");
   };
-  const initializePayment = usePaystackPayment(config);
+  const makePaymentThroughPayStack = usePaystackPayment(payStackConfig);
   const [firstName, setFirstName] = useState<string>(
     user && user.firstName ? user.firstName : ""
   );
   const [lastName, setLastName] = useState<string>(
     user && user.lastName ? user.lastName : ""
   );
-  const { status, hasPreviousShippingDetails, shippingDetail } =
-    useAppSelector(selectOrder);
 
   useEffect(() => {
-    user &&
-      user.userId &&
+    userId &&
       hasPreviousShippingDetails === false &&
-      dispatch(getShippingDetails(user && user.userId));
+      dispatch(getShippingDetails(userId));
   }, [hasPreviousShippingDetails, shippingDetail]);
 
   const [phone, setPhone] = useState<string>(
-    shippingDetail &&
-      Array.isArray(shippingDetail) &&
-      shippingDetail[0] &&
-      shippingDetail[0].phoneNumber
-      ? shippingDetail[0].phoneNumber
+    shippingDetail && shippingDetail && shippingDetail.phoneNumber
+      ? shippingDetail.phoneNumber
       : ""
   );
   const [country, setCountry] = useState<string>(
-    shippingDetail &&
-      Array.isArray(shippingDetail) &&
-      shippingDetail[0] &&
-      shippingDetail[0].country
-      ? shippingDetail[0].country
+    shippingDetail && shippingDetail && shippingDetail.country
+      ? shippingDetail.country
       : "Nigeria"
   );
   const [state, setState] = useState<string>(
-    shippingDetail &&
-      Array.isArray(shippingDetail) &&
-      shippingDetail[0] &&
-      shippingDetail[0].state
-      ? shippingDetail[0].state
+    shippingDetail && shippingDetail && shippingDetail.state
+      ? shippingDetail.state
       : ""
   );
   const [lga, setLga] = useState<string>(
-    shippingDetail &&
-      Array.isArray(shippingDetail) &&
-      shippingDetail[0] &&
-      shippingDetail[0].lga
-      ? shippingDetail[0].lga
+    shippingDetail && shippingDetail && shippingDetail.lga
+      ? shippingDetail.lga
       : ""
   );
   const [zipcode, setZipcode] = useState<string>(
-    shippingDetail &&
-      Array.isArray(shippingDetail) &&
-      shippingDetail[0] &&
-      shippingDetail[0].zipcode
-      ? shippingDetail[0].zipcode
+    shippingDetail && shippingDetail && shippingDetail.zipcode
+      ? shippingDetail.zipcode
       : ""
   );
   const [address, setAddress] = useState<string>(
-    shippingDetail &&
-      Array.isArray(shippingDetail) &&
-      shippingDetail[0] &&
-      shippingDetail[0].address
-      ? shippingDetail[0].address
+    shippingDetail && shippingDetail && shippingDetail.address
+      ? shippingDetail.address
       : ""
   );
   const [showUpdateShippingDetails, setShowUpdateShippingDetails] =
     useState<boolean>(true);
   const [paymentIndex, setPaymentIndex] = useState<number>(0);
-  const { cart, total } = useAppSelector(selectCart);
-  console.log(cart, total);
+
   const setPaymentMethodIndex = (index: number) => {
     setPaymentIndex(index);
   };
 
   const shouldUpdateShippingDetails = () => {
-    let s =
-      shippingDetail && Array.isArray(shippingDetail) && shippingDetail[0];
+    let s = shippingDetail && shippingDetail;
     if (
       (s && s.phoneNumber !== phone) ||
       (s && s.country !== country) ||
@@ -156,7 +217,7 @@ const CheckOut = () => {
     shouldUpdateShippingDetails();
   }, [phone, country, state, lga, zipcode, address]);
 
-  const IconLists = [Paystack, Flutterwave, BankTransfer];
+  const IconLists = [Paystack, Flutterwave];
 
   const nigerianState = nigeriaStateAndLga.map((item) => item.state);
   const stateLgas = nigeriaStateAndLga.find((item) => item.state === state)
@@ -173,25 +234,129 @@ const CheckOut = () => {
     zipcode?: string;
   }>({});
 
-  const handleFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
+  const makePaymentThroughFlutterWave = async () => {
+    await loadFlutterwaveScript();
+    setPaymentProcessing(true);
+    // @ts-ignore: TS doesn't know FlutterwaveCheckout is on window
+    window.FlutterwaveCheckout({
+      public_key: import.meta.env.VITE_FLUTTER_PUBLIC_KEY,
+      tx_ref: "Tx-" + Date.now().toString(),
+      amount: total,
+      currency: "NGN",
+      customer: {
+        email: user && user.email,
+        phone_number: shippingDetail && shippingDetail.phoneNumber,
+        name:
+          user &&
+          user.firstName &&
+          user.lastName &&
+          `${user.firstName} ${user.lastName}`,
+      },
+      customizations: {
+        title: "Chimark Pharma",
+        description: "Payment",
+        logo: CompanyIcon,
+      },
+      callback: function (response: FlutterWaveDataProps) {
+        if (userId) {
+          let transactionDetails: TransactionProps = {
+            transactionId: String(response.transaction_id),
+            amount: response.amount,
+            payerId: userId,
+            status: response.status,
+            transactionRef: response.tx_ref,
+            payMethod: "Flutterwave",
+          };
+
+          // dispatch transaction
+          dispatch(postTransaction(transactionDetails)).then(() => {
+            // dispatch cart
+            dispatch(postACart(cart)).then((res) => {
+              if (res.payload !== undefined) {
+                let cartRes = res.payload as CartOrderedPropsData[];
+                const cartIds: string[] = cartRes.map((c) => c.$id);
+                if (
+                  transaction &&
+                  transaction.$id &&
+                  shippingDetail &&
+                  shippingDetail.$id
+                ) {
+                  const order: OrderProps = {
+                    cart: cartIds,
+                    userId,
+                    transaction: transaction.$id,
+                    shippingDetail: shippingDetail,
+                  };
+                  dispatch(postOrder(order)).then((res) => {
+                    let response = res.payload as OrderReturnProps;
+                    console.log("order payload", response);
+                    if (
+                      response &&
+                      response.transaction &&
+                      response.cart &&
+                      response.shippingDetail
+                    ) {
+                      console.log("order payload inner", response.cart);
+                      setPaymentProcessing(false);
+                      // reduce stock quantity
+                      cartRes.forEach((c) => {
+                        let qty = c.quantity;
+                        const productId = c.productId;
+                        let productStockUpdataData: UpdateProductCart = {
+                          qty,
+                          productId,
+                        };
+                        dispatch(
+                          updateProductStockQuantity(productStockUpdataData)
+                        ).then((res) => {
+                          if (res.payload) {
+                            console.log(
+                              "res.payload product update ",
+                              res.payload
+                            );
+                            dispatch(removeAllItemsInCart());
+                            navigate(
+                              `/payment_status/${userId}/${response.$id}`
+                            );
+                          }
+                        });
+                      });
+                    }
+                  });
+                }
+              }
+            });
+          });
+        }
+      },
+      onclose: function () {
+        setPaymentProcessing(false);
+      },
+    });
+  };
+
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (
       cart &&
       Array.isArray(cart) &&
       cart.length >= 1 &&
       shippingDetail &&
-      Array.isArray(shippingDetail) &&
-      shippingDetail[0] &&
-      shippingDetail[0].$id
+      shippingDetail.$id
     ) {
-      if (paymentIndex === 0) {
-        // paystack payment
-        initializePayment({ onSuccess, onClose });
+      switch (paymentIndex) {
+        case 0:
+          makePaymentThroughPayStack({ onSuccess, onClose });
+          break;
+        case 1:
+          makePaymentThroughFlutterWave();
+          break;
       }
     }
   };
 
   const handleShippingDetails = (shippingID?: string) => {
+    console.log("hello");
     const firstNameValid = validator(firstName, "others");
     const lastNameValid = validator(lastName, "others");
     const phoneValid = validator(phone, "phone");
@@ -224,28 +389,25 @@ const CheckOut = () => {
 
       return;
     }
-
     // update shipping address
-    if (
-      user &&
-      user.userId &&
-      typeof shippingID === "string" &&
-      shippingID.length > 0
-    ) {
+    if (userId && typeof shippingID === "string" && shippingID.length > 0) {
       const shippingDetails: ShippingDetailsProps = {
-        userId: user && user.userId,
+        userId: userId,
         phoneNumber: phone,
         country,
         state,
         lga,
         zipcode,
         address,
+        fullname: `${firstName} ${lastName}`,
+        email: user && user.email,
       };
       const updateShippindData: UpdateShippingArgs = {
         shippingDetails: shippingDetails,
         shippingId: shippingID,
       };
       dispatch(updateShippingDetails(updateShippindData)).then((res) => {
+        console.log("res update ", res.payload);
         res &&
           res.payload &&
           res.payload !== undefined &&
@@ -253,23 +415,30 @@ const CheckOut = () => {
       });
     }
     // create shipping address
-    if (user && user.userId && typeof shippingID === "object") {
+    if (userId && typeof shippingID === "object") {
       const shippingDetails: ShippingDetailsProps = {
-        userId: user && user.userId,
+        userId: userId,
         phoneNumber: phone,
         country,
         state,
         lga,
         zipcode,
         address,
+        fullname: `${firstName} ${lastName}`,
+        email: user && user.email,
       };
       dispatch(postShippingDetails(shippingDetails)).then((res) => {
+        console.log("posted ", res.payload);
         res &&
           res.payload &&
           res.payload !== undefined &&
           setShowUpdateShippingDetails(false);
       });
     }
+  };
+
+  const handleResetShippingAddress = () => {
+    dispatch(resetShippingDetails());
   };
 
   return (
@@ -400,10 +569,7 @@ const CheckOut = () => {
               errorMessage={error.address || "Address is required"}
             />
             <div className="flex gap-4 items-center my-3">
-              {shippingDetail &&
-              Array.isArray(shippingDetail) &&
-              shippingDetail[0] &&
-              shippingDetail[0].$id ? (
+              {shippingDetail && shippingDetail.$id ? (
                 <>
                   {showUpdateShippingDetails ? (
                     <CustomButton
@@ -415,23 +581,31 @@ const CheckOut = () => {
                       isLoading={status === "loading"}
                       onClick={() => {
                         shippingDetail &&
-                          Array.isArray(shippingDetail) &&
-                          shippingDetail[0] &&
-                          shippingDetail[0] &&
                           handleShippingDetails(
-                            shippingDetail &&
-                              shippingDetail[0] &&
-                              shippingDetail[0].$id
+                            shippingDetail && shippingDetail.$id
                           );
                       }}
                     />
                   ) : (
-                    <div className="bg-green-500/30 p-2 rounded-lg flex items-center gap-2">
-                      <Check className="w-4 h-4 text-green-500" />
-                      <CustomText
-                        text="Shipping Details Up To Date"
-                        color="text-green-500"
-                      />
+                    <div className="flex gap-4 items-center">
+                      <div className="bg-green-500/30 p-2 rounded-lg flex items-center gap-2">
+                        <Check className="w-4 h-4 text-green-500" />
+                        <CustomText
+                          text="Shipping Details Up To Date"
+                          color="text-green-500"
+                        />
+                      </div>
+
+                      <div
+                        onClick={handleResetShippingAddress}
+                        className="bg-red-500/30 p-2 rounded-lg flex items-center gap-2 cursor-pointer"
+                      >
+                        <Reset className="w-4 h-4 text-red-500" />
+                        <CustomText
+                          text="Reset Shipping Details"
+                          color="text-red-500"
+                        />
+                      </div>
                     </div>
                   )}
                 </>
@@ -501,6 +675,17 @@ const CheckOut = () => {
                 </div>
               ))}
             </div>
+
+            <Modal
+              isOpen={paymentProcessing}
+              nowhiteBg={true}
+              onClose={() => {}}
+              children={
+                <div>
+                  <Spinner className="w-24 h-24 text-white" />
+                </div>
+              }
+            />
           </div>
         </div>
       </section>

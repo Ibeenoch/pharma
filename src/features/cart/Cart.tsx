@@ -65,7 +65,7 @@ const Cart: React.FC<CartProps> = ({
       user.userId &&
       hasPreviousShippingDetails === false &&
       dispatch(getShippingDetails(user && user.userId));
-    navigate("/checkout");
+    navigate(`/checkout/${user && user.userId}`);
   };
 
   return (
