@@ -1,5 +1,5 @@
 import React from "react";
-import PendingOrderManagement from "../../../components/admin/order/PendingOrderManagement";
+import PendingOrderManagement from "../../../features/admin/orders/PendingOrderManagement";
 
 const PendingOrderPage = React.memo(() => {
   return <PendingOrderManagement />;

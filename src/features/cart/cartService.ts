@@ -1,6 +1,10 @@
 import { ID, Query } from "appwrite";
 import { database } from "../../lib/appwriteConfig";
-import { cartProps, ProductDataProps } from "../../types/product/ProductData";
+import {
+  CartProductDataProps,
+  cartProps,
+  ProductDataProps,
+} from "../../types/product/ProductData";
 import { CartOrderedPropsData } from "../../types/cart/CartData";
 
 export const postCartOrdered = async (cartData: cartProps[]) => {
@@ -9,7 +13,7 @@ export const postCartOrdered = async (cartData: cartProps[]) => {
 
     // Properly wait for each createDocument call
     for (const cart of cartData) {
-      const item: ProductDataProps = cart.item;
+      const item: CartProductDataProps = cart.item;
       const qty = cart.qty;
 
       await database.createDocument(
@@ -29,6 +33,8 @@ export const postCartOrdered = async (cartData: cartProps[]) => {
           name: item.name,
           productSerialNo: item.productSerialNo,
           quantity: qty,
+          subtotal: item.subtotal,
+          total: item.total,
         }
       );
     }
@@ -55,6 +61,8 @@ export const postCartOrdered = async (cartData: cartProps[]) => {
         quantity: cart.quantity,
         price: cart.price,
         name: cart.name,
+        subtotal: cart.subtotal,
+        total: cart.total,
       } as CartOrderedPropsData;
     });
 
@@ -92,6 +100,8 @@ export const getCartOrdered = async (cartId: string) => {
         quantity: cart.quantity,
         price: cart.price,
         name: cart.name,
+        subtotal: cart.subtotal,
+        total: cart.total,
       } as CartOrderedPropsData;
     });
     console.log("cart fetched is ", carts);

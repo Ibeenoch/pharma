@@ -78,7 +78,6 @@ export const createProduct = async (productData: FormData) => {
       }
     );
 
-    console.log("product created as ", productCreation);
     return {
       name: productCreation.name,
       $id: productCreation.$id,
@@ -158,7 +157,6 @@ export const updateProduct = async (productData: FormData) => {
 
         productImages.push(res);
       }
-      console.log("product imageFiles", productImages);
     }
     productImages = [...productImages, ...uploadedImages];
 
@@ -182,7 +180,6 @@ export const updateProduct = async (productData: FormData) => {
       }
     );
 
-    console.log("product updated as ", productUpdate);
     return {
       name: productUpdate.name,
       $id: productUpdate.$id,
@@ -207,13 +204,11 @@ export const updateProduct = async (productData: FormData) => {
 
 export const deleteProduct = async (productId: string) => {
   try {
-    const productDeletion = await database.deleteDocument(
+    await database.deleteDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
       productId
     );
-
-    console.log("product deleted as ", productDeletion);
   } catch (error) {
     throw error;
     console.log(error);
@@ -227,7 +222,7 @@ export const allProduct = async (userId: string) => {
       import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
       [Query.equal("creator", userId)]
     );
-    console.log("product all ", allproduct);
+
     const allProductList: ProductDataProps[] = allproduct.documents.map(
       (product: any) => ({
         creator: product?.creator,
@@ -290,6 +285,48 @@ export const updateProductStockQty = async (stockData: UpdateProductCart) => {
       imagesUrl: productUpdate.imagesUrl,
       isHotDeal: productUpdate.isHotDeal,
     } as ProductDataProps;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const searchProduct = async (searchTerm: string) => {
+  try {
+    let allproduct = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID // product collection id
+    );
+    console.log("allproduct ", allproduct);
+    const search = allproduct.documents.filter((doc) => {
+      return (
+        doc.name.toLowerCase().includes(searchTerm) ||
+        doc.description.toLowerCase().includes(searchTerm) ||
+        doc.category.toLowerCase().includes(searchTerm) ||
+        doc.brand.toLowerCase().includes(searchTerm) ||
+        doc.additionalInfo.toLowerCase().includes(searchTerm)
+      );
+    });
+
+    const productSearched: ProductDataProps[] = search.map((productFound) => ({
+      name: productFound.name,
+      $id: productFound.$id,
+      price: productFound.price,
+      creator: productFound.creator,
+      description: productFound.description,
+      quantity: productFound.quantity,
+      discount: productFound.discount,
+      category: productFound.category,
+      brand: productFound.brand,
+      expirationDate: productFound.expirationDate,
+      productSerialNo: productFound.productSerialNo,
+      additionalInfo: productFound.additionalInfo,
+      imagesUrl: productFound.imagesUrl,
+      isHotDeal: productFound.isHotDeal,
+      createdAt: productFound.$createdAt,
+    }));
+    console.log("searched word result ", productSearched);
+
+    return productSearched;
   } catch (error) {
     throw error;
   }

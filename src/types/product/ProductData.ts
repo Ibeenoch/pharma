@@ -16,9 +16,32 @@ export interface ProductDataProps {
   createdAt?: string;
 }
 
+export interface CartProductDataProps {
+  $id?: string;
+  creator: string;
+  name: string;
+  description: string;
+  price: number;
+  quantity: number;
+  discount?: number;
+  category: string;
+  brand: string;
+  expirationDate?: string;
+  productSerialNo?: string;
+  additionalInfo?: string;
+  isHotDeal?: boolean;
+  imagesUrl: string[];
+  createdAt?: string;
+  subtotal: number;
+  total: number;
+}
+
 export interface cartProps {
-  item: ProductDataProps;
+  item: CartProductDataProps;
   qty: number;
+}
+export interface WishListProps {
+  item: ProductDataProps;
 }
 
 export interface mappedProductProps {
@@ -38,4 +61,12 @@ export interface mappedProductProps {
   price: number;
   productSerialNo: string;
   additionalInfo: string;
+}
+
+export interface mappedSearchResultProps {
+  image: string;
+  amberText: string;
+  titleText: string;
+  timeText: string;
+  $id: string;
 }

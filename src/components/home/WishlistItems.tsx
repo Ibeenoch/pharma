@@ -2,21 +2,18 @@ import Cancel from "../../assets/icons/cancel-close.svg?react";
 import CancelCircle from "../../assets/icons/trash-bin.svg?react";
 import CustomText from "../common/Text";
 import CustomButton from "../common/Button";
-import { cartProps, ProductDataProps } from "../../types/product/ProductData";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { WishListProps } from "../../types/product/ProductData";
+import { useAppDispatch } from "../../hooks/reduxHooks";
 import { useNavigate } from "react-router-dom";
 import {
   removeAllItemsInwishlist,
   removeFromwishlist,
-  selectCart,
-  updateWishListIndex,
-  updateWishListQty,
 } from "../../features/cart/cartSlice";
 
 interface WishListItemsProps {
   showwishList: boolean;
   hideShowwishList: () => void;
-  product: cartProps[];
+  product: WishListProps[];
 }
 
 const WishListItems: React.FC<WishListItemsProps> = ({
@@ -26,19 +23,6 @@ const WishListItems: React.FC<WishListItemsProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { wishlist } = useAppSelector(selectCart);
-
-  const handleQtySelected = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-    i: number
-  ) => {
-    // the qty of product they was on the wishList
-    const selectedQty = parseInt(e.target.value);
-    // the qty of product they was on the wishList
-    dispatch(updateWishListQty(selectedQty));
-    // the current wishList index
-    dispatch(updateWishListIndex(i));
-  };
 
   const handleRemoveFromwishList = (id: string, i: number) => {
     dispatch(removeFromwishlist(id));

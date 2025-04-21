@@ -43,6 +43,7 @@ interface TableProps {
   tableHeaderBg?: string;
   tableHeaderTxtColor?: string;
   whichTable: string;
+  textWrap?: boolean;
 }
 
 const Table: React.FC<TableProps> = ({
@@ -53,6 +54,7 @@ const Table: React.FC<TableProps> = ({
   tableHeaderBg,
   tableHeaderTxtColor,
   whichTable,
+  textWrap = false,
 }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showOrderModal, setShowOrderModal] = useState<boolean>(false);
@@ -143,9 +145,9 @@ const Table: React.FC<TableProps> = ({
                     col.conditionalFormat
                       ? col.conditionalFormat(row[col.key])
                       : ""
-                  }  ${row[col.key]?.length > 8 ? "truncate" : ""}`}
+                  }  ${row[col.key]?.length > 8 ? `${textWrap ? "text-balance" : "truncate"}` : ""}`}
                   style={{
-                    maxWidth: "15ch",
+                    maxWidth: "10rem",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                   }}

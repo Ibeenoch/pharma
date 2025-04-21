@@ -17,13 +17,17 @@ import IconShowList from "../../components/product/IconShowList";
 import {
   addToCart,
   addTowishlist,
+  calculateSubTotal,
   checkIfItemHasBeenAddedToCheck,
   checkIfItemHasBeenAddedToWishlist,
   decreaseCartQty,
   increaseCartQty,
   selectCart,
 } from "../cart/cartSlice";
-import { cartProps } from "../../types/product/ProductData";
+import {
+  CartProductDataProps,
+  cartProps,
+} from "../../types/product/ProductData";
 import QtyProductUpdateBtn from "../../components/product/QtyProductUpdateBtn";
 import QtyUpdateBtn from "../../components/product/QtyUpdateBtn";
 
@@ -32,17 +36,15 @@ const ProductDetails = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams();
   const { productAdmin } = useAppSelector(selectproductAdmin);
-  const { hasItemBeenAddedToCart, hasItemBeenAddedToWishlist, cart, wishlist } =
-    useAppSelector(selectCart);
-  console.log(
-    "hasItemBeenAddedToCart ",
-    hasItemBeenAddedToCart,
-    "hasItemBeenAddedToWishlist ",
-    hasItemBeenAddedToWishlist
-  );
+  const { cart, wishlist, subTotal, total } = useAppSelector(selectCart);
 
   const productItem = productAdmin.find((item) => item.$id === id)!;
-  const product: cartProps = { item: productItem, qty: 1 };
+  const productCart: CartProductDataProps = {
+    ...productItem,
+    subtotal: subTotal,
+    total,
+  };
+  const product: cartProps = { item: productCart, qty: 1 };
 
   const [imgUrl, setImgUrl] = useState<string>(
     product && product.item && product.item.imagesUrl
@@ -63,10 +65,12 @@ const ProductDetails = () => {
   };
 
   const addItemToCart = (id: number) => {
+    // id number is the number of item qty to be added not the id itself
     if (id) {
       product.qty = id;
     }
     product && dispatch(addToCart(product));
+    dispatch(calculateSubTotal());
     if (product && product.item && product.item && product.item.$id)
       dispatch(
         checkIfItemHasBeenAddedToCheck(
@@ -92,10 +96,12 @@ const ProductDetails = () => {
 
   const decreaseQty = (id: string) => {
     dispatch(decreaseCartQty(id));
+    dispatch(calculateSubTotal());
   };
 
   const increaseQty = (id: string) => {
     dispatch(increaseCartQty(id));
+    dispatch(calculateSubTotal());
   };
   const cartItem =
     cart &&
@@ -258,7 +264,8 @@ const ProductDetails = () => {
               <div>
                 {product && product.item && product.item.$id && (
                   <QtyUpdateBtn
-                  isCheckOutPage={false}
+                    isCheckOutPage={false}
+                    isProductdescPage={true}
                     decreaseNum={() => {
                       product &&
                         product.item &&
@@ -305,30 +312,35 @@ const ProductDetails = () => {
 
         <div className="flex items-center gap-2 overflow-x-auto">
           <SingleProduct
+            id=""
             productImage={img3}
             price="₦4,100"
             textTitle="Procold"
             textDesc="Relieves Cold, flu symptoms, nasal congestion, and fever"
           />
           <SingleProduct
+            id=""
             productImage={img3}
             price="₦4,100"
             textTitle="Procold"
             textDesc="Relieves Cold, flu symptoms, nasal congestion, and fever"
           />
           <SingleProduct
+            id=""
             productImage={img3}
             price="₦4,100"
             textTitle="Procold"
             textDesc="Relieves Cold, flu symptoms, nasal congestion, and fever"
           />
           <SingleProduct
+            id=""
             productImage={img3}
             price="₦4,100"
             textTitle="Procold"
             textDesc="Relieves Cold, flu symptoms, nasal congestion, and fever"
           />
           <SingleProduct
+            id=""
             productImage={img3}
             price="₦4,100"
             textTitle="Procold"

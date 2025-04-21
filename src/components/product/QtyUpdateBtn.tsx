@@ -9,6 +9,7 @@ interface QtyUpdateBtnProps {
   id: string;
   size?: "big" | "normal";
   isCheckOutPage?: boolean;
+  isProductdescPage?: boolean;
 }
 const QtyUpdateBtn: React.FC<QtyUpdateBtnProps> = ({
   qty,
@@ -17,6 +18,7 @@ const QtyUpdateBtn: React.FC<QtyUpdateBtnProps> = ({
   id,
   size = "normal",
   isCheckOutPage = "false",
+  isProductdescPage = "false",
 }) => {
   return (
     <div
@@ -38,7 +40,9 @@ const QtyUpdateBtn: React.FC<QtyUpdateBtnProps> = ({
           } cursor-pointer ${
             isCheckOutPage
               ? "text-black  group-hover:text-white"
-              : "text-white group-hover:text-white group-hover:stroke-white"
+              : isProductdescPage
+                ? "text-white group-hover:text-white group-hover:stroke-white"
+                : "text-black group-hover:text-white group-hover:stroke-white"
           } `}
         />
       </div>
@@ -61,7 +65,9 @@ const QtyUpdateBtn: React.FC<QtyUpdateBtnProps> = ({
           }  cursor-pointer  ${
             isCheckOutPage
               ? "text-black group-hover:text-white"
-              : "text-white group-hover:text-white group-hover:stroke-white"
+              : isProductdescPage
+                ? "text-white group-hover:text-white group-hover:stroke-white"
+                : "text-black group-hover:text-white group-hover:stroke-white"
           }`}
         />
       </div>

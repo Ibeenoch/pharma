@@ -98,6 +98,7 @@ const Cart: React.FC<CartProps> = ({
           c.item.$id && (
             <CartRowItem
               isCheckOutPage={isCheckOutPage}
+              isProductdescPage={false}
               removeItemFromCart={() => {
                 c &&
                   c.item &&

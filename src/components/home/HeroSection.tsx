@@ -3,14 +3,17 @@ import heroImage from "../../assets/images/person3.png";
 import CustomButton from "../common/Button";
 import MedCross from "../../assets/icons/medical-cross.svg?react";
 import { MARGIN_TOP } from "../../constants/appText";
-import CountUp from "react-countup";
 import NumberCount from "./NumberCount";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
-  const handleGetStarted = () => {};
+  const navigate = useNavigate();
+  const handleGetStarted = () => {
+    navigate("/allProduct");
+  };
   return (
     <section
-      className={`sm:grid sm:grid-cols-2 ${MARGIN_TOP} border-b-2 border-black`}
+      className={`sm:grid sm:grid-cols-2 ${MARGIN_TOP} pt-3 md:pt-0 border-b-2 border-black`}
     >
       <article className="px-4">
         <div className="flex gap-2 items-center my-8">

@@ -39,6 +39,7 @@ import EmailVerificationSuccessfulPage from "./pages/EmailVerificationSuccessful
 import SecureAdminPage from "./features/auth/SecureAdminPage";
 import FavePage from "./pages/FavePage";
 import SecureUserPage from "./features/auth/SecureUserPage";
+import AllProductPage from "./pages/AllProductPage";
 const Home = lazy(() => import("./pages/Home"));
 
 const router = createBrowserRouter([
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
   {
     path: "/resetpassword",
     element: <ResetPasswordPage />,
+  },
+  {
+    path: "/allProduct",
+    element: <AllProductPage />,
   },
   {
     path: "/categories",

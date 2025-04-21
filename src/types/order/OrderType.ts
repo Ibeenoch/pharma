@@ -1,4 +1,3 @@
-import { CartOrderedPropsData } from "../cart/CartData";
 import { TransactionProps } from "../payment/FlutterwavePaymentType";
 
 export interface ShippingDetailsProps {
@@ -30,21 +29,21 @@ export type UpdateShippingArgs = {
 //   userId: string;
 // }
 
-export interface OrderReturnProps {
-  cart: CartOrderedPropsData[];
-  transaction: TransactionProps;
-  shippingDetail: ShippingDetailsProps;
-  $id?: string;
-  orderStatus?: string;
-  createdAt?: string;
-  lastUpdated?: string;
-  userId: string;
-}
+// export interface OrderReturnProps {
+//   cart: CartOrderedPropsData[];
+//   transaction: TransactionProps;
+//   shippingDetail: ShippingDetailsProps;
+//   $id?: string;
+//   orderStatus?: string;
+//   createdAt?: string;
+//   lastUpdated?: string;
+//   userId: string;
+// }
 
 export interface OrderProps {
   cart: string[];
-  transaction: string;
-  shippingDetail: ShippingDetailsProps;
+  transaction: TransactionProps;
+  shippingDetails: ShippingDetailsProps;
   userId: string;
 }
 
@@ -79,12 +78,15 @@ interface orderCartProp {
   productId: string;
   productSerialNo: string;
   quantity: number;
+  price: number;
+  total: number;
+  subtotal: number;
 }
 
-interface orderShippingDetails {
-  $id: string;
-  $createdAt: string;
-  $updatedAt: string;
+export interface orderShippingDetails {
+  $id?: string;
+  $createdAt?: string;
+  $updatedAt?: string;
   address: string;
   country: string;
   lga: string;
@@ -92,26 +94,34 @@ interface orderShippingDetails {
   state: string;
   userId: string;
   zipcode: string;
+  fullname: string;
+  email: string;
 }
 
 interface orderTransactionDetails {
   $id: string;
   $createdAt: string;
   $updatedAt: string;
-  amount: 11436;
+  amount: number;
   payMethod: string;
   payerId: string;
   status: string;
   transactionId: string;
   transactionRef: string;
+  shippingId: string; // "SHIP001",
+  shippingType: string; // "Express",
+  shippingStatus: string;
 }
 
-interface AllOrderResultData {
+export interface AllOrderResultData {
+  // use this for order return
   $id: string;
   $createdAt: string;
   $updatedAt: string;
+  orderStatus: string;
+  userId: string;
   cart: orderCartProp[];
-  shippingDetail: orderShippingDetails;
+  shippingDetails: orderShippingDetails;
   transaction: orderTransactionDetails;
 }
 
@@ -130,4 +140,17 @@ export interface mappedAllOrdersProps {
   image?: string;
   productCategory?: string;
   productname?: string;
+}
+
+export interface ShippingServiceProps {
+  shippingType: string;
+  shippingStatus: string;
+  $id?: string;
+  $createdAt?: string;
+  $updatedAt?: string;
+}
+export interface ShippingServiceUpdateProps {
+  $id: string;
+  userId: string;
+  shippingStatus: string;
 }

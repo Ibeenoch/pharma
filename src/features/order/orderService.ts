@@ -1,12 +1,14 @@
 import { ID, Query } from "appwrite";
 import { database } from "../../lib/appwriteConfig";
 import {
+  AllOrderResultData,
   OrderArgs,
   OrderPaginatedArgs,
   OrderProps,
-  OrderReturnProps,
   OrderStatusProps,
   ShippingDetailsProps,
+  ShippingServiceProps,
+  ShippingServiceUpdateProps,
   UpdateShippingArgs,
 } from "../../types/order/OrderType";
 import { TransactionProps } from "../../types/payment/FlutterwavePaymentType";
@@ -24,7 +26,7 @@ export const addShippingDetails = async (
       [Query.equal("userId", addShippingDetails.userId)]
     );
     const checkIfShippingAdressExist = checkIfShippingAdressExistArr.documents;
-    if (checkIfShippingAdressExist.length >= 1) {
+    if (checkIfShippingAdressExist.length >= 0) {
       // return the shipping Address
       return {
         userId: checkIfShippingAdressExist[0].userId,
@@ -147,6 +149,14 @@ export const saveTransaction = async (transactionData: TransactionProps) => {
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_TRANSACTION_COLLECTION_ID, // collection id
       ID.unique(),
+
+      // imageUrl: string[];
+      // productName: string[];
+      // productQty: string[];
+      // shippingId: string;
+      // shippingType: string;
+      // shippingStatus: string;
+      // customerName: string;
       {
         payerId: transactionData.payerId,
         amount: transactionData.amount,
@@ -154,6 +164,13 @@ export const saveTransaction = async (transactionData: TransactionProps) => {
         transactionId: transactionData.transactionId,
         transactionRef: transactionData.transactionRef,
         payMethod: transactionData.payMethod,
+        imageUrl: transactionData.imageUrl,
+        productName: transactionData.productName,
+        productQty: transactionData.productQty,
+        shippingId: transactionData.shippingId,
+        shippingType: transactionData.shippingType,
+        shippingStatus: transactionData.shippingStatus,
+        customerName: transactionData.customerName,
       }
     );
 
@@ -168,6 +185,13 @@ export const saveTransaction = async (transactionData: TransactionProps) => {
       transactionRef: transactionCreated.transactionRef,
       createdAt: transactionCreated.$createdAt,
       payMethod: transactionCreated.payMethod,
+      imageUrl: transactionCreated.imageUrl,
+      productName: transactionCreated.productName,
+      productQty: transactionCreated.productQty,
+      shippingId: transactionCreated.shippingId,
+      shippingType: transactionCreated.shippingType,
+      shippingStatus: transactionCreated.shippingStatus,
+      customerName: transactionCreated.customerName,
     } as TransactionProps;
   } catch (error) {
     throw error;
@@ -192,6 +216,13 @@ export const getATransaction = async (id: string) => {
       transactionRef: transaction.transactionRef,
       createdAt: transaction.$createdAt,
       payMethod: transaction.payMethod,
+      imageUrl: transaction.imageUrl,
+      productName: transaction.productName,
+      productQty: transaction.productQty,
+      shippingId: transaction.shippingId,
+      shippingType: transaction.shippingType,
+      shippingStatus: transaction.shippingStatus,
+      customerName: transaction.customerName,
     } as TransactionProps;
   } catch (error) {
     throw error;
@@ -216,11 +247,94 @@ export const getAllTransaction = async () => {
         transactionRef: transaction.transactionRef,
         createdAt: transaction.$createdAt,
         payMethod: transaction.payMethod,
+        imageUrl: transaction.imageUrl,
+        productName: transaction.productName,
+        productQty: transaction.productQty,
+        shippingId: transaction.shippingId,
+        shippingType: transaction.shippingType,
+        shippingStatus: transaction.shippingStatus,
+        customerName: transaction.customerName,
       } as TransactionProps;
       allTransactions.push(transactionItem);
     });
     console.log("allTransactions ", allTransactions);
     return allTransactions;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const createShippingService = async (
+  shippingData: ShippingServiceProps
+) => {
+  try {
+    const shippingCreated = await database.createDocument(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_SHIPPING_SERVICE_COLLECTION_ID, // collection id
+      ID.unique(),
+      {
+        shippingStatus: shippingData.shippingStatus,
+        shippingType: shippingData.shippingType,
+      }
+    );
+    console.log("createShippingService ", shippingCreated);
+
+    return {
+      $id: shippingCreated.$id,
+      $createdAt: shippingCreated.$createdAt,
+      $updatedAt: shippingCreated.$updatedAt,
+      shippingStatus: shippingCreated.shippingStatus,
+      shippingType: shippingCreated.shippingType,
+    } as ShippingServiceProps;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAShippingService = async (id: string) => {
+  try {
+    const shippingArr = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_SHIPPING_SERVICE_COLLECTION_ID, // collection id
+      [Query.equal("$id", id)]
+    );
+    const shipping = shippingArr.documents[0];
+    console.log("service shipped ", shipping);
+    return {
+      shippingStatus: shipping.shippingStatus,
+      shippingType: shipping.shippingType,
+      $createdAt: shipping.$createdAt,
+      $id: shipping.$id,
+      $updatedAt: shipping.$updatedAt,
+    } as ShippingServiceProps;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateShippingServiceStatus = async (
+  shippingDetails: ShippingServiceUpdateProps
+) => {
+  const shippedStatus = shippingDetails.shippingStatus;
+  try {
+    const shippingUpdated = await database.updateDocument(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_SHIPPING_SERVICE_COLLECTION_ID, // collection id
+      shippingDetails.$id,
+      {
+        shippingStatus: shippedStatus,
+      }
+    );
+    console.log("shippingAddressUpdated ", shippingUpdated);
+    if (shippingUpdated) {
+      return {
+        shippingStatus: shippingUpdated.shippingStatus,
+        shippingType: shippingUpdated.shippingType,
+        $createdAt: shippingUpdated.$createdAt,
+        $id: shippingUpdated.$id,
+        $updatedAt: shippingUpdated.$updatedAt,
+      } as ShippingServiceProps;
+    }
   } catch (error) {
     throw error;
   }
@@ -234,21 +348,49 @@ export const createOrder = async (orderData: OrderProps) => {
       ID.unique(),
       {
         cart: orderData.cart,
-        transaction: orderData.transaction,
+        transaction: {
+          amount: orderData.transaction.amount,
+          customerName: orderData.transaction.customerName,
+          imageUrl: orderData.transaction.imageUrl,
+          payerId: orderData.transaction.payerId,
+          payMethod: orderData.transaction.payMethod,
+          productName: orderData.transaction.productName,
+          productQty: orderData.transaction.productQty,
+          shippingId: orderData.transaction.shippingId,
+          shippingStatus: orderData.transaction.shippingStatus,
+          shippingType: orderData.transaction.shippingType,
+          status: orderData.transaction.status,
+          transactionId: orderData.transaction.transactionId,
+          transactionRef: orderData.transaction.transactionRef,
+        },
         userId: orderData.userId,
+        orderStatus: "Processing",
+        shippingDetails: {
+          userId: orderData.shippingDetails.userId,
+          phoneNumber: orderData.shippingDetails.phoneNumber,
+          country: orderData.shippingDetails.country,
+          state: orderData.shippingDetails.state,
+          lga: orderData.shippingDetails.lga,
+          zipcode: orderData.shippingDetails.zipcode,
+          address: orderData.shippingDetails.address,
+          fullname: orderData.shippingDetails.fullname,
+          email: orderData.shippingDetails.email,
+        },
       }
     );
 
+    console.log("created order : ", orderCreated);
+
     return {
       $id: orderCreated.$id,
+      $createdAt: orderCreated.$createdAt,
+      $updatedAt: orderCreated.$createdAt,
       cart: orderCreated.cart,
-      transaction: orderCreated.transaction,
-      shippingDetail: orderData.shippingDetail,
       orderStatus: orderCreated.orderStatus,
-      lastUpdated: orderCreated.$updatedAt,
-      createdAt: orderCreated.$createdAt,
-      userId: orderData.userId,
-    } as OrderReturnProps;
+      shippingDetails: orderCreated.shippingDetails,
+      transaction: orderCreated.transaction,
+      userId: orderCreated.userId,
+    } as AllOrderResultData;
   } catch (error) {
     throw error;
   }
@@ -265,37 +407,16 @@ export const updateOrderStatus = async (orderData: OrderStatusProps) => {
       }
     );
 
-    const shippingArr = await database.listDocuments(
-      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
-      import.meta.env.VITE_APPWRITE_SHIPPING_COLLECTION_ID, // collection id
-      [Query.equal("userId", orderData.userId)]
-    );
-
-    const shipping = shippingArr.documents;
-    let shippingDetail = {
-      userId: shipping[0].userId,
-      phoneNumber: shipping[0].phoneNumber,
-      country: shipping[0].country,
-      state: shipping[0].state,
-      lga: shipping[0].lga,
-      zipcode: shipping[0].zipcode,
-      address: shipping[0].address,
-      $id: shipping[0].$id,
-      fullname: shipping[0].fullname,
-      email: shipping[0].email,
-    } as ShippingDetailsProps;
-    console.log("order updated service ", order);
-
     return {
       $id: order.$id,
+      $createdAt: order.$createdAt,
+      $updatedAt: order.$createdAt,
       cart: order.cart,
-      transaction: order.transaction,
-      shippingDetail: shippingDetail,
       orderStatus: order.orderStatus,
-      lastUpdated: order.$updatedAt,
-      createdAt: order.$createdAt,
-      userId: orderData.userId,
-    } as OrderReturnProps;
+      shippingDetails: order.shippingDetails,
+      transaction: order.transaction,
+      userId: order.userId,
+    } as AllOrderResultData;
   } catch (error) {
     throw error;
   }
@@ -303,46 +424,25 @@ export const updateOrderStatus = async (orderData: OrderStatusProps) => {
 
 export const findOrder = async (orderData: OrderArgs) => {
   try {
-    let orderId = orderData.orderId,
-      userId = orderData.userId;
+    let orderId = orderData.orderId;
     const orderArr = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_ORDER_COLLECTION_ID, // collection id
       [Query.equal("$id", orderId)]
     );
 
-    const shippingArr = await database.listDocuments(
-      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
-      import.meta.env.VITE_APPWRITE_SHIPPING_COLLECTION_ID, // collection id
-      [Query.equal("userId", userId)]
-    );
-
-    const shipping = shippingArr.documents;
-    let shippingDetail = {
-      userId: shipping[0].userId,
-      phoneNumber: shipping[0].phoneNumber,
-      country: shipping[0].country,
-      state: shipping[0].state,
-      lga: shipping[0].lga,
-      zipcode: shipping[0].zipcode,
-      address: shipping[0].address,
-      $id: shipping[0].$id,
-      fullname: shipping[0].fullname,
-      email: shipping[0].email,
-    } as ShippingDetailsProps;
-
     const order = orderArr.documents;
 
     return {
       $id: order[0].$id,
+      $createdAt: order[0].$createdAt,
+      $updatedAt: order[0].$createdAt,
       cart: order[0].cart,
-      transaction: order[0].transaction,
       orderStatus: order[0].orderStatus,
-      shippingDetail: shippingDetail,
-      lastUpdated: order[0].$updatedAt,
-      createdAt: order[0].$createdAt,
+      shippingDetails: order[0].shippingDetail,
+      transaction: order[0].transaction,
       userId: order[0].userId,
-    } as OrderReturnProps;
+    } as AllOrderResultData;
   } catch (error) {
     throw error;
   }
@@ -363,34 +463,14 @@ export const findAllOrders = async (dataProps: OrderPaginatedArgs) => {
       ]
     );
 
-    const shippingArr = await database.listDocuments(
-      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
-      import.meta.env.VITE_APPWRITE_SHIPPING_COLLECTION_ID, // collection id
-      [Query.equal("userId", dataProps.userId)]
-    );
-
-    const shipping = shippingArr.documents;
-    let shippingDetail = {
-      userId: shipping[0].userId,
-      phoneNumber: shipping[0].phoneNumber,
-      country: shipping[0].country,
-      state: shipping[0].state,
-      lga: shipping[0].lga,
-      zipcode: shipping[0].zipcode,
-      address: shipping[0].address,
-      $id: shipping[0].$id,
-      fullname: shipping[0].fullname,
-      email: shipping[0].email,
-    } as ShippingDetailsProps;
-
-    const allOrder: OrderReturnProps[] = orderArr.documents.map((order) => ({
+    const allOrder: AllOrderResultData[] = orderArr.documents.map((order) => ({
       $id: order.$id,
+      $createdAt: order.$createdAt,
+      $updatedAt: order.$createdAt,
       cart: order.cart,
-      transaction: order.transaction,
       orderStatus: order.orderStatus,
-      shippingDetail: shippingDetail,
-      lastUpdated: order.$updatedAt,
-      createdAt: order.$createdAt,
+      shippingDetails: order.shippingDetails,
+      transaction: order.transaction,
       userId: order.userId,
     }));
     console.log("allOrder service ", allOrder);

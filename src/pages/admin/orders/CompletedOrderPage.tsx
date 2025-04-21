@@ -1,5 +1,5 @@
 import React from "react";
-import OrderManagement from "../../../components/admin/order/OrderManagement";
+import OrderManagement from "../../../features/admin/orders/OrderManagement";
 
 const CompletedOrderPage = React.memo(() => {
   return <OrderManagement />;

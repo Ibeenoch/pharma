@@ -7,6 +7,7 @@ import { UpdateProductCart } from "../../../types/cart/CartData";
 interface productAdminState {
   status: "idle" | "loading" | "success" | "failure";
   productAdmin: ProductDataProps[];
+  productSearched: ProductDataProps[];
   hasFetchAllProduct: boolean;
   productIndexClicked: string;
   productSubTabIndex: number;
@@ -20,6 +21,7 @@ const initialState: productAdminState = {
   productIndexClicked: "",
   productSubTabIndex: 0,
   productSubTabRoute: "",
+  productSearched: [],
 };
 
 export const createProduct = createAsyncThunk(
@@ -70,6 +72,17 @@ export const fetchAllUserProduct = createAsyncThunk(
   }
 );
 
+export const searchedProduct = createAsyncThunk(
+  "product/searchedProduct",
+  async (searchedKey: string, { rejectWithValue }) => {
+    try {
+      return await api.searchProduct(searchedKey);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+);
+
 export const deleteproduct = createAsyncThunk(
   "product/deleteproduct",
   async (projectId: string, { rejectWithValue }) => {
@@ -96,6 +109,9 @@ const productAdminSlice = createSlice({
     },
     setProductSubTabRoute: (state, action: PayloadAction<string>) => {
       state.productSubTabRoute = action.payload;
+    },
+    resetSearchProduct: (state) => {
+      state.productSearched = [];
     },
   },
   extraReducers: (builder) => {
@@ -154,11 +170,6 @@ const productAdminSlice = createSlice({
       .addCase(deleteproduct.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
-          // const index = state.productAdmin.findIndex(
-          //   (p) => p.$id === action.payload?.$id
-          // );
-          // console.log("index update ", index);
-          // state.productAdmin.splice(index, 1);
         }
       })
       .addCase(deleteproduct.rejected, (state) => {
@@ -176,6 +187,19 @@ const productAdminSlice = createSlice({
       })
       .addCase(fetchAllUserProduct.rejected, (state) => {
         state.status = "failure";
+      })
+      .addCase(searchedProduct.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(searchedProduct.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload !== undefined) {
+          console.log("action.payload  ", action.payload);
+          state.productSearched = action.payload;
+        }
+      })
+      .addCase(searchedProduct.rejected, (state) => {
+        state.status = "failure";
       });
   },
 });
@@ -186,5 +210,6 @@ export const {
   setProductIndexClicked,
   setProductSubTabIndex,
   setProductSubTabRoute,
+  resetSearchProduct,
 } = productAdminSlice.actions;
 export default productAdminSlice.reducer;

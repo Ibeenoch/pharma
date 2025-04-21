@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import * as api from "./orderService";
 import {
+  AllOrderResultData,
   OrderArgs,
   OrderPaginatedArgs,
   OrderProps,
-  OrderReturnProps,
   OrderStatusProps,
   ShippingDetailsProps,
+  ShippingServiceProps,
   UpdateShippingArgs,
 } from "../../types/order/OrderType";
 import { RootState } from "../../redux/store";
@@ -19,17 +20,22 @@ interface orderState {
   status: "idle" | "loading" | "success" | "failure";
   transactions: TransactionProps[];
   transaction: TransactionProps;
-  order: OrderReturnProps;
-  orders: OrderReturnProps[];
+  order: AllOrderResultData;
+  orders: AllOrderResultData[];
   refreshOrder: boolean;
   refreshAnOrder: boolean;
   refreshTransaction: boolean;
   refreshATransaction: boolean;
   totalRevenue: number;
   totalOrderPage: number;
+  shippingService: ShippingServiceProps;
 }
 
 const initialState: orderState = {
+  shippingService: {
+    shippingStatus: "",
+    shippingType: "",
+  },
   hasPreviousShippingDetails: false,
   totalOrderPage: 0,
   shippingDetail: {
@@ -45,9 +51,30 @@ const initialState: orderState = {
   },
   order: {
     $id: "",
-    cart: [],
+    $createdAt: "",
+    $updatedAt: "",
+    orderStatus: "",
+    cart: [
+      {
+        $id: "",
+        $createdAt: "",
+        $updatedAt: "",
+        brand: "",
+        cartId: "",
+        category: "",
+        creator: "",
+        description: "",
+        discount: 0,
+        imagesUrl: [],
+        name: "",
+        productId: "",
+        productSerialNo: "",
+        quantity: 0,
+        price: 0,
+      },
+    ],
     userId: "",
-    shippingDetail: {
+    shippingDetails: {
       userId: "",
       address: "",
       country: "",
@@ -55,6 +82,9 @@ const initialState: orderState = {
       phoneNumber: "",
       state: "",
       zipcode: "",
+      $createdAt: "",
+      $id: "",
+      $updatedAt: "",
       fullname: "",
       email: "",
     },
@@ -62,19 +92,41 @@ const initialState: orderState = {
       $id: "",
       status: "",
       transactionId: "",
-      amount: 0,
       transactionRef: "",
-      createdAt: "",
       payerId: "",
       payMethod: "",
+      $createdAt: "",
+      $updatedAt: "",
+      amount: 0,
+      shippingId: "",
+      shippingStatus: "",
+      shippingType: "",
     },
   },
   orders: [
     {
       $id: "",
       userId: "",
-      cart: [],
-      shippingDetail: {
+      cart: [
+        {
+          $id: "",
+          $createdAt: "",
+          $updatedAt: "",
+          brand: "",
+          cartId: "",
+          category: "",
+          creator: "",
+          description: "",
+          discount: 0,
+          imagesUrl: [],
+          name: "",
+          productId: "",
+          productSerialNo: "",
+          quantity: 0,
+          price: 0,
+        },
+      ],
+      shippingDetails: {
         userId: "",
         address: "",
         country: "",
@@ -82,6 +134,9 @@ const initialState: orderState = {
         phoneNumber: "",
         state: "",
         zipcode: "",
+        $createdAt: "",
+        $id: "",
+        $updatedAt: "",
         fullname: "",
         email: "",
       },
@@ -91,10 +146,17 @@ const initialState: orderState = {
         transactionId: "",
         amount: 0,
         transactionRef: "",
-        createdAt: "",
         payerId: "",
         payMethod: "",
+        $createdAt: "",
+        $updatedAt: "",
+        shippingId: "",
+        shippingStatus: "",
+        shippingType: "",
       },
+      $createdAt: "",
+      $updatedAt: "",
+      orderStatus: "",
     },
   ],
   refreshOrder: false,
@@ -112,6 +174,13 @@ const initialState: orderState = {
     $id: "",
     createdAt: "",
     payMethod: "",
+    customerName: "", // started now
+    imageUrl: [],
+    productName: [],
+    productQty: [],
+    shippingId: "",
+    shippingStatus: "",
+    shippingType: "",
   },
   transactions: [],
   totalRevenue: 0,
@@ -268,6 +337,7 @@ const orderSlice = createSlice({
         fullname: "",
         email: "",
       };
+      state.hasPreviousShippingDetails = false;
     },
     calcualateTotalRevenue: (state) => {
       state.totalRevenue = state.transactions.reduce((acc, curr) => {

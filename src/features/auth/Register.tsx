@@ -14,13 +14,12 @@ const CustomButton = lazy(() => import("../../components/common/Button"));
 import { useNavigate } from "react-router-dom";
 import { validator } from "../../utils/validator";
 import CustomSelect from "../../components/common/Select";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { useAppDispatch } from "../../hooks/reduxHooks";
 import {
   checkIfUserExist,
   facebookLogin,
   googleLogin,
   registerUser,
-  selectAuth,
 } from "./authSlice";
 import Toast from "../../components/common/Toast";
 import AlertModal from "../../components/auth/AlertModal";
@@ -49,7 +48,6 @@ const Register = () => {
   }>({});
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { doUserExist } = useAppSelector(selectAuth);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;

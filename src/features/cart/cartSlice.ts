@@ -1,13 +1,18 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { cartProps, ProductDataProps } from "../../types/product/ProductData";
+import {
+  CartProductDataProps,
+  cartProps,
+  ProductDataProps,
+  WishListProps,
+} from "../../types/product/ProductData";
 import { RootState } from "../../redux/store";
 import { CartOrderedPropsData } from "../../types/cart/CartData";
 import * as api from "./cartService";
 
 interface cartState {
   status: "idle" | "loading" | "success" | "failure";
-  cart: { item: ProductDataProps; qty: number }[];
-  wishlist: { item: ProductDataProps; qty: number }[];
+  cart: { item: CartProductDataProps; qty: number }[];
+  wishlist: { item: ProductDataProps }[];
   cartQty: number;
   cartIndex: number;
   wishListIndex: number;
@@ -84,6 +89,12 @@ const cartSlice = createSlice({
         state.cart[index].item.quantity <= 1
           ? (state.cart[index].qty = 1)
           : state.cart[index].qty++;
+        // calculate and update the subtotal of each cart
+        let price = state.cart[index].item.price;
+        let discount = state.cart[index].item.discount ?? 0;
+        let quantity = state.cart[index].qty;
+        state.cart[index].item.subtotal =
+          (price - (discount / 100) * price) * quantity;
       }
     },
     decreaseCartQty: (state, action: PayloadAction<string>) => {
@@ -93,6 +104,15 @@ const cartSlice = createSlice({
       if (index !== -1) {
         if (state.cart[index].qty > 1) {
           state.cart[index].qty -= 1;
+          // calculate and update the subtotal of each cart
+          state.cart[index].item.subtotal =
+            state.cart[index].item.price * state.cart[index].qty;
+          // calculate and update the subtotal of each cart
+          let price = state.cart[index].item.price;
+          let discount = state.cart[index].item.discount ?? 0;
+          let quantity = state.cart[index].qty;
+          state.cart[index].item.subtotal =
+            (price - (discount / 100) * price) * quantity;
         }
       }
     },
@@ -119,7 +139,7 @@ const cartSlice = createSlice({
     updateCartIndex: (state, action: PayloadAction<number>) => {
       state.cartIndex = action.payload;
     },
-    addTowishlist: (state, action: PayloadAction<cartProps>) => {
+    addTowishlist: (state, action: PayloadAction<WishListProps>) => {
       const exists = state.wishlist.findIndex((i) => {
         return i.item.$id === action.payload.item.$id;
       });
@@ -140,31 +160,13 @@ const cartSlice = createSlice({
       const index = state.wishlist.findIndex(
         (item) => item.item.$id === action.payload
       );
-      if (index !== -1) {
-        state.wishlist[index].qty += 1;
-      }
-      console.log(
-        "increasewishlistQty ",
-        state.wishlist,
-        index,
-        state.wishlist[index].qty
-      );
     },
     decreasewishlistQty: (state, action: PayloadAction<string>) => {
       const index = state.wishlist.findIndex(
         (item) => item.item.$id === action.payload
       );
       if (index !== -1) {
-        if (state.wishlist[index].qty > 1) {
-          state.wishlist[index].qty -= 1;
-        }
       }
-      console.log(
-        "decreasewishlistQty ",
-        state.wishlist,
-        index,
-        state.wishlist[index].qty
-      );
     },
     removeAllItemsInwishlist: (state) => {
       state.wishlist = [];
@@ -181,19 +183,23 @@ const cartSlice = createSlice({
     calculateSubTotal: (state) => {
       state.subTotal = state.cart.reduce((acc, curr) => {
         let price = curr.item.price;
-        let discount = curr.item.discount ?? 1,
+        let discount = curr.item.discount ?? 0,
           quantity = curr.qty;
         return acc + (price - (discount / 100) * price) * quantity;
       }, 0);
     },
-    calculateTotal: (state, action: PayloadAction<number>) => {
-      state.total = state.subTotal + 1500 + action.payload;
+    calculateTotal: (state) => {
+      let total = 0;
+      state.cart.forEach((s) => {
+        total += s.item.subtotal;
+      });
+      state.total = total + 1500;
     },
     checkIfItemHasBeenAddedToCheck: (state, action: PayloadAction<string>) => {
       const exists = state.cart.findIndex((i) => {
         return i.item.$id === action.payload;
       });
-      console.log("exists in cart", exists);
+
       if (exists !== -1) state.hasItemBeenAddedToCart = true;
     },
     checkIfItemHasBeenAddedToWishlist: (

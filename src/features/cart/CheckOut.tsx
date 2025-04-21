@@ -22,6 +22,10 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { selectAuth } from "../auth/authSlice";
 import { postACart, removeAllItemsInCart, selectCart } from "./cartSlice";
 import CustomButton from "../../components/common/Button";
+import glovo from "../../assets/images/glove.png";
+import chowDesk from "../../assets/images/chowdesk.png";
+import errand360 from "../../assets/images/errand360.png";
+import gokada from "../../assets/images/gokada.png";
 import Spinner from "../../assets/icons/circle-spinner.svg?react";
 import {
   getShippingDetails,
@@ -33,8 +37,8 @@ import {
   updateShippingDetails,
 } from "../order/orderSlice";
 import {
+  AllOrderResultData,
   OrderProps,
-  OrderReturnProps,
   ShippingDetailsProps,
   UpdateShippingArgs,
 } from "../../types/order/OrderType";
@@ -52,6 +56,8 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../../components/common/Modal";
 import { updateProductStockQuantity } from "../admin/product/productSlice";
+import DeliveryOption from "../../components/common/DeliveryOption";
+import { generateRandomCode } from "../../utils/randomCodeGenerator";
 
 const CheckOut = () => {
   const { user } = useAppSelector(selectAuth);
@@ -63,6 +69,8 @@ const CheckOut = () => {
   const { transaction } = useAppSelector(selectOrder);
   const { status, hasPreviousShippingDetails, shippingDetail } =
     useAppSelector(selectOrder);
+
+  // paystack payment logic
   const payStackConfig = {
     reference: new Date().getTime().toString(),
     email: user && user.email,
@@ -72,6 +80,19 @@ const CheckOut = () => {
 
   // handle successful transaction
   const onSuccess = (reference: PayStackProps) => {
+    let images: string[] = [];
+    cart.forEach((c) => {
+      images.push(c.item.imagesUrl[0]);
+    });
+    let productNames: string[] = [];
+    cart.forEach((c) => {
+      productNames.push(c.item.name);
+    });
+    let productQtys: string[] = [];
+    cart.forEach((c) => {
+      productQtys.push(String(c.qty));
+    });
+
     setPaymentProcessing(true);
     if (userId) {
       const transactionDetails: TransactionProps = {
@@ -81,12 +102,28 @@ const CheckOut = () => {
         transactionId: reference.transaction,
         transactionRef: reference.trxref,
         payMethod: "Paystack",
+        customerName: `${user && user.firstName} ${user && user.lastName}`,
+        imageUrl: images,
+        productName: productNames,
+        productQty: productQtys,
+        shippingId: `SHIP${generateRandomCode()}`,
+        shippingStatus: "Pending",
+        shippingType:
+          deliveryIndex === 0
+            ? "Glovo"
+            : deliveryIndex === 1
+              ? "ChowDesk"
+              : deliveryIndex === 2
+                ? "Gokada"
+                : "Errand360",
       };
 
       // dispatch the transaction
       dispatch(postTransaction(transactionDetails)).then(() => {
         // dispatch the cart
+        console.log("cart item ", cart);
         dispatch(postACart(cart)).then((res) => {
+          // dispatch the order
           if (res.payload !== undefined) {
             let cartRes = res.payload as CartOrderedPropsData[];
             const cartIds: string[] = cartRes.map((c) => c.$id);
@@ -100,17 +137,33 @@ const CheckOut = () => {
               const order: OrderProps = {
                 cart: cartIds,
                 userId,
-                transaction: transaction.$id,
-                shippingDetail: shippingDetail,
+                transaction: {
+                  amount: transaction.amount,
+                  customerName: transaction.customerName,
+                  imageUrl: transaction.imageUrl,
+                  payerId: transaction.payerId,
+                  payMethod: transaction.payMethod,
+                  productName: transaction.productName,
+                  productQty: transaction.productQty,
+                  shippingId: transaction.shippingId,
+                  shippingStatus: transaction.shippingStatus,
+                  shippingType: transaction.shippingType,
+                  status: transaction.status,
+                  transactionId: transaction.transactionId,
+                  transactionRef: transaction.transactionRef,
+                  createdAt: transaction.createdAt,
+                },
+                shippingDetails: shippingDetail,
               };
+
               dispatch(postOrder(order)).then((res) => {
-                let response = res.payload as OrderReturnProps;
+                let response = res.payload as AllOrderResultData;
                 console.log("order payload", response);
                 if (
                   response &&
                   response.transaction &&
                   response.cart &&
-                  response.shippingDetail
+                  response.shippingDetails
                 ) {
                   console.log("order payload inner", response.cart);
                   setPaymentProcessing(false);
@@ -140,7 +193,7 @@ const CheckOut = () => {
       });
     }
   };
-
+  // handle case when pastack payment modal is closed
   const onClose = () => {
     setPaymentProcessing(false);
     // implementation for  whatever you want to do when the Paystack dialog closed.
@@ -192,9 +245,13 @@ const CheckOut = () => {
   const [showUpdateShippingDetails, setShowUpdateShippingDetails] =
     useState<boolean>(true);
   const [paymentIndex, setPaymentIndex] = useState<number>(0);
+  const [deliveryIndex, setdeliveryIndex] = useState<number>(0);
 
   const setPaymentMethodIndex = (index: number) => {
     setPaymentIndex(index);
+  };
+  const setDeliveryMethodIndex = (index: number) => {
+    setdeliveryIndex(index);
   };
 
   const shouldUpdateShippingDetails = () => {
@@ -217,8 +274,20 @@ const CheckOut = () => {
     shouldUpdateShippingDetails();
   }, [phone, country, state, lga, zipcode, address]);
 
-  const IconLists = [Paystack, Flutterwave];
+  // icon displaying the payment icon and text
+  const IconLists = [
+    { icon: Paystack, name: "Pay Stack" },
+    { icon: Flutterwave, name: "Flutterwave" },
+  ];
+  // icon displaying the delivery text and images
 
+  const ImgLists = [
+    { img: glovo, name: "Glovo" },
+    { img: chowDesk, name: "Chow Deck" },
+    { img: gokada, name: "Gokada" },
+    { img: errand360, name: "Errand360" },
+  ];
+  // using to show lists of countries, nigerian state and its respective lga
   const nigerianState = nigeriaStateAndLga.map((item) => item.state);
   const stateLgas = nigeriaStateAndLga.find((item) => item.state === state)
     ?.lgas || ["Select LGA"];
@@ -234,6 +303,7 @@ const CheckOut = () => {
     zipcode?: string;
   }>({});
 
+  // initialize payment with flutter wave
   const makePaymentThroughFlutterWave = async () => {
     await loadFlutterwaveScript();
     setPaymentProcessing(true);
@@ -258,6 +328,18 @@ const CheckOut = () => {
         logo: CompanyIcon,
       },
       callback: function (response: FlutterWaveDataProps) {
+        let images: string[] = [];
+        cart.forEach((c) => {
+          images.push(c.item.imagesUrl[0]);
+        });
+        let productNames: string[] = [];
+        cart.forEach((c) => {
+          productNames.push(c.item.name);
+        });
+        let productQtys: string[] = [];
+        cart.forEach((c) => {
+          productQtys.push(String(c.qty));
+        });
         if (userId) {
           let transactionDetails: TransactionProps = {
             transactionId: String(response.transaction_id),
@@ -266,12 +348,27 @@ const CheckOut = () => {
             status: response.status,
             transactionRef: response.tx_ref,
             payMethod: "Flutterwave",
+            customerName: `${user && user.firstName} ${user && user.lastName}`,
+            imageUrl: images,
+            productName: productNames,
+            productQty: productQtys,
+            shippingId: `SHIP${generateRandomCode()}`,
+            shippingStatus: "Pending",
+            shippingType:
+              deliveryIndex === 0
+                ? "Glovo"
+                : deliveryIndex === 1
+                  ? "ChowDesk"
+                  : deliveryIndex === 2
+                    ? "Gokada"
+                    : "Errand360",
           };
 
           // dispatch transaction
           dispatch(postTransaction(transactionDetails)).then(() => {
             // dispatch cart
             dispatch(postACart(cart)).then((res) => {
+              // post the order
               if (res.payload !== undefined) {
                 let cartRes = res.payload as CartOrderedPropsData[];
                 const cartIds: string[] = cartRes.map((c) => c.$id);
@@ -284,17 +381,32 @@ const CheckOut = () => {
                   const order: OrderProps = {
                     cart: cartIds,
                     userId,
-                    transaction: transaction.$id,
-                    shippingDetail: shippingDetail,
+                    transaction: {
+                      amount: transaction.amount,
+                      customerName: transaction.customerName,
+                      imageUrl: transaction.imageUrl,
+                      payerId: transaction.payerId,
+                      payMethod: transaction.payMethod,
+                      productName: transaction.productName,
+                      productQty: transaction.productQty,
+                      shippingId: transaction.shippingId,
+                      shippingStatus: transaction.shippingStatus,
+                      shippingType: transaction.shippingType,
+                      status: transaction.status,
+                      transactionId: transaction.transactionId,
+                      transactionRef: transaction.transactionRef,
+                      createdAt: transaction.createdAt,
+                    },
+                    shippingDetails: shippingDetail,
                   };
                   dispatch(postOrder(order)).then((res) => {
-                    let response = res.payload as OrderReturnProps;
+                    let response = res.payload as AllOrderResultData;
                     console.log("order payload", response);
                     if (
                       response &&
                       response.transaction &&
                       response.cart &&
-                      response.shippingDetail
+                      response.shippingDetails
                     ) {
                       console.log("order payload inner", response.cart);
                       setPaymentProcessing(false);
@@ -652,8 +764,45 @@ const CheckOut = () => {
               extraStyle="my-3"
               color="text-gray-500"
             />
-          </div>
+            {/* Delivery method  */}
+            <div className="bg-white rounded-xl py-4">
+              <CustomText
+                text="Choose Delivery Method"
+                textType="medium"
+                weightType="semibold"
+                extraStyle="my-2"
+              />
+              <CustomText
+                text="We Offer the best delivery services across Nigeria."
+                textType="small"
+                weightType="normal"
+                extraStyle="my-2"
+                color="text-gray-500"
+              />
+              <div className="flex gap-2 items-center overflow-x-auto">
+                {ImgLists.map((Item, index) => (
+                  <div onClick={() => setDeliveryMethodIndex(index)}>
+                    <DeliveryOption
+                      img={Item}
+                      active={deliveryIndex === index}
+                    />
+                  </div>
+                ))}
+              </div>
 
+              <Modal
+                isOpen={paymentProcessing}
+                nowhiteBg={true}
+                onClose={() => {}}
+                children={
+                  <div>
+                    <Spinner className="w-24 h-24 text-white" />
+                  </div>
+                }
+              />
+            </div>
+          </div>
+          {/* payment method  */}
           <div className="bg-white rounded-xl p-4 md:p-6">
             <CustomText
               text="Select Payment Method"
@@ -671,7 +820,7 @@ const CheckOut = () => {
             <div className="flex gap-2 items-center overflow-x-auto">
               {IconLists.map((Item, index) => (
                 <div onClick={() => setPaymentMethodIndex(index)}>
-                  <PaymentOption Icon={Item} active={paymentIndex === index} />
+                  <PaymentOption Item={Item} active={paymentIndex === index} />
                 </div>
               ))}
             </div>

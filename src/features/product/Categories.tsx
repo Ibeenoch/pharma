@@ -43,6 +43,7 @@ const Categories = () => {
         <div className="grid grid-cols-3 gap-4">
           {/* map through cart item  */}
           <SingleProduct
+            id=""
             productImage={cartImg}
             textTitle="Facial Cleaner"
             textDesc="Facial cleaner for facial treatment..."

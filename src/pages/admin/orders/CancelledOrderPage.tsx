@@ -1,5 +1,5 @@
 import React from "react";
-import CancelledOrderManagement from "../../../components/admin/order/CancelledOrderManagement";
+import CancelledOrderManagement from "../../../features/admin/orders/CancelledOrderManagement";
 
 const CancelledOrderPage = React.memo(() => {
   return <CancelledOrderManagement />;

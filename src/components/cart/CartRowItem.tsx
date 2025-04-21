@@ -17,6 +17,7 @@ interface CartRowItemProps {
   isCheckOut?: boolean;
   id: string;
   isCheckOutPage?: boolean;
+  isProductdescPage?: boolean;
 }
 
 const CartRowItem: React.FC<CartRowItemProps> = ({
@@ -30,6 +31,7 @@ const CartRowItem: React.FC<CartRowItemProps> = ({
   removeItemFromCart,
   isCheckOut = false,
   isCheckOutPage,
+  isProductdescPage,
   id,
 }) => {
   const navigate = useNavigate();
@@ -81,6 +83,7 @@ const CartRowItem: React.FC<CartRowItemProps> = ({
             qty={qty}
             id={id}
             isCheckOutPage={isCheckOutPage}
+            isProductdescPage={isProductdescPage}
           />
         </div>
 

@@ -1,5 +1,8 @@
-import { ProductDataProps } from "../../../types/product/ProductData";
-import { formatDate } from "../../dateFormatter";
+import {
+  mappedSearchResultProps,
+  ProductDataProps,
+} from "../../../types/product/ProductData";
+import { formatDate, formatDateWithOrdinal } from "../../dateFormatter";
 
 export const mapProductToTableData = (productList: ProductDataProps[]) => {
   return productList.map((item, index) => ({
@@ -30,5 +33,16 @@ export const mapProductToTableData = (productList: ProductDataProps[]) => {
 export const mapProductId = (productList: ProductDataProps[]) => {
   return productList.map((item) => ({
     id: item.$id,
+  }));
+};
+
+export const mappedSearchResult = (result: ProductDataProps[]) => {
+  return result.map((item) => ({
+    image: item.imagesUrl[0],
+    amberText: item.name,
+    titleText: item.category,
+    descText: item.description,
+    timeText: item && item.createdAt && formatDateWithOrdinal(item.createdAt),
+    id: item && item.$id && item.$id,
   }));
 };

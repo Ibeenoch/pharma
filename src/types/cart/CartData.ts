@@ -12,6 +12,8 @@ export interface CartOrderedPropsData {
   name: string;
   productSerialNo: string;
   quantity: number;
+  subtotal: number;
+  total: number;
 }
 
 export interface UpdateProductCart {

@@ -36,4 +36,11 @@ export interface TransactionProps {
   createdAt?: string;
   payerId: string;
   payMethod: string;
+  imageUrl: string[];
+  productName: string[];
+  productQty: string[];
+  shippingId: string;
+  shippingType: string;
+  shippingStatus: string;
+  customerName: string;
 }

@@ -36,12 +36,12 @@ const MobileNav = () => {
 
   const { user } = useAppSelector(selectAuth);
   const links = [
-    { Icon: Home, title: "Home", route: '/' },
-    { Icon: Product, title: "Products", route: '/' },
-    { Icon: Drug, title: "Prescription", route: '/' },
-    { Icon: About, title: "About", route: '/about' },
-    { Icon: Call, title: "Contact", route: '/contact' },
-    { Icon: Support, title: "Support", route: '/' },
+    { Icon: Home, title: "Home", route: "/" },
+    { Icon: Product, title: "Products", route: "/allProduct" },
+    { Icon: Drug, title: "Prescription", route: "/" },
+    { Icon: About, title: "About", route: "/about" },
+    { Icon: Call, title: "Contact", route: "/contact" },
+    { Icon: Support, title: "Support", route: "/" },
   ];
 
   const toggleSideBarItems = () => {
@@ -55,6 +55,7 @@ const MobileNav = () => {
   const displayShowCart = () => setShowCart(true);
   const displayShowWishlist = () => setShowWishlist(true);
   const hideShowCart = () => setShowCart(false);
+  console.log(hideShowCart, showCart, showWishlist);
 
   const handleLogout = () => {
     dispatch(logoutUser())
@@ -62,13 +63,13 @@ const MobileNav = () => {
       .then(() => navigate("/login"));
   };
 
-  const handleRoute = ( str: string) => {
-    if(str === '/'){
-      navigate('/')
-    }else if(str === '/about'){
-      navigate('/about')
+  const handleRoute = (str: string) => {
+    if (str === "/") {
+      navigate("/");
+    } else if (str === "/about") {
+      navigate("/about");
     }
-  }
+  };
 
   return (
     <nav className="lg:hidden w-full h-full p-6">
@@ -93,22 +94,20 @@ const MobileNav = () => {
           }`}
         >
           <div className="flex items-center gap-6">
-            <div  onClick={() => navigate('/wishlist')}>
-
-            <WishList
-              WishListIcon={Love}
-              WishListItemsQty={wishlist && wishlist.length}
-              displayShowWishList={displayShowWishlist}
-            />
+            <div onClick={() => navigate("/wishlist")}>
+              <WishList
+                WishListIcon={Love}
+                WishListItemsQty={wishlist && wishlist.length}
+                displayShowWishList={displayShowWishlist}
+              />
             </div>
-           <div onClick={() => navigate('/cart')}>
-
-            <Cart
-              CartIcon={ShoppingCart}
-              cartItemsQty={cart && cart.length}
-              displayShowCart={displayShowCart}
-            />
-           </div>
+            <div onClick={() => navigate("/cart")}>
+              <Cart
+                CartIcon={ShoppingCart}
+                cartItemsQty={cart && cart.length}
+                displayShowCart={displayShowCart}
+              />
+            </div>
           </div>
           <Cancel onClick={toggleSideBarItems} className="w-6 h-6" />
         </div>
@@ -140,7 +139,13 @@ const MobileNav = () => {
 
         <ul className={` flex flex-col justify-start  gap-4`}>
           {links.map((link, index) => (
-            <MobileNavList key={index} Icon={link.Icon} text={link.title} route={link.route} onClick={() => handleRoute(link.route)} />
+            <MobileNavList
+              key={index}
+              Icon={link.Icon}
+              text={link.title}
+              route={link.route}
+              onClick={() => handleRoute(link.route)}
+            />
           ))}
         </ul>
 
