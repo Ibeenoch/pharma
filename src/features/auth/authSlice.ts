@@ -16,6 +16,7 @@ interface authState {
   users: UserDataProps[];
   refreshAllUsers: boolean;
   navpageIndex: number;
+  navpageName: string;
 }
 
 const initialState: authState = {
@@ -41,6 +42,7 @@ const initialState: authState = {
   users: [],
   refreshAllUsers: false,
   navpageIndex: 0,
+  navpageName: "",
 };
 
 export const registerUser = createAsyncThunk(
@@ -197,8 +199,12 @@ const authSlice = createSlice({
         role: "",
       };
     },
-    setNavIndexLink: (state, action: PayloadAction<number>) => {
-      state.navpageIndex = action.payload;
+    setNavIndexLink: (
+      state,
+      action: PayloadAction<{ name: string; index: number }>
+    ) => {
+      state.navpageIndex = action.payload.index;
+      state.navpageName = action.payload.name;
     },
     setRecoveryPasswordLink: (state, action: PayloadAction<boolean>) => {
       state.sentRecoveryEmail = action.payload;

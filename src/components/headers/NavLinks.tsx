@@ -5,7 +5,7 @@ const NavLinks = () => {
   const links = [
     { name: "Home", route: "/" },
     { name: "Products", route: "/allProduct" },
-    { name: "Prescription", route: "/" },
+    { name: "Prescription", route: "/prescription" },
     { name: "About", route: "/about" },
     { name: "Contact", route: "/contact" },
     { name: "Support", route: "/" },
@@ -19,6 +19,7 @@ const NavLinks = () => {
         textType="normal"
         weightType="medium"
         extraStyle="hover:border-b-2 hover:border-amber-500 cursor-pointer"
+        isFooter={false}
       />
     </div>
   );

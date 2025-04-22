@@ -10,8 +10,6 @@ import Instagram from "../../assets/icons/instagram.svg?react";
 import Whatsapp from "../../assets/icons/whatsapp.svg?react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { selectCart, updateShowModal } from "../../features/cart/cartSlice";
-import Toast from "../common/Toast";
-import AlertModal from "../auth/AlertModal";
 import AnimatedToast from "../common/AnimatedToast";
 
 const Footer = () => {
@@ -37,25 +35,28 @@ const Footer = () => {
 
   const socialIcons = [Facebook, Twitter, Instagram, Whatsapp];
   const siteMap = [
-    "About Us",
-    "Return & Refund Policy",
-    "Shipping & Delivery",
-    "Contact Us",
+    { name: "About Us", route: "/about" },
+    { name: "Return & Refund Policy", route: "#" },
+    { name: "Shipping & Delivery", route: "#" },
+    { name: "Contact Us", route: "/contact" },
   ];
   const products = [
-    "Prescription Medications",
-    "Over-the-Counter Drugs",
-    "Health & Wellness",
-    "Skincare & Beauty",
+    { name: "Prescription Medications", route: "#" },
+    { name: "Over-the-Counter Drugs", route: "#" },
+    { name: "Health & Wellness", route: "#" },
+    { name: "Skincare & Beauty", route: "#" },
   ];
-  console.log('showModal ', showModal)
+  console.log("showModal ", showModal);
   return (
     <footer className="bg-black p-8">
       {showModal && (
-        <AnimatedToast start={showModal} text={`${isCart ? "Added to Cart" : "Added to Favorite"}`} IconType={`${isCart ? "cart": 'fave'}`} />
+        <AnimatedToast
+          start={showModal}
+          text={`${isCart ? "Added to Cart" : "Added to Favorite"}`}
+          IconType={`${isCart ? "cart" : "fave"}`}
+        />
       )}
 
-      
       <div className="grid grid-cols-2 lg:grid-cols-3 border-b border-gray-500 pb-4">
         <article>
           <CustomText
@@ -71,6 +72,7 @@ const Footer = () => {
             weightType="thin"
             extraStyle="text-white"
             isVertical={true}
+            isFooter={true}
           />
         </article>
         <article>
@@ -87,6 +89,7 @@ const Footer = () => {
             weightType="thin"
             extraStyle="text-white"
             isVertical={true}
+            isFooter={true}
           />
         </article>
         <article>

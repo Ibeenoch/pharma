@@ -40,6 +40,8 @@ import SecureAdminPage from "./features/auth/SecureAdminPage";
 import FavePage from "./pages/FavePage";
 import SecureUserPage from "./features/auth/SecureUserPage";
 import AllProductPage from "./pages/AllProductPage";
+import Prescription from "./features/product/Prescription";
+import PrescriptionPage from "./pages/PrescriptionPage";
 const Home = lazy(() => import("./pages/Home"));
 
 const router = createBrowserRouter([
@@ -74,6 +76,10 @@ const router = createBrowserRouter([
   {
     path: "/allProduct",
     element: <AllProductPage />,
+  },
+  {
+    path: "/prescription",
+    element: <PrescriptionPage />,
   },
   {
     path: "/categories",

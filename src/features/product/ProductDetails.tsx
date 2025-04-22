@@ -103,6 +103,32 @@ const ProductDetails = () => {
     dispatch(increaseCartQty(id));
     dispatch(calculateSubTotal());
   };
+
+  // similar products
+  const handleAddToCart = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    const productItem = productAdmin.find((item) => item.$id === id)!;
+    const productCart: CartProductDataProps = {
+      ...productItem,
+      subtotal:
+        productItem.price -
+        productItem.price *
+          (productItem.discount ? productItem.discount / 100 : 0),
+      total:
+        productItem.price -
+        productItem.price *
+          (productItem.discount ? productItem.discount / 100 : 0) +
+        1500,
+    };
+    const product: cartProps = { item: productCart, qty: 1 };
+    dispatch(addToCart(product));
+  };
+  const handleAddToWishList = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    const productItem = productAdmin.find((item) => item.$id === id)!;
+    const wishList = { item: productItem };
+    dispatch(addTowishlist(wishList));
+  };
   const cartItem =
     cart &&
     Array.isArray(cart) &&
@@ -312,6 +338,8 @@ const ProductDetails = () => {
 
         <div className="flex items-center gap-2 overflow-x-auto">
           <SingleProduct
+            onAddCart={handleAddToCart}
+            onAddWishlist={handleAddToWishList}
             id=""
             productImage={img3}
             price="₦4,100"
@@ -319,6 +347,8 @@ const ProductDetails = () => {
             textDesc="Relieves Cold, flu symptoms, nasal congestion, and fever"
           />
           <SingleProduct
+            onAddCart={handleAddToCart}
+            onAddWishlist={handleAddToWishList}
             id=""
             productImage={img3}
             price="₦4,100"
@@ -326,6 +356,8 @@ const ProductDetails = () => {
             textDesc="Relieves Cold, flu symptoms, nasal congestion, and fever"
           />
           <SingleProduct
+            onAddCart={handleAddToCart}
+            onAddWishlist={handleAddToWishList}
             id=""
             productImage={img3}
             price="₦4,100"
@@ -333,6 +365,8 @@ const ProductDetails = () => {
             textDesc="Relieves Cold, flu symptoms, nasal congestion, and fever"
           />
           <SingleProduct
+            onAddCart={handleAddToCart}
+            onAddWishlist={handleAddToWishList}
             id=""
             productImage={img3}
             price="₦4,100"
@@ -340,6 +374,8 @@ const ProductDetails = () => {
             textDesc="Relieves Cold, flu symptoms, nasal congestion, and fever"
           />
           <SingleProduct
+            onAddCart={handleAddToCart}
+            onAddWishlist={handleAddToWishList}
             id=""
             productImage={img3}
             price="₦4,100"
