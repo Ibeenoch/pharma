@@ -1,4 +1,7 @@
-import { adminDefaultBgColor } from "../../../constants/appColor";
+import {
+  adminDefaultBgColor,
+  lightgrayBgColor,
+} from "../../../constants/appColor";
 import {
   allUsersColumn,
   allUsersData,
@@ -11,71 +14,211 @@ import {
   setAdminUserTabIndex,
 } from "../../../features/admin/adminSlice";
 import CustomText from "../../common/Text";
-import { useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import NavTab from "../NavTab";
 import DateFilter from "../DateFilter";
 import Table from "../../common/Table";
+import {
+  fetchAllUserProduct,
+  selectproductAdmin,
+} from "../../../features/admin/product/productSlice";
+import { useParams } from "react-router-dom";
+import CustomSelect from "../../common/Select";
+import { label } from "framer-motion/client";
+import CustomButton from "../../common/Button";
+import { validator } from "../../../utils/validator";
+import CustomInput from "../../common/Input";
+import CustomTextArea from "../../common/TextArea";
+
+interface ProductNamesProps {
+  value: string;
+  label: string;
+}
 
 const PharmacyUser = () => {
-  const [started, setStarted] = useState<string>("");
-  const [ended, setEnded] = useState<string>("");
-  const dispatch = useAppDispatch();
-  const { adminUsertabIndex } = useAppSelector(selectAdmin);
-  const handleUserTabs = (index: number) => {
-    dispatch(setAdminUserTabIndex(index));
+  const [productNames, setProductNames] = useState<ProductNamesProps[]>([]);
+  const [name, setName] = useState<string>("");
+  const [productSummary, setProductSummary] = useState<string>("");
+  const [concentration, setConcentration] = useState<string>("");
+  const [dosageForm, setDosageForm] = useState<string>("");
+  const [aboutDrug, setAboutDrug] = useState<string>("");
+  const [ingredient, setIngredient] = useState<string>("");
+  const [ageRange, setAgeRange] = useState<string>("");
+  const [dosage, setDosage] = useState<string>("");
+  const [frequency, setFrequency] = useState<string>("");
+  const [duration, setduration] = useState<string>("");
+  const [whenTakeDosage, setwhenTakeDosage] = useState<string>("");
+  const [methodOfUsage, setmethodOfUsage] = useState<string>("");
+  const [error, setError] = useState<{
+    productSummary?: string;
+    concentration?: string;
+    dosageForm?: string;
+    aboutDrug?: string;
+    ingredient?: string;
+    ageRange?: string;
+    dosage?: string;
+    frequency?: string;
+    duration?: string;
+    whenTakeDosage?: string;
+    methodOfUsage?: string;
+  }>({});
+
+  const submitPrescription = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const productSummaryValid = validator(productSummary, "others");
+    const concentrationValid = validator(concentration, "others");
+    const dosageFormValid = validator(dosageForm, "others");
+    const aboutDrugValid = validator(aboutDrug, "others");
+    const ingredientValid = validator(ingredient, "others");
+    const ageRangeValid = validator(ageRange, "others");
+    const dosageValid = validator(dosage, "others");
+    const frequencyValid = validator(frequency, "others");
+    const durationValid = validator(duration, "others");
+    const whenTakeDosageValid = validator(whenTakeDosage, "others");
+    const methodOfUsageValid = validator(methodOfUsage, "others");
+
+    if (
+      !productSummaryValid ||
+      !concentrationValid ||
+      !dosageFormValid ||
+      !aboutDrugValid ||
+      !ingredientValid ||
+      !ageRangeValid ||
+      !dosageValid ||
+      !frequencyValid ||
+      !durationValid ||
+      !whenTakeDosageValid ||
+      !methodOfUsageValid
+    ) {
+      setError({
+        productSummary: productSummaryValid
+          ? undefined
+          : "Product Summary is required",
+        dosageForm: dosageFormValid ? undefined : "Dosage Form is required",
+        dosage: dosageValid ? undefined : "Dosage is required",
+        aboutDrug: aboutDrugValid ? undefined : "About Drug is required",
+        ingredient: ingredientValid ? undefined : "Ingredient is required",
+        ageRange: ageRangeValid ? undefined : "Age Range is required",
+        frequency: frequencyValid ? undefined : "Frequency is required",
+        duration: durationValid ? undefined : "Duration is required",
+        whenTakeDosage: whenTakeDosageValid
+          ? undefined
+          : "When To Take Dosage is required",
+        methodOfUsage: methodOfUsageValid
+          ? undefined
+          : "Method Of Usage is required",
+        concentration: concentrationValid
+          ? undefined
+          : "Concentration is required",
+      });
+      // setIsSubmitting(false);
+      return;
+    }
   };
-  const filteredData = allUsersData.filter((t) => t.role === "Pharmacist");
+  const dispatch = useAppDispatch();
+  const { productAdmin } = useAppSelector(selectproductAdmin);
+  const { userId } = useParams();
 
+  useEffect(() => {
+    if (userId && productAdmin.length === 0) {
+      dispatch(fetchAllUserProduct(userId));
+    }
+
+    if (productAdmin.length > 0) {
+      const names = productAdmin.map((p) => ({
+        value: p.name,
+        label: p.name,
+      }));
+      setProductNames(names);
+    }
+  }, [productAdmin]);
+  console.log("productNames ", productNames);
   return (
-    <main className={`md:mt-12 mt-20 p-4 ${adminDefaultBgColor}`}>
-      <section className="lg:flex items-center gap-3 mx-3">
-        {userStatitics.map((user) => (
-          <div className="rounded-xl bg-gradient-to-r from-amber-600 to-amber-300 p-4 w-1/2 h-[150px] my-2 flex justify-between gap-2 items-center">
-            <div className="p-2 bg-white rounded-md flex items-center justify-center">
-              <user.Icon className="w-8 h-8 text-amber-500" />
-            </div>
-            <div>
-              <CustomText
-                text={user.text}
-                textType="normal"
-                weightType="normal"
-                color="text-white"
-              />
-              <CustomText
-                text={String(user.qty)}
-                textType="large"
-                weightType="normal"
-              />
-            </div>
+    <form className="my-3 pt-15 md:grid grid-cols-[58%_41%] gap-3">
+      <div>
+        <section className={`${lightgrayBgColor} p-4 rounded-xl mb-3  pb-8`}>
+          <CustomText
+            text="Prescription information"
+            textType="small"
+            weightType="semibold"
+          />
+          <div className="">
+            <CustomSelect
+              options={productNames}
+              value={name}
+              onChange={setName}
+              label="Product Name"
+              showFullWidth={true}
+            />
           </div>
-        ))}
-      </section>
-      <div className="flex flex-col md:flex-row  items-center justify-between">
-        <NavTab
-          handleTabclicked={handleUserTabs}
-          indexClicked={adminUsertabIndex}
-          navLists={userLists}
-        />
+          {/* 140  */}
+          <CustomTextArea
+            label="Brief Summary Of Product"
+            onChange={setAboutDrug}
+            value={aboutDrug}
+            Id="aboutdrug"
+            showFullWidth={true}
+            roundedBorder={true}
+            row={3}
+            placeholder="e.g. Fast-Acting pain Relief for Muscles & Joints"
+          />
+        </section>
+        <section className={`${lightgrayBgColor} p-4 rounded-xl mt-3  pb-8`}>
+          <CustomTextArea
+            label="About Product"
+            onChange={setAboutDrug}
+            value={aboutDrug}
+            Id="aboutdrug"
+            showFullWidth={true}
+            roundedBorder={true}
+            row={4}
+            placeholder="e.g. Panadol forte is a fast-acting analgesic and anti-inflammatory drug used for the management of musculoskeletal pain and joint discomfort."
+          />
+          <div className="flex items-center gap-3"></div>
 
-        <DateFilter
-          applyCallback={() => {}}
-          ended={ended}
-          started={started}
-          setEnded={setEnded}
-          setStarted={setStarted}
-        />
+          <div className="flex items-center gap-3"></div>
+        </section>
+
+        <section className={`${lightgrayBgColor} p-4 rounded-xl mt-3  pb-8`}>
+          <CustomText
+            text="Product Expiration and Other Info"
+            textType="small"
+            weightType="semibold"
+          />
+          <div className="flex items-center gap-3"></div>
+
+          <div className=""></div>
+        </section>
+      </div>
+      {/* image, categories and brands */}
+      <div>
+        <section className={`${lightgrayBgColor} p-4 rounded-xl pb-8`}>
+          <div className="flex items-center gap-2">
+            <CustomText
+              text="Upload image"
+              textType="small"
+              weightType="semibold"
+              extraStyle="my-3"
+            />
+            <CustomText
+              text="(Max 5 images)"
+              textType="small"
+              weightType="medium"
+              extraStyle="my-3"
+              color="text-amber-500"
+            />
+          </div>
+
+          <div className="flex gap-2 items-center overflow-x-auto"></div>
+        </section>
       </div>
 
-      <section>
-        <div className="p-4 my-3 bg-white rounded-xl">
-          <Table
-            columns={allUsersColumn}
-            data={filteredData}
-            tableHeaderTxtColor="text-black"
-          />
-        </div>
-      </section>
-    </main>
+      <CustomButton
+        text={"Submit Prescription"}
+        type="submit"
+        fullwidth={true}
+      />
+    </form>
   );
 };
 

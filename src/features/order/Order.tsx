@@ -108,16 +108,14 @@ const Order = () => {
                 leftText="Date Created"
                 rightText={
                   order &&
-                  order.createdAt &&
-                  formatDateWithOrdinal(order.createdAt)
+                  order.$createdAt &&
+                  formatDateWithOrdinal(order.$createdAt)
                 }
               />
               <OrderDetails
                 leftText="Last Updated"
                 rightText={
-                  order &&
-                  order.lastUpdated &&
-                  getRelativeTime(order.lastUpdated)
+                  order && order.$updatedAt && getRelativeTime(order.$updatedAt)
                 }
               />
             </div>
@@ -150,9 +148,9 @@ const Order = () => {
                       ? 4
                       : 0
               }
-              ordertime={order && order.createdAt}
-              shippedtime={order && order.lastUpdated}
-              deliveredtime={order && order.createdAt}
+              ordertime={order && order.$createdAt}
+              shippedtime={order && order.$updatedAt}
+              deliveredtime={order && order.$createdAt}
             />
 
             <OrderDetails leftText="Courier: " rightText="On Fleet" />

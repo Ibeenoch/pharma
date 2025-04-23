@@ -4,11 +4,12 @@ import CustomText from "./Text";
 interface DrugTabProps {
   topText: string;
   bottomText?: string;
+  bgColor?: string;
 }
 
-const DrugTab: React.FC<DrugTabProps> = ({ topText, bottomText }) => {
+const DrugTab: React.FC<DrugTabProps> = ({ topText, bottomText, bgColor }) => {
   return (
-    <div className="p-3 rounded-lg bg-white">
+    <div className={`p-3 rounded-lg my-1 ${bgColor ? bgColor : "bg-white"}`}>
       <CustomText
         text={topText}
         textType="small"
@@ -16,12 +17,14 @@ const DrugTab: React.FC<DrugTabProps> = ({ topText, bottomText }) => {
         color="text-gray-400"
         extraStyle="text-center"
       />
-      <CustomText
-        text={bottomText}
-        textType="small"
-        weightType="semibold"
-        extraStyle="text-center"
-      />
+      {bottomText && (
+        <CustomText
+          text={bottomText}
+          textType="small"
+          weightType="semibold"
+          extraStyle="text-center"
+        />
+      )}
     </div>
   );
 };
