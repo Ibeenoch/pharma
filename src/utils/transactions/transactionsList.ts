@@ -1,0 +1,102 @@
+export const transactionData = [
+  {
+    order_id: "9875635",
+    customer_name: "Nayeem Bhuiyan",
+    date: "22/10/2023",
+    payment_method: "Card",
+    price: "$65",
+    status: "Complete",
+  },
+  {
+    order_id: "8596635",
+    customer_name: "John Alex",
+    date: "22/10/2023",
+    payment_method: "Card",
+    price: "$54",
+    status: "Complete",
+  },
+  {
+    order_id: "7589632",
+    customer_name: "Sophia Carter",
+    date: "21/10/2023",
+    payment_method: "Bank Transfer",
+    price: "$120",
+    status: "Pending",
+  },
+  {
+    order_id: "6321458",
+    customer_name: "Michael Brown",
+    date: "21/10/2023",
+    payment_method: "Cash",
+    price: "$45",
+    status: "Complete",
+  },
+  {
+    order_id: "9517536",
+    customer_name: "Emily Johnson",
+    date: "20/10/2023",
+    payment_method: "Card",
+    price: "$88",
+    status: "Complete",
+  },
+  {
+    order_id: "3571598",
+    customer_name: "David Wilson",
+    date: "19/10/2023",
+    payment_method: "PayPal",
+    price: "$77",
+    status: "Failed",
+  },
+  {
+    order_id: "2648391",
+    customer_name: "Jessica Miller",
+    date: "18/10/2023",
+    payment_method: "Card",
+    price: "$92",
+    status: "Complete",
+  },
+  {
+    order_id: "7984123",
+    customer_name: "Chris Evans",
+    date: "17/10/2023",
+    payment_method: "Bank Transfer",
+    price: "$150",
+    status: "Pending",
+  },
+  {
+    order_id: "6482917",
+    customer_name: "Olivia Thomas",
+    date: "16/10/2023",
+    payment_method: "Cash",
+    price: "$39",
+    status: "Complete",
+  },
+  {
+    order_id: "3857204",
+    customer_name: "Daniel Smith",
+    date: "15/10/2023",
+    payment_method: "PayPal",
+    price: "$110",
+    status: "Complete",
+  },
+];
+
+export const transactionColumns = [
+  { key: "order_id", label: "Order ID" },
+  { key: "customer_name", label: "Customer Name" },
+  { key: "date", label: "Date Paid" },
+  { key: "payment_method", label: "Payment Method" },
+  { key: "price", label: "Price" },
+  {
+    key: "status",
+    label: "Status",
+  },
+];
+
+export const transactionNavData = [
+  "All",
+  "Received",
+  "Transfer",
+  "Payment",
+  "Withdraw",
+];

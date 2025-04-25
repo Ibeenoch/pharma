@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  @font-face {
+    font-family: "SawarabiGothic-Regular";
+    src: url("/fonts/SawarabiGothic-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
+  :root {
+    /* font-family: system-ui, Avenir, Helvetica, Arial, sans-serif; */
+    font-family: "SawarabiGothic-Regular", sans-serif;
+    line-height: 1.5;
+    --color-graybg: #f4f4f4;
+    --color-graytext: #adafb2;
+    --color-whitebg: #ffffff;
+    --color-blackbg: #000000;
+    --color-ambergray: #e6e1d8;
+    --color-red: red;
+  }
+
+  body {
+    background-color: var(--color-graybg);
+    font-family: "SawarabiGothic-Regular", sans-serif;
+  }
+
+  .animate-on-scroll {
+    animation: appear 5s linear;
+    animation-timeline: view();
+    animation-range: entry 0 cover 40%;
+  }
+
+  @keyframes appear {
+    from {
+      opacity: 0;
+      scale: 0.7;
+    }
+    to {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+}
+
+/* @import "tailwindcss";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  :root {
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    --color-graybg: #f4f4f4;
+    --color-graytext: #adafb2;
+    --color-whitebg: #ffffff;
+    --color-blackbg: #000000;
+    --color-ambergray: #e6e1d8;
+  }
+  body {
+    background-color: var(--gray-bg);
+  }
+   */
