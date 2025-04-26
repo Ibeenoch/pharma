@@ -21,6 +21,7 @@ import Settings from "../../assets/icons/setting.svg?react";
 import Admin from "../../assets/icons/admin2.svg?react";
 import Pharmacist from "../../assets/icons/pharmacist.svg?react";
 import AddProduct from "../../assets/icons/addproduct.svg?react";
+import Prescription from "../../assets/icons/prescription-pills.svg?react";
 import Customer from "../../assets/icons/user.svg?react";
 import OrderActive from "../../assets/icons/activeorder.svg?react";
 import OrderCancelled from "../../assets/icons/ordercancelled.svg?react";
@@ -56,6 +57,7 @@ export const subNavIcons = [
     children: [
       { icons: Product, text: "All", route: "/admin/product/all" },
       { icons: AddProduct, text: "Add", route: "/admin/product/add" },
+      { icons: Prescription, text: "Prescription", route: "/admin/product/prescriptions" },
     ],
   },
   {

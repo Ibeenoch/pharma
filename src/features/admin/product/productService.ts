@@ -1,7 +1,7 @@
 import { ID } from "node-appwrite";
 import { database, storage } from "../../../lib/appwriteConfig";
 import { Query } from "appwrite";
-import { ProductDataProps } from "../../../types/product/ProductData";
+import { PrescriptionProps, ProductDataProps } from "../../../types/product/ProductData";
 import { UpdateProductCart } from "../../../types/cart/CartData";
 
 export const createProduct = async (productData: FormData) => {
@@ -96,7 +96,6 @@ export const createProduct = async (productData: FormData) => {
     } as ProductDataProps;
   } catch (error) {
     throw error;
-    console.log(error);
   }
 };
 
@@ -324,10 +323,140 @@ export const searchProduct = async (searchTerm: string) => {
       isHotDeal: productFound.isHotDeal,
       createdAt: productFound.$createdAt,
     }));
-    console.log("searched word result ", productSearched);
 
     return productSearched;
   } catch (error) {
     throw error;
+  }
+};
+
+export const addPrescription = async (prescriptionData: PrescriptionProps) => {
+  try {
+     const { productName, productImage, aboutDrug, productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient, methodOfUsage, productId, whenTakeDosage,  concentration } = prescriptionData;
+    const productPresription = await database.createDocument(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID,  // product collection id
+      ID.unique(),
+      { productName, sastifiedClient: 0, productImage, aboutDrug,  productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient, methodOfUsage, productId, whenTakeDosage,  concentration } 
+    );
+    console.log('productPresription ', productPresription)
+
+    return {
+      $id: productPresription.$id,
+      $createdAt: productPresription.$createdAt,
+      $updatedAt: productPresription.$updatedAt,
+      productName: productPresription.productName,
+      productImage: productPresription.productImage,
+      aboutDrug: productPresription.aboutDrug,
+      productSummary: productPresription.productSummary,
+      ageRange: productPresription.ageRange,
+      dosage: productPresription.dosage,
+      dosageForm: productPresription.dosageForm,
+      duration: productPresription.duration,
+      frequency: productPresription.frequency,
+      ingredient: productPresription.ingredient,
+      methodOfUsage: productPresription.methodOfUsage,
+      productId: productPresription.productId,
+      whenTakeDosage: productPresription.whenTakeDosage,
+      concentration: productPresription.concentration,
+      sastifiedClient: productPresription.sastifiedClient,
+    
+    } as PrescriptionProps;
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+export const allPrescription = async () => {
+  try {
+    let allproduct = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID, // product collection id
+    );
+
+    const allProductPrescription: PrescriptionProps[] = allproduct.documents.map(
+      (productPresription: any) => ({
+        $id: productPresription.$id,
+      $createdAt: productPresription.$createdAt,
+      $updatedAt: productPresription.$updatedAt,
+      productName: productPresription.productName,
+      productImage: productPresription.productImage,
+      aboutDrug: productPresription.aboutDrug,
+      productSummary: productPresription.productSummary,
+      ageRange: productPresription.ageRange,
+      dosage: productPresription.dosage,
+      dosageForm: productPresription.dosageForm,
+      duration: productPresription.duration,
+      frequency: productPresription.frequency,
+      ingredient: productPresription.ingredient,
+      methodOfUsage: productPresription.methodOfUsage,
+      productId: productPresription.productId,
+      whenTakeDosage: productPresription.whenTakeDosage,
+      concentration: productPresription.concentration,
+      sastifiedClient: productPresription.sastifiedClient
+      })
+    );
+    return allProductPrescription;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updatePrescription = async (prescriptionData: PrescriptionProps) => {
+  try {
+    const { $id, productName, productImage, aboutDrug, productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient, methodOfUsage, productId, whenTakeDosage,  concentration } = prescriptionData;
+
+    if($id){
+
+      const productPresription = await database.updateDocument(
+        import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+        import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID, // product collection id
+        $id,
+        { productName, sastifiedClient: 0, productImage, aboutDrug,  productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient, methodOfUsage, productId, whenTakeDosage,  concentration } 
+  
+      );
+  
+      return {
+        $id: productPresription.$id,
+        $createdAt: productPresription.$createdAt,
+        $updatedAt: productPresription.$updatedAt,
+        productName: productPresription.productName,
+        productImage: productPresription.productImage,
+        aboutDrug: productPresription.aboutDrug,
+        productSummary: productPresription.productSummary,
+        ageRange: productPresription.ageRange,
+        dosage: productPresription.dosage,
+        dosageForm: productPresription.dosageForm,
+        duration: productPresription.duration,
+        frequency: productPresription.frequency,
+        ingredient: productPresription.ingredient,
+        methodOfUsage: productPresription.methodOfUsage,
+        productId: productPresription.productId,
+        whenTakeDosage: productPresription.whenTakeDosage,
+        concentration: productPresription.concentration,
+        sastifiedClient: productPresription.sastifiedClient,
+      
+      } as PrescriptionProps;
+
+    }
+  } catch (error) {
+    throw error;
+    console.log(error);
+  }
+};
+
+
+export const deletePrescription = async (productId: string) => {
+  try {
+    await database.deleteDocument(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID, // product collection id
+      productId
+    );
+  } catch (error) {
+    throw error;
+    console.log(error);
   }
 };

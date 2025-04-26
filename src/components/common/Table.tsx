@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import View from "../../assets/icons/eye-show.svg?react";
+import Prescription from "../../assets/icons/prescription-pills.svg?react";
 import Trash from "../../assets/icons/trash-bin.svg?react";
 import Pen from "../../assets/icons/edit-clipboard.svg?react";
 import {
@@ -120,7 +120,7 @@ const Table: React.FC<TableProps> = ({
             {columns.map((col) => (
               <th
                 key={col.key}
-                className={`text-[10px] sm:text-[12px] first:rounded-tl-xl last:rounded-tr-xl first:rounded-bl-xl last:rounded-br-xl font-normal py-3 border-0`}
+                className={`text-[10px] sm:text-[12px] first:rounded-tl-xl last:rounded-tr-xl px-3 text-left first:rounded-bl-xl last:rounded-br-xl font-normal py-3 text-black border-0`}
               >
                 {col.label}
               </th>
@@ -139,8 +139,8 @@ const Table: React.FC<TableProps> = ({
               {columns.map((col) => (
                 <td
                   key={col.key}
-                  className={`text-[10px] sm:text-[12px] text-black px-2 py-2 text-center border border-0 ${
-                    col.className || ""
+                  className={`text-[10px] sm:text-[12px] text-gray-800 px-3 py-3 text-align border border-0 ${
+                    col.className 
                   } ${
                     col.conditionalFormat
                       ? col.conditionalFormat(row[col.key])
@@ -153,9 +153,9 @@ const Table: React.FC<TableProps> = ({
                   }}
                 >
                   {typeof row[col.key] === "string" &&
-                  row[col.key].includes("Actions") ? (
+                  row[col.key].includes("Actions")  ? (
                     <div className="flex gap-2 items-center justify-center">
-                      <div
+                     { whichTable === 'product' && <div
                         onClick={() => {
                           const id = row[col.key].split("_")[1];
                           navigate(id);
@@ -163,7 +163,31 @@ const Table: React.FC<TableProps> = ({
                         className="cursor-pointer"
                       >
                         <Pen className="w-5 h-5 text-blue-600" />
+                      </div>}
+
+                      <div
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          let id = row[col.key] as string;
+                          if(whichTable === 'prescription'){
+                             let prescriptionId = typeof id === 'string' && id.split('_')[1];
+                             let route = `/admin/product/prescription/${prescriptionId}`
+                             navigate(route);
+                          }
+
+                          if(whichTable === 'product'){
+
+                          
+                            id = id.substring(id.lastIndexOf('/') + 1);
+                            let route = `/admin/product/prescription/${id}`
+                            navigate(route);
+                          }
+                        }}
+                        className="cursor-pointer"
+                      >
+                        <Prescription className="w-5 h-5 text-blue-600" />
                       </div>
+
                       <div
                         // handle logic for deleting a row
                         onClick={() => {
@@ -188,7 +212,7 @@ const Table: React.FC<TableProps> = ({
                         }}
                         className="cursor-pointer"
                       >
-                        <Trash className="w-5 h-5 stroke-red-600" />
+                        <Trash className="w-5 h-5 text-red-500" />
                       </div>
                     </div>
                   ) : // handle logic for status

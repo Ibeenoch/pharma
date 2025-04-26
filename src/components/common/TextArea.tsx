@@ -21,6 +21,7 @@ interface CustomTextAreaProps {
   bgColor?: string;
   textColor?: string;
   borderColor?: string;
+  postLabel?: string;
   showborder?: boolean;
   Id?: string;
   isPassword?: boolean;
@@ -34,6 +35,7 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
   placeholder,
   value,
   onChange,
+  postLabel,
   required = false,
   showFullWidth = false,
   roundedBorder = false,
@@ -45,7 +47,7 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
   prefixIcon,
   bgColor = "bg-white",
   textColor = "text-gray-900",
-  borderColor = "border-gray-300",
+  borderColor = "border-gray-300/30",
   showborder = true,
   Id,
   isPassword = false,
@@ -64,13 +66,14 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
     <div className="w-full">
       {label && (
         <label
-          className={`block mt-3 mb-1 flex gap-1  ${
+          className={`block mt-3 mb-1 flex items-center gap-1  ${
             labelStyle === "default" ? "text-sm font-bold mb-2" : labelStyle
           }`}
           htmlFor={Id}
         >
           {label}{" "}
           {required && <p className="text-xs text-amber-500 font-bold">*</p>}
+          <em className="text-xs text-gray-500 font-normal">{postLabel} </em>
         </label>
       )}
       <div className="flex items-center">

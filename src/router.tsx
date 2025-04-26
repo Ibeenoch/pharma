@@ -40,8 +40,9 @@ import SecureAdminPage from "./features/auth/SecureAdminPage";
 import FavePage from "./pages/FavePage";
 import SecureUserPage from "./features/auth/SecureUserPage";
 import AllProductPage from "./pages/AllProductPage";
-import Prescription from "./features/product/Prescription";
 import PrescriptionPage from "./pages/PrescriptionPage";
+import ProductPrescriptionPage from "./pages/admin/products/ProductPrescriptionPage";
+import AllProductPrescription from "./features/admin/product/AllProductPrescription";
 const Home = lazy(() => import("./pages/Home"));
 
 const router = createBrowserRouter([
@@ -185,6 +186,24 @@ const router = createBrowserRouter([
       <SecureAdminPage
         child={<ProductPage />}
         redirectUrl="/admin/product/all/:userId"
+      />
+    ),
+  },
+  {
+    path: "/admin/product/prescription/:productId",
+    element: (
+      <SecureAdminPage
+        child={<ProductPrescriptionPage />}
+        redirectUrl="/admin/product/prescription/:productId"
+      />
+    ),
+  },
+  {
+    path: "/admin/product/prescriptions/:userId",
+    element: (
+      <SecureAdminPage
+        child={<AllProductPrescription />}
+        redirectUrl="/admin/product/prescriptions/:userId"
       />
     ),
   },

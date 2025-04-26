@@ -240,6 +240,20 @@ export const allproductColumn = [
   { key: "actions", label: "Actions" },
 ];
 
+export const allPrescriptionColumn = [
+  { key: "sn", label: "S/N" },
+  { key: "image", label: "Image" },
+  { key: "name", label: "Name" },
+  { key: "frequency", label: "Frequency" },
+  { key: "methodOfUsage", label: "Usage Method" },
+  { key: "concentration", label: "Concentration" },
+  { key: "dosage", label: "Dosage" },
+  { key: "ageRange", label: "Age Range" },
+  { key: "actions", label: "Actions" },
+];
+
+
+
 export const productCategories = [
   { value: "", label: "Select Category", image: "" },
   { value: "Cough & Cold", label: "Cough & Cold", image: "cough.png" },
@@ -566,4 +580,34 @@ export const productBrands = [
     label: "Others",
     companyImage: zolon,
   },
+];
+
+export  const frequencyArr = ['1-0-0', '0-1-0', '0-0-1', '1-1-0', '1-0-1', '0-1-1', '1-1-1'];
+export const whenToTakeArr = ['Before Meal', 'After Meal', 'During Meal', 'Any Time' ];
+export const methodOfUsageArr = ['Apply to the affected area', 'Shake well before use', 'Take with enough water', 'Take with warm water' ];
+export const dosageFormArr = ['Tablets', 'Capsules', 'Syrup', 'injection', 'Gels', 'Eye Drops' ];
+export  const ageRangeArr = ['Neonates (0-28 days)', 'Infants (29 days - 1 year)', 'Children (1-11 years)', 'Adolescents (12-17 years)', 'Adults (18-64 years)', 'Older Adults (65 years and older)', 'Any Age' ];
+export  const durationArr = ['1 day', '2 days', '3 days', '4 days', '5 days', '6 days', '1 week', '2 weeks', '3 weeks', '1 month', 'more than 1 month'  ];
+export const dosageArr = [
+  "1 tablet",
+  "2 tablets",
+  "3 tablets",
+  "4 tablets",
+  "1 capsule",
+  "2 capsule",
+  "3 capsules",
+  "4 capsules",
+  "Instill 1 drop into each eye.",
+  "Apply 2 drops to affected area.",
+  "1 teaspoon",
+  "2 teaspoons",
+  "3 teaspoons",
+  "4 teaspoons",
+  "5 teaspoons",
+  "Use 1 spray in each nostril",
+  "Apply a thin layer to the affected area",
+  "Insert 1 suppository rectally at bedtime.",
+  "Place 1 lozenge in the mouth and allow to dissolve slowly.",
+  "Take 5 mL (1 teaspoon) every 4–6 hours as needed.",
+  "Apply 1 patch to clean, dry skin once a week."
 ];

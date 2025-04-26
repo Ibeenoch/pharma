@@ -47,7 +47,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   prefixIcon,
   bgColor = "bg-white",
   textColor = "text-gray-900",
-  borderColor = "border-gray-300",
+  borderColor = "border-gray-300/30",
   showborder = true,
   Id,
   isPassword = false,

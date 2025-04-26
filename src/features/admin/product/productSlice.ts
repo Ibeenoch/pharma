@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../../redux/store";
-import { ProductDataProps } from "../../../types/product/ProductData";
+import { PrescriptionProps, ProductDataProps } from "../../../types/product/ProductData";
 import * as api from "./productService";
 import { UpdateProductCart } from "../../../types/cart/CartData";
 
@@ -8,7 +8,9 @@ interface productAdminState {
   status: "idle" | "loading" | "success" | "failure";
   productAdmin: ProductDataProps[];
   productSearched: ProductDataProps[];
+  prescription: PrescriptionProps[];
   hasFetchAllProduct: boolean;
+  hasFetchAllPrescription: boolean;
   productIndexClicked: string;
   productSubTabIndex: number;
   productSubTabRoute: string;
@@ -22,6 +24,9 @@ const initialState: productAdminState = {
   productSubTabIndex: 0,
   productSubTabRoute: "",
   productSearched: [],
+  prescription: [],
+  hasFetchAllPrescription: false,
+
 };
 
 export const createProduct = createAsyncThunk(
@@ -29,6 +34,17 @@ export const createProduct = createAsyncThunk(
   async (productData: FormData, { rejectWithValue }) => {
     try {
       return await api.createProduct(productData);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+);
+
+export const createPrescription = createAsyncThunk(
+  "prescription/create",
+  async (prescriptionData: PrescriptionProps, { rejectWithValue }) => {
+    try {
+      return await api.addPrescription(prescriptionData);
     } catch (error: any) {
       return rejectWithValue(error.message || "Something went wrong");
     }
@@ -44,6 +60,17 @@ export const updateProduct = createAsyncThunk<
   async (productData: FormData, { rejectWithValue }) => {
     try {
       return await api.updateProduct(productData);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+);
+
+export const updatePrescription = createAsyncThunk(
+  "prescript/updatePrescription",
+  async (prescriptData: PrescriptionProps, { rejectWithValue }) => {
+    try {
+      return await api.updatePrescription(prescriptData);
     } catch (error: any) {
       return rejectWithValue(error.message || "Something went wrong");
     }
@@ -72,6 +99,17 @@ export const fetchAllUserProduct = createAsyncThunk(
   }
 );
 
+export const fetchAllPrescriptions = createAsyncThunk(
+  "prescription/fetchAllPrescriptions",
+  async (_, { rejectWithValue }) => {
+    try {
+      return await api.allPrescription();
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+);
+
 export const searchedProduct = createAsyncThunk(
   "product/searchedProduct",
   async (searchedKey: string, { rejectWithValue }) => {
@@ -88,6 +126,17 @@ export const deleteproduct = createAsyncThunk(
   async (projectId: string, { rejectWithValue }) => {
     try {
       return await api.deleteProduct(projectId);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+);
+
+export const deletePrescription = createAsyncThunk(
+  "prescription/deletePrescription",
+  async (prescriptionId: string, { rejectWithValue }) => {
+    try {
+      return await api.deletePrescription(prescriptionId);
     } catch (error: any) {
       return rejectWithValue(error.message || "Something went wrong");
     }
@@ -128,6 +177,19 @@ const productAdminSlice = createSlice({
       .addCase(createProduct.rejected, (state) => {
         state.status = "failure";
       })
+      .addCase(createPrescription.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(createPrescription.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload !== undefined) {
+          console.log('prescription payload', action.payload)
+          state.prescription.push(action.payload);
+        }
+      })
+      .addCase(createPrescription.rejected, (state) => {
+        state.status = "failure";
+      })
       .addCase(updateProduct.pending, (state) => {
         state.status = "loading";
       })
@@ -141,6 +203,22 @@ const productAdminSlice = createSlice({
         }
       })
       .addCase(updateProduct.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(updatePrescription.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(updatePrescription.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload !== undefined) {
+          const index = state.prescription.findIndex(
+            (p) => p.$id === action.payload?.$id
+          );
+          state.prescription[index] = action.payload;
+          console.log('update prescription ', action.payload)
+        }
+      })
+      .addCase(updatePrescription.rejected, (state) => {
         state.status = "failure";
       })
       .addCase(updateProductStockQuantity.pending, (state) => {
@@ -175,6 +253,17 @@ const productAdminSlice = createSlice({
       .addCase(deleteproduct.rejected, (state) => {
         state.status = "failure";
       })
+      .addCase(deletePrescription.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(deletePrescription.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload !== undefined) {
+        }
+      })
+      .addCase(deletePrescription.rejected, (state) => {
+        state.status = "failure";
+      })
       .addCase(fetchAllUserProduct.pending, (state) => {
         state.status = "loading";
       })
@@ -186,6 +275,20 @@ const productAdminSlice = createSlice({
         }
       })
       .addCase(fetchAllUserProduct.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(fetchAllPrescriptions.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchAllPrescriptions.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload !== undefined) {
+          state.hasFetchAllPrescription = true;
+          state.prescription = action.payload;
+          console.log('all prescription payload ', action.payload)
+        }
+      })
+      .addCase(fetchAllPrescriptions.rejected, (state) => {
         state.status = "failure";
       })
       .addCase(searchedProduct.pending, (state) => {

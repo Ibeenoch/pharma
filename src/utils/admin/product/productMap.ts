@@ -1,5 +1,7 @@
 import {
   mappedSearchResultProps,
+  PrescriptionProps,
+  PrescriptionTableProps,
   ProductDataProps,
 } from "../../../types/product/ProductData";
 import { formatDate, formatDateWithOrdinal } from "../../dateFormatter";
@@ -46,3 +48,18 @@ export const mappedSearchResult = (result: ProductDataProps[]) => {
     id: item && item.$id && item.$id,
   }));
 };
+
+export const mappedPrescription = (prescriptions: PrescriptionProps[]): PrescriptionTableProps[] => {
+  return prescriptions.map((item, i) => ({
+    sn: i + 1,
+    image: item.productImage,
+    name: item.productName,
+    frequency: item.frequency,
+    methodOfUsage: item.methodOfUsage,
+    concentration: item.concentration,
+    dosage: item.dosage,
+    ageRange: item.ageRange,
+    $id: item.$id ?? '',
+    actions: `Actions_${item.productId}`,
+  }));
+}

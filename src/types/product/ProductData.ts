@@ -70,3 +70,37 @@ export interface mappedSearchResultProps {
   timeText: string;
   $id: string;
 }
+
+export interface PrescriptionProps {
+  $id?: string;
+  $updatedAt?: string;
+  $createdAt?: string;
+  sastifiedClient?: number;
+  productId: string;
+  productName: string;
+  productImage: string;
+  productSummary: string;
+  concentration: string;
+  dosageForm: string;
+  aboutDrug: string;
+  ingredient: string[];
+  ageRange: string;
+  dosage: string;
+  frequency: string;
+  duration: string;
+  whenTakeDosage: string;
+  methodOfUsage: string;
+}
+
+export interface PrescriptionTableProps {
+  sn: number;
+  image: string;
+  name: string;
+  frequency: string;
+  methodOfUsage: string;
+  concentration: string;
+  dosage: string;
+  ageRange: string;
+  $id: string;
+}
+

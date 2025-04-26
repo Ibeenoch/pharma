@@ -7,33 +7,68 @@ import Cart from "../../assets/icons/cart-fill-white.svg?react";
 import Ok from "../../assets/icons/like.svg?react";
 import Stop from "../../assets/icons/thumb-down.svg?react";
 import img from "../../assets/images/cc5.png";
+import { CartProductDataProps, cartProps, PrescriptionProps } from "../../types/product/ProductData";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { selectproductAdmin } from "../../features/admin/product/productSlice";
+import { addToCart, addTowishlist } from "../../features/cart/cartSlice";
 
-const PrescriptionCard = () => {
+
+
+const PrescriptionCard: React.FC<PrescriptionProps> = ({ aboutDrug,ageRange, concentration, dosage, dosageForm, duration, frequency, ingredient,methodOfUsage,productId,  productImage, productName ,productSummary, whenTakeDosage, sastifiedClient }) => {
+    const dispatch = useAppDispatch();
+      const { productAdmin } = useAppSelector(selectproductAdmin);
+    
+    const handleAddToCart = (e: React.MouseEvent, id: string) => {
+      e.stopPropagation();
+      const productItem = productAdmin.find((item) => item.$id === productId)!;
+
+      const productCart: CartProductDataProps = {
+        ...productItem,
+        subtotal:
+          productItem.price -
+          productItem.price *
+            (productItem.discount ? productItem.discount / 100 : 0),
+        total:
+          productItem.price -
+          productItem.price *
+            (productItem.discount ? productItem.discount / 100 : 0) +
+          1500,
+      };
+      const product: cartProps = { item: productCart, qty: 1 };
+      dispatch(addToCart(product));
+    };
+    const handleAddToWishList = (e: React.MouseEvent, id: string) => {
+      e.stopPropagation();
+      const productItem = productAdmin.find((item) => item.$id === id)!;
+      const wishList = { item: productItem };
+      dispatch(addTowishlist(wishList));
+    };
+
   return (
-    <div className="bg-[#fbfcf8] p-2 rounded-lg my-2">
+    <div className="bg-[#fbfcf8] p-2 rounded-lg my-4">
       <div className="flex gap-2 items-center">
         <div className="p-2 rounded-lg bg-white">
           <img
-            src={img}
-            alt="image prscription"
-            className="w-40 h-50 rounded-lg"
+            src={productImage}
+            alt="image prescription"
+            className="w-auto h-50 rounded-lg"
           />
         </div>
         <div>
           <CustomText
-            text="Panadol Forte"
+            text={productName}
             textType="medium"
             weightType="semibold"
           />
           <CustomText
-            text="Fast-Acting pain Relief for Muscles & Joints"
+            text={productSummary}
             textType="small"
             weightType="medium"
             color="text-gray-400"
           />
           <div className="grid grid-cols-2 gap-2 pt-6">
-            <DrugTab topText="Concentration" bottomText="120mg/ml" />
-            <DrugTab topText="Dosage Form" bottomText="Capsule" />
+            <DrugTab topText="Concentration" bottomText={concentration}/>
+            <DrugTab topText="Dosage Form" bottomText={dosageForm} />
           </div>
         </div>
       </div>
@@ -46,10 +81,13 @@ const PrescriptionCard = () => {
           weightType="semibold"
           color="text-gray-400"
         />
-        <CustomText text="261" textType="normal" weightType="semibold" />
+        <CustomText text={String(sastifiedClient)} textType="normal" weightType="semibold" />
       </div>
       {/* action button  */}
       <div className="flex gap-2 items-center">
+        <div onClick={(e) => handleAddToCart(e, productId)}
+        >
+
         <CustomButton
           text="Buy Now"
           type="button"
@@ -64,9 +102,14 @@ const PrescriptionCard = () => {
           borderRadiusType="threecurved"
           defaultTextColor="text-white group-hover:text-green-600"
         />
+        </div>
+
+      <div 
+      onClick={(e) => handleAddToWishList(e, productId)}
+      >
 
         <CustomButton
-          text="Add To Wishlist"
+          text="Add Favorite"
           type="button"
           weightType="medium"
           defaultBackgroundColor="bg-amber-600 hover:bg-amber-600/10"
@@ -80,6 +123,7 @@ const PrescriptionCard = () => {
           defaultTextColor="text-white group-hover:text-amber-600"
         />
       </div>
+      </div>
       {/* about drug  */}
       <div>
         <CustomText
@@ -90,7 +134,7 @@ const PrescriptionCard = () => {
         />
 
         <CustomText
-          text="Panadol forte is a fast-acting analgesic and anti-inflammatory drug used for the management of musculoskeletal pain and joint discomfort."
+          text={aboutDrug}
           textType="small"
           weightType="medium"
           color="text-gray-500"
@@ -106,12 +150,12 @@ const PrescriptionCard = () => {
           extraStyle="pb-6 pt-4"
         />
         <ul className="grid grid-cols-2 text-sm font-medium list-disc list-inside text-gray-500">
-          <li>Paracetamol</li>
-          <li>Diclofenac Sodium</li>
-          <li>Menthol</li>
-          <li>Camphor</li>
-          <li>Methyl Salicylate</li>
-          <li>Eucallyptus Oil</li>
+          {
+            ingredient && Array.isArray(ingredient) && ingredient.map((i) => (
+              <li>{i}</li>
+            ))
+          }
+          
         </ul>
       </div>
 
@@ -127,14 +171,14 @@ const PrescriptionCard = () => {
         {/* <CustomText text="Dosage" textType="normal" weightType="semibold" /> */}
 
         <div className="grid grid-cols-3 my-3 gap-2">
-          <DrugTab topText="Age Range" bottomText="12 years and above" />
-          <DrugTab topText="Dosage" bottomText="15ml per dose" />
-          <DrugTab topText="Frequency" bottomText="3 times daily" />
-          <DrugTab topText="Duration" bottomText="3 - 5 days" />
-          <DrugTab topText="When To Take" bottomText="After Meals" />
+          <DrugTab topText="Age Range" bottomText={ageRange} />
+          <DrugTab topText="Dosage" bottomText={dosage} />
+          <DrugTab topText="Frequency" bottomText={frequency} />
+          <DrugTab topText="Duration" bottomText={duration}/>
+          <DrugTab topText="When To Take" bottomText={whenTakeDosage} />
           <DrugTab
             topText="Method Of Usage"
-            bottomText="Shake well before use."
+            bottomText={methodOfUsage}
           />
         </div>
       </div>
