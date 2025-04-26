@@ -9,12 +9,12 @@ import Stop from "../../assets/icons/thumb-down.svg?react";
 import img from "../../assets/images/cc5.png";
 import { CartProductDataProps, cartProps, PrescriptionProps } from "../../types/product/ProductData";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { selectproductAdmin } from "../../features/admin/product/productSlice";
+import { selectproductAdmin, updatePrescription } from "../../features/admin/product/productSlice";
 import { addToCart, addTowishlist } from "../../features/cart/cartSlice";
 
 
 
-const PrescriptionCard: React.FC<PrescriptionProps> = ({ aboutDrug,ageRange, concentration, dosage, dosageForm, duration, frequency, ingredient,methodOfUsage,productId,  productImage, productName ,productSummary, whenTakeDosage, sastifiedClient }) => {
+const PrescriptionCard: React.FC<PrescriptionProps> = ({ aboutDrug,ageRange, concentration, dosage, dosageForm, duration, frequency, ingredient,methodOfUsage,productId,  productImage, productName ,productSummary, whenTakeDosage, sastifiedClient, $id }) => {
     const dispatch = useAppDispatch();
       const { productAdmin } = useAppSelector(selectproductAdmin);
     
@@ -43,6 +43,15 @@ const PrescriptionCard: React.FC<PrescriptionProps> = ({ aboutDrug,ageRange, con
       const wishList = { item: productItem };
       dispatch(addTowishlist(wishList));
     };
+
+    const handleSatisfiedClient = () => {
+      if(typeof sastifiedClient === 'number'){
+          let updatedClientNum = sastifiedClient + 1;
+          const prescriptionData: PrescriptionProps = { $id, productName, productImage, aboutDrug, productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient, methodOfUsage, productId, whenTakeDosage,  concentration, sastifiedClient: updatedClientNum };
+    
+          dispatch(updatePrescription(prescriptionData)).then((res) =>  console.log('updated client ', res.payload))
+      }     
+    }
 
   return (
     <div className="bg-[#fbfcf8] p-2 rounded-lg my-4">
@@ -185,6 +194,7 @@ const PrescriptionCard: React.FC<PrescriptionProps> = ({ aboutDrug,ageRange, con
       {/* Satisified  */}
       <div className="flex gap-2 items-center">
         <CustomButton
+         onClick={handleSatisfiedClient}
           text="Satisified"
           type="button"
           weightType="medium"

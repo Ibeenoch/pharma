@@ -406,7 +406,7 @@ export const allPrescription = async () => {
 
 export const updatePrescription = async (prescriptionData: PrescriptionProps) => {
   try {
-    const { $id, productName, productImage, aboutDrug, productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient, methodOfUsage, productId, whenTakeDosage,  concentration } = prescriptionData;
+    const { $id, productName, productImage, aboutDrug, productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient, methodOfUsage, productId, whenTakeDosage,  concentration, sastifiedClient } = prescriptionData;
 
     if($id){
 
@@ -414,10 +414,10 @@ export const updatePrescription = async (prescriptionData: PrescriptionProps) =>
         import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
         import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID, // product collection id
         $id,
-        { productName, sastifiedClient: 0, productImage, aboutDrug,  productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient, methodOfUsage, productId, whenTakeDosage,  concentration } 
+        { productName, sastifiedClient, productImage, aboutDrug,  productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient, methodOfUsage, productId, whenTakeDosage,  concentration, } 
   
       );
-  
+
       return {
         $id: productPresription.$id,
         $createdAt: productPresription.$createdAt,

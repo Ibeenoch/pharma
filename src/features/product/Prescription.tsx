@@ -1,11 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CustomInput from "../../components/common/Input";
 import CustomButton from "../../components/common/Button";
-import img from "../../assets/images/cc5.png";
-import CustomText from "../../components/common/Text";
-import Heart from "../../assets/icons/heart.svg?react";
-import Cart from "../../assets/icons/cart-fill-white.svg?react";
-import DrugTab from "../../components/common/DrugTab";
 import PrescriptionCard from "../../components/home/PrescriptionCard";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { fetchAllPrescriptions, selectproductAdmin } from "../admin/product/productSlice";
@@ -24,7 +19,6 @@ const Prescription = () => {
        }
      }, [prescription])
 
-     console.log(' prescription ', prescription)
 
   return (
     <main className=" mt-20 mb-1">
@@ -47,7 +41,7 @@ const Prescription = () => {
         </div>
       </form>
       <div className={`block md:grid md:grid-cols-3 h-full gap-2 my-2 p-2`}>
-        {/* // presciption card */}
+
         {
           prescription && Array.isArray(prescription) && prescription.map((p) => (
 
