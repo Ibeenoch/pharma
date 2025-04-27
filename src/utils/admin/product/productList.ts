@@ -26,6 +26,8 @@ import ranbaxy from "../../../assets/images/ranbaxyImg.png";
 import skg from "../../../assets/images/skgImg.png";
 import vixa from "../../../assets/images/vixaImg.png";
 import zolon from "../../../assets/images/zolonImg.png";
+import gsk from '../../../assets/images/ng-glaxos-logo.png';
+import pfizer from '../../../assets/images/pfizer.png';
 
 export const navLists = [
   { tabName: "All Product", route: "/admin/product/all" },
@@ -435,9 +437,19 @@ export const productBrands = [
     companyImage: emzor,
   },
   {
+    value: "GlaxoSmithKline",
+    label: "GlaxoSmithKline",
+    companyImage: gsk,
+  },
+  {
     value: "BenylinPharmaceuticalIndustriesLimited",
     label: "Benylin Pharmaceutical Industries Limited",
     companyImage: emzor,
+  },
+  {
+    value: "pfizer",
+    label: "pfizer",
+    companyImage: pfizer,
   },
   {
     value: "FidsonHealthcarePlc",
