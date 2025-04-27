@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useLayoutEffect, useRef, useState } from "react";
 import CustomText from "../../common/Text";
 import { validator } from "../../../utils/validator";
 import CustomInput from "../../common/Input";
