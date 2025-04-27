@@ -55,7 +55,7 @@ const Body = () => {
         ))}
       </div>
 
-      <section className="md:grid grid-cols-[60%_38%] gap-4 my-6 items-center px-4">
+      <section className="md:grid grid-cols-[60%_38%] gap-4 my-6 items-center px-2">
         <SalesChart />
         <InventoryPieChart />
       </section>

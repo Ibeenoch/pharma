@@ -1,7 +1,7 @@
 import { COMPANY_NAME, MARGIN_TOP } from "../../constants/appText";
 import manWalk from "../../assets/images/manwalk.png";
 import CustomInput from "../../components/common/Input";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import CustomText from "../../components/common/Text";
 import Email from "../../assets/icons/email.svg?react";
 import Google from "../../assets/icons/google-colored.svg?react";
@@ -54,7 +54,7 @@ const Login: React.FC<LoginProps> = ({ redirectUrl }) => {
     navigate("/forgotpassword");
   };
 
-  const handleFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setisSubmitting(true);
     const emailValid = validator(email, "email");

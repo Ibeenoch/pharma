@@ -7,7 +7,7 @@ import CustomText from "../../common/Text";
 
 const RecentPayment = () => {
   return (
-    <div className="p-4 shadow-lg bg-neutral-50 rounded-xl my-3">
+    <div className="p-4 shadow-lg bg-white rounded-xl my-3">
       <CustomText
         text="Recent Transactions"
         textType="medium"
@@ -19,6 +19,7 @@ const RecentPayment = () => {
         columns={paymentColumns}
         data={recentPaymentData}
         tableHeaderTxtColor="text-black"
+        whichTable="dashboard"
       />
     </div>
   );

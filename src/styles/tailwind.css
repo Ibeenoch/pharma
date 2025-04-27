@@ -50,25 +50,7 @@
       scale: 1;
     }
   }
+
+  /* responsive table  */
+
 }
-
-/* @import "tailwindcss";
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  :root {
-    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
-    --color-graybg: #f4f4f4;
-    --color-graytext: #adafb2;
-    --color-whitebg: #ffffff;
-    --color-blackbg: #000000;
-    --color-ambergray: #e6e1d8;
-  }
-  body {
-    background-color: var(--gray-bg);
-  }
-   */

@@ -43,7 +43,7 @@ const Recommendation = () => {
     <section className="border-b border-black mb-2 pb-4 animate-on-scroll">
       <TwoTextSpan leftText="Recommendations" />
 
-      <article className="flex gap-4 overflow-x-auto">
+      <article className="flex items-center lg:grid lg:grid-cols-7 gap-4 overflow-x-auto">
         {/* bg-[#e6e1d8] bg-[#b87a4c] */}
         {productImages.map((item, index) => (
           <div className="cursor-pointer" key={index}>

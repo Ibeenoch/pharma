@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
 import CustomText from "../../common/Text";
 import { validator } from "../../../utils/validator";
 import CustomInput from "../../common/Input";
@@ -6,6 +6,7 @@ import { lightgrayBgColor } from "../../../constants/appColor";
 import CustomTextArea from "../../common/TextArea";
 import NoImage from "../../../assets/icons/picture-filled.svg?react";
 import Plus from "../../../assets/icons/plus-slim.svg?react";
+import DeleteBtn from "../../../assets/icons/trash-bin.svg?react";
 import BrandOrCategory from "./BrandOrCategory";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { selectAuth } from "../../../features/auth/authSlice";
@@ -102,7 +103,7 @@ const AddProduct = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleProductFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
+  const handleProductFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!user || !user.userId || user.role?.toLowerCase() !== "admin") return;
 
@@ -170,16 +171,16 @@ const AddProduct = () => {
     if (id) {
       productData.append("productId", id);
       productData.append("uploadedImages", JSON.stringify(uploadedImages));
-      dispatch(updateProduct(productData)).then((res) => {
+      dispatch(updateProduct(productData)).then(() => {
         setIsFormSubmitting(false);
         dispatch(invalidateFetchAllProductCache(true));
-        navigate("/admin/product/all");
+        navigate(`/admin/product/all/${user && user.userId}`);
       });
     } else {
-      dispatch(createProduct(productData)).then((res) => {
+      dispatch(createProduct(productData)).then(() => {
         setIsFormSubmitting(false);
         dispatch(invalidateFetchAllProductCache(true));
-        navigate("/admin/product/all");
+        navigate(`/admin/product/all/${user && user.userId}`);
       });
     }
   };
@@ -200,14 +201,24 @@ const AddProduct = () => {
   const imageClicked = (index: number) => {
     setimageIndexClicked(index);
   };
+  useLayoutEffect(() => {
+    setimageIndexClicked(imageIndexClicked === 0 ? 0 : imageIndexClicked - 1);
+  }, [uploadedImages])
+
+  const removeImgFromArray = (index: number) => {
+    const newArr = [...uploadedImages];
+    newArr.splice(index, 1);
+    setUploadedImages(newArr)
+   
+  }
 
   return (
     <form
-      className="my-3 md:grid grid-cols-[58%_41%] gap-3"
+      className="my-3 block w-full mx-auto md:grid grid-cols-[58%_41%] gap-3"
       onSubmit={handleProductFormSubmit}
     >
-      <div>
-        <section className={`${lightgrayBgColor} p-4 rounded-xl mb-3  pb-8`}>
+      <div className="w-full">
+        <section className={`${lightgrayBgColor} w-full p-4 rounded-xl mb-3  pb-8`}>
           <CustomText
             text="General information"
             textType="small"
@@ -255,7 +266,7 @@ const AddProduct = () => {
             textType="small"
             weightType="semibold"
           />
-          <div className="flex items-center gap-3">
+          <div className="block sm:flex items-center gap-3">
             <CustomInput
               type="text"
               label="Product Price"
@@ -312,7 +323,7 @@ const AddProduct = () => {
             textType="small"
             weightType="semibold"
           />
-          <div className="flex items-center gap-3">
+          <div className="block sm:flex items-center gap-3">
             <CustomInput
               type="date"
               label="Product Expiration Date"
@@ -401,7 +412,12 @@ const AddProduct = () => {
                     imageIndexClicked === index ? "border border-gray-300" : ""
                   }`}
                 >
-                  <img src={pic} alt="" className="w-18 h-18 cursor-pointer" />
+                  <div className="relative">
+                    <img src={pic} alt="" className="w-18 h-18 cursor-pointer" />
+                    <div onClick={() => removeImgFromArray(index)} className="absolute bottom-0 right-0 cursor-pointer">
+                      <DeleteBtn className="text-amber-500 w-5 h-5" />
+                    </div>
+                  </div>
                 </div>
               ))
             ) : (
@@ -413,9 +429,12 @@ const AddProduct = () => {
                 onClick={uploadImage}
                 className="p-2 w-23 h-23 flex justify-center items-center bg-white rounded-md border border-dashed border-gray-300"
               >
-                <span className="flex justify-center items-center bg-gray-200 p-2 rounded-full cursor-pointer">
-                  <Plus className="w-4 h-4 text-white" />
-                </span>
+                <div className="flex flex-col justify-center items-center">
+                  <span className="flex mb-2 justify-center items-center bg-gray-200 p-2 rounded-full cursor-pointer">
+                    <Plus className="w-4 h-4 text-white" />
+                  </span>
+                    <CustomText text="Add Image" textType="extrasmall" color="text-gray-400" />
+                </div>
                 <input
                   ref={imageRef}
                   hidden={true}

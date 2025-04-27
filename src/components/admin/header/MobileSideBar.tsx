@@ -8,6 +8,7 @@ import {
 import CompanyLogo from "../../common/CompanyLogo";
 import { animateTransition } from "../../../constants/appText";
 import MobileNavIcons from "./MobileNavIcons1";
+import { selectAuth } from "../../../features/auth/authSlice";
 
 interface MobileSideBarProps {
   showSideBar: boolean;
@@ -23,13 +24,14 @@ const MobileSideBar: React.FC<MobileSideBarProps> = ({
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { sideBarIndex } = useAppSelector(selectAdmin);
+  const { user } = useAppSelector(selectAuth)
 
   const handleIndexClicked = (index: number) => {
     dispatch(setSideBarIndex(index));
 
     switch (index) {
       case 0:
-        navigate("/admin/dashboard");
+        navigate( `/admin/dashboard/${user && user.userId}`);
         break;
     }
   };

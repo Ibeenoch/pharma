@@ -1,28 +1,50 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import CustomInput from "../../components/common/Input";
 import CustomButton from "../../components/common/Button";
 import PrescriptionCard from "../../components/home/PrescriptionCard";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { fetchAllPrescriptions, selectproductAdmin } from "../admin/product/productSlice";
+import { PrescriptionProps } from "../../types/product/ProductData";
 
 const Prescription = () => {
   const [searchDrug, setSearchDrug] = useState<string>("");
   const dispatch = useAppDispatch();
   const { prescription, hasFetchAllPrescription } = useAppSelector(selectproductAdmin);
+  const [prescriptionArr, setPrescriptionArr] = useState<PrescriptionProps[]>([])
 
 
      useEffect(() => {
        if(!prescription){
          dispatch(fetchAllPrescriptions())
+         setPrescriptionArr(prescription);
        }else{
-         hasFetchAllPrescription === false && dispatch(fetchAllPrescriptions())
+         hasFetchAllPrescription === false && dispatch(fetchAllPrescriptions());
+         setPrescriptionArr(prescription);
        }
-     }, [prescription])
+     }, [prescription]);
 
+     useEffect(() => {
+      runSearch()
+     }, [searchDrug])
 
+     const runSearch = () => {
+      if(searchDrug.length > 0){
+        let filteredPrescription = prescriptionArr.filter((p) => {
+          return p.productName.toLowerCase().includes(searchDrug.toLowerCase());
+         });
+         setPrescriptionArr(filteredPrescription);
+       }else{
+         setPrescriptionArr(prescription);
+       }
+     }
+
+     const handleFilterPrescription = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        runSearch();
+     }
   return (
     <main className=" mt-20 mb-1">
-      <form className="md:px-[25%]">
+      <form  onSubmit={handleFilterPrescription} className="md:px-[25%]">
         <div className="p-2 bg-[#fbfcf8]">
           <CustomInput
             value={searchDrug}
@@ -32,7 +54,7 @@ const Prescription = () => {
             placeholder="Search a drug name"
           />
           <CustomButton
-            type="button"
+            type="submit"
             fullwidth={true}
             showArrow={true}
             text="Search Prescription"
@@ -43,7 +65,7 @@ const Prescription = () => {
       <div className={`block md:grid md:grid-cols-3 h-full gap-2 my-2 p-2`}>
 
         {
-          prescription && Array.isArray(prescription) && prescription.map((p) => (
+          prescriptionArr && Array.isArray(prescriptionArr) && prescriptionArr.map((p) => (
 
             <PrescriptionCard 
             aboutDrug={p.aboutDrug}  

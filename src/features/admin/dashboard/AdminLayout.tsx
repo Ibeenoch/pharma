@@ -49,7 +49,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title }) => {
     <main className={`${adminDefaultBgColor} min-h-screen flex`}>
       <SideBar shouldMinimize={shouldMinimizeSideBar} />
       <section
-        className={`absolute top-[20]   ${
+        className={`absolute top-[20] w-full  ${
           shouldMinimizeSideBar
             ? "lg:w-[95%] left-[5%]"
             : "lg:w-[85%] lg:left-[15%]"
@@ -59,7 +59,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title }) => {
         <main className={`w-full`}>{children}</main>
         <div
           onClick={handleShowMobileSideBar}
-          className={`flex lg:hidden absolute z-50 top-5 left-[5%]`}
+          className={`flex lg:hidden fixed cursor-pointer z-50 top-5 left-[5%]`}
         >
           <HamburgerMenu className="w-9 h-9 text-gray-700" />
         </div>

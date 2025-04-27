@@ -10,6 +10,7 @@ const UserAdmin = () => {
           columns={allUsersColumn}
           data={filteredData}
           tableHeaderTxtColor="text-black"
+          whichTable="user"
         />
       </div>
     </section>

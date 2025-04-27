@@ -25,7 +25,7 @@ const Brands = () => {
     <section className="border-b border-black mb-2 pb-4 animate-on-scroll">
       <TwoTextSpan leftText="Top Brands" />
 
-      <article className="flex gap-4 overflow-x-auto">
+      <article className="flex items-center lg:grid lg:grid-cols-7 gap-4 overflow-x-auto">
         {productBrands.slice(0, 7).map((item, index) => (
           <div className="cursor-pointer" key={index}>
             <div className="h-22 w-20 md:h-30 md:w-28 lg:h-38 lg:w-32 xl:h-48 xl:w-42 flex items-center justify-center rounded-xl p-2 bg-white mb-4">

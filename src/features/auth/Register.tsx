@@ -1,7 +1,7 @@
 import { COMPANY_NAME, MARGIN_TOP } from "../../constants/appText";
 import manWalk from "../../assets/images/1547272465.png";
 import CustomInput from "../../components/common/Input";
-import { ChangeEvent, lazy, useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 const CustomText = lazy(() => import("../../components/common/Text"));
 import Email from "../../assets/icons/email.svg?react";
 import Google from "../../assets/icons/google-colored.svg?react";
@@ -81,7 +81,7 @@ const Register = () => {
     navigate("/login");
   };
 
-  const handleFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 

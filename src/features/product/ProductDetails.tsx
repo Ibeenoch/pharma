@@ -13,6 +13,8 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { selectproductAdmin } from "../admin/product/productSlice";
+import Brand from '../../assets/icons/brand-unity3d.svg?react';
+import Category from '../../assets/icons/category.svg?react';
 import IconShowList from "../../components/product/IconShowList";
 import {
   addToCart,
@@ -257,20 +259,34 @@ const ProductDetails = () => {
             weightType="thin"
             extraStyle="text-gray-500 my-5"
           />
-          <IconShowList
-            Icon={Clock}
-            topText="Delivery time"
-            bottomText="6 - 8 hours"
-          />
-          {product && product.item && product.item.quantity && (
+          <div className="block md:grid grid-cols-2">
+
             <IconShowList
-              Icon={Quantity}
-              topText="Stock Left"
-              bottomText={
-                product && product.item && String(product.item.quantity)
-              }
+              Icon={Clock}
+              topText="Delivery time"
+              bottomText="6 - 8 hours"
             />
-          )}
+            {product && product.item && product.item.quantity && (
+              <IconShowList
+                Icon={Quantity}
+                topText="Stock Left"
+                bottomText={
+                  product && product.item && String(product.item.quantity)
+                }
+              />
+            )}
+
+            <IconShowList
+              Icon={Category}
+              topText='Category'
+              bottomText={product && product.item && product.item.category}
+            />
+            <IconShowList
+              Icon={Brand}
+              topText='Brand'
+              bottomText={product && product.item && product.item.brand}
+            />
+          </div>
 
           <div className={`grid grid-cols-[10%_90%] gap-4 my-3`}>
             {wishListItem &&

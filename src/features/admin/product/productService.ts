@@ -208,6 +208,11 @@ export const deleteProduct = async (productId: string) => {
       import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
       productId
     );
+    await database.deleteDocument(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID, // product collection id
+      productId
+    );
   } catch (error) {
     throw error;
     console.log(error);

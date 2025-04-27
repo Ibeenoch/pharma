@@ -19,7 +19,7 @@ const DateFilter: React.FC<DateFilterProps> = ({
   applyCallback,
 }) => {
   return (
-    <div className="flex items-center gap-6 pt-2 overflow-x-auto">
+    <div className="flex flex-col md:flex-row items-center gap-6 pt-2 overflow-x-auto">
       <div className="flex gap-2 items-center">
         <CustomText
           text="Start"
@@ -43,7 +43,7 @@ const DateFilter: React.FC<DateFilterProps> = ({
         />
         <CustomInput value={ended} onChange={setEnded} type="date" Id="ended" />
       </div>
-      <CustomButton text="Apply" onClick={applyCallback} />
+      <CustomButton text="Apply" onClick={applyCallback} fullwidth={true} />
     </div>
   );
 };

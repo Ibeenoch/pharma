@@ -51,7 +51,7 @@ const CustomLegend: React.FC = () => {
             className="w-3 h-3 rounded-full"
             style={{ backgroundColor: color }}
           ></span>
-          <span className="text-gray-700 text-sm">{category}</span>
+          <span className="text-gray-700 text-[10px] md:text-sm">{category}</span>
         </div>
       ))}
     </div>
