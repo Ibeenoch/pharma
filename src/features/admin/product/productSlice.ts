@@ -90,9 +90,9 @@ export const updateProductStockQuantity = createAsyncThunk(
 
 export const fetchAllUserProduct = createAsyncThunk(
   "product/fetchAllUserProduct",
-  async (userId: string, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      return await api.allProduct(userId);
+      return await api.allProduct();
     } catch (error: any) {
       return rejectWithValue(error.message || "Something went wrong");
     }

@@ -20,7 +20,7 @@ const AllProduct = () => {
     user &&
       user.userId &&
       hasFetchAllProduct === false &&
-      dispatch(fetchAllUserProduct(user.userId));
+      dispatch(fetchAllUserProduct());
   }, [user, hasFetchAllProduct]);
 
   const productData =

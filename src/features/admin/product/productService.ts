@@ -219,12 +219,11 @@ export const deleteProduct = async (productId: string) => {
   }
 };
 
-export const allProduct = async (userId: string) => {
+export const allProduct = async () => {
   try {
     let allproduct = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
-      [Query.equal("creator", userId)]
     );
 
     const allProductList: ProductDataProps[] = allproduct.documents.map(

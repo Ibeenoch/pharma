@@ -14,14 +14,21 @@ import Footer from "../components/layout/Footer";
 import NavHelper from "../components/common/NavHelper";
 import { pageSpacing } from "../constants/appText";
 import { useEffect } from "react";
-import { useAppDispatch } from "../hooks/reduxHooks";
-import { getCuurentLoginUserData } from "../features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { getCuurentLoginUserData, selectAuth } from "../features/auth/authSlice";
+import { fetchAllUserProduct, selectproductAdmin } from "../features/admin/product/productSlice";
 
 const Home = () => {
   const dispatch = useAppDispatch();
+  const { productAdmin, hasFetchAllProduct } = useAppSelector(selectproductAdmin);
   const getCurrentUser = () => {
     dispatch(getCuurentLoginUserData());
   };
+  const allProduct = () => {
+    if(!productAdmin ){
+      dispatch(fetchAllUserProduct())
+    }
+  }
   useEffect(() => {
     getCurrentUser();
   }, []);
