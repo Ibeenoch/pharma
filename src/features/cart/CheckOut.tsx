@@ -1,8 +1,12 @@
-import {  FormEvent, useEffect, useState } from "react";
-import Cart from "./Cart";
+import {  FormEvent, lazy, useEffect, useState } from "react";
+const Cart = lazy(() => import("./Cart"));
+const CustomText = lazy(() => import("../../components/common/Text"));
+const CustomInput = lazy(() => import("../../components/common/Input"));
+const PaymentOption = lazy(() => import("../../components/common/PaymentOption"));
+const CustomSelect = lazy(() => import("../../components/common/Select"));
+const CustomButton = lazy(() => import("../../components/common/Button"));
+const Modal = lazy(() => import("../../components/common/Modal"));
 import { pageSpacing } from "../../constants/appText";
-import CustomText from "../../components/common/Text";
-import CustomInput from "../../components/common/Input";
 import { validator } from "../../utils/validator";
 import User from "../../assets/icons/user.svg?react";
 import CompanyIcon from "../../assets/icons/pharmacy.svg?react";
@@ -14,14 +18,11 @@ import Country from "../../assets/icons/globe.svg?react";
 import Phone from "../../assets/icons/mobile-phone.svg?react";
 import Location from "../../assets/icons/maps-and-flags.svg?react";
 import Address from "../../assets/icons/home3.svg?react";
-import PaymentOption from "../../components/common/PaymentOption";
-import CustomSelect from "../../components/common/Select";
 import { countries } from "../../utils/countries";
 import { nigeriaStateAndLga } from "../../utils/nigeriaStateAndLgas";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { selectAuth } from "../auth/authSlice";
 import { postACart, removeAllItemsInCart, selectCart } from "./cartSlice";
-import CustomButton from "../../components/common/Button";
 import glovo from "../../assets/images/glove.png";
 import chowDesk from "../../assets/images/chowdesk.png";
 import errand360 from "../../assets/images/errand360.png";
@@ -54,7 +55,6 @@ import {
   UpdateProductCart,
 } from "../../types/cart/CartData";
 import { useNavigate, useParams } from "react-router-dom";
-import Modal from "../../components/common/Modal";
 import { updateHotProductNum, updateProductStockQuantity } from "../admin/product/productSlice";
 import DeliveryOption from "../../components/common/DeliveryOption";
 import { generateRandomCode } from "../../utils/randomCodeGenerator";
@@ -400,6 +400,12 @@ const CheckOut = () => {
       },
     });
   };
+
+  
+    useEffect(() => {
+      // start the page from the top when a user visit the page
+      window.scrollTo(0,0)
+    },[])
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

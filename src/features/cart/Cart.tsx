@@ -73,6 +73,11 @@ const Cart: React.FC<CartProps> = ({
     }
   };
 
+  useEffect(() => {
+    // start the page from the top when a user visit the page
+    window.scrollTo(0,0)
+  },[])
+
   return (
     <section
       className={`mt-20 h-min ${
