@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../../redux/store";
-import { PrescriptionProps, ProductDataProps } from "../../../types/product/ProductData";
+import { PrescriptionProps, ProductDataProps, UpdatedHotProductProps } from "../../../types/product/ProductData";
 import * as api from "./productService";
 import { UpdateProductCart } from "../../../types/cart/CartData";
 
@@ -14,6 +14,7 @@ interface productAdminState {
   productIndexClicked: string;
   productSubTabIndex: number;
   productSubTabRoute: string;
+  productCategoryName: string;
 }
 
 const initialState: productAdminState = {
@@ -26,7 +27,7 @@ const initialState: productAdminState = {
   productSearched: [],
   prescription: [],
   hasFetchAllPrescription: false,
-
+  productCategoryName: '',
 };
 
 export const createProduct = createAsyncThunk(
@@ -71,6 +72,17 @@ export const updatePrescription = createAsyncThunk(
   async (prescriptData: PrescriptionProps, { rejectWithValue }) => {
     try {
       return await api.updatePrescription(prescriptData);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+);
+
+export const updateHotProductNum = createAsyncThunk(
+  "prescript/updateHotProductNum",
+  async (updatedHotVal: UpdatedHotProductProps, { rejectWithValue }) => {
+    try {
+      return await api.updateHotProduct(updatedHotVal);
     } catch (error: any) {
       return rejectWithValue(error.message || "Something went wrong");
     }
@@ -153,6 +165,9 @@ const productAdminSlice = createSlice({
     setProductIndexClicked: (state, action: PayloadAction<string>) => {
       state.productIndexClicked = action.payload;
     },
+    setProductCategoryName: (state, action: PayloadAction<string>) => {
+      state.productCategoryName = action.payload;
+    },
     setProductSubTabIndex: (state, action: PayloadAction<number>) => {
       state.productSubTabIndex = action.payload;
     },
@@ -230,16 +245,25 @@ const productAdminSlice = createSlice({
           const index = state.productAdmin.findIndex(
             (p) => p.$id === action.payload?.$id
           );
-          console.log(
-            "index update ",
-            index,
-            "updateProductStockQuantity ",
-            action.payload
-          );
           state.productAdmin[index] = action.payload;
         }
       })
       .addCase(updateProductStockQuantity.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(updateHotProductNum.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(updateHotProductNum.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload !== undefined) {
+          const index = state.productAdmin.findIndex(
+            (p) => p.$id === action.payload?.$id
+          );
+          state.productAdmin[index] = action.payload;
+        }
+      })
+      .addCase(updateHotProductNum.rejected, (state) => {
         state.status = "failure";
       })
       .addCase(deleteproduct.pending, (state) => {
@@ -313,6 +337,7 @@ export const {
   setProductIndexClicked,
   setProductSubTabIndex,
   setProductSubTabRoute,
-  resetSearchProduct,
+  resetSearchProduct, 
+  setProductCategoryName
 } = productAdminSlice.actions;
 export default productAdminSlice.reducer;

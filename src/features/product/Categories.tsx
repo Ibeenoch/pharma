@@ -35,8 +35,8 @@ const Categories = () => {
             extraStyle="border-b border-black w-max"
           />
           {/* product category  */}
-          <SingleCategoryItem name="Skin Care" />
-          <SingleCategoryItem name="Fever And Pain" />
+          {/* <SingleCategoryItem name="Skin Care" />
+          <SingleCategoryItem name="Fever And Pain" /> */}
         </div>
       </section>
       <section className="">
@@ -47,8 +47,11 @@ const Categories = () => {
             productImage={cartImg}
             textTitle="Facial Cleaner"
             textDesc="Facial cleaner for facial treatment..."
-            price="₦2500"
-          />
+            price="₦2500" onAddCart={function (e: React.MouseEvent, id: string): void {
+              throw new Error("Function not implemented.");
+            } } onAddWishlist={function (e: React.MouseEvent, id: string): void {
+              throw new Error("Function not implemented.");
+            } }          />
         </div>
       </section>
     </main>

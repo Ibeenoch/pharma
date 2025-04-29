@@ -1,46 +1,62 @@
 // displays home ui
-
-import Banner from "../components/home/Banner";
-import HeroSection from "../components/home/HeroSection";
-import Recommendation from "../features/product/Recommendation";
-import Header from "../components/layout/Header";
-import Category from "../features/product/Category";
-import Brands from "../features/product/Brands";
-import HotDeals from "../features/product/HotDeals";
-import DiscountBanner from "../components/home/DiscountBanner";
-import TopSelling from "../features/product/TopSelling";
-import Faq from "../components/home/Faq";
-import Footer from "../components/layout/Footer";
-import NavHelper from "../components/common/NavHelper";
+import { lazy, useEffect } from "react";
+const Banner = lazy(() =>import("../components/home/Banner"));
+const HeroSection = lazy(() =>import("../components/home/HeroSection"));
+const Recommendation = lazy(() =>import("../features/product/Recommendation"));
+const Header = lazy(() =>import("../components/layout/Header"));
+const Category = lazy(() =>import("../features/product/Category"));
+const Brands = lazy(() =>import("../features/product/Brands"));
+const HotDeals = lazy(() =>import("../features/product/HotDeals"));
+const DiscountBanner = lazy(() =>import("../components/home/DiscountBanner"));
+const TopSelling = lazy(() =>import("../features/product/TopSelling"));
+const Faq = lazy(() =>import("../components/home/Faq"));
+const Footer = lazy(() =>import("../components/layout/Footer"));
+const NavHelper = lazy(() =>import("../components/common/NavHelper"));
 import { pageSpacing } from "../constants/appText";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { getCuurentLoginUserData, selectAuth } from "../features/auth/authSlice";
+import { useAppDispatch, useAppSelector,  } from "../hooks/reduxHooks";
+import { getCuurentLoginUserData, setNavIndexLink,  } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 import { fetchAllUserProduct, selectproductAdmin } from "../features/admin/product/productSlice";
+import { links } from "../utils/listLink";
 
 const Home = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { productAdmin, hasFetchAllProduct } = useAppSelector(selectproductAdmin);
+
   const getCurrentUser = () => {
     dispatch(getCuurentLoginUserData());
   };
-  const allProduct = () => {
-    if(!productAdmin ){
-      dispatch(fetchAllUserProduct())
-    }
-  }
+
   useEffect(() => {
     getCurrentUser();
   }, []);
+
+  useEffect(() => {
+    if(!productAdmin){
+      dispatch(fetchAllUserProduct())
+    };
+      hasFetchAllProduct === false &&
+      dispatch(fetchAllUserProduct());
+  }, [hasFetchAllProduct]);
+
+    useEffect(() => {
+      // when the user visit the page move the page to the top
+      window.scrollTo(0,0);
+      // set the correct navbar active text
+      dispatch(setNavIndexLink({ name: links[0].name, index: 0 }));
+    },[])
+
+
   return (
     <main className={`${pageSpacing}`}>
       <Header />
-      <HeroSection />
-      <Category />
+      <HeroSection navigate={navigate} />
+      <Category navigate={navigate} productAdmin={productAdmin} />
       <Banner />
-      <Recommendation />
-      <HotDeals />
-      <TopSelling />
+      <Recommendation navigate={navigate} productAdmin={productAdmin} />
+      <HotDeals  navigate={navigate} productAdmin={productAdmin} />
+      <TopSelling navigate={navigate} productAdmin={productAdmin} />
       <DiscountBanner />
       <Brands />
       <Faq />

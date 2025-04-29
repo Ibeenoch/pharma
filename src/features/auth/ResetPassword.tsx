@@ -1,10 +1,10 @@
+import { ChangeEvent, useEffect, useState, lazy } from "react";
 import { MARGIN_TOP } from "../../constants/appText";
 import manWalk from "../../assets/images/resetpassword.png";
-import CustomInput from "../../components/common/Input";
-import { ChangeEvent, useEffect, useState } from "react";
-import CustomText from "../../components/common/Text";
+const CustomInput = lazy(() => import('../../components/common/Input'));
+const CustomText = lazy(() => import("../../components/common/Text"));
+const CustomButton = lazy(() => import("../../components/common/Button"));
 import Lock from "../../assets/icons/lock.svg?react";
-import CustomButton from "../../components/common/Button";
 import { validator } from "../../utils/validator";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";

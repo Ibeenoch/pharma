@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import {  FormEvent, useEffect, useState } from "react";
 import Cart from "./Cart";
 import { pageSpacing } from "../../constants/appText";
 import CustomText from "../../components/common/Text";
@@ -55,9 +55,10 @@ import {
 } from "../../types/cart/CartData";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../../components/common/Modal";
-import { updateProductStockQuantity } from "../admin/product/productSlice";
+import { updateHotProductNum, updateProductStockQuantity } from "../admin/product/productSlice";
 import DeliveryOption from "../../components/common/DeliveryOption";
 import { generateRandomCode } from "../../utils/randomCodeGenerator";
+import { UpdatedHotProductProps } from "../../types/product/ProductData";
 
 const CheckOut = () => {
   const { user } = useAppSelector(selectAuth);
@@ -67,142 +68,89 @@ const CheckOut = () => {
   const [paymentProcessing, setPaymentProcessing] = useState<boolean>(false);
   const { cart, total } = useAppSelector(selectCart);
   const { transaction } = useAppSelector(selectOrder);
-  const { status, hasPreviousShippingDetails, shippingDetail } =
-    useAppSelector(selectOrder);
+  const { status, hasPreviousShippingDetails, shippingDetail } =  useAppSelector(selectOrder);
 
-  // // paystack payment logic
-  // const payStackConfig = {
-  //   reference: new Date().getTime().toString(),
-  //   email: user && user.email,
-  //   amount: total * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
-  //   publicKey: import.meta.env.VITE_PAYSTACK_TEST_PUBLIC_KEY,
-  // };
+  const handleTransaction = (transactionDetails:  TransactionProps, hotDealsNum: UpdatedHotProductProps[]) => {
+    dispatch(postTransaction(transactionDetails)).then(() => {
+      // dispatch the cart
+      dispatch(postACart(cart)).then((res) => {
+        // dispatch the order
+        if (res.payload !== undefined && userId) {
+          let cartRes = res.payload as CartOrderedPropsData[];
+          const cartIds: string[] = cartRes.map((c) => c.$id);
+          if (
+            transaction &&
+            transaction.$id &&
+            shippingDetail &&
+            shippingDetail.$id &&
+            cartIds.length > 0
+          ) {
+            const order: OrderProps = {
+              cart: cartIds,
+              userId,
+              transaction: {
+                amount: transaction.amount,
+                customerName: transaction.customerName,
+                imageUrl: transaction.imageUrl,
+                payerId: transaction.payerId,
+                payMethod: transaction.payMethod,
+                productName: transaction.productName,
+                productQty: transaction.productQty,
+                shippingId: transaction.shippingId,
+                shippingStatus: transaction.shippingStatus,
+                shippingType: transaction.shippingType,
+                status: transaction.status,
+                transactionId: transaction.transactionId,
+                transactionRef: transaction.transactionRef,
+                createdAt: transaction.createdAt,
+              },
+              shippingDetails: shippingDetail,
+            };
 
-  // // handle successful transaction
-  // const onSuccess = (reference: PayStackProps) => {
-  //   let images: string[] = [];
-  //   cart.forEach((c) => {
-  //     images.push(c.item.imagesUrl[0]);
-  //   });
-  //   let productNames: string[] = [];
-  //   cart.forEach((c) => {
-  //     productNames.push(c.item.name);
-  //   });
-  //   let productQtys: string[] = [];
-  //   cart.forEach((c) => {
-  //     productQtys.push(String(c.qty));
-  //   });
+            dispatch(postOrder(order)).then((res) => {
+              let response = res.payload as AllOrderResultData;
+              if (
+                response &&
+                response.transaction &&
+                response.cart &&
+                response.shippingDetails
+              ) {
 
-  //   setPaymentProcessing(true);
-  //   if (userId) {
-  //     const transactionDetails: TransactionProps = {
-  //       amount: total,
-  //       payerId: userId,
-  //       status: reference.status,
-  //       transactionId: reference.transaction,
-  //       transactionRef: reference.trxref,
-  //       payMethod: "Paystack",
-  //       customerName: `${user && user.firstName} ${user && user.lastName}`,
-  //       imageUrl: images,
-  //       productName: productNames,
-  //       productQty: productQtys,
-  //       shippingId: `SHIP${generateRandomCode()}`,
-  //       shippingStatus: "Pending",
-  //       shippingType:
-  //         deliveryIndex === 0
-  //           ? "Glovo"
-  //           : deliveryIndex === 1
-  //             ? "ChowDesk"
-  //             : deliveryIndex === 2
-  //               ? "Gokada"
-  //               : "Errand360",
-  //     };
+                setPaymentProcessing(false);
+                // reduce stock quantity
+                cartRes.forEach((c) => {
+                  let qty = c.quantity;
+                  const productId = c.productId;
+                  let productStockUpdataData: UpdateProductCart = {
+                    qty,
+                    productId,
+                  };
+                  dispatch(
+                    updateProductStockQuantity(productStockUpdataData)
+                  ).then(() => {
+                   hotDealsNum.forEach((h) => {
+                     let hotDealData: UpdatedHotProductProps = {isHotDeal: h.isHotDeal, productId: h.productId};
+                     dispatch(updateHotProductNum(hotDealData)).then((res) => {
+                       if (res.payload) {
+                         dispatch(removeAllItemsInCart());
+                         navigate(`/payment_status/${userId}/${response.$id}`);
+                       }
+                     })
+                   })
 
-  //     // dispatch the transaction
-  //     dispatch(postTransaction(transactionDetails)).then(() => {
-  //       // dispatch the cart
-  //       console.log("cart item ", cart);
-  //       dispatch(postACart(cart)).then((res) => {
-  //         // dispatch the order
-  //         if (res.payload !== undefined) {
-  //           let cartRes = res.payload as CartOrderedPropsData[];
-  //           const cartIds: string[] = cartRes.map((c) => c.$id);
-  //           if (
-  //             transaction &&
-  //             transaction.$id &&
-  //             shippingDetail &&
-  //             shippingDetail.$id &&
-  //             cartIds.length > 0
-  //           ) {
-  //             const order: OrderProps = {
-  //               cart: cartIds,
-  //               userId,
-  //               transaction: {
-  //                 amount: transaction.amount,
-  //                 customerName: transaction.customerName,
-  //                 imageUrl: transaction.imageUrl,
-  //                 payerId: transaction.payerId,
-  //                 payMethod: transaction.payMethod,
-  //                 productName: transaction.productName,
-  //                 productQty: transaction.productQty,
-  //                 shippingId: transaction.shippingId,
-  //                 shippingStatus: transaction.shippingStatus,
-  //                 shippingType: transaction.shippingType,
-  //                 status: transaction.status,
-  //                 transactionId: transaction.transactionId,
-  //                 transactionRef: transaction.transactionRef,
-  //                 createdAt: transaction.createdAt,
-  //               },
-  //               shippingDetails: shippingDetail,
-  //             };
-
-  //             dispatch(postOrder(order)).then((res) => {
-  //               let response = res.payload as AllOrderResultData;
-  //               console.log("order payload", response);
-  //               if (
-  //                 response &&
-  //                 response.transaction &&
-  //                 response.cart &&
-  //                 response.shippingDetails
-  //               ) {
-  //                 console.log("order payload inner", response.cart);
-  //                 setPaymentProcessing(false);
-  //                 // reduce stock quantity
-  //                 cartRes.forEach((c) => {
-  //                   let qty = c.quantity;
-  //                   const productId = c.productId;
-  //                   let productStockUpdataData: UpdateProductCart = {
-  //                     qty,
-  //                     productId,
-  //                   };
-  //                   dispatch(
-  //                     updateProductStockQuantity(productStockUpdataData)
-  //                   ).then((res) => {
-  //                     if (res.payload) {
-  //                       console.log("res.payload product update ", res.payload);
-  //                       dispatch(removeAllItemsInCart());
-  //                       navigate(`/payment_status/${userId}/${response.$id}`);
-  //                     }
-  //                   });
-  //                 });
-  //               }
-  //             });
-  //           }
-  //         }
-  //       });
-  //     });
-  //   }
-  // };
-  // handle case when pastack payment modal is closed
-  // const onClose = () => {
-  //   setPaymentProcessing(false);
-  //   // implementation for  whatever you want to do when the Paystack dialog closed.
-  // };
+                   
+                  });
+                });
+              }
+            });
+          }
+        }
+      });
+    });
+  }
 
  const makePaymentThroughPayStack = () => {
-
    const popup = new Paystack()
- 
  popup.checkout({
    key: import.meta.env.VITE_PAYSTACK_TEST_PUBLIC_KEY,
    email: user && user.email,
@@ -221,6 +169,14 @@ const CheckOut = () => {
      cart.forEach((c) => {
        productQtys.push(String(c.qty));
      });
+ 
+     let hotDealsNum: UpdatedHotProductProps[] = [];
+     cart.forEach((c) => {
+      if(c.item.isHotDeal && c.item.$id){
+        hotDealsNum.push({isHotDeal: c.item.isHotDeal, productId: c.item.$id });
+      }
+     });
+
  
      setPaymentProcessing(true);
      if (userId) {
@@ -248,90 +204,16 @@ const CheckOut = () => {
        };
  
        // dispatch the transaction
-       dispatch(postTransaction(transactionDetails)).then(() => {
-         // dispatch the cart
-         console.log("cart item ", cart);
-         dispatch(postACart(cart)).then((res) => {
-          console.log('post a cart res ', res.payload)
-           // dispatch the order
-           if (res.payload !== undefined) {
-             let cartRes = res.payload as CartOrderedPropsData[];
-             const cartIds: string[] = cartRes.map((c) => c.$id);
-             if (
-               transaction &&
-               transaction.$id &&
-               shippingDetail &&
-               shippingDetail.$id &&
-               cartIds.length > 0
-             ) {
-               const order: OrderProps = {
-                 cart: cartIds,
-                 userId,
-                 transaction: {
-                   amount: transaction.amount,
-                   customerName: transaction.customerName,
-                   imageUrl: transaction.imageUrl,
-                   payerId: transaction.payerId,
-                   payMethod: transaction.payMethod,
-                   productName: transaction.productName,
-                   productQty: transaction.productQty,
-                   shippingId: transaction.shippingId,
-                   shippingStatus: transaction.shippingStatus,
-                   shippingType: transaction.shippingType,
-                   status: transaction.status,
-                   transactionId: transaction.transactionId,
-                   transactionRef: transaction.transactionRef,
-                   createdAt: transaction.createdAt,
-                 },
-                 shippingDetails: shippingDetail,
-               };
- 
-               dispatch(postOrder(order)).then((res) => {
-                 let response = res.payload as AllOrderResultData;
-                 console.log("order payload", response);
-                 if (
-                   response &&
-                   response.transaction &&
-                   response.cart &&
-                   response.shippingDetails
-                 ) {
-                   console.log("order payload inner", response.cart);
-                   setPaymentProcessing(false);
-                   // reduce stock quantity
-                   cartRes.forEach((c) => {
-                     let qty = c.quantity;
-                     const productId = c.productId;
-                     let productStockUpdataData: UpdateProductCart = {
-                       qty,
-                       productId,
-                     };
-                     dispatch(
-                       updateProductStockQuantity(productStockUpdataData)
-                     ).then((res) => {
-                       if (res.payload) {
-                         console.log("res.payload product update ", res.payload);
-                         dispatch(removeAllItemsInCart());
-                         navigate(`/payment_status/${userId}/${response.$id}`);
-                       }
-                     });
-                   });
-                 }
-               });
-             }
-           }
-         });
-       });
+       handleTransaction(transactionDetails, hotDealsNum);
+    
      }
    },
-   onLoad: (response) => {
-     console.log("onLoad: ", response);
+   onLoad: () => {
    },
    onCancel: () => {
-     console.log("onCancel");
      setPaymentProcessing(false);
    },
-   onError: (error) => {
-     console.log("Error: ", error.message);
+   onError: () => {
      setPaymentProcessing(false);
    }
  })
@@ -478,6 +360,12 @@ const CheckOut = () => {
         cart.forEach((c) => {
           productQtys.push(String(c.qty));
         });
+
+        let hotDealsNum: UpdatedHotProductProps[] = [];
+        cart.forEach((c) => {
+        c && c.item && c.item.$id && c.item.isHotDeal && hotDealsNum.push({isHotDeal: c.item.isHotDeal, productId: c.item.$id });
+        });
+
         if (userId) {
           let transactionDetails: TransactionProps = {
             transactionId: String(response.transaction_id),
@@ -502,81 +390,9 @@ const CheckOut = () => {
                     : "Errand360",
           };
 
-          // dispatch transaction
-          dispatch(postTransaction(transactionDetails)).then(() => {
-            // dispatch cart
-            dispatch(postACart(cart)).then((res) => {
-              // post the order
-              if (res.payload !== undefined) {
-                let cartRes = res.payload as CartOrderedPropsData[];
-                const cartIds: string[] = cartRes.map((c) => c.$id);
-                if (
-                  transaction &&
-                  transaction.$id &&
-                  shippingDetail &&
-                  shippingDetail.$id
-                ) {
-                  const order: OrderProps = {
-                    cart: cartIds,
-                    userId,
-                    transaction: {
-                      amount: transaction.amount,
-                      customerName: transaction.customerName,
-                      imageUrl: transaction.imageUrl,
-                      payerId: transaction.payerId,
-                      payMethod: transaction.payMethod,
-                      productName: transaction.productName,
-                      productQty: transaction.productQty,
-                      shippingId: transaction.shippingId,
-                      shippingStatus: transaction.shippingStatus,
-                      shippingType: transaction.shippingType,
-                      status: transaction.status,
-                      transactionId: transaction.transactionId,
-                      transactionRef: transaction.transactionRef,
-                      createdAt: transaction.createdAt,
-                    },
-                    shippingDetails: shippingDetail,
-                  };
-                  dispatch(postOrder(order)).then((res) => {
-                    let response = res.payload as AllOrderResultData;
-                    console.log("order payload", response);
-                    if (
-                      response &&
-                      response.transaction &&
-                      response.cart &&
-                      response.shippingDetails
-                    ) {
-                      console.log("order payload inner", response.cart);
-                      setPaymentProcessing(false);
-                      // reduce stock quantity
-                      cartRes.forEach((c) => {
-                        let qty = c.quantity;
-                        const productId = c.productId;
-                        let productStockUpdataData: UpdateProductCart = {
-                          qty,
-                          productId,
-                        };
-                        dispatch(
-                          updateProductStockQuantity(productStockUpdataData)
-                        ).then((res) => {
-                          if (res.payload) {
-                            console.log(
-                              "res.payload product update ",
-                              res.payload
-                            );
-                            dispatch(removeAllItemsInCart());
-                            navigate(
-                              `/payment_status/${userId}/${response.$id}`
-                            );
-                          }
-                        });
-                      });
-                    }
-                  });
-                }
-              }
-            });
-          });
+            // dispatch the transaction
+            handleTransaction(transactionDetails, hotDealsNum);
+          
         }
       },
       onclose: function () {
@@ -606,7 +422,6 @@ const CheckOut = () => {
   };
 
   const handleShippingDetails = (shippingID?: string) => {
-    console.log("hello");
     const firstNameValid = validator(firstName, "others");
     const lastNameValid = validator(lastName, "others");
     const phoneValid = validator(phone, "phone");
@@ -657,7 +472,7 @@ const CheckOut = () => {
         shippingId: shippingID,
       };
       dispatch(updateShippingDetails(updateShippindData)).then((res) => {
-        console.log("res update ", res.payload);
+
         res &&
           res.payload &&
           res.payload !== undefined &&
@@ -678,7 +493,7 @@ const CheckOut = () => {
         email: user && user.email,
       };
       dispatch(postShippingDetails(shippingDetails)).then((res) => {
-        console.log("posted ", res.payload);
+
         res &&
           res.payload &&
           res.payload !== undefined &&

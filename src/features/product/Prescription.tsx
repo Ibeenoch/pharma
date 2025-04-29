@@ -5,6 +5,8 @@ import PrescriptionCard from "../../components/home/PrescriptionCard";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { fetchAllPrescriptions, selectproductAdmin } from "../admin/product/productSlice";
 import { PrescriptionProps } from "../../types/product/ProductData";
+import { setNavIndexLink } from "../auth/authSlice";
+import { links } from "../../utils/listLink";
 
 const Prescription = () => {
   const [searchDrug, setSearchDrug] = useState<string>("");
@@ -42,6 +44,14 @@ const Prescription = () => {
         e.preventDefault();
         runSearch();
      }
+
+       useEffect(() => {
+           // when the user visit the page move the page to the top
+           window.scrollTo(0,0);
+           // set the correct navbar active text
+           dispatch(setNavIndexLink({ name: links[2].name, index: 2 }));
+        },[])
+        
   return (
     <main className=" mt-20 mb-1">
       <form  onSubmit={handleFilterPrescription} className="md:px-[25%]">

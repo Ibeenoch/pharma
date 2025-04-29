@@ -8,6 +8,7 @@ import Facebook from "../../assets/icons/facebook.svg?react";
 import Twitter from "../../assets/icons/twitter.svg?react";
 import Instagram from "../../assets/icons/instagram.svg?react";
 import Whatsapp from "../../assets/icons/whatsapp.svg?react";
+import Love from "../../assets/icons/heart-fill-3.svg?react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { selectCart, updateShowModal } from "../../features/cart/cartSlice";
 import AnimatedToast from "../common/AnimatedToast";
@@ -22,7 +23,7 @@ const Footer = () => {
     if (showModal) {
       timer = setTimeout(() => {
         dispatch(updateShowModal(false));
-      }, 1000);
+      }, 3000);
     }
 
     return () => clearTimeout(timer);
@@ -30,8 +31,7 @@ const Footer = () => {
 
   const validateEmail = (email: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  // const validatePhone = (phone: string) => /^\+?[0-9]{10,14}$/.test(phone);
-  // const validatePassword = (password: string) => password.length >= 6;
+
 
   const socialIcons = [Facebook, Twitter, Instagram, Whatsapp];
   const siteMap = [
@@ -50,14 +50,18 @@ const Footer = () => {
   return (
     <footer className="bg-black p-8">
       {showModal && (
-        <AnimatedToast
+       
+      <div className="fixed top-50 notification p-2 ">
+      <AnimatedToast
           start={showModal}
           text={`${isCart ? "Added to Cart" : "Added to Favorite"}`}
           IconType={`${isCart ? "cart" : "fave"}`}
-        />
+        /> 
+      </div>
       )}
 
-      <div className="grid grid-cols-2 lg:grid-cols-3 border-b border-gray-500 pb-4">
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-b border-gray-500 pb-4">
         <article>
           <CustomText
             text="Resources"
@@ -114,6 +118,7 @@ const Footer = () => {
               type="email"
               value={email}
               onChange={setEmail}
+              required={true}
               validate={validateEmail}
               placeholder="Your Email Address"
               prefixIcon={<Email className="w-4 h-4" />}
@@ -122,16 +127,15 @@ const Footer = () => {
                   ? "Enter a valid email address"
                   : ""
               }
-              showSideBtn={true}
-              sideBtn={
-                <CustomButton
+              showFullWidth={true}
+            />
+             <CustomButton
                   text="Subscribe"
                   textSize="small"
                   weightType="normal"
                   defaultBorderColor="border border-white"
+                  fullwidth={true}
                 />
-              }
-            />
           </form>
 
           <div className="my-3">
@@ -151,8 +155,8 @@ const Footer = () => {
           </div>
         </article>
       </div>
-      <p className="text-white text-[9px] pt-2 text-center">
-        &copy; 2024 ChiMark Pharmacy. All rights reserved.
+      <p className="text-white text-[9px] pt-2 text-center flex justify-center items-center">
+        &copy; 2025. Made with <span className="px-1"><Love className="w-4 h-4 text-red-500" /> </span> by Ibewunjo Enoch for ChiMark Pharmacy. All rights reserved.
       </p>
     </footer>
   );

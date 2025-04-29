@@ -17,8 +17,9 @@ const AllProduct = () => {
     useAppSelector(selectproductAdmin);
 
   useEffect(() => {
-    user &&
-      user.userId &&
+    if(!productAdmin){
+      dispatch(fetchAllUserProduct())
+    };
       hasFetchAllProduct === false &&
       dispatch(fetchAllUserProduct());
   }, [user, hasFetchAllProduct]);

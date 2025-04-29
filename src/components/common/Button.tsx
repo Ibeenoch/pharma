@@ -80,7 +80,7 @@ const CustomButton: React.FC<ButtonProps> = ({
       className={`group ${defaultBorderColor ? defaultBorderColor : ""} ${
         defaultBackgroundColor !== "default"
           ? defaultBackgroundColor
-          : "bg-black hover:bg-white hover:text-black hover:border hover:border-black"
+          : "bg-black hover:bg-white hover:text-black border border-black hover:border hover:border-black"
       }  ${
         defaultTextColor === "default" ? "text-white" : defaultTextColor
       } text-md font-normal ${

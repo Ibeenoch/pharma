@@ -40,7 +40,7 @@ const SearchResult = () => {
   return (
     <main className="mx-auto">
       <section
-        className={`mt-16 mx-auto ${productSearched.length > 4 ? "h-full" : "h-screen"} w-[60%] p-4`}
+        className={`mt-16 mx-auto ${productSearched.length > 4 ? "h-full" : "h-screen"} w-full lg:w-[60%] p-4`}
       >
         <div className="p-2 bg-white">
           <CustomText
@@ -51,7 +51,7 @@ const SearchResult = () => {
           />
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {/* map through cart item  */}
           {productSearched.map(
             (p) =>

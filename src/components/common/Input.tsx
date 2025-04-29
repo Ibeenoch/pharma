@@ -76,7 +76,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           {required && <p className="text-xs text-amber-500 font-bold">*</p>}
         </label>
       )}
-      <div className="flex items-center">
+      <div className={`flex items-center`}>
         <div
           className={`flex items-center ${
             showFullWidth ? "w-full" : "w-max"
@@ -115,8 +115,13 @@ const CustomInput: React.FC<CustomInputProps> = ({
               />
             ))}
         </div>
+        <div className="hidden md:block">
         {showSideBtn && sideBtn}
+        </div>
       </div>
+      <div className="block w-[194px] md:hidden">
+        {showSideBtn && sideBtn}
+        </div>
       {hasError && (
         <div className="pt-[0.5px] flex gap-1 item-center">
           <div className="mt-[1.8px]">

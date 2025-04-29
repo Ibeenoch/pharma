@@ -1,8 +1,10 @@
 import { COMPANY_NAME, MARGIN_TOP } from "../../constants/appText";
 import manWalk from "../../assets/images/1547272465.png";
-import CustomInput from "../../components/common/Input";
 import { lazy, useEffect, useState } from "react";
+const CustomInput = lazy(() => import('../../components/common/Input'));
 const CustomText = lazy(() => import("../../components/common/Text"));
+const CustomButton = lazy(() => import("../../components/common/Button"));
+const CustomSelect = lazy(() => import("../../components/common/Select"));
 import Email from "../../assets/icons/email.svg?react";
 import Google from "../../assets/icons/google-colored.svg?react";
 import Facebook from "../../assets/icons/facebook-colored.svg?react";
@@ -10,10 +12,8 @@ import User from "../../assets/icons/user.svg?react";
 import Date from "../../assets/icons/date.svg?react";
 import Gender from "../../assets/icons/gender.svg?react";
 import Lock from "../../assets/icons/lock.svg?react";
-const CustomButton = lazy(() => import("../../components/common/Button"));
 import { useNavigate } from "react-router-dom";
 import { validator } from "../../utils/validator";
-import CustomSelect from "../../components/common/Select";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import {
   checkIfUserExist,

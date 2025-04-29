@@ -20,6 +20,7 @@ import noprofileImage from "../../assets/images/noprofileimage.png";
 import Logout from "../common/Logout";
 import { selectCart } from "../../features/cart/cartSlice";
 import WishListItems from "../home/WishlistItems";
+import { fetchAllUserProduct, selectproductAdmin } from "../../features/admin/product/productSlice";
 
 const Header = () => {
   const [showCart, setShowCart] = useState<boolean>(false);
@@ -27,10 +28,20 @@ const Header = () => {
   const [scrolled, setScrolled] = useState<boolean>(false);
   const { user } = useAppSelector(selectAuth);
   const { cart, wishlist } = useAppSelector(selectCart);
+  const { productAdmin, hasFetchAllProduct } = useAppSelector(selectproductAdmin);
+
+    // fetch all the products from the db
+    useEffect(() => {
+      if(!productAdmin){
+        dispatch(fetchAllUserProduct())
+      };
+        hasFetchAllProduct === false &&
+        dispatch(fetchAllUserProduct())
+    }, [hasFetchAllProduct]);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
+// animated the header to the top when user scrolls 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -40,11 +51,12 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // toggle cart and favorite card
   const displayShowCart = () => setShowCart(true);
   const displayShowWishlist = () => setShowWishlist(true);
   const hideShowCart = () => setShowCart(false);
   const hideShowWishList = () => setShowWishlist(false);
-
+// navigate to the login or resgister page or logout
   const handleLogin = () => {
     navigate("/login");
   };
@@ -56,6 +68,7 @@ const Header = () => {
       .then(() => dispatch(resetUserState()))
       .then(() => navigate("/login"));
   };
+  // handle if the user should go to their profile page or dashboard depending on their role
   const handleProfile = () => {
     if (user && user.role && user.role?.toLowerCase() === "admin") {
       navigate(`/admin/dashboard/${user && user.userId}`);

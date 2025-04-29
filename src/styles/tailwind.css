@@ -37,7 +37,7 @@
   .animate-on-scroll {
     animation: appear 5s linear;
     animation-timeline: view();
-    animation-range: entry 0 cover 40%;
+    animation-range: entry 0 cover 20%;
   }
 
   @keyframes appear {
@@ -51,6 +51,27 @@
     }
   }
 
-  /* responsive table  */
+  /* notification  */
+    .notification{
+      animation: movenotification 3s linear;
+    }
 
+    @keyframes movenotification {
+      0%{
+        left: -100vw;
+        opacity: 0;
+      }
+      10%{
+        left: 20vw;
+        opacity: 1;
+      }
+      90%{
+        left: 20vw;
+        opacity: 1;
+      }
+      100%{
+        left: 120vw;
+        opacity: 0;
+      }
+    }
 }

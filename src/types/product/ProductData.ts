@@ -11,7 +11,7 @@ export interface ProductDataProps {
   expirationDate?: string;
   productSerialNo?: string;
   additionalInfo?: string;
-  isHotDeal?: boolean;
+  isHotDeal?: number;
   imagesUrl: string[];
   createdAt?: string;
 }
@@ -29,7 +29,7 @@ export interface CartProductDataProps {
   expirationDate?: string;
   productSerialNo?: string;
   additionalInfo?: string;
-  isHotDeal?: boolean;
+  isHotDeal?: number;
   imagesUrl: string[];
   createdAt?: string;
   subtotal: number;
@@ -102,5 +102,10 @@ export interface PrescriptionTableProps {
   dosage: string;
   ageRange: string;
   $id: string;
+}
+
+export interface UpdatedHotProductProps{
+  productId: string;
+  isHotDeal: number;
 }
 

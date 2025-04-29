@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {  createSlice, } from "@reduxjs/toolkit";
 import { RootState } from "../../redux/store";
 import { ProductDataProps } from "../../types/product/ProductData";
 
@@ -19,7 +19,7 @@ const initialState: productState = {
     additionalInfo: "",
     discount: 0,
     expirationDate: "",
-    isHotDeal: false,
+    isHotDeal: 0,
     productSerialNo: "",
     creator: '',
     imagesUrl: []

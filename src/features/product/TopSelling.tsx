@@ -1,29 +1,22 @@
-import { useNavigate } from "react-router-dom";
-import CustomText from "../../components/common/Text";
-import TwoTextSpan from "../../components/home/TwoTextSpan";
-import { useAppSelector } from "../../hooks/reduxHooks";
-import { selectproductAdmin } from "../admin/product/productSlice";
+import { lazy } from "react";
+const TwoTextSpan = lazy(() =>import("../../components/home/TwoTextSpan"));
+const CustomText = lazy(() =>import("../../components/common/Text"));
+import { CommonProductProps } from "./Category";
+import { handleHomeNavToProductDetails, navToAllProduct } from "../../helpers/productFuncHelper";
 
-const TopSelling = () => {
-  const navigate = useNavigate();
-  const { productAdmin } = useAppSelector(selectproductAdmin);
-  console.log("topselling ", productAdmin);
-  const viewProductDetails = (id: string) => {
-    navigate(`/product_details/${id}`);
-  };
+const TopSelling: React.FC<CommonProductProps> = ({ navigate, productAdmin}) => {
+
 
   return (
-    <section className="border-b border-black mb-2 pb-4 animate-on-scroll">
-      <TwoTextSpan leftText="Top Selling" />
+    <section className="border-b border-black mb-2 pb-4 animate-on-scroll px-4 sm:px-0">
+      <TwoTextSpan leftText="Top Selling" onClick={() => navToAllProduct(navigate)} />
 
       <article className="flex items-center lg:grid lg:grid-cols-7 gap-4 overflow-x-auto">
         {productAdmin &&
           Array.isArray(productAdmin) &&
           productAdmin.map((item, index) => (
             <div
-              onClick={() => {
-                if (item?.$id) viewProductDetails(item?.$id);
-              }}
+              onClick={() =>{ item && item.$id && handleHomeNavToProductDetails(navigate, item.$id)}}
               className="cursor-pointer"
               key={index}
             >

@@ -1,11 +1,14 @@
 import CustomText from "../common/Text";
 import CustomInput from "../common/Input";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { validator } from "../../utils/validator";
 import User from "../../assets/icons/user.svg?react";
 import Email from "../../assets/icons/email.svg?react";
 import Phone from "../../assets/icons/mobile-phone.svg?react";
 import CustomButton from "../common/Button";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { setNavIndexLink } from "../../features/auth/authSlice";
+import { links } from "../../utils/listLink";
 
 const Contact = () => {
   const [firstName, setFirstNamel] = useState<string>("");
@@ -20,6 +23,7 @@ const Contact = () => {
     phone?: string;
     message?: string;
   }>({});
+  const dispatch = useAppDispatch();
 
   const handleFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,13 +54,20 @@ const Contact = () => {
     console.log(firstName, lastName, email, phone, message);
   };
 
+    useEffect(() => {
+        // when the user visit the page move the page to the top
+        window.scrollTo(0,0);
+        // set the correct navbar active text
+        dispatch(setNavIndexLink({ name: links[4].name, index: 4 }));
+      },[])
+
   return (
-    <section className="mt-20 w-[60%] mx-auto">
+    <section className="mt-20 w-full p-4 lg:w-[60%] mx-auto">
       <CustomText
         text="Contact our team"
         textType="large"
         weightType="semibold"
-        extraStyle="my-3 text-center"
+        extraStyle="mt-4  text-center"
       />
       <CustomText
         text="Got any questions about the product, service or scaling on our platform? We're here to help. Chat to our friendly team 24/7 and get onboard in less than 5 minutes."
@@ -65,7 +76,7 @@ const Contact = () => {
         extraStyle="my-3 text-center"
       />
       <form onSubmit={handleFormSubmit} className="">
-        <div className="flex items-center gap-3">
+        <div className="block sm:flex items-center gap-3">
           <CustomInput
             prefixIcon={<User className="w-4 h-4" />}
             label="First Name"

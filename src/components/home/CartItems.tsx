@@ -73,11 +73,16 @@ const CartItems: React.FC<CartItemsProps> = ({
   };
 
   const proceedToCheckOut = () => {
-    user &&
-      user.userId &&
-      hasPreviousShippingDetails === false &&
-      dispatch(getShippingDetails(user && user.userId));
-    navigate(`/checkout/${user && user.userId}`);
+    if(!user || !user.userId){ 
+      navigate('/login')
+    } else{
+
+      user &&
+        user.userId &&
+        hasPreviousShippingDetails === false &&
+        dispatch(getShippingDetails(user && user.userId));
+      navigate(`/checkout/${user && user.userId}`);
+    }
   };
   return (
     <section

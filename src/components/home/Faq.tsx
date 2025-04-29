@@ -3,10 +3,11 @@ import Plus from "../../assets/icons/plus-slim.svg?react";
 import Cancel from "../../assets/icons/cancel-slim.svg?react";
 import { useEffect, useState } from "react";
 import CustomButton from "../common/Button";
+import { useNavigate } from "react-router-dom";
 
 const Faq = () => {
   const [indexClicked, setIndexClicked] = useState<number | null>();
-
+  const navigate = useNavigate();
   const handleIndexClicked = (index: number): void => {
     setIndexClicked(index);
   };
@@ -114,9 +115,7 @@ const Faq = () => {
       <div className="flex justify-center my-2">
         <CustomButton
           text="Get in touch"
-          defaultBackgroundColor="bg-white hover:bg-black "
-          defaultBorderColor="border border-black"
-          defaultTextColor="text-black hover:text-white"
+          onClick={ () =>navigate('/contact')}
           borderRadiusType="threecurved"
         />
       </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CustomText from "../common/Text";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/reduxHooks";
@@ -33,8 +33,14 @@ const SearchResult: React.FC<SearchResultProps> = ({
     e.stopPropagation();
     setShowResult(false);
   };
+
+    useEffect(() => {
+      // when the user visit the page move the page to the top
+      window.scrollTo(0,0);
+
+    },[])
   return (
-    <section className="absolute top-30 flex justify-center overflow-y-auto">
+    <section className="absolute top-30 flex justify-center overflow-y-auto max-h-[70vh]">
       <div className="mx-auto bg-[#fbfcf8] px-2 overflow-y-auto">
         {searchResultArr.length > 0 && (
           <div className="p-2 bg-white mt-2 flex justify-between items-center">

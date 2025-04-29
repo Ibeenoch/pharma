@@ -1,7 +1,7 @@
 import { ID } from "node-appwrite";
 import { database, storage } from "../../../lib/appwriteConfig";
 import { Query } from "appwrite";
-import { PrescriptionProps, ProductDataProps } from "../../../types/product/ProductData";
+import { PrescriptionProps, ProductDataProps, UpdatedHotProductProps } from "../../../types/product/ProductData";
 import { UpdateProductCart } from "../../../types/cart/CartData";
 
 export const createProduct = async (productData: FormData) => {
@@ -56,7 +56,6 @@ export const createProduct = async (productData: FormData) => {
       productImages.push(res);
     }
 
-    console.log("product imageFiles", productImages);
 
     const productCreation = await database.createDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
@@ -201,6 +200,41 @@ export const updateProduct = async (productData: FormData) => {
   }
 };
 
+export const updateHotProduct = async (updateHotProductData: UpdatedHotProductProps) => {
+  try {
+  
+    let increaseHotDeal = updateHotProductData.isHotDeal + 1;
+    const productUpdate = await database.updateDocument(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
+      updateHotProductData.productId,
+      {
+        isHotDeal: increaseHotDeal
+       
+      }
+    );
+
+    return {
+      name: productUpdate.name,
+      $id: productUpdate.$id,
+      price: productUpdate.price,
+      creator: productUpdate.creator,
+      description: productUpdate.description,
+      quantity: productUpdate.quantity,
+      discount: productUpdate.discount,
+      category: productUpdate.category,
+      brand: productUpdate.brand,
+      expirationDate: productUpdate.expirationDate,
+      productSerialNo: productUpdate.productSerialNo,
+      additionalInfo: productUpdate.additionalInfo,
+      imagesUrl: productUpdate.imagesUrl,
+      isHotDeal: productUpdate.isHotDeal,
+    } as ProductDataProps;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const deleteProduct = async (productId: string) => {
   try {
     await database.deleteDocument(
@@ -245,6 +279,7 @@ export const allProduct = async () => {
         createdAt: product?.$createdAt,
       })
     );
+
     return allProductList;
   } catch (error) {
     throw error;

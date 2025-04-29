@@ -15,7 +15,7 @@ import { createMigrate, persistReducer } from "redux-persist";
 // “Hey, this version of my state is version 1. If a user's saved state is older than this, run a migration to update it.”
 
 const migrations = {
-  6.8: (state: any) => {
+  6.9: (state: any) => {
     return {
       ...state,
       productAdmin: {
@@ -122,7 +122,7 @@ const migrations = {
 const persistConfig = {
   key: "root",
   storage,
-  version: 6.8,
+  version: 6.9,
   migrate: createMigrate(migrations, { debug: false }),
   // blackList: ["auth", "checkout"],
 };

@@ -51,7 +51,7 @@ const Cart: React.FC<CartProps> = ({
 
   useEffect(() => {
     dispatch(calculateSubTotal());
-    dispatch(calculateTotal(0));
+    dispatch(calculateTotal());
   }, [subTotal]);
 
   const removeItemFromCart = (id: string) => {
@@ -61,11 +61,16 @@ const Cart: React.FC<CartProps> = ({
   };
 
   const proceedCheckOutPage = () => {
-    user &&
-      user.userId &&
-      hasPreviousShippingDetails === false &&
-      dispatch(getShippingDetails(user && user.userId));
-    navigate(`/checkout/${user && user.userId}`);
+    if(!user || !user.userId){ 
+      navigate('/login')
+    }else{
+
+      user &&
+        user.userId &&
+        hasPreviousShippingDetails === false &&
+        dispatch(getShippingDetails(user && user.userId));
+      navigate(`/checkout/${user && user.userId}`);
+    }
   };
 
   return (

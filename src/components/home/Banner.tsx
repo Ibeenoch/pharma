@@ -1,6 +1,7 @@
+import { lazy } from "react";
+const CustomText = lazy(() =>import("../../components/common/Text"));
 import prescription from "../../assets/images/prescription.png";
 import CustomButton from "../common/Button";
-import CustomText from "../common/Text";
 
 const Banner = () => {
   return (

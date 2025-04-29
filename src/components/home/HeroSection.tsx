@@ -4,10 +4,13 @@ import CustomButton from "../common/Button";
 import MedCross from "../../assets/icons/medical-cross.svg?react";
 import { MARGIN_TOP } from "../../constants/appText";
 import NumberCount from "./NumberCount";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction } from "react-router-dom";
 
-const HeroSection = () => {
-  const navigate = useNavigate();
+interface HeroSectionProps {
+  navigate: NavigateFunction;
+}
+
+const HeroSection: React.FC<HeroSectionProps> = ({ navigate }) => {
   const handleGetStarted = () => {
     navigate("/allProduct");
   };

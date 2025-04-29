@@ -8,8 +8,19 @@ import Employee from "../../assets/icons/scientist-dark-skin-tone.svg?react";
 import Customers from "../../assets/icons/client.svg?react";
 import UseRevealer from "../common/animations/UseRevealer";
 import NumberCount from "../home/NumberCount";
+import { useEffect } from "react";
+import { links } from "../../utils/listLink";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { setNavIndexLink } from "../../features/auth/authSlice";
 
 const About = () => {
+  const dispatch = useAppDispatch();
+    useEffect(() => {
+        // when the user visit the page move the page to the top
+        window.scrollTo(0,0);
+        // set the correct navbar active text
+        dispatch(setNavIndexLink({ name: links[3].name, index: 3 }));
+      },[])
   const aboutListIcons = [
     { Icon: WareHouse, text: "12+ Warehouses" },
     { Icon: Employee, text: "7+ Pharmacist" },

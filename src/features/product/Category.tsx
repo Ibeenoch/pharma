@@ -1,55 +1,48 @@
-import CustomText from "../../components/common/Text";
-import painKiller1 from "../../assets/images/pr1.png";
-import fever1 from "../../assets/images/anti11.png";
-import antibiotics1 from "../../assets/images/anti13.png";
-import coughCold1 from "../../assets/images/cc3.png";
-import chronic1 from "../../assets/images/cc5.png";
-import vitMin1 from "../../assets/images/anti18.png";
-import famplan1 from "../../assets/images/pr7.png";
-import TwoTextSpan from "../../components/home/TwoTextSpan";
+import { lazy } from "react";
+const TwoTextSpan = lazy(() =>import("../../components/home/TwoTextSpan"));
+const CustomText = lazy(() =>import("../../components/common/Text"));
+import { NavigateFunction,  } from "react-router-dom";
+import { ProductDataProps } from "../../types/product/ProductData";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { setProductCategoryName } from "../admin/product/productSlice";
+import { navToAllProduct } from "../../helpers/productFuncHelper";
 
-const Category = () => {
-  const productImages = [
-    painKiller1,
-    fever1,
-    antibiotics1,
-    coughCold1,
-    chronic1,
-    vitMin1,
-    famplan1,
-  ];
-  const categories = [
-    "Pain Killers",
-    "Fever & Malarial",
-    "Antibiotics",
-    "Anti-inflammatory",
-    "Cough & Cold",
-    "Chronic Diseases",
-    "Family Planning",
-    "Vitamins & Supplements",
-    "Medical Accessories",
-    "Beauty & Grooming",
-    "Other Ailments",
-    "Reproductive Health",
-  ];
+export interface CommonProductProps {
+  navigate: NavigateFunction;
+  productAdmin: ProductDataProps[];
+}
+
+const Category: React.FC<CommonProductProps> = ({  productAdmin, navigate }) => {
+  const dispatch = useAppDispatch();
+    const productCategory = productAdmin && Array.isArray(productAdmin) ?  Array.from(
+      new Map(
+        productAdmin.map((p) => [p.category, { category: p.category, image: p.imagesUrl[0], id: p.$id}])
+      ).values()
+    ).slice(0, 7) : [];
+
+const handleCategoryNav = (name: string) => {
+  dispatch(setProductCategoryName(name));
+  navigate(`/allProduct`);
+}
+          
   return (
-    <section className="border-b border-black mb-2 pb-4 animate-on-scroll">
-      <TwoTextSpan leftText="Categories" />
+    <section className="border-b border-black mb-2 pb-4 animate-on-scroll px-4 sm:px-0">
+      <TwoTextSpan leftText="Categories"  onClick={() => navToAllProduct(navigate)} />
 
       <article className="flex items-center lg:grid lg:grid-cols-7 gap-4 overflow-x-auto">
 
-        {productImages.map((item, index) => (
-          <div className="cursor-pointer" key={index}>
+        {productCategory && Array.isArray(productCategory) && productCategory.map((item, index) => (
+          <div onClick={() =>handleCategoryNav( item.category)} className="cursor-pointer" key={index}>
             <div className="h-22 w-20 md:h-30 md:w-28 lg:h-38 lg:w-32 xl:h-48 xl:w-42 flex items-center justify-center rounded-xl p-2 bg-white mb-4">
               <img
-                src={item}
+                src={item.image}
                 alt="medication categories"
                 className="w-46 h-auto object-fill"
               />
             </div>
             <article>
               <CustomText
-                text={categories[index]}
+                text={item.category}
                 textType="small"
                 weightType="bold"
               />

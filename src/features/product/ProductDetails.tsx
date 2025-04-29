@@ -1,21 +1,23 @@
+import { useState, lazy, useEffect } from "react";
 import { MARGIN_TOP } from "../../constants/appText";
 import img3 from "../../assets/images/reco4.png";
-import LargeImageSize from "../../components/common/LargeImageSize";
-import PreviewImage from "../../components/common/PreviewImage";
-import CustomText from "../../components/common/Text";
+const LargeImageSize = lazy(() => import("../../components/common/LargeImageSize"));
+const PreviewImage = lazy(() => import("../../components/common/PreviewImage"));
+const CustomText = lazy(() => import("../../components/common/Text"));
+const CustomButton = lazy(() => import("../../components/common/Button"));
+const SingleProduct = lazy(() => import("../../components/product/SingleProduct"));
+const IconShowList = lazy(() => import("../../components/product/IconShowList"));
+const QtyProductUpdateBtn = lazy(() => import("../../components/product/QtyProductUpdateBtn"));
+const QtyUpdateBtn = lazy(() => import("../../components/product/QtyUpdateBtn"));
 import Clock from "../../assets/icons/clock.svg?react";
 import Quantity from "../../assets/icons/product.svg?react";
-import CustomButton from "../../components/common/Button";
 import Heart from "../../assets/icons/heart.svg?react";
 import Cart from "../../assets/icons/cart-fill-white.svg?react";
-import SingleProduct from "../../components/product/SingleProduct";
-import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { selectproductAdmin } from "../admin/product/productSlice";
 import Brand from '../../assets/icons/brand-unity3d.svg?react';
 import Category from '../../assets/icons/category.svg?react';
-import IconShowList from "../../components/product/IconShowList";
 import {
   addToCart,
   addTowishlist,
@@ -30,8 +32,6 @@ import {
   CartProductDataProps,
   cartProps,
 } from "../../types/product/ProductData";
-import QtyProductUpdateBtn from "../../components/product/QtyProductUpdateBtn";
-import QtyUpdateBtn from "../../components/product/QtyUpdateBtn";
 
 const ProductDetails = () => {
   const [qty, setQty] = useState<number>(1);
@@ -65,6 +65,10 @@ const ProductDetails = () => {
           (product.item.imagesUrl[index] as string)
       );
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
 
   const addItemToCart = (id: number) => {
     // id number is the number of item qty to be added not the id itself
@@ -167,7 +171,7 @@ const ProductDetails = () => {
             weightType="medium"
           />
           <CustomText
-            text="12 Self-dissolving tablets"
+            text={product && product.item && product.item.category}
             textType="small"
             weightType="thin"
             extraStyle="text-gray-500 mb-3"
@@ -339,6 +343,7 @@ const ProductDetails = () => {
                 showIcon={true}
                 BtnIcon={Cart}
                 onClick={() => addItemToCart(qty)}
+                className="mx-2 sm:mx-0"
               />
             )}
           </div>

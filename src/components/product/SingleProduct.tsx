@@ -36,7 +36,12 @@ const SingleProduct: React.FC<SingleProductProps> = ({
         <img src={productImage} alt="cart image" className="w-48 h-auto" />
       </div>
       <div>
-        <CustomText text={textTitle} textType="medium" weightType="bold" />
+        <div className="md:hidden">
+           <CustomText text={textTitle && textTitle.length > 10 ? textTitle.slice(0, 10) + '...' : textTitle} textType="medium" weightType="bold" />
+        </div>
+        <div className="hidden md:block">
+           <CustomText text={textTitle} textType="medium" weightType="bold" />
+        </div>
         <CustomText
           text={textDesc}
           textType="small"

@@ -39,7 +39,7 @@ const SearchBar = () => {
         value={searchWord}
         onChange={handleSearchChange}
         placeholder="Search for any Product or Brand..."
-        className="hidden lg:flex w-full text-[12px] px-4 py-2 border border-gray-300 focus:border-gray-300 outline outline-gray-300 placeholder:text-xs"
+        className="flex w-full text-[12px] px-4 py-2 border border-gray-300 focus:border-gray-300 outline outline-gray-300 placeholder:text-xs"
       />
       <button
         type="submit"
