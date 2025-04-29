@@ -28,6 +28,9 @@ import vixa from "../../../assets/images/vixaImg.png";
 import zolon from "../../../assets/images/zolonImg.png";
 import gsk from '../../../assets/images/ng-glaxos-logo.png';
 import pfizer from '../../../assets/images/pfizer.png';
+import bentos from '../../../assets/images/bentos.png';
+import chrisEjik from '../../../assets/images/chr.png';
+import bioPharma from '../../../assets/images/biopha.png';
 
 export const navLists = [
   { tabName: "All Product", route: "/admin/product/all" },
@@ -444,18 +447,18 @@ export const productBrands = [
   {
     value: "BiopharmaNigeriaLimited",
     label: "Biopharma Nigeria Limited",
-    companyImage: emzor,
+    companyImage: bioPharma,
   },
   
   {
     value: "BentosPharmaceuticalProductsLimited",
     label: "Bentos Pharmaceutical Products Limited",
-    companyImage: emzor,
+    companyImage: bentos,
   },
   {
     value: "ChrisEjikPharmaceutical Ltd",
     label: "Chris Ejik Pharmaceutical Ltd",
-    companyImage: emzor,
+    companyImage: chrisEjik,
   },
   {
     value: "pfizer",

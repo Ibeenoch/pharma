@@ -133,6 +133,17 @@ export const searchedProduct = createAsyncThunk(
   }
 );
 
+export const searchedProductBrand = createAsyncThunk(
+  "product/searchedProductBrand",
+  async (searchedKey: string, { rejectWithValue }) => {
+    try {
+      return await api.searchProductBrand(searchedKey);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+);
+
 export const deleteproduct = createAsyncThunk(
   "product/deleteproduct",
   async (projectId: string, { rejectWithValue }) => {
@@ -326,6 +337,18 @@ const productAdminSlice = createSlice({
         }
       })
       .addCase(searchedProduct.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(searchedProductBrand.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(searchedProductBrand.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload !== undefined) {
+          state.productSearched = action.payload;
+        }
+      })
+      .addCase(searchedProductBrand.rejected, (state) => {
         state.status = "failure";
       });
   },

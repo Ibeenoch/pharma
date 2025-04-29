@@ -1,10 +1,15 @@
+import { lazy, useEffect } from "react";
 import CustomText from "../../components/common/Text";
 import Trash from "../../assets/icons/trash-bin.svg?react";
 import Lock from "../../assets/icons/lock.svg?react";
-import IconAndText from "../../components/cart/IconAndText";
-import CartRowItem from "../../components/cart/CartRowItem";
-import CustomButton from "../../components/common/Button";
-import CartTwoText from "../../components/cart/CartTwoText";
+const IconAndText = lazy(() => import("../../components/cart/IconAndText"));
+const CartRowItem = lazy(() => import("../../components/cart/CartRowItem"));
+const CustomButton = lazy(() => import("../../components/common/Button"));
+const CartTwoText = lazy(() => import("../../components/cart/CartTwoText"));
+// import IconAndText from "../../components/cart/IconAndText";
+// import CartRowItem from "../../components/cart/CartRowItem";
+// import CustomButton from "../../components/common/Button";
+// import CartTwoText from "../../components/cart/CartTwoText";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import {
   calculateSubTotal,
@@ -16,7 +21,6 @@ import {
   removeFromCart,
   selectCart,
 } from "./cartSlice";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { selectAuth } from "../auth/authSlice";
 import { getShippingDetails, selectOrder } from "../order/orderSlice";

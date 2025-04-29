@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import cards from "../../assets/images/cards.png";
 import CustomButton from "../common/Button";
 import CustomText from "../common/Text";
 
 const DiscountBanner = () => {
+  const navigate = useNavigate();
   return (
     <div
       className={`w-full h-[350px] my-8 bg-amber-500  sm:grid sm:grid-cols-2 items-center bg-opacity-50 p-8 animate-on-scroll`}
@@ -17,7 +19,7 @@ const DiscountBanner = () => {
           weightType="medium"
           extraStyle="mb-4"
         />
-        <CustomButton text="Shop Now" textSize="large" showArrow={true} />
+        <CustomButton text="Shop Now" textSize="large" showArrow={true} onClick={() => navigate('/allproduct')}/>
       </div>
       <div className="pb-4">
         <img src={cards} alt="discount card image" className="object-fit" />

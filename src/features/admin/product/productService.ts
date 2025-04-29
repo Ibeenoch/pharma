@@ -369,6 +369,43 @@ export const searchProduct = async (searchTerm: string) => {
   }
 };
 
+export const searchProductBrand = async (searchTerm: string) => {
+  try {
+    let allproduct = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID // product collection id
+    );
+console.log('searchTerm ', searchTerm);
+    const search = allproduct.documents.filter((doc) => {
+      return (
+        doc.brand === searchTerm
+      );
+    });
+
+    const productSearched: ProductDataProps[] = search.map((productFound) => ({
+      name: productFound.name,
+      $id: productFound.$id,
+      price: productFound.price,
+      creator: productFound.creator,
+      description: productFound.description,
+      quantity: productFound.quantity,
+      discount: productFound.discount,
+      category: productFound.category,
+      brand: productFound.brand,
+      expirationDate: productFound.expirationDate,
+      productSerialNo: productFound.productSerialNo,
+      additionalInfo: productFound.additionalInfo,
+      imagesUrl: productFound.imagesUrl,
+      isHotDeal: productFound.isHotDeal,
+      createdAt: productFound.$createdAt,
+    }));
+
+    return productSearched;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const addPrescription = async (prescriptionData: PrescriptionProps) => {
   try {
      const { productName, productImage, aboutDrug, productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient, methodOfUsage, productId, whenTakeDosage,  concentration } = prescriptionData;

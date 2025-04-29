@@ -1,48 +1,49 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
-import ProfilePage from "./pages/ProfilePage";
-import SearchResultPage from "./pages/SearchResultPage";
-import CategoriesPage from "./pages/CategoriesPage";
-import ProductDetailsPage from "./pages/ProductDetailsPage";
-import CartPage from "./pages/CartPage";
-import CheckOutPage from "./pages/CheckOutPage";
-import PaymentStatusPage from "./pages/PaymentStatusPage";
-import OrderTrackingPage from "./pages/OrderTrackingPage";
-import OrderHistoryPage from "./pages/OrderHistoryPage";
-import AccountCreatedPage from "./pages/AccountCreatedPage";
-import AboutPage from "./pages/AboutPage";
-import ContactPage from "./pages/ContactPage";
-import DashBoardPage from "./pages/admin/DashBoardPage";
-import TransactionPage from "./pages/admin/transactions/TransactionPage";
-import ALlUsersPage from "./pages/admin/users/AllUsersPage";
-import UsersAdminPage from "./pages/admin/users/UsersAdminPage";
-import PharmacyPage from "./pages/admin/users/PharmacyPage";
-import CustomerPage from "./pages/admin/users/CustomerPage";
-import ProductPage from "./pages/admin/products/ProductPage";
-import AddProductPage from "./pages/admin/products/AddProductPage";
-import OrderPage from "./pages/admin/orders/OrderPage";
-import ActiveOrderPage from "./pages/admin/orders/ActiveOrderPage";
-import CancelledOrderPage from "./pages/admin/orders/CancelledOrderPage";
-import PendingOrderPage from "./pages/admin/orders/PendingOrderPage";
-import CompletedOrderPage from "./pages/admin/orders/CompletedOrderPage";
-import PendingTransactionPage from "./pages/admin/transactions/PendingTransactionPage";
-import CompletedTransactionPage from "./pages/admin/transactions/CompletedTransactionPage";
-import CancelledTransactionPage from "./pages/admin/transactions/CancelledTransactionPage";
-import AccountSettingsPage from "./pages/admin/settings/AccountSettingsPage";
-import GeneralSettingsPage from "./pages/admin/settings/GeneralSettingsPage";
-import EmailVerificationPendingPage from "./pages/EmailVerificationPendingPage";
-import EmailVerificationSuccessfulPage from "./pages/EmailVerificationSuccessfulPage";
-import SecureAdminPage from "./features/auth/SecureAdminPage";
-import FavePage from "./pages/FavePage";
-import SecureUserPage from "./features/auth/SecureUserPage";
-import AllProductPage from "./pages/AllProductPage";
-import PrescriptionPage from "./pages/PrescriptionPage";
-import ProductPrescriptionPage from "./pages/admin/products/ProductPrescriptionPage";
-import AllProductPrescription from "./features/admin/product/AllProductPrescription";
+const BrandPage = lazy(() => import("./pages/BrandPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage"));
+const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+const SearchResultPage = lazy(() => import("./pages/SearchResultPage"));
+const CategoriesPage = lazy(() => import("./pages/CategoriesPage"));
+const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
+const CartPage = lazy(() => import("./pages/CartPage"));
+const CheckOutPage = lazy(() => import("./pages/CheckOutPage"));
+const PaymentStatusPage = lazy(() => import("./pages/PaymentStatusPage"));
+const OrderTrackingPage = lazy(() => import("./pages/OrderTrackingPage"));
+const OrderHistoryPage = lazy(() => import("./pages/OrderHistoryPage"));
+const AccountCreatedPage = lazy(() => import("./pages/AccountCreatedPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const DashBoardPage = lazy(() => import("./pages/admin/DashBoardPage"));
+const TransactionPage = lazy(() => import("./pages/admin/transactions/TransactionPage"));
+const ALlUsersPage = lazy(() => import("./pages/admin/users/AllUsersPage"));
+const UsersAdminPage = lazy(() => import("./pages/admin/users/UsersAdminPage"));
+const PharmacyPage = lazy(() => import("./pages/admin/users/PharmacyPage"));
+const CustomerPage = lazy(() => import("./pages/admin/users/CustomerPage"));
+const ProductPage = lazy(() => import("./pages/admin/products/ProductPage"));
+const AddProductPage = lazy(() => import("./pages/admin/products/AddProductPage"));
+const OrderPage = lazy(() => import("./pages/admin/orders/OrderPage"));
+const ActiveOrderPage = lazy(() => import("./pages/admin/orders/ActiveOrderPage"));
+const CancelledOrderPage = lazy(() => import("./pages/admin/orders/CancelledOrderPage"));
+const PendingOrderPage = lazy(() => import("./pages/admin/orders/PendingOrderPage"));
+const CompletedOrderPage = lazy(() => import("./pages/admin/orders/CompletedOrderPage"));
+const PendingTransactionPage = lazy(() => import("./pages/admin/transactions/PendingTransactionPage"));
+const CompletedTransactionPage = lazy(() => import("./pages/admin/transactions/CompletedTransactionPage"));
+const CancelledTransactionPage = lazy(() => import("./pages/admin/transactions/CancelledTransactionPage"));
+const AccountSettingsPage = lazy(() => import("./pages/admin/settings/AccountSettingsPage"));
+const GeneralSettingsPage = lazy(() => import("./pages/admin/settings/GeneralSettingsPage"));
+const EmailVerificationPendingPage = lazy(() => import("./pages/EmailVerificationPendingPage"));
+const EmailVerificationSuccessfulPage = lazy(() => import("./pages/EmailVerificationSuccessfulPage"));
+const SecureAdminPage = lazy(() => import("./features/auth/SecureAdminPage"));
+const FavePage = lazy(() => import("./pages/FavePage"));
+const SecureUserPage = lazy(() => import("./features/auth/SecureUserPage"));
+const AllProductPage = lazy(() => import("./pages/AllProductPage"));
+const PrescriptionPage = lazy(() => import("./pages/PrescriptionPage"));
+const ProductPrescriptionPage = lazy(() => import("./pages/admin/products/ProductPrescriptionPage"));
+const AllProductPrescription = lazy(() => import("./features/admin/product/AllProductPrescription"));
 const Home = lazy(() => import("./pages/Home"));
 
 const router = createBrowserRouter([
@@ -105,6 +106,10 @@ const router = createBrowserRouter([
   {
     path: "/wishlist",
     element: <FavePage />,
+  },
+  {
+    path: "/brand/:name",
+    element: <BrandPage />,
   },
   {
     path: "/checkout/:userId",

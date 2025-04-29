@@ -58,7 +58,7 @@ const Home = () => {
       <HotDeals  navigate={navigate} productAdmin={productAdmin} />
       <TopSelling navigate={navigate} productAdmin={productAdmin} />
       <DiscountBanner />
-      <Brands />
+      <Brands navigate={navigate} />
       <Faq />
       <Footer />
       <NavHelper />
