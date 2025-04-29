@@ -442,8 +442,19 @@ export const productBrands = [
     companyImage: gsk,
   },
   {
-    value: "BenylinPharmaceuticalIndustriesLimited",
-    label: "Benylin Pharmaceutical Industries Limited",
+    value: "BiopharmaNigeriaLimited",
+    label: "Biopharma Nigeria Limited",
+    companyImage: emzor,
+  },
+  
+  {
+    value: "BentosPharmaceuticalProductsLimited",
+    label: "Bentos Pharmaceutical Products Limited",
+    companyImage: emzor,
+  },
+  {
+    value: "ChrisEjikPharmaceutical Ltd",
+    label: "Chris Ejik Pharmaceutical Ltd",
     companyImage: emzor,
   },
   {

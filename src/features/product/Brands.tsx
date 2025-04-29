@@ -12,13 +12,26 @@ import { productBrands } from "../../utils/admin/product/productList";
 const Brands = () => {
   const brandImage = [b1, b2, b3, b4, b5, b6, b7];
   const brands = [
-    "Mopson Pharmaceutical Limited",
-    "Emzor Pharmaceutical Industrial Limited",
-    "Swiss Pharma Nigeria Limited",
-    "May & Baker Nigeria Plc",
-    "Fidson Healthcare Plc",
-    "Chemiron International Limited",
-    "GlaxoSmithKline Nigeria Limited",
+    'A & J Pharmaceutical Nig. Ltd.',
+'Abumec Pharmaceuticals Ltd.',
+'AC Drugs Limited.',
+'Adler Products Limited.',
+'Afrab-Chem Limited.',
+'Afrik Pharmaceuticals Plc.',
+'Agary Pharmaceutical Limited.',
+'Alben Healthcare Industries Limited.',
+'Archy Pharmaceutical Nigeria Limited.',
+'Swiss Pharma Nigeria Limited.',
+'Fidson Healthcare.',
+'Emzor Pharmaceutical.',
+'GlaxoSmithKline Nigeria.',
+'May & Baker Nigeria Plc.',
+'Mopson Pharmaceutical Limited.',
+'New Height Pharmaceuticals.',
+'Neros Pharmaceuticals',
+'Chemiron International Limited.',
+'Olex Pharmaceuticals.',
+'Zolon Healthcare.',
   ];
 
   return (
