@@ -16,7 +16,7 @@ import { pageSpacing } from "../constants/appText";
 import { useAppDispatch, useAppSelector,  } from "../hooks/reduxHooks";
 import { getCuurentLoginUserData, setNavIndexLink,  } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
-import { fetchAllUserProduct, selectproductAdmin } from "../features/admin/product/productSlice";
+import { fetchAllProductWithoutPagination, fetchAllUserProduct, selectproductAdmin } from "../features/admin/product/productSlice";
 import { links } from "../utils/listLink";
 
 const Home = () => {
@@ -34,10 +34,10 @@ const Home = () => {
 
   useEffect(() => {
     if(!productAdmin){
-      dispatch(fetchAllUserProduct())
+      dispatch(fetchAllProductWithoutPagination())
     };
       hasFetchAllProduct === false &&
-      dispatch(fetchAllUserProduct());
+      dispatch(fetchAllProductWithoutPagination());
   }, [hasFetchAllProduct]);
 
     useEffect(() => {
