@@ -1,4 +1,4 @@
-import { allUsersColumn, allUsersData } from "../../../utils/admin/users";
+import { allUsersColumn, allUsersData } from "../../../utils/admin/user/users";
 import Table from "../../common/Table";
 
 const UserCustomer = () => {

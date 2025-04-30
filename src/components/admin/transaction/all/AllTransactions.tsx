@@ -27,6 +27,7 @@ const AllTransactions: React.FC<AllTransactionsProps> = ({
   const [shippingid, setShippingId] = useState<string>("");
   const { transactions, status, orders, totalOrderPage, refreshOrder } =
     useAppSelector(selectOrder);
+  
   const dispatch = useAppDispatch();
   const { userId } = useParams();
 
@@ -51,9 +52,7 @@ const AllTransactions: React.FC<AllTransactionsProps> = ({
   useEffect(() => {
     if (userId) {
       // refreshOrder &&
-      dispatch(getAllOrder(orderpaginationProps)).then((res) =>
-        console.log("res ok", res.payload, transactions)
-      );
+      dispatch(getAllOrder(orderpaginationProps));
       dispatch(totalOrderPages());
     }
   }, [refreshOrder, userId]);
@@ -71,16 +70,16 @@ const AllTransactions: React.FC<AllTransactionsProps> = ({
 
   const allMappedTransaction =
     whichType === "all"
-      ? mappedTransaction(transactions)
+      ? mappedTransaction(transactions, orders)
       : whichType === "cancelled"
-        ? mappedTransaction(transactions).filter(
+        ? mappedTransaction(transactions, orders).filter(
             (m) => m.shippingStatus.toLowerCase() === "cancelled"
           )
         : whichType === "pending"
-          ? mappedTransaction(transactions).filter(
+          ? mappedTransaction(transactions, orders).filter(
               (m) => m.shippingStatus.toLowerCase() === "pending"
             )
-          : mappedTransaction(transactions).filter(
+          : mappedTransaction(transactions, orders).filter(
               (m) => m.shippingStatus.toLowerCase() === "delivered"
             );
   const transactionPreview = transactions.find((t) => t.$id === currIndex);

@@ -1,4 +1,4 @@
-import Users from '../../assets/icons/users-2-black.svg?react'
+import Users from '../../../assets/icons/users-2-black.svg?react'
 
 export const userLists = [
   "All Users",
@@ -100,13 +100,11 @@ export const allUsersData = [
   },
 ];
 export const allUsersColumn = [
-  { key: "id", label: "User ID" },
+  { key: "id", label: "S/N" },
   { key: "name", label: "Name" },
   { key: "email", label: "Email" },
-  { key: "address", label: "Address" },
   { key: "dateAdded", label: "Date Joined" },
   { key: "role", label: "Role" },
-  { key: "actions", label: "Actions" },
 ];
 
 export const userStatitics = [

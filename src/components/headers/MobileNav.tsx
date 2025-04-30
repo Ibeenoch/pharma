@@ -1,13 +1,10 @@
 import Menu from "../../assets/icons/menu.svg?react";
 import Cancel from "../../assets/icons/cancel-close.svg?react";
-// import SearchBar from "../../assets/icons/search-alt-white.svg?react";
 import ShoppingCart from "../../assets/icons/cart-shopping.svg?react";
 import Home from "../../assets/icons/home2.svg?react";
-import Search from "../../assets/icons/search-alt-black.svg?react";
 import Product from "../../assets/icons/product-tag.svg?react";
 import Call from "../../assets/icons/phone.svg?react";
 import Drug from "../../assets/icons/product.svg?react";
-import Support from "../../assets/icons/support.svg?react";
 import About from "../../assets/icons/about.svg?react";
 import { useState } from "react";
 import CustomButton from "../common/Button";
@@ -26,6 +23,7 @@ import noprofileImage from "../../assets/images/noprofileimage.png";
 import Logout from "../common/Logout";
 import { selectCart } from "../../features/cart/cartSlice";
 import SearchBar from "./SearchBar";
+import ProfilePics from "./ProfilePics";
 
 const MobileNav = () => {
   const [showSideBar, setShowSideBar] = useState<boolean>(false);
@@ -40,10 +38,9 @@ const MobileNav = () => {
   const links = [
     { Icon: Home, title: "Home", route: "/" },
     { Icon: Product, title: "Products", route: "/allProduct" },
-    { Icon: Drug, title: "Prescription", route: "/" },
+    { Icon: Drug, title: "Prescription", route: "/prescription" }, 
     { Icon: About, title: "About", route: "/about" },
     { Icon: Call, title: "Contact", route: "/contact" },
-    { Icon: Support, title: "Support", route: "/" },
   ];
 
   const toggleSideBarItems = () => {
@@ -80,7 +77,6 @@ const MobileNav = () => {
           showSideBar ? "hidden" : "flex absolute items-center gap-3 right-5 top-2"
         } `}
       >
-        {/* <Search className="w-7 h-7 text-black/80" /> */}
         <Menu onClick={toggleSideBarItems} className="w-9 h-9" />
       </div>
 
@@ -118,12 +114,7 @@ const MobileNav = () => {
         {user && user.email && (
           <div className="flex lg:hidden justify-between py-4 items-center gap-5">
             <Logout handleLogout={handleLogout} />
-
-            <img
-              src={noprofileImage}
-              alt="login user image"
-              className="w-10 h-10 rounded-full border border-gray-200 cursor-pointer"
-            />
+            <ProfilePics navigate={navigate} user={user} />
           </div>
         )}
           <SearchBar />

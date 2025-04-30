@@ -1,44 +1,76 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { allproductColumn } from "../../../utils/admin/product/productList";
 import Table from "../../common/Table";
 import {
   fetchAllUserProduct,
+  invalidateFetchAllProductCache,
   selectproductAdmin,
+  totalProductPages,
 } from "../../../features/admin/product/productSlice";
 import { selectAuth } from "../../../features/auth/authSlice";
 import { mapProductToTableData } from "../../../utils/admin/product/productMap";
 import CustomText from "../../common/Text";
+import TableSkeleton from "../../common/animations/TableSkeleton";
 
 const AllProduct = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(selectAuth);
-  const { productAdmin, hasFetchAllProduct } =
+  const { productAdmin, hasFetchAllProduct, totalProductPage, status } =
     useAppSelector(selectproductAdmin);
+  const [pageNum, setPageNum] = useState<number>(0);
+  const [curPage, setCurPage] = useState<number>(0);
+  
+  const handlePageClicked = (i: number) => {
+    dispatch(invalidateFetchAllProductCache(false))
+    setCurPage(i)
+    setPageNum(i)
+  };
 
   useEffect(() => {
+    dispatch(totalProductPages())
     if(!productAdmin){
-      dispatch(fetchAllUserProduct())
+      dispatch(fetchAllUserProduct(pageNum))
     };
       hasFetchAllProduct === false &&
-      dispatch(fetchAllUserProduct());
+      dispatch(fetchAllUserProduct(pageNum));
   }, [user, hasFetchAllProduct]);
 
   const productData =
     productAdmin && Array.isArray(productAdmin)
       ? mapProductToTableData(productAdmin)
       : [];
-
   return (
     <section>
       <div className="p-4 my-3 bg-white rounded-xl">
         {productAdmin && Array.isArray(productAdmin) ? (
-          <Table
-            columns={allproductColumn}
-            data={productData}
-            tableHeaderTxtColor="text-gray-400"
-            whichTable="product"
-          />
+          <div>
+    {
+       status === 'loading' ? <TableSkeleton /> :     (
+            <>
+              <Table
+                columns={allproductColumn}
+                data={productData}
+                tableHeaderTxtColor="text-gray-400"
+                whichTable="product"
+              />
+              <div className="flex items-center gap-2 my-2"> 
+                {
+                  totalProductPage > 1 && Array.from({length : totalProductPage}, (_, i) => (
+                    <div
+                    className={`border  ${curPage === i ? 'bg-black text-white border-black' : 'border-gray-300' } rounded-lg py-2 px-3 text-[12px] flex justify-center items-center cursor-pointer hover:bg-black hover:text-white`}
+                    onClick={() => {
+                      handlePageClicked(i);
+                    }}
+                  >
+                    {i + 1}
+                  </div>
+                  ))
+                }
+              </div>
+            </>
+            )}
+          </div>
         ) : (
           <div className="flex items-center justify-center h-screen">
             <CustomText text="No Product has been added" />

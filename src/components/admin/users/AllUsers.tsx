@@ -1,5 +1,5 @@
 import { adminDefaultBgColor } from "../../../constants/appColor";
-import { userLists, userStatitics } from "../../../utils/admin/users";
+import { userLists, userStatitics } from "../../../utils/admin/user/users";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
   selectAdmin,

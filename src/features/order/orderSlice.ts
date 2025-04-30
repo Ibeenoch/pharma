@@ -28,6 +28,7 @@ interface orderState {
   refreshATransaction: boolean;
   totalRevenue: number;
   totalOrderPage: number;
+  totalTransactionPage: number;
   shippingService: ShippingServiceProps;
 }
 
@@ -71,6 +72,8 @@ const initialState: orderState = {
         productSerialNo: "",
         quantity: 0,
         price: 0,
+        subtotal: 0,
+        total: 0,
       },
     ],
     userId: "",
@@ -124,6 +127,8 @@ const initialState: orderState = {
           productSerialNo: "",
           quantity: 0,
           price: 0,
+          subtotal: 0,
+          total: 0
         },
       ],
       shippingDetails: {
@@ -184,6 +189,7 @@ const initialState: orderState = {
   },
   transactions: [],
   totalRevenue: 0,
+  totalTransactionPage: 0,
 };
 
 export const postTransaction = createAsyncThunk(
@@ -210,6 +216,17 @@ export const totalOrderPages = createAsyncThunk(
   }
 );
 
+export const totalTrasactionPages = createAsyncThunk(
+  "order/totalTrasactionPages",
+  async (_, { rejectWithValue }) => {
+    try {
+      return await api.gettotalTrasactionPages();
+    } catch (error: any) {
+      return rejectWithValue(error.message || "failed to get total order page");
+    }
+  }
+);
+
 export const getATransaction = createAsyncThunk(
   "order/getATransaction",
   async (id: string, { rejectWithValue }) => {
@@ -225,9 +242,9 @@ export const getATransaction = createAsyncThunk(
 
 export const getAllTransaction = createAsyncThunk(
   "order/getAllTransaction",
-  async (_, { rejectWithValue }) => {
+  async (pageNum: number, { rejectWithValue }) => {
     try {
-      return await api.getAllTransaction();
+      return await api.getAllTransaction(pageNum);
     } catch (error: any) {
       return rejectWithValue(
         error.message || "failed to get all transaction details"
@@ -474,12 +491,23 @@ const orderSlice = createSlice({
       })
       .addCase(totalOrderPages.fulfilled, (state, action) => {
         state.status = "success";
-        console.log("totalOrderPages fulfilled ", action.payload);
         if (state.status === "success" && action.payload) {
           state.totalOrderPage = action.payload;
         }
       })
       .addCase(totalOrderPages.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(totalTrasactionPages.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(totalTrasactionPages.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload) {
+          state.totalTransactionPage = action.payload;
+        }
+      })
+      .addCase(totalTrasactionPages.rejected, (state) => {
         state.status = "failure";
       })
       .addCase(updateShippingDetails.pending, (state) => {

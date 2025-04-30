@@ -18,11 +18,9 @@ import Product from "../../assets/icons/product-tag.svg?react";
 import Order from "../../assets/icons/order.svg?react";
 import Transaction from "../../assets/icons/transaction.svg?react";
 import Settings from "../../assets/icons/setting.svg?react";
-import Admin from "../../assets/icons/admin2.svg?react";
 import Pharmacist from "../../assets/icons/pharmacist.svg?react";
 import AddProduct from "../../assets/icons/addproduct.svg?react";
 import Prescription from "../../assets/icons/prescription-pills.svg?react";
-import Customer from "../../assets/icons/user.svg?react";
 import OrderActive from "../../assets/icons/activeorder.svg?react";
 import OrderCancelled from "../../assets/icons/ordercancelled.svg?react";
 import OrderCompleted from "../../assets/icons/completeorder.svg?react";
@@ -47,9 +45,7 @@ export const subNavIcons = [
     name: "User",
     children: [
       { icons: User, text: "All", route: "/admin/users/all" },
-      { icons: Admin, text: "Admin", route: "/admin/users/admin" },
       { icons: Pharmacist, text: "Pharmacist", route: "/admin/users/pharmacy" }, // customer
-      { icons: Customer, text: "Customer", route: "/admin/users/customer" },
     ],
   },
   {

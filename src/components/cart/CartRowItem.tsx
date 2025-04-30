@@ -34,6 +34,7 @@ const CartRowItem: React.FC<CartRowItemProps> = ({
   isProductdescPage,
   id,
 }) => {
+
   const navigate = useNavigate();
   return (
     <div className="grid grid-cols-[33%_34%_33%] md:grid-cols-[20%_30%_30%_20%] gap-3 my-3 pb-2 border-b border-gray-300">
@@ -87,7 +88,7 @@ const CartRowItem: React.FC<CartRowItemProps> = ({
           />
         </div>
 
-        <div className="">
+        <div  onClick={() => removeItemFromCart(id)} className="">
           <IconAndText text="Remove" Icon={Trash} fillColor="red-500" />
         </div>
       </div>

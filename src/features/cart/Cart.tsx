@@ -3,11 +3,11 @@ import CustomText from "../../components/common/Text";
 import Trash from "../../assets/icons/trash-bin.svg?react";
 import Lock from "../../assets/icons/lock.svg?react";
 const IconAndText = lazy(() => import("../../components/cart/IconAndText"));
-const CartRowItem = lazy(() => import("../../components/cart/CartRowItem"));
+// const CartRowItem = lazy(() => import("../../components/cart/CartRowItem"));
 const CustomButton = lazy(() => import("../../components/common/Button"));
 const CartTwoText = lazy(() => import("../../components/cart/CartTwoText"));
 // import IconAndText from "../../components/cart/IconAndText";
-// import CartRowItem from "../../components/cart/CartRowItem";
+import CartRowItem from "../../components/cart/CartRowItem";
 // import CustomButton from "../../components/common/Button";
 // import CartTwoText from "../../components/cart/CartTwoText";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
@@ -58,7 +58,8 @@ const Cart: React.FC<CartProps> = ({
     dispatch(calculateTotal());
   }, [subTotal]);
 
-  const removeItemFromCart = (id: string) => {
+  const removeAnItemFromCart = (id: string) => {
+    console.log('id ', id);
     dispatch(removeFromCart(id));
     dispatch(checkIfItemHasBeenAddedToCheck(id));
     dispatch(calculateSubTotal());
@@ -81,7 +82,7 @@ const Cart: React.FC<CartProps> = ({
     // start the page from the top when a user visit the page
     window.scrollTo(0,0)
   },[])
-
+console.log('cart ', cart)
   return (
     <section
       className={`mt-20 h-min ${
@@ -114,10 +115,12 @@ const Cart: React.FC<CartProps> = ({
               isCheckOutPage={isCheckOutPage}
               isProductdescPage={false}
               removeItemFromCart={() => {
+                console.log('hello');
                 c &&
                   c.item &&
                   c.item.$id &&
-                  removeItemFromCart(c && c.item && c.item.$id);
+                  removeAnItemFromCart(c.item.$id);
+                  
               }}
               image={c && c.item && c.item.imagesUrl && c.item.imagesUrl[0]}
               itemTitle={c && c.item && c.item.name}

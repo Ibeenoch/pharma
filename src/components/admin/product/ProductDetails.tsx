@@ -57,7 +57,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         <div>
           {/* qty  */}
           <CustomText
-            text={`${product && product.qtysold}pcs`}
+            text={`${product && product.stock}pcs left`}
             textType="small"
             color="text-gray-500"
             weightType="normal"

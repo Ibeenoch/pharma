@@ -19,29 +19,28 @@ const DateFilter: React.FC<DateFilterProps> = ({
   applyCallback,
 }) => {
   return (
-    <div className="flex flex-col md:flex-row items-center gap-6 pt-2 overflow-x-auto">
-      <div className="flex gap-2 items-center">
+    <div className="flex flex-col md:flex-row items-center justify-start gap-6 pt-2 overflow-x-auto">
+      <div className="block sm:flex gap-2 items-center">
         <CustomText
           text="Start"
-          textType="small"
-          weightType="semibold"
-          extraStyle="text-gray-500"
+          textType="small"          
+          weightType="medium"
         />
         <CustomInput
           value={started}
           onChange={setStarted}
           type="date"
           Id="started"
+          showFullWidth={true}
         />
       </div>
-      <div className="flex gap-2 items-center">
+      <div className="block sm:flex gap-2 items-center">
         <CustomText
           text="End"
           textType="small"
-          weightType="semibold"
-          extraStyle="text-gray-500"
+          weightType="medium"
         />
-        <CustomInput value={ended} onChange={setEnded} type="date" Id="ended" />
+        <CustomInput value={ended} onChange={setEnded} type="date" Id="ended"   showFullWidth={true} />
       </div>
       <CustomButton text="Apply" onClick={applyCallback} fullwidth={true} />
     </div>

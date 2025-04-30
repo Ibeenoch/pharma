@@ -1,23 +1,48 @@
-import cartImg from "../../assets/images/anti11.png";
 import CustomText from "../../components/common/Text";
 import SingleProduct from "../../components/product/SingleProduct";
-import SingleCategoryItem from "../../components/product/SingleCategoryItem";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { fetchAllUserProduct, searchedProduct, searchedProductBrand, selectproductAdmin } from "../admin/product/productSlice";
-import { selectproduct } from "./productSlice";
+import { searchedProductBrand, selectproductAdmin } from "../admin/product/productSlice";
+import { CartProductDataProps, cartProps } from "../../types/product/ProductData";
+import { addToCart, addTowishlist } from "../cart/cartSlice";
 
 const Brand = () => {
   const { name } = useParams();
   let searchedBrand = decodeURIComponent(name || '');
-  const { productSearched } = useAppSelector(selectproductAdmin)
+  const { productSearched, productAdmin } = useAppSelector(selectproductAdmin)
   const dispatch = useAppDispatch();
   useEffect(() => {
-    if(searchedBrand) dispatch(searchedProductBrand(searchedBrand)).then((res) => console.log('searchedBrand ', res.payload));
+    if(searchedBrand) dispatch(searchedProductBrand(searchedBrand));
   }, [searchedBrand])
-console.log('productSearched ', productSearched, searchedBrand)
   // text={`${name?.replace(/([a-z])([A-Z])/g, '$1 $2')}`}
+
+    // add product to cart
+    const handleAddToCart = (e: React.MouseEvent, id: string) => {
+      e.stopPropagation();
+      const productItem = productAdmin.find((item) => item.$id === id)!;
+      const productCart: CartProductDataProps = {
+        ...productItem,
+        subtotal:
+          productItem.price -
+          productItem.price *
+            (productItem.discount ? productItem.discount / 100 : 0),
+        total:
+          productItem.price -
+          productItem.price *
+            (productItem.discount ? productItem.discount / 100 : 0) +
+          1500,
+      };
+      const product: cartProps = { item: productCart, qty: 1 };
+      dispatch(addToCart(product));
+    };
+    // add product to favorite
+    const handleAddToWishList = (e: React.MouseEvent, id: string) => {
+      e.stopPropagation();
+      const productItem = productAdmin.find((item) => item.$id === id)!;
+      const wishList = { item: productItem };
+      dispatch(addTowishlist(wishList));
+    };
 
   useEffect(() => {
     // start the page from the top
@@ -46,8 +71,6 @@ console.log('productSearched ', productSearched, searchedBrand)
             weightType="bold"
           />
           {/* product category  */}
-          {/* <SingleCategoryItem name="Skin Care" />
-          <SingleCategoryItem name="Fever And Pain" /> */}
         </div>
       </section>
       <section className="">
@@ -56,19 +79,18 @@ console.log('productSearched ', productSearched, searchedBrand)
           {
             productSearched && Array.isArray(productSearched) && productSearched.map((p) => (
               <>
-             { p && p.$id &&  ( <SingleProduct
+             { p && p.$id &&  ( 
+              <SingleProduct
               key={p.$id}
                 id={p && p.$id}
                 productImage={p && p.imagesUrl && p.imagesUrl[0]}
                 textTitle={p && p.name}
                 textDesc={p && p.description.slice(0, 15)}
                 price={p && String(p.price)} 
-                onAddCart={function (e: React.MouseEvent, id: string): void {
-                  throw new Error("Function not implemented.");
-                } } onAddWishlist={function (e: React.MouseEvent, id: string): void {
-                  throw new Error("Function not implemented.");
-                } }          
-                />)}
+                onAddCart={handleAddToCart}
+                onAddWishlist={handleAddToWishList}         
+                />
+                )}
                 </>
             ))
           }

@@ -2,7 +2,7 @@ import Cancel from "../../assets/icons/cancel-close.svg?react";
 import CancelCircle from "../../assets/icons/trash-bin.svg?react";
 import CustomText from "../common/Text";
 import CustomButton from "../common/Button";
-import { WishListProps } from "../../types/product/ProductData";
+import { ProductDataProps, WishListProps } from "../../types/product/ProductData";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { useNavigate } from "react-router-dom";
 import {
@@ -13,7 +13,7 @@ import {
 interface WishListItemsProps {
   showwishList: boolean;
   hideShowwishList: () => void;
-  product: WishListProps[];
+  product: ProductDataProps[];
 }
 
 const WishListItems: React.FC<WishListItemsProps> = ({
@@ -72,14 +72,14 @@ const WishListItems: React.FC<WishListItemsProps> = ({
             <div className="flex gap-1 items-center mb-2 pb-3 border-b border-gray-300">
               <div className="p-1 flex justify-center items-center ">
                 <img
-                  src={p && p.item && p.item.imagesUrl && p.item.imagesUrl[0]}
+                  src={p && p.imagesUrl && p.imagesUrl[0]}
                   alt="wishList image"
                   className="w-10 h-10"
                 />
               </div>
               <div>
                 <CustomText
-                  text={p && p.item && p.item.name}
+                  text={p && p && p.name}
                   textType="small"
                   weightType="thin"
                   extraStyle="w-25"
@@ -88,9 +88,9 @@ const WishListItems: React.FC<WishListItemsProps> = ({
               <div
                 onClick={() => {
                   p &&
-                    p.item &&
-                    p.item.$id &&
-                    handleRemoveFromwishList(p && p.item && p.item.$id, i);
+                    p &&
+                    p.$id &&
+                    handleRemoveFromwishList(p && p && p.$id, i);
                 }}
               >
                 <CancelCircle className="ml-4 w-7 h-5 stroke-gray-400 cursor-pointer" />

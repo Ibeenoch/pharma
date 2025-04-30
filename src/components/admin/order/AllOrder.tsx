@@ -29,7 +29,8 @@ interface AllOrdersProps {
 const AllOrder: React.FC<AllOrdersProps> = ({ whichType = "all" }) => {
   const { orders, refreshOrder, totalOrderPage, status } =
     useAppSelector(selectOrder);
-  const dispatch = useAppDispatch();
+
+    const dispatch = useAppDispatch();
   const { userId } = useParams();
   const mappedOrder: mappedAllOrdersProps[] = orders && Array.isArray(orders) &&
     whichType === "all"
@@ -51,9 +52,11 @@ const AllOrder: React.FC<AllOrdersProps> = ({ whichType = "all" }) => {
               );
   const [orderpaginationProps, setOrderPaginationProps] =
     useState<OrderPaginatedArgs>({ page: 1, userId: userId ?? "" });
+    const [curPage, setCurPage] = useState<number>(0);
 
   const handlePageClicked = (i: number, userId: string) => {
     dispatch(resetRefreshOrder());
+    setCurPage(i)
     setOrderPaginationProps({ page: i, userId: userId });
   };
 
@@ -83,7 +86,7 @@ const AllOrder: React.FC<AllOrdersProps> = ({ whichType = "all" }) => {
                   {totalOrderPage > 1 &&
                     Array.from({ length: totalOrderPage }, (_, i) => (
                       <div
-                        className="border border-gray-300 rounded-lg py-2 px-3 text-[12px] flex justify-center items-center cursor-pointer hover:bg-black hover:text-white"
+                        className={`border  ${curPage === i ? 'bg-black text-white border-black' : 'border-gray-300' } rounded-lg py-2 px-3 text-[12px] flex justify-center items-center cursor-pointer hover:bg-black hover:text-white`}
                         onClick={() => {
                           userId && handlePageClicked(i + 1, userId);
                         }}

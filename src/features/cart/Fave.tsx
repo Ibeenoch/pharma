@@ -4,15 +4,14 @@ import Lock from "../../assets/icons/lock.svg?react";
 import productImg1 from "../../assets/images/cc4.png";
 import productImg2 from "../../assets/images/cc3.png";
 import IconAndText from "../../components/cart/IconAndText";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CartRowItem from "../../components/cart/CartRowItem";
 import CustomButton from "../../components/common/Button";
 import CartTwoText from "../../components/cart/CartTwoText";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import {
   checkIfItemHasBeenAddedToWishlist,
-  decreasewishlistQty,
-  increasewishlistQty,
+  removeAllItemsInwishlist,
   removeFromwishlist,
   selectCart,
 } from "./cartSlice";
@@ -32,16 +31,22 @@ const Fave: React.FC<FaveProps> = ({
   const dispatch = useAppDispatch();
   const { wishlist } = useAppSelector(selectCart);
 
-  const increaseQty = (id: string) => {
-    dispatch(increasewishlistQty(id));
-  };
-  const decreaseQty = (id: string) => {
-    dispatch(decreasewishlistQty(id));
-  };
+
   const removeItemFromWishlist = (id: string) => {
     dispatch(removeFromwishlist(id));
     dispatch(checkIfItemHasBeenAddedToWishlist(id))
   };
+
+  const clearWishList = () => {
+    dispatch(removeAllItemsInwishlist())
+  }
+
+
+    useEffect(() => {
+      // start the page from the top when a user visit the page
+      window.scrollTo(0,0)
+    },[])
+    console.log('wishlist length ', wishlist.length, wishlist)
   return (
     <section
       className={`mt-20 h-min ${
@@ -59,8 +64,9 @@ const Fave: React.FC<FaveProps> = ({
             textType="medium"
             weightType="semibold"
           />
-
-          <IconAndText Icon={Trash} text="Remove all" />
+          <div onClick={clearWishList}>
+            <IconAndText  Icon={Trash} text="Remove all" />
+          </div>
         </div>
       )}
       {/* map throught the cart items  */}
@@ -70,35 +76,23 @@ const Fave: React.FC<FaveProps> = ({
         wishlist.map(
           (w) =>
             w &&
-            w.item &&
-            w.item.$id && (
+            w &&
+            w.$id && (
               <WishListRowItem
                 wishlistData={wishlist}
                 removeItemFromCart={() =>
                   w &&
-                  w.item &&
-                  w.item.$id &&
-                  removeItemFromWishlist(w && w.item && w.item.$id)
+                  w &&
+                  w.$id &&
+                  removeItemFromWishlist(w && w && w.$id)
                 }
-                image={w && w.item && w.item.imagesUrl && w.item.imagesUrl[0]}
-                itemTitle={w && w.item && w.item.name}
+                image={w && w && w.imagesUrl && w.imagesUrl[0]}
+                itemTitle={w && w && w.name}
                 itemdesc="Size: 250ml"
-                price={`₦${w && w.item && w.item.price}`}
-                qty={w && w.item && w.item.quantity}
-                decreaseQty={() => {
-                  w &&
-                    w.item &&
-                    w.item.$id &&
-                    decreaseQty(w && w.item && w.item.$id);
-                }}
-                increaseQty={() => {
-                  w &&
-                    w.item &&
-                    w.item.$id &&
-                    increaseQty(w && w.item && w.item.$id);
-                }}
+                price={`₦${w && w && w.price}`}
+                qty={w && w && w.quantity}
                 isCheckOut={isCheckOutPage}
-                id={w && w.item && w.item.$id}
+                id={w && w && w.$id}
               />
             )
         )}

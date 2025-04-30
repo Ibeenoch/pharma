@@ -4,7 +4,7 @@ import {
   allUsersData,
   userLists,
   userStatitics,
-} from "../../../utils/admin/users";
+} from "../../../utils/admin/user/users";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
   selectAdmin,

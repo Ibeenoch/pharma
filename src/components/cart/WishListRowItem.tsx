@@ -5,22 +5,17 @@ import IconAndText from "./IconAndText";
 import QtyUpdateBtn from "../product/QtyUpdateBtn";
 import CustomButton from "../common/Button";
 import ShoppinCart from "../../assets/icons/cart-fill-white.svg?react";
-import { cartProps, ProductDataProps } from "../../types/product/ProductData";
+import { CartProductDataProps, cartProps, ProductDataProps } from "../../types/product/ProductData";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { addToCart } from "../../features/cart/cartSlice";
 
 interface WishListRowItemProps {
-  wishlistData: {
-    item: ProductDataProps;
-    qty: number;
-  }[];
+  wishlistData:  ProductDataProps[];
   image: string;
   itemTitle: string;
   itemdesc?: string;
   price: string;
   qty: number;
-  decreaseQty: (id: string) => void;
-  increaseQty: (id: string) => void;
   removeItemFromCart: (id: string) => void;
   isCheckOut?: boolean;
   id: string;
@@ -33,16 +28,21 @@ const WishListRowItem: React.FC<WishListRowItemProps> = ({
   itemdesc,
   price,
   qty,
-  decreaseQty,
-  increaseQty,
   removeItemFromCart,
   isCheckOut = false,
   id,
 }) => {
   const dispatch = useAppDispatch();
   const addItemToCart = (id: string) => {
-    const cart = wishlistData.find((w) => w.item.$id === id);
-    cart && dispatch(addToCart(cart));
+    const cartProduct = wishlistData.find((w) => w.$id === id);
+    if(cartProduct){
+
+      const cart: cartProps = {
+        item: {...cartProduct, subtotal: 0, total: 0},
+        qty: 1,
+      };
+      cart && dispatch(addToCart(cart));
+    }
   };
   return (
     <div className="grid grid-cols-[33%_34%_33%] md:grid-cols-[20%_30%_30%_20%] gap-3 my-3 pb-2 border-b border-gray-300">
@@ -96,16 +96,9 @@ const WishListRowItem: React.FC<WishListRowItemProps> = ({
       </div>
       {/* for mobile device  */}
       <div className="md:hidden flex flex-col justify-around">
-        <div className="w-max ">
-          <QtyUpdateBtn
-            decreaseNum={decreaseQty}
-            increaseNum={increaseQty}
-            qty={qty}
-            id={id}
-          />
-        </div>
+        
 
-        <div className="">
+        <div onClick={() => removeItemFromCart(id)} className="">
           <IconAndText text="Remove" Icon={Trash} fillColor="red-500" />
         </div>
       </div>

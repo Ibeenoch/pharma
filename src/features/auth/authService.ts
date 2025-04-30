@@ -49,6 +49,7 @@ export const registerUser = async (userData: UserDataProps) => {
       dob: userCreated.dob,
       role: userCreated.role,
       gender: userCreated.gender,
+      createdAt: userCreated.$createdAt,
       passcode:
         userCreated.role?.toLowerCase() === "admin"
           ? userCreated.passcode
@@ -118,6 +119,7 @@ export const loginUser = async (userData: UserDataProps) => {
       dob: customUserData.dob,
       gender: customUserData.gender,
       role: customUserData.role,
+      createdAt: customUserData.$createdAt,
       password: "",
     } as UserDataProps;
   } catch (error) {
@@ -175,6 +177,7 @@ export const logOut = async () => {
         gender: "",
         passcode: "",
         password: "",
+        createdAt: '',
       } as UserDataProps;
     }
   } catch (error) {
@@ -185,7 +188,7 @@ export const logOut = async () => {
 export const getCurrentLoginUser = async () => {
   // get the current login user that is redirected from google or facebook
   const user = await account.get();
-  console.log("Logged-in Google user:", user);
+
   const res = await database.listDocuments(
     import.meta.env.VITE_APPWRITE_DATABASE_ID,
     import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID,
@@ -213,6 +216,7 @@ export const getCurrentLoginUser = async () => {
       role,
       passcode,
       userId,
+      createdAt: userDoc.$createdAt,
     } as UserDataProps;
   } else {
     await database.createDocument(
@@ -243,7 +247,6 @@ export const checkIfUserExist = async (email: string) => {
       [Query.equal("email", email)]
     );
 
-    console.log("email found is ", users.total);
     return users.total > 0 ? true : false;
   } catch (error) {
     throw error;
@@ -268,6 +271,7 @@ export const getAllUsers = async () => {
       gender: u.gender,
       passcode: u.passcode,
       password: u.password,
+      createdAt: u.$createdAt,
     }));
     return userFound;
   } catch (error) {

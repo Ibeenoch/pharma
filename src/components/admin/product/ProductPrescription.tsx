@@ -1,38 +1,26 @@
-
-
+import { FormEvent, lazy, useEffect, useState } from "react";
 import {
-  adminDefaultBgColor,
   lightgrayBgColor,
 } from "../../../constants/appColor";
-import {
-  allUsersColumn,
-  allUsersData,
-  userLists,
-  userStatitics,
-} from "../../../utils/admin/users";
+
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
-import {
-  selectAdmin,
-  setAdminUserTabIndex,
-} from "../../../features/admin/adminSlice";
-import CustomText from "../../common/Text";
-import { FormEvent, useEffect, useState } from "react";
-import NavTab from "../NavTab";
-import DateFilter from "../DateFilter";
-import Table from "../../common/Table";
+const CustomText = lazy(() => import("../../common/Text"));
+const CustomButton = lazy(() => import("../../common/Button"));
+const CustomInput = lazy(() => import("../../common/Input"));
+const CustomTextArea = lazy(() => import("../../common/TextArea"));
+const SelectedTab = lazy(() => import("../users/SelectedTab"));
+// import CustomText from "../../common/Text";
+// import CustomInput from "../../common/Input";
+// import CustomTextArea from "../../common/TextArea";
+// import SelectedTab from "../users/SelectedTab";
 import {
   createPrescription,
-  fetchAllPrescriptions,
-  fetchAllUserProduct,
+  fetchAllPrescriptionsWithoutPagination,
+  fetchAllProductWithoutPagination,
   selectproductAdmin,
 } from "../../../features/admin/product/productSlice";
 import { useNavigate, useParams } from "react-router-dom";
-import CustomSelect from "../../common/Select";
-import CustomButton from "../../common/Button";
 import { validator } from "../../../utils/validator";
-import CustomInput from "../../common/Input";
-import CustomTextArea from "../../common/TextArea";
-import SelectedTab from "../users/SelectedTab";
 import { ageRangeArr, dosageArr, dosageFormArr, durationArr, frequencyArr, methodOfUsageArr, whenToTakeArr } from "../../../utils/admin/product/productList";
 import {  selectAuth } from "../../../features/auth/authSlice";
 import { PrescriptionProps } from "../../../types/product/ProductData";
@@ -163,16 +151,15 @@ const ProductPrescription = () => {
 
   useEffect(() => {
     if(!prescription){
-      dispatch(fetchAllPrescriptions())
+      dispatch(fetchAllPrescriptionsWithoutPagination())
     }else{
-      hasFetchAllPrescription === false && dispatch(fetchAllPrescriptions())
+      hasFetchAllPrescription === false && dispatch(fetchAllPrescriptionsWithoutPagination())
     }
   }, [prescription])
 
   useEffect(() => {
     if (productId && productAdmin.length === 0) {
-      const userId = user && user.userId;
-      if(userId) dispatch(fetchAllUserProduct(userId));
+       dispatch(fetchAllProductWithoutPagination());
     }
 
     if (productAdmin.length > 0) {

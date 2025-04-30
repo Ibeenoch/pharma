@@ -3,6 +3,7 @@ import { database, storage } from "../../../lib/appwriteConfig";
 import { Query } from "appwrite";
 import { PrescriptionProps, ProductDataProps, UpdatedHotProductProps } from "../../../types/product/ProductData";
 import { UpdateProductCart } from "../../../types/cart/CartData";
+import { ITEMS_PER_PAGE } from "../../../constants/pagianation";
 
 export const createProduct = async (productData: FormData) => {
   try {
@@ -253,8 +254,60 @@ export const deleteProduct = async (productId: string) => {
   }
 };
 
-export const allProduct = async () => {
+export const getTotalProductPages = async () => {
+  const response = await database.listDocuments(
+    import.meta.env.VITE_APPWRITE_DATABASE_ID,
+    import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID,
+    [Query.limit(1)] // Limit 1 just to get the total count
+  );
+
+  const totalDocuments = response.total; // Appwrite returns total count
+  const totalPages = Math.ceil(totalDocuments / ITEMS_PER_PAGE);
+
+  return totalPages;
+};
+
+export const allProduct = async (pageNum: number) => {
   try {
+    let offset = ((pageNum > 0 ? pageNum : 1) - 1 ) * ITEMS_PER_PAGE;
+    let allproduct = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
+      [
+        Query.limit(ITEMS_PER_PAGE),
+        Query.offset(offset)
+      ]
+    );
+
+    const allProductList: ProductDataProps[] = allproduct.documents.map(
+      (product: any) => ({
+        creator: product?.creator,
+        name: product?.name,
+        description: product?.description,
+        brand: product?.brand,
+        category: product?.category,
+        imagesUrl: product?.imagesUrl,
+        price: product?.price,
+        quantity: product?.quantity,
+        additionalInfo: product?.additionalInfo,
+        discount: product?.discount,
+        expirationDate: product?.expirationDate,
+        isHotDeal: product?.isHotDeal,
+        $id: product?.$id,
+        productSerialNo: product?.productSerialNo,
+        createdAt: product?.$createdAt,
+      })
+    );
+
+    return allProductList;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const allProductWithoutPagination = async () => {
+  try {
+ 
     let allproduct = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
@@ -375,7 +428,7 @@ export const searchProductBrand = async (searchTerm: string) => {
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID // product collection id
     );
-console.log('searchTerm ', searchTerm);
+
     const search = allproduct.documents.filter((doc) => {
       return (
         doc.brand === searchTerm
@@ -415,7 +468,6 @@ export const addPrescription = async (prescriptionData: PrescriptionProps) => {
       ID.unique(),
       { productName, sastifiedClient: 0, productImage, aboutDrug,  productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient, methodOfUsage, productId, whenTakeDosage,  concentration } 
     );
-    console.log('productPresription ', productPresription)
 
     return {
       $id: productPresription.$id,
@@ -445,8 +497,64 @@ export const addPrescription = async (prescriptionData: PrescriptionProps) => {
 }
 
 
-export const allPrescription = async () => {
+export const getTotalPrescriptionPages = async () => {
+  const response = await database.listDocuments(
+    import.meta.env.VITE_APPWRITE_DATABASE_ID,
+    import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID,
+    [Query.limit(1)] // Limit 1 just to get the total count
+  );
+
+  const totalDocuments = response.total; // Appwrite returns total count
+  const totalPages = Math.ceil(totalDocuments / ITEMS_PER_PAGE);
+
+  return totalPages;
+};
+
+
+export const allPrescription = async (pageNum: number) => {
   try {
+    let offset = ((pageNum > 0 ? pageNum : 1 ) - 1 ) * ITEMS_PER_PAGE;
+    
+    let allproduct = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID, // product collection id
+      [
+        Query.limit(ITEMS_PER_PAGE),
+        Query.offset(offset)
+      ]
+    );
+
+    const allProductPrescription: PrescriptionProps[] = allproduct.documents.map(
+      (productPresription: any) => ({
+        $id: productPresription.$id,
+      $createdAt: productPresription.$createdAt,
+      $updatedAt: productPresription.$updatedAt,
+      productName: productPresription.productName,
+      productImage: productPresription.productImage,
+      aboutDrug: productPresription.aboutDrug,
+      productSummary: productPresription.productSummary,
+      ageRange: productPresription.ageRange,
+      dosage: productPresription.dosage,
+      dosageForm: productPresription.dosageForm,
+      duration: productPresription.duration,
+      frequency: productPresription.frequency,
+      ingredient: productPresription.ingredient,
+      methodOfUsage: productPresription.methodOfUsage,
+      productId: productPresription.productId,
+      whenTakeDosage: productPresription.whenTakeDosage,
+      concentration: productPresription.concentration,
+      sastifiedClient: productPresription.sastifiedClient
+      })
+    );
+    return allProductPrescription;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const allPrescriptionWithoutPagination = async () => {
+  try {
+    
     let allproduct = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID, // product collection id

@@ -14,6 +14,7 @@ const TransactionDetails: React.FC<TransactionDetailsProps> = ({
   transactions,
   order,
 }) => {
+  console.log('transactions ', transactions, 'order ', order)
   return (
     <div className="">
       <CustomText
@@ -75,7 +76,12 @@ const TransactionDetails: React.FC<TransactionDetailsProps> = ({
           <div>
             {/* price  */}
             <CustomText
-              text={`₦${formatWithCommas(t.price)}`}
+              text={'Total'}
+              textType="small"
+              weightType="semibold"
+            />
+            <CustomText
+              text={`₦${formatWithCommas((t.price - ((t.discount/100) * t.price)))}`}
               textType="small"
               color="text-amber-500"
               weightType="medium"

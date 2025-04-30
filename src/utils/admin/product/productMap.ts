@@ -7,17 +7,16 @@ import {
 import { formatDate, formatDateWithOrdinal } from "../../dateFormatter";
 
 export const mapProductToTableData = (productList: ProductDataProps[]) => {
-  return productList.map((item, index) => ({
-    id: index,
+  return productList.map((item) => ({
+    image: item.imagesUrl[0],
     name: item.name,
     category: item.category,
     brand: item.brand,
     stock: item.quantity,
-    qtysold: 1,
     expired: item.expirationDate
       ? new Date(item.expirationDate) < new Date()
         ? "Yes"
-        : "NO"
+        : "No"
       : "N/A",
     unitPrice: `₦${item.price.toLocaleString()}`,
     dateAdded: item && item.createdAt && formatDate(item.createdAt),

@@ -30,7 +30,7 @@ const BodyCard: React.FC<BodyCardProps> = ({
   return (
     <article
       key={index}
-      className={`${color} w-[350px] md:w-[400px] h-[150px] md:h-auto md:w-full cursor-pointer rounded-2xl shadow-lg shadow-[${color}] p-4`}
+      className={`${color} w-full md:w-[400px] h-[150px] md:h-auto md:w-full cursor-pointer rounded-2xl shadow-lg shadow-[${color}] p-4`}
     >
       <div className="flex justify-between items-center gap-2 my-3">
         <div>

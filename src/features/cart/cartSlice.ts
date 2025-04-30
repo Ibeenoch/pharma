@@ -12,7 +12,7 @@ import * as api from "./cartService";
 interface cartState {
   status: "idle" | "loading" | "success" | "failure";
   cart: { item: CartProductDataProps; qty: number }[];
-  wishlist: { item: ProductDataProps }[];
+  wishlist: ProductDataProps[];
   cartQty: number;
   cartIndex: number;
   wishListIndex: number;
@@ -127,7 +127,9 @@ const cartSlice = createSlice({
       }
     },
     removeFromCart: (state, action: PayloadAction<string>) => {
+      console.log('action payload ', action.payload)
       const index = state.cart.findIndex((c) => c.item.$id === action.payload);
+      console.log('found index ', index);
       state.cart.splice(index, 1);
     },
     removeAllItemsInCart: (state) => {
@@ -141,32 +143,20 @@ const cartSlice = createSlice({
     },
     addTowishlist: (state, action: PayloadAction<WishListProps>) => {
       const exists = state.wishlist.findIndex((i) => {
-        return i.item.$id === action.payload.item.$id;
+        return i.$id === action.payload.item.$id;
       });
 
       if (exists === -1) {
         state.showModal = true;
         state.isCart = false;
-        state.wishlist.push(action.payload);
+        state.wishlist.push(action.payload.item);
       }
     },
     removeFromwishlist: (state, action: PayloadAction<string>) => {
       const index = state.wishlist.findIndex(
-        (c) => c.item.$id === action.payload
+        (c) => c.$id === action.payload
       );
       state.wishlist.splice(index, 1);
-    },
-    increasewishlistQty: (state, action: PayloadAction<string>) => {
-      const index = state.wishlist.findIndex(
-        (item) => item.item.$id === action.payload
-      );
-    },
-    decreasewishlistQty: (state, action: PayloadAction<string>) => {
-      const index = state.wishlist.findIndex(
-        (item) => item.item.$id === action.payload
-      );
-      if (index !== -1) {
-      }
     },
     removeAllItemsInwishlist: (state) => {
       state.wishlist = [];
@@ -207,7 +197,7 @@ const cartSlice = createSlice({
       action: PayloadAction<string>
     ) => {
       const exists = state.wishlist.findIndex((i) => {
-        return i.item.$id === action.payload;
+        return i.$id === action.payload;
       });
       console.log("exists in wishlist", exists);
       if (exists !== -1) state.hasItemBeenAddedToWishlist = true;
@@ -258,9 +248,7 @@ export const {
   updateWishListIndex,
   updateShowModal,
   increaseCartQty,
-  increasewishlistQty,
   decreaseCartQty,
-  decreasewishlistQty,
   increaseOrDecreaseCartQty,
   calculateSubTotal,
   calculateTotal,

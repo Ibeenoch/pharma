@@ -1,5 +1,5 @@
 import React from "react";
-import Menu from "../../../assets/icons/eye-show.svg?react";
+import Menu from "../../../assets/icons/about.svg?react";
 import CustomText from "../../common/Text";
 
 export interface TransactionCardProps {
@@ -94,7 +94,7 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
             />
             {parseInt(itemQty) > 1 && (
               <CustomText
-                text={`+${itemQty} Other Product`}
+                text={`and ${parseInt(itemQty) - 1} Other Product`}
                 textType="extrasmall"
                 color="text-gray-400"
               />

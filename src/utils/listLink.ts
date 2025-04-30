@@ -4,5 +4,4 @@ export const links = [
     { name: "Prescription", route: "/prescription" },
     { name: "About", route: "/about" },
     { name: "Contact", route: "/contact" },
-    { name: "Support", route: "/" },
   ];

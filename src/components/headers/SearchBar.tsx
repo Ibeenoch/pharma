@@ -43,7 +43,7 @@ const SearchBar = () => {
       />
       <button
         type="submit"
-        className="bg-gray-500 p-2 flex items-center justify-center cursor-pointer"
+        className="bg-gray-500 p-[9px] flex items-center justify-center cursor-pointer"
       >
         <MaginifyGlass className="stroke-white w-5 h-5" />
       </button>

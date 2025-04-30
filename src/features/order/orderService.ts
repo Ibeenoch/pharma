@@ -229,11 +229,17 @@ export const getATransaction = async (id: string) => {
   }
 };
 
-export const getAllTransaction = async () => {
+export const getAllTransaction = async (pageNum:  number) => {
   try {
+    let ItemPerPage = 6;
+    let offset = ((pageNum > 0 ? pageNum : 1) - 1) * ItemPerPage;
     const transactionarr = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
-      import.meta.env.VITE_APPWRITE_TRANSACTION_COLLECTION_ID // collection id
+      import.meta.env.VITE_APPWRITE_TRANSACTION_COLLECTION_ID, // collection id
+      [
+        Query.limit(ItemPerPage),
+        Query.offset(offset),
+      ]
     );
     const transactionDoc = transactionarr.documents;
     let allTransactions: TransactionProps[] = [];
@@ -473,11 +479,24 @@ export const findAllOrders = async (dataProps: OrderPaginatedArgs) => {
       transaction: order.transaction,
       userId: order.userId,
     }));
-    console.log("allOrder service ", allOrder);
+
     return allOrder;
   } catch (error) {
     throw error;
   }
+};
+
+export const gettotalTrasactionPages = async () => {
+  const response = await database.listDocuments(
+    import.meta.env.VITE_APPWRITE_DATABASE_ID,
+    import.meta.env.VITE_APPWRITE_TRANSACTION_COLLECTION_ID,
+    [Query.limit(1)] // Limit 1 just to get the total count
+  );
+
+  const totalDocuments = response.total; // Appwrite returns total count
+  const totalPages = Math.ceil(totalDocuments / ITEMS_PER_PAGE);
+
+  return totalPages;
 };
 
 export const getTotalOrderPages = async () => {

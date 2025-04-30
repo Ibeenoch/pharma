@@ -233,12 +233,11 @@ export const allproductLists = [
 ];
 
 export const allproductColumn = [
-  { key: "id", label: "ID" },
+  { key: "image", label: "Image" },
   { key: "name", label: "Name" },
   { key: "category", label: "Category" },
   { key: "brand", label: "Brand" },
   { key: "stock", label: "Stock" },
-  { key: "qtysold", label: "Quantity Sold" },
   { key: "expired", label: "Expired" },
   { key: "unitPrice", label: "Unit Price" },
   { key: "dateAdded", label: "Date Added" },

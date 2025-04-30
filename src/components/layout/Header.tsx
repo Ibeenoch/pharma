@@ -20,7 +20,8 @@ import noprofileImage from "../../assets/images/noprofileimage.png";
 import Logout from "../common/Logout";
 import { selectCart } from "../../features/cart/cartSlice";
 import WishListItems from "../home/WishlistItems";
-import { fetchAllUserProduct, selectproductAdmin } from "../../features/admin/product/productSlice";
+import { fetchAllProductWithoutPagination, selectproductAdmin } from "../../features/admin/product/productSlice";
+import ProfilePics from "../headers/ProfilePics";
 
 const Header = () => {
   const [showCart, setShowCart] = useState<boolean>(false);
@@ -33,10 +34,10 @@ const Header = () => {
     // fetch all the products from the db
     useEffect(() => {
       if(!productAdmin){
-        dispatch(fetchAllUserProduct())
+        dispatch(fetchAllProductWithoutPagination())
       };
         hasFetchAllProduct === false &&
-        dispatch(fetchAllUserProduct())
+        dispatch(fetchAllProductWithoutPagination())
     }, [hasFetchAllProduct]);
 
   const navigate = useNavigate();
@@ -69,13 +70,7 @@ const Header = () => {
       .then(() => navigate("/login"));
   };
   // handle if the user should go to their profile page or dashboard depending on their role
-  const handleProfile = () => {
-    if (user && user.role && user.role?.toLowerCase() === "admin") {
-      navigate(`/admin/dashboard/${user && user.userId}`);
-    } else {
-      navigate(`/profile/${user && user.userId}`);
-    }
-  };
+ 
   return (
     <header
       className={`bg-white fixed top-0 ${
@@ -91,13 +86,7 @@ const Header = () => {
           {user && user.email ? (
             <div className="hidden lg:flex items-center gap-5">
               <Logout handleLogout={handleLogout} />
-              <div onClick={handleProfile}>
-                <img
-                  src={noprofileImage}
-                  alt="login user image"
-                  className="w-10 h-10 rounded-full border border-gray-200 cursor-pointer"
-                />
-              </div>
+              <ProfilePics navigate={navigate} user={user} />
             </div>
           ) : (
             <div className="hidden lg:flex items-center gap-5">
