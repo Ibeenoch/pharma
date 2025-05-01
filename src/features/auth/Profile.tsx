@@ -2,6 +2,7 @@ import img2 from "../../assets/images/placeholder.jfif";
 import CustomText from "../../components/common/Text";
 import Home from "../../assets/icons/home2.svg?react";
 import Cart from "../../assets/icons/cart-shopping.svg?react";
+import Bag from "../../assets/icons/bag.svg?react";
 import User from "../../assets/icons/user.svg?react";
 import Date from "../../assets/icons/date.svg?react";
 import Upload from "../../assets/icons/upload.svg?react";
@@ -126,8 +127,11 @@ const Profile = () => {
             <div onClick={navigateHome} className="cursor-pointer">
               <Home className="w-8 h-8" />
             </div>
-            <div className="cursor-pointer">
+            <div onClick={() => navigate('/cart')} className="cursor-pointer">
               <Cart className="w-6 h-6" />
+            </div>
+            <div onClick={() => navigate(`/order_history/${user && user.userId}`)} className="cursor-pointer">
+              <Bag className="w-6 h-6" />
             </div>
           </div>
         </div>
