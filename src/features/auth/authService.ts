@@ -1,6 +1,6 @@
 import { ID, OAuthProvider } from "appwrite";
-import { account, database } from "../../lib/appwriteConfig";
-import { UserDataProps } from "../../types/auth/UserData";
+import { account, database, storage } from "../../lib/appwriteConfig";
+import { UserDataProps, } from "../../types/auth/UserData";
 import { Query } from "node-appwrite";
 import { URL } from "../../constants/appGeneral";
 
@@ -15,9 +15,7 @@ export const registerUser = async (userData: UserDataProps) => {
     // after registering log the user in to create a section
 
     await account.createEmailPasswordSession(userData.email, userData.password);
-    const verify = await account.createVerification(
-      `${URL}/verify/successfully`
-    );
+  
     // After user creation, you can store additional data (like firstName, lastName, etc.)
     // You can use the Appwrite database service to store this information
 
@@ -40,10 +38,11 @@ export const registerUser = async (userData: UserDataProps) => {
       }
     );
 
-    console.log("customUser created successfully:", userCreated, verify);
+
     return {
       userId: user.$id,
       email: userCreated.email,
+      $id: userCreated.$id,
       firstName: userCreated.firstName,
       lastName: userCreated.lastName,
       dob: userCreated.dob,
@@ -118,7 +117,8 @@ export const loginUser = async (userData: UserDataProps) => {
       lastName: customUserData.lastName,
       dob: customUserData.dob,
       gender: customUserData.gender,
-      role: customUserData.role,
+      role: customUserData.role,  
+      $id: customUserData.$id,  
       createdAt: customUserData.$createdAt,
       password: "",
     } as UserDataProps;
@@ -178,6 +178,8 @@ export const logOut = async () => {
         passcode: "",
         password: "",
         createdAt: '',
+        $id: '',
+        image: '',
       } as UserDataProps;
     }
   } catch (error) {
@@ -207,6 +209,7 @@ export const getCurrentLoginUser = async () => {
     const role = userDoc.role;
     const passcode = userDoc.passcode;
     const userId = userDoc.userId;
+    const $id = userDoc.$id;
     return {
       firstName,
       lastName,
@@ -216,7 +219,9 @@ export const getCurrentLoginUser = async () => {
       role,
       passcode,
       userId,
+      $id,
       createdAt: userDoc.$createdAt,
+      image: userDoc.image,
     } as UserDataProps;
   } else {
     await database.createDocument(
@@ -256,13 +261,13 @@ export const checkIfUserExist = async (email: string) => {
 export const getAllUsers = async () => {
   try {
     // fetch all users
-    // account.listIdentities,  account.listLogs, account.listMfaFactors, account.listSessions
     const user = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID,
       import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID
     );
     const userFound: UserDataProps[] = user.documents.map((u) => ({
       userId: u.userId,
+      $id: u.$id,
       email: u.email,
       firstName: u.firstName,
       lastName: u.lastName,
@@ -272,9 +277,85 @@ export const getAllUsers = async () => {
       passcode: u.passcode,
       password: u.password,
       createdAt: u.$createdAt,
+      image: u.image,
     }));
     return userFound;
   } catch (error) {
     throw error;
   }
 };
+
+export const addUserProfilePics = async (userData: FormData) => {
+  try {
+
+    const data: Record<string, string> = {};
+    userData.forEach((val, key) => {
+      data[key] = val.toString();
+    });
+    const {
+    userId
+    } = data;
+
+ 
+    const imageFiles = userData.getAll("imageFiles") as File[];
+
+    let uploadedFiles: {
+      fileId: string;
+      name: string;
+      mimeType: string;
+    }[] = [];
+    for (const image of imageFiles) {
+      const res = await storage.createFile(
+        import.meta.env.VITE_BUCKET_ID, 
+        ID.unique(),
+        image
+      );
+
+      
+      uploadedFiles.push({
+        fileId: res.$id,
+        name: res.name,
+        mimeType: res.mimeType,
+      });
+    }
+
+    let userImages: string[] = [];
+    
+    for (const fileId of uploadedFiles) {
+      const res = storage.getFileDownload(
+        import.meta.env.VITE_BUCKET_ID,
+        fileId.fileId
+      );
+      userImages.push(res);
+    }
+
+    const user = await database.updateDocument(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID,
+      import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID,
+        userId,
+      {
+        image: userImages[0]
+      }
+    );
+
+    return {
+      firstName : user.firstName,
+      lastName : user.lastName,
+      dob : user.dob,
+      gender : user.gender,
+      email: user.email,
+      role : user.role,
+      passcode: user.passcode,
+      userId: user.userId,
+      $id: user.$id,
+      createdAt: user.$createdAt,
+      image: user.image,
+    } as UserDataProps;
+   
+    
+  } catch (error) {
+    throw error;
+  }
+};
+
+

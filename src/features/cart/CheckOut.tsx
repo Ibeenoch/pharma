@@ -21,7 +21,7 @@ import Address from "../../assets/icons/home3.svg?react";
 import { countries } from "../../utils/countries";
 import { nigeriaStateAndLga } from "../../utils/nigeriaStateAndLgas";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { selectAuth } from "../auth/authSlice";
+import { selectAuth, toggleProfileTocheckOut } from "../auth/authSlice";
 import { postACart, removeAllItemsInCart, selectCart } from "./cartSlice";
 import glovo from "../../assets/images/glove.png";
 import chowDesk from "../../assets/images/chowdesk.png";
@@ -60,8 +60,9 @@ import DeliveryOption from "../../components/common/DeliveryOption";
 import { generateRandomCode } from "../../utils/randomCodeGenerator";
 import { UpdatedHotProductProps } from "../../types/product/ProductData";
 
+
 const CheckOut = () => {
-  const { user } = useAppSelector(selectAuth);
+  const { user, profileToCheckOut } = useAppSelector(selectAuth);
   const { userId } = useParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -71,12 +72,12 @@ const CheckOut = () => {
   const { status, hasPreviousShippingDetails, shippingDetail } =  useAppSelector(selectOrder);
 
   const handleTransaction = (transactionDetails:  TransactionProps, hotDealsNum: UpdatedHotProductProps[]) => {
-    console.log('stage 1');
+
     dispatch(postTransaction(transactionDetails)).then(() => {
-      console.log('stage 2');
+
       // dispatch the cart
       dispatch(postACart(cart)).then((res) => {
-        console.log('stage 3');
+
         // dispatch the order
         if (res.payload !== undefined && userId) {
           let cartRes = res.payload as CartOrderedPropsData[];
@@ -489,6 +490,11 @@ const CheckOut = () => {
           res.payload &&
           res.payload !== undefined &&
           setShowUpdateShippingDetails(false);
+          if(profileToCheckOut === "yes"){
+            dispatch(toggleProfileTocheckOut('no'));
+            if(user && user.userId)dispatch(getShippingDetails(user.userId));
+            navigate(`/profile/${user.$id}`);
+          }
       });
     }
     // create shipping address
@@ -510,6 +516,11 @@ const CheckOut = () => {
           res.payload &&
           res.payload !== undefined &&
           setShowUpdateShippingDetails(false);
+          if(profileToCheckOut === "yes"){
+            if(user && user.userId)dispatch(getShippingDetails(user.userId));
+            navigate(`/profile/${user.$id}`);
+            dispatch(toggleProfileTocheckOut('no'));
+          }
       });
     }
   };
@@ -715,7 +726,9 @@ const CheckOut = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl p-4 md:p-6 my-5">
+       { profileToCheckOut === 'no' && (   
+        <>
+        <div className="bg-white rounded-xl p-4 md:p-6 my-5">
             <CustomText
               text="Delivery Timelines & Shipping Method"
               textType="medium"
@@ -801,9 +814,13 @@ const CheckOut = () => {
               }
             />
           </div>
+          </>
+        )
+          }
         </div>
       </section>
-      <Cart isCheckOutPage={true} showCheckOutBtn={false} />
+
+   {profileToCheckOut === 'no' &&  <Cart isCheckOutPage={true} showCheckOutBtn={false} />}
     </form>
   );
 };

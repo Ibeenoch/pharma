@@ -166,6 +166,11 @@ const Register = () => {
   const handleFacebookLogin = () => {
     dispatch(facebookLogin());
   };
+
+  useEffect(() => {
+    window.scrollTo(0,0)
+  }, [])
+  
   return (
     <section
       className={`h-full lg:grid lg:grid-cols-3 mt-20 items-center pb-8`}
@@ -345,6 +350,26 @@ const Register = () => {
             children={<AlertModal isSuccess={false} text={errMsg} />}
           />
         )}
+
+      <article className="mx-auto flex items-center " >
+        <CustomText
+          text={`You already have an account`}
+          textType="normal"
+          weightType="medium"
+          color="text-gray-600"
+          extraStyle="text-[14px]"
+        />
+        <CustomText
+          textType="normal"
+          weightType="medium"
+          isTwoSpanText={true}
+          leftText="you can"
+          rightText="login here!"
+          color="text-gray-600"
+          extraStyle="text-[14px]"
+          rightTextFunc={switchToLoginPage}
+        />
+      </article>
 
         <div className="flex gap-1 my-5 items-center justify-center">
           <div className="w-[35%] border border-gray-300"></div>

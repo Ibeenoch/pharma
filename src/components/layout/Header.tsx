@@ -22,6 +22,7 @@ import { selectCart } from "../../features/cart/cartSlice";
 import WishListItems from "../home/WishlistItems";
 import { fetchAllProductWithoutPagination, selectproductAdmin } from "../../features/admin/product/productSlice";
 import ProfilePics from "../headers/ProfilePics";
+import { resetShippingDetails } from "../../features/order/orderSlice";
 
 const Header = () => {
   const [showCart, setShowCart] = useState<boolean>(false);
@@ -67,6 +68,7 @@ const Header = () => {
   const handleLogout = () => {
     dispatch(logoutUser())
       .then(() => dispatch(resetUserState()))
+      .then(() => dispatch(resetShippingDetails()))
       .then(() => navigate("/login"));
   };
   // handle if the user should go to their profile page or dashboard depending on their role

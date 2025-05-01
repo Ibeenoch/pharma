@@ -22,7 +22,7 @@ import {
   selectCart,
 } from "./cartSlice";
 import { useNavigate } from "react-router-dom";
-import { selectAuth } from "../auth/authSlice";
+import { selectAuth, toggleProfileTocheckOut } from "../auth/authSlice";
 import { getShippingDetails, selectOrder } from "../order/orderSlice";
 
 interface CartProps {
@@ -38,7 +38,7 @@ const Cart: React.FC<CartProps> = ({
   const navigate = useNavigate();
   const { cart, subTotal, total } = useAppSelector(selectCart);
   const { hasPreviousShippingDetails } = useAppSelector(selectOrder);
-  const { user } = useAppSelector(selectAuth);
+  const { user, profileToCheckOut } = useAppSelector(selectAuth);
   const increaseQty = (id: string) => {
     dispatch(increaseCartQty(id));
     dispatch(calculateSubTotal());
@@ -74,6 +74,10 @@ const Cart: React.FC<CartProps> = ({
         user.userId &&
         hasPreviousShippingDetails === false &&
         dispatch(getShippingDetails(user && user.userId));
+
+       if(profileToCheckOut === "yes"){
+          dispatch(toggleProfileTocheckOut('no'))
+        }
       navigate(`/checkout/${user && user.userId}`);
     }
   };

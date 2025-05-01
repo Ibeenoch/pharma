@@ -16,7 +16,7 @@ import {
   updateCartQty,
 } from "../../features/cart/cartSlice";
 import { useEffect, useState } from "react";
-import { selectAuth } from "../../features/auth/authSlice";
+import { selectAuth, toggleProfileTocheckOut } from "../../features/auth/authSlice";
 import {
   getShippingDetails,
   selectOrder,
@@ -34,7 +34,7 @@ const CartItems: React.FC<CartItemsProps> = ({
   product,
 }) => {
   const { subTotal, cart } = useAppSelector(selectCart);
-  const { user } = useAppSelector(selectAuth);
+  const { user, profileToCheckOut } = useAppSelector(selectAuth);
   const { hasPreviousShippingDetails } = useAppSelector(selectOrder);
 
   const [cQty, setCQty] = useState<number>(0);
@@ -81,6 +81,9 @@ const CartItems: React.FC<CartItemsProps> = ({
         user.userId &&
         hasPreviousShippingDetails === false &&
         dispatch(getShippingDetails(user && user.userId));
+         if(profileToCheckOut === "yes"){
+            dispatch(toggleProfileTocheckOut('no'))
+          }
       navigate(`/checkout/${user && user.userId}`);
     }
   };

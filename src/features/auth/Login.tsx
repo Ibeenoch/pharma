@@ -102,6 +102,10 @@ const Login: React.FC<LoginProps> = ({ redirectUrl }) => {
     dispatch(facebookLogin());
   };
 
+  useEffect(() => {
+    window.scrollTo(0,0)
+  }, [])
+
   return (
     <section className={`h-screen md:grid md:grid-cols-3 items-center `}>
       <article className="hidden md:block">
@@ -201,6 +205,26 @@ const Login: React.FC<LoginProps> = ({ redirectUrl }) => {
           />
         </form>
 
+        <article className="mx-auto flex items-center " >
+        <CustomText
+          text={`Don't have an account`}
+          textType="normal"
+          weightType="medium"
+          color="text-gray-600"
+          extraStyle="text-[14px]"
+        />
+        <CustomText
+          textType="normal"
+          weightType="medium"
+          isTwoSpanText={true}
+          leftText="you can"
+          rightText="sign up here!"
+          color="text-gray-600"
+          extraStyle="text-[14px]"
+          rightTextFunc={switchToRegisterPage}
+        />
+      </article>
+
         <div className="flex gap-1 my-5 items-center justify-center">
           <div className="w-[35%] border border-gray-300"></div>
           <CustomText
@@ -224,6 +248,7 @@ const Login: React.FC<LoginProps> = ({ redirectUrl }) => {
             }
           />
         )}
+
 
         <div className="flex gap-4 items-center justify-center">
           <div

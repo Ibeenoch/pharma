@@ -37,7 +37,7 @@ const AddProduct = () => {
     additionalInfo: "",
     quantity: null,
   };
-  const imageRef = useRef<HTMLInputElement>(null);
+  const imageRef = useRef<HTMLInputElement>(null); 
   const [uploadedImages, setUploadedImages] = useState<string[]>(
     id ? singleProduct?.imagesUrl ?? [] : []
   );
@@ -193,18 +193,18 @@ const AddProduct = () => {
       setImageFiles((prev) => [...prev, file]); // append each image file to the image array
     }
   };
-
+// handle when a user wants to add an image
   const uploadImage = () => {
     uploadedImages.length < 5 && imageRef.current?.click();
   };
-
+// handle the image the user wants to view that was clicked
   const imageClicked = (index: number) => {
     setimageIndexClicked(index);
   };
   useLayoutEffect(() => {
     setimageIndexClicked(imageIndexClicked === 0 ? 0 : imageIndexClicked - 1);
   }, [uploadedImages])
-
+// handle the image the user wants to remove when they was clicked the delete button
   const removeImgFromArray = (index: number) => {
     const newArr = [...uploadedImages];
     newArr.splice(index, 1);

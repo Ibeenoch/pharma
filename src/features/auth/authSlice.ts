@@ -17,10 +17,12 @@ interface authState {
   refreshAllUsers: boolean;
   navpageIndex: number;
   navpageName: string;
+  profileToCheckOut: 'yes' | 'no';
 }
 
 const initialState: authState = {
   status: "idle",
+  profileToCheckOut: 'no',
   user: {
     userId: "",
     firstName: "",
@@ -154,6 +156,17 @@ export const getAllUser = createAsyncThunk(
   }
 );
 
+export const addProfilePics = createAsyncThunk(
+  "auth/addProfilePics",
+  async (userData: FormData, { rejectWithValue }) => {
+    try {
+      return await api.addUserProfilePics(userData);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "something went wrong");
+    }
+  }
+);
+
 export const emailVerifing = createAsyncThunk(
   "auth/emailVerify",
   async (
@@ -212,6 +225,9 @@ const authSlice = createSlice({
     hidePasswordResetModal: (state, action: PayloadAction<boolean>) => {
       state.passwordIsReset = action.payload;
     },
+    toggleProfileTocheckOut: (state, action: PayloadAction<'yes'| "no">) => {
+      state.profileToCheckOut = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -233,11 +249,24 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = "success";
         if (action.payload) {
-          console.log("login data ", action.payload);
           state.user = action.payload;
         }
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.status = "failure";
+        state.errorMsg = action.payload;
+      })
+      .addCase(addProfilePics.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(addProfilePics.fulfilled, (state, action) => {
+        state.status = "success";
+        if (action.payload) {
+          console.log("profile data ", action.payload);
+          state.user = action.payload;
+        }
+      })
+      .addCase(addProfilePics.rejected, (state, action) => {
         state.status = "failure";
         state.errorMsg = action.payload;
       })
@@ -355,5 +384,6 @@ export const {
   hidePasswordResetModal,
   setNavIndexLink,
   resetUserState,
+  toggleProfileTocheckOut
 } = authSlice.actions;
 export default authSlice.reducer;

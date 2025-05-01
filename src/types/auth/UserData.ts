@@ -7,8 +7,15 @@ export interface UserDataProps {
   role?: string;
   passcode?: string;
   createdAt?: string;
+  $id?: string;
   email: string;
   password: string;
+  image?: string;
+}
+
+export interface UserProfilePics {
+  imageFile: File,
+  userId: string,
 }
 
 export interface UserMappedProps {

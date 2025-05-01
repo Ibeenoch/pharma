@@ -26,7 +26,7 @@ export const addShippingDetails = async (
       [Query.equal("userId", addShippingDetails.userId)]
     );
     const checkIfShippingAdressExist = checkIfShippingAdressExistArr.documents;
-    if (checkIfShippingAdressExist.length >= 0) {
+    if (checkIfShippingAdressExist.length > 0) {
       // return the shipping Address
       return {
         userId: checkIfShippingAdressExist[0].userId,
@@ -120,6 +120,7 @@ export const updateShippingDetails = async (
 
 export const getShippingDetails = async (userId: string) => {
   try {
+    console.log('userId ', userId);
     const shippingAddress = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_SHIPPING_COLLECTION_ID, // collection id

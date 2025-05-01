@@ -5,7 +5,6 @@ const ProfilePage = () => {
   return (
     <main className={``}>
       <Profile />
-      <Footer />
     </main>
   );
 };

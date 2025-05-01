@@ -13,6 +13,8 @@ const ProfilePics: React.FC<ProfilePicsProps> = ({ navigate, user }) => {
     const handleProfile = () => {
         if (user && user.role && user.role?.toLowerCase() === "admin") {
           navigate(`/admin/dashboard/${user && user.userId}`);
+        }else if( user && user.role?.toLowerCase() === 'customer'){
+          navigate(`/profile/${user.userId}`)
         } else {
           navigate(`/profile/${user && user.userId}`);
         }
