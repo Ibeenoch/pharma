@@ -71,9 +71,12 @@ const CheckOut = () => {
   const { status, hasPreviousShippingDetails, shippingDetail } =  useAppSelector(selectOrder);
 
   const handleTransaction = (transactionDetails:  TransactionProps, hotDealsNum: UpdatedHotProductProps[]) => {
+    console.log('stage 1');
     dispatch(postTransaction(transactionDetails)).then(() => {
+      console.log('stage 2');
       // dispatch the cart
       dispatch(postACart(cart)).then((res) => {
+        console.log('stage 3');
         // dispatch the order
         if (res.payload !== undefined && userId) {
           let cartRes = res.payload as CartOrderedPropsData[];
@@ -108,6 +111,7 @@ const CheckOut = () => {
             };
 
             dispatch(postOrder(order)).then((res) => {
+              console.log('stage 4');
               let response = res.payload as AllOrderResultData;
               if (
                 response &&
@@ -128,9 +132,11 @@ const CheckOut = () => {
                   dispatch(
                     updateProductStockQuantity(productStockUpdataData)
                   ).then(() => {
+                    console.log('stage 5');
                    hotDealsNum.forEach((h) => {
                      let hotDealData: UpdatedHotProductProps = {isHotDeal: h.isHotDeal, productId: h.productId};
                      dispatch(updateHotProductNum(hotDealData)).then((res) => {
+                      console.log('stage 6');
                        if (res.payload) {
                          dispatch(removeAllItemsInCart());
                          navigate(`/payment_status/${userId}/${response.$id}`);

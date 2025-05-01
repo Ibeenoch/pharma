@@ -14,7 +14,7 @@ const PaymentStatus = () => {
     navigate(`/order_tracking/${userId}/${orderId}`);
   };
   return (
-    <section className="md:grid md:grid-cols-2 mt-20 md:mt-0 items-center h-screen">
+    <section className="md:grid lg:grid-cols-2 mt-20 md:mt-0 items-center h-screen">
       <div className="mx-auto flex justify-center">
         <img
           src={orderId ? successImg : sadImg}
