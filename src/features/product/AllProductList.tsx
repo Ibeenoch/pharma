@@ -125,7 +125,7 @@ const AllProductList = () => {
           {filteredProduct && Array.isArray(filteredProduct) && filteredProduct.map(
             (p) =>
               p &&
-              p.$id && (
+              p.$id && p.discount && (
                 <SingleProduct
                   id={p.$id}
                   onAddCart={handleAddToCart}
@@ -138,6 +138,7 @@ const AllProductList = () => {
                       : p.description
                   }
                   price={`₦${p.price}`}
+                  discount={p.discount}
                 />
               )
           )}

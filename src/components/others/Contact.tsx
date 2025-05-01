@@ -6,11 +6,16 @@ import User from "../../assets/icons/user.svg?react";
 import Email from "../../assets/icons/email.svg?react";
 import Phone from "../../assets/icons/mobile-phone.svg?react";
 import CustomButton from "../common/Button";
-import { useAppDispatch } from "../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { setNavIndexLink } from "../../features/auth/authSlice";
 import { links } from "../../utils/listLink";
+import { ContactProps } from "../../types/user/contact";
+import { selectUser, sendContactMessage } from "../../features/user/userSlice";
+import CustomTextArea from "../common/TextArea";
+import { updateShowModal, updateToastKeyAndMsg } from "../../features/cart/cartSlice";
 
 const Contact = () => {
+  const { status } = useAppSelector(selectUser);
   const [firstName, setFirstNamel] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -52,6 +57,12 @@ const Contact = () => {
     }
 
     console.log(firstName, lastName, email, phone, message);
+    const contactData : ContactProps = {email, firstName, lastName, message, phone };
+    dispatch(sendContactMessage(contactData)).then(() => {
+      dispatch(updateToastKeyAndMsg('Your message has been submitted'));
+      dispatch(updateShowModal(true));
+      setFirstNamel(''), setLastName(''), setEmail(''), setPhone(''), setMessage('');
+    })
   };
 
     useEffect(() => {
@@ -83,6 +94,7 @@ const Contact = () => {
             Id="firstName"
             type="text"
             value={firstName}
+            roundedBorder={true}
             onChange={setFirstNamel}
             required={true}
             showFullWidth={true}
@@ -96,6 +108,7 @@ const Contact = () => {
             Id="lastName"
             type="text"
             value={lastName}
+            roundedBorder={true}
             onChange={setLastName}
             required={true}
             showFullWidth={true}
@@ -111,6 +124,7 @@ const Contact = () => {
           type="text"
           value={email}
           onChange={setEmail}
+          roundedBorder={true}
           required={true}
           showFullWidth={true}
           placeholder="Your Email"
@@ -124,17 +138,17 @@ const Contact = () => {
           type="text"
           value={phone}
           onChange={setPhone}
+          roundedBorder={true}
           required={true}
           showFullWidth={true}
           placeholder="Your phone number"
           validate={(value) => validator(value, "others")}
           errorMessage={error.phone || "Phone number is required"}
         />
-        <CustomInput
-          prefixIcon={<User className="w-4 h-4" />}
+        <CustomTextArea
           label="Message"
+          roundedBorder={true}
           Id="message"
-          type="text"
           value={message}
           onChange={setMessage}
           required={true}
@@ -148,6 +162,8 @@ const Contact = () => {
           className="my-5"
           textSize="normal"
           fullwidth={true}
+          type="submit"
+          isLoading={status === 'loading'}
         />
       </form>
     </section>

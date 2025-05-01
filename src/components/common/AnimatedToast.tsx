@@ -23,7 +23,7 @@ const AnimatedToast: React.FC<AnimatedToastProps> = ({
     <div className="">
         {start && (
          
-            <div className={`w-90 border border-white ${IconType === 'failed' ? 'bg-red-500': 'bg-amber-500' } shadow-lg flex items-center gap-4 justify-start rounded-xl`}>
+            <div className={`w-60 md:w-90 border border-white ${IconType === 'failed' ? 'bg-red-500': 'bg-white' } shadow-lg flex items-center gap-4 justify-start rounded-xl`}>
               <div
                 className={`px-2 flex justify-center w-13 h-13 border border-white ${
                   IconType === "success" ||
@@ -43,16 +43,16 @@ const AnimatedToast: React.FC<AnimatedToastProps> = ({
                   <Danger className="w-4 h-4 text-white" />
                 )}
               </div>
-              <div className={`flex ${IconType === 'failed' ? 'bg-red-500': 'bg-amber-500' } items-center gap-2 justify-center`}>
+              <div className={`flex ${IconType === 'failed' ? 'bg-red-500': 'bg-white' } items-center gap-2 justify-center`}>
                {
-                IconType !== 'failed' && (
-                  <Mark className="w-5 h-5 text-white" />
+                IconType !== 'failed' && IconType !== 'success' && (
+                  <Mark className="w-5 h-5 text-amber-600" />
                 )
                } 
                 <CustomText
                   text={text}
                   textType="normal"
-                  color="text-white"
+                  color="text-amber-600"
                   weightType="medium"
                   extraStyle="text-center"
                 />

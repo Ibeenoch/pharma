@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import CustomInput from "../common/Input";
 import CustomText from "../common/Text";
 import Email from "../../assets/icons/email.svg?react";
@@ -10,12 +10,14 @@ import Instagram from "../../assets/icons/instagram.svg?react";
 import Whatsapp from "../../assets/icons/whatsapp.svg?react";
 import Love from "../../assets/icons/heart-fill-3.svg?react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { selectCart, updateShowModal } from "../../features/cart/cartSlice";
+import { selectCart, updateShowModal, updateToastKeyAndMsg } from "../../features/cart/cartSlice";
 import AnimatedToast from "../common/AnimatedToast";
+import { selectUser, sendEmailSubscription } from "../../features/user/userSlice";
 
 const Footer = () => {
   const [email, setEmail] = useState<string>("");
-  const { showModal, isCart } = useAppSelector(selectCart);
+  const { showModal, isCart, toastKey, toastMessage } = useAppSelector(selectCart);
+  const { status } = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -23,7 +25,8 @@ const Footer = () => {
     if (showModal) {
       timer = setTimeout(() => {
         dispatch(updateShowModal(false));
-      }, 3000);
+         dispatch(updateToastKeyAndMsg(''));
+      }, 2400);
     }
 
     return () => clearTimeout(timer);
@@ -46,16 +49,25 @@ const Footer = () => {
     { name: "Health & Wellness", route: "#" },
     { name: "Skincare & Beauty", route: "#" },
   ];
-  console.log("showModal ", showModal);
+
+  const handleEmailSubscribers = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if(email) dispatch(sendEmailSubscription(email)).then(() => {
+      dispatch(updateToastKeyAndMsg('Thank you for subscripting to our newsletter'));
+      dispatch(updateShowModal(true))
+      setEmail('')
+    });
+  }
+
   return (
     <footer className="bg-black p-8">
       {showModal && (
        
-      <div className="fixed top-50 notification p-2 ">
-      <AnimatedToast
+      <div key={toastKey} className="fixed top-20 md:top-30 lg:top-40 notification p-2 ">
+        <AnimatedToast
           start={showModal}
-          text={`${isCart ? "Added to Cart" : "Added to Favorite"}`}
-          IconType={`${isCart ? "cart" : "fave"}`}
+          text={`${ toastMessage ? toastMessage : isCart ? "Added to Cart" : "Added to Favorite"}`}
+          IconType={`${toastMessage ? 'success' : isCart ? "cart" : "fave"}`}
         /> 
       </div>
       )}
@@ -111,7 +123,7 @@ const Footer = () => {
             color="text-white"
             extraStyle="mt-1"
           />
-          <form>
+          <form onSubmit={handleEmailSubscribers}>
             <CustomInput
               label="Email Address"
               labelStyle="text-white text-xs font-normal"
@@ -132,9 +144,11 @@ const Footer = () => {
              <CustomButton
                   text="Subscribe"
                   textSize="small"
+                  type="submit"
                   weightType="normal"
                   defaultBorderColor="border border-white"
                   fullwidth={true}
+                  isLoading={ status === 'loading'}
                 />
           </form>
 

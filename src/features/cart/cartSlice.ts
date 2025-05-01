@@ -18,6 +18,8 @@ interface cartState {
   wishListIndex: number;
   wishListQty: number;
   showModal: boolean;
+  toastKey: number;
+  toastMessage: string;
   isCart: boolean;
   subTotal: number;
   total: number;
@@ -32,6 +34,8 @@ const initialState: cartState = {
   wishlist: [],
   cartQty: 0,
   wishListQty: 0,
+  toastKey: 0,
+  toastMessage: '',
   cartIndex: 1,
   wishListIndex: 1,
   showModal: false,
@@ -170,6 +174,10 @@ const cartSlice = createSlice({
     updateShowModal: (state, action: PayloadAction<boolean>) => {
       state.showModal = action.payload;
     },
+    updateToastKeyAndMsg: (state, action: PayloadAction<string>) => {
+      state.toastMessage = action.payload;
+      state.toastKey += 1;
+    },
     calculateSubTotal: (state) => {
       state.subTotal = state.cart.reduce((acc, curr) => {
         let price = curr.item.price;
@@ -254,5 +262,6 @@ export const {
   calculateTotal,
   checkIfItemHasBeenAddedToCheck,
   checkIfItemHasBeenAddedToWishlist,
+  updateToastKeyAndMsg
 } = cartSlice.actions;
 export default cartSlice.reducer;

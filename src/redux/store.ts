@@ -5,6 +5,7 @@ import orderReducer from "../features/order/orderSlice";
 import adminProduceReducer from "../features/admin/product/productSlice";
 import productReducer from "../features/product/productSlice";
 import cartReducer from "../features/cart/cartSlice";
+import userReducer from "../features/user/userSlice";
 import storage from "redux-persist/lib/storage";
 import { createMigrate, persistReducer } from "redux-persist";
 
@@ -134,6 +135,7 @@ const reducers = combineReducers({
   productAdmin: adminProduceReducer,
   cart: cartReducer,
   order: orderReducer,
+  user: userReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

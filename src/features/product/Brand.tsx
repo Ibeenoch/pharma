@@ -79,7 +79,7 @@ const Brand = () => {
           {
             productSearched && Array.isArray(productSearched) && productSearched.map((p) => (
               <>
-             { p && p.$id &&  ( 
+             { p && p.$id && p.discount &&  ( 
               <SingleProduct
               key={p.$id}
                 id={p && p.$id}
@@ -88,7 +88,8 @@ const Brand = () => {
                 textDesc={p && p.description.slice(0, 15)}
                 price={p && String(p.price)} 
                 onAddCart={handleAddToCart}
-                onAddWishlist={handleAddToWishList}         
+                onAddWishlist={handleAddToWishList}
+                discount={p.discount}         
                 />
                 )}
                 </>

@@ -51,27 +51,73 @@
     }
   }
 
-  /* notification  */
+  /* notification  */ 
     .notification{
-      animation: movenotification 3s linear;
+      animation: movenotification 2.5s linear;
     }
 
-    @keyframes movenotification {
-      0%{
-        left: -100vw;
-        opacity: 0;
-      }
-      10%{
-        left: 20vw;
-        opacity: 1;
-      }
-      90%{
-        left: 20vw;
-        opacity: 1;
-      }
-      100%{
-        left: 120vw;
-        opacity: 0;
-      }
-    }
+    /* Default animation (mobile) */
+@keyframes movenotification {
+  0% {
+    left: -100vw;
+    opacity: 0;
+  }
+  10%,
+  90% {
+    left: 20vw;
+    opacity: 1;
+  }
+  100% {
+    left: 200vw;
+    opacity: 0;
+  }
 }
+
+/* For medium screens */
+@media (min-width: 768px) {
+  .notification {
+    animation-name: movenotification-md;
+  }
+
+  @keyframes movenotification-md {
+    0% {
+      left: -100vw;
+      opacity: 0;
+    }
+    10%,
+    90% {
+      left: 30vw;
+      opacity: 1;
+    }
+    100% {
+      left: 200vw;
+      opacity: 0;
+    }
+  }
+}
+
+/* For large screens */
+@media (min-width: 1024px) {
+  .notification {
+    animation-name: movenotification-lg;
+  }
+
+  @keyframes movenotification-lg {
+    0% {
+      left: -100vw;
+      opacity: 0;
+    }
+    10%,
+    90% {
+      left: 40vw;
+      opacity: 1;
+    }
+    100% {
+      left: 200vw;
+      opacity: 0;
+    }
+  }
+}
+
+
+  }
