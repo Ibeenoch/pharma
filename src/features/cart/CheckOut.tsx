@@ -137,11 +137,9 @@ const CheckOut = () => {
                    hotDealsNum.forEach((h) => {
                      let hotDealData: UpdatedHotProductProps = {isHotDeal: h.isHotDeal, productId: h.productId};
                      dispatch(updateHotProductNum(hotDealData)).then((res) => {
-                      console.log('stage 6');
-                       if (res.payload) {
+                      console.log('stage 6 ');
                          dispatch(removeAllItemsInCart());
                          navigate(`/payment_status/${userId}/${response.$id}`);
-                       }
                      })
                    })
 
