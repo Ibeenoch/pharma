@@ -142,7 +142,7 @@ const ProductDetails = () => {
   const wishListItem =
     wishlist &&
     Array.isArray(wishlist) &&
-    wishlist.find((c) => c && c.item && c.item.$id === product.item.$id);
+    wishlist.find((c) => c && c.$id === product.item.$id);
   return (
     <>
       <section
@@ -294,13 +294,12 @@ const ProductDetails = () => {
 
           <div className={`grid grid-cols-[10%_90%] gap-4 my-3`}>
             {wishListItem &&
-            wishListItem.item &&
-            wishListItem.item.$id === id ? (
+            wishListItem.$id === id ? (
               <div></div>
             ) : (
               <div
                 onClick={() => addItemToWishList(qty)}
-                className="group hover:bg-black cursor-pointer flex justify-center items-center border border-black rounded-2xl"
+                className="group hover:bg-black cursor-pointer flex justify-center items-center border border-black rounded-full md:rounded-2xl"
               >
                 <Heart className="w-4 h-4 stroke-black fill-black group-hover:stroke-white group-hover:fill-white" />
               </div>
@@ -362,6 +361,7 @@ const ProductDetails = () => {
             onAddCart={handleAddToCart}
             onAddWishlist={handleAddToWishList}
             id=""
+            discount={0}
             productImage={img3}
             price="₦4,100"
             textTitle="Procold"
@@ -371,6 +371,7 @@ const ProductDetails = () => {
             onAddCart={handleAddToCart}
             onAddWishlist={handleAddToWishList}
             id=""
+            discount={0}
             productImage={img3}
             price="₦4,100"
             textTitle="Procold"
@@ -380,6 +381,7 @@ const ProductDetails = () => {
             onAddCart={handleAddToCart}
             onAddWishlist={handleAddToWishList}
             id=""
+            discount={0}
             productImage={img3}
             price="₦4,100"
             textTitle="Procold"
@@ -389,6 +391,7 @@ const ProductDetails = () => {
             onAddCart={handleAddToCart}
             onAddWishlist={handleAddToWishList}
             id=""
+            discount={0}
             productImage={img3}
             price="₦4,100"
             textTitle="Procold"
@@ -398,6 +401,7 @@ const ProductDetails = () => {
             onAddCart={handleAddToCart}
             onAddWishlist={handleAddToWishList}
             id=""
+            discount={0}
             productImage={img3}
             price="₦4,100"
             textTitle="Procold"

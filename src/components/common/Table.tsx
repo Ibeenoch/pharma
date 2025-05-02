@@ -25,6 +25,7 @@ import Modal from "./Modal";
 import ProductDetails from "../admin/product/ProductDetails";
 import { mappedAllOrdersProps } from "../../types/order/OrderType";
 import OrderDetails from "../admin/order/OrderDetails";
+import CustomText from "./Text";
 
 interface Columns {
   key: string;
@@ -117,8 +118,8 @@ const Table: React.FC<TableProps> = ({
                 columns && Array.isArray(columns) && columns.map((col) => {
                 let key = col && col.key, label = col && col.label;  
                 return (
-                  <div className="w-full grid grid-cols-[42%_53%] gap-3 p-2 break-words whitespace-normal">
-                  <p className="">{ col.label} </p>
+                  <div className="w-full grid grid-cols-[42%_53%] gap-3 p-2 border-b border-gray-300/50 break-words whitespace-normal">
+                  <CustomText text={ col.label} textType="normal" weightType="medium" />
 
                   {/* row[col.key] === "Complete" ||
                       String(row[col.key]).toLowerCase() === "success" ||
@@ -149,7 +150,7 @@ const Table: React.FC<TableProps> = ({
                     ) */}
 
 
-                  <p className="text-gray-500 ">
+                  <p className="text-gray-500 text-[9px] sm:text-[12px]">
                     
                     {/* handle action button on small devices */}
                     { 

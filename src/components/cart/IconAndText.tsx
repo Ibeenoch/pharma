@@ -12,17 +12,19 @@ interface IconAndTextProps {
   >;
   text: string;
   fillColor?: string;
+  textColor?: string;
 }
 
-const IconAndText: React.FC<IconAndTextProps> = ({ Icon, text, fillColor }) => {
+const IconAndText: React.FC<IconAndTextProps> = ({ Icon, text, fillColor, textColor }) => {
   return (
     <div className="flex items-center gap-1 cursor-pointer">
-      <Icon className={`w-4 h-4`} />
+      <Icon className={`w-4 h-4 ${fillColor}`} />
       <CustomText
         text={text}
         textType="normal"
         weightType="thin"
-        extraStyle="text-gray-500"
+        extraStyle=""
+        color={textColor ? textColor : 'text-gray-500'}
       />
     </div>
   );

@@ -39,7 +39,7 @@ const Body = () => {
     }
   };
   return (
-    <main className={`w-full p-4 md:p-0 ${adminDefaultBgColor}`}>
+    <main className={`w-full p-0 lg:p-4 md:p-0 ${adminDefaultBgColor}`}>
       {/* bg-[#329DFF] blue  bg-[#1EBFC4] cyan bg-[#FDD603] YELLOW bg-[#ed686c] red*/}
       <div className="flex flex-col md:flex-row items-center gap-4 md:gap-2 md:px-3 pt-7 mt-10 overflow-x-auto">
         {cardLists && Array.isArray(cardLists) && cardLists.map((item, index) => (
@@ -59,7 +59,7 @@ const Body = () => {
         <SalesChart />
         <InventoryPieChart />
       </section>
-      <section className="px-4">
+      <section className="lg:px-4">
         <RecentPayment />
       </section>
     </main>

@@ -10,3 +10,13 @@ export interface MappedTransactionProps {
   customerName: string;
   paymentMethod: string;
 }
+
+
+export interface MappedDashboardRecentTransactionProps {
+   order_id : string;
+   customer_name: string;
+  date: string;
+  payment_method: string;
+  price: string;
+  status: string;
+}

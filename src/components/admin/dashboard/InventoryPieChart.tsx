@@ -22,12 +22,13 @@ const CustomLegend: React.FC = () => {
 
 const InventoryPieChart: React.FC = () => {
   return (
-    <div className="p-4 shadow-lg rounded-lg h-max bg-neutral-50 flex items-center">
+    <div className="p-0 lg:p-4 shadow-lg rounded-lg h-max bg-neutral-50 flex items-center">
       <div className="w-2/3">
         <CustomText
           text="Inventory Details"
           textType="medium"
           weightType="semibold"
+          extraStyle="p-2"
         />
         <ResponsiveContainer width="100%" height={250}>
           <PieChart>
@@ -49,7 +50,7 @@ const InventoryPieChart: React.FC = () => {
           </PieChart>
         </ResponsiveContainer>
       </div>
-      <div className="w-1/3 flex justify-center items-center">
+      <div className="p-2 w-1/3 flex lg:justify-center items-center">
         <CustomLegend />
       </div>
     </div>

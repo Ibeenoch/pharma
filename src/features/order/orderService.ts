@@ -271,6 +271,42 @@ export const getAllTransaction = async (pageNum:  number) => {
   }
 };
 
+export const getAllTransactionWithoutPagination = async () => {
+  try {
+
+    const transactionarr = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_TRANSACTION_COLLECTION_ID, // collection id
+    );
+    const transactionDoc = transactionarr.documents;
+    let allTransactions: TransactionProps[] = [];
+    transactionDoc.forEach((transaction) => {
+      let transactionItem = {
+        $id: transaction.$id,
+        payerId: transaction.payerId,
+        status: transaction.status,
+        amount: transaction.amount,
+        transactionId: transaction.transactionId,
+        transactionRef: transaction.transactionRef,
+        createdAt: transaction.$createdAt,
+        payMethod: transaction.payMethod,
+        imageUrl: transaction.imageUrl,
+        productName: transaction.productName,
+        productQty: transaction.productQty,
+        shippingId: transaction.shippingId,
+        shippingType: transaction.shippingType,
+        shippingStatus: transaction.shippingStatus,
+        customerName: transaction.customerName,
+      } as TransactionProps;
+      allTransactions.push(transactionItem);
+    });
+    console.log("allTransactions ", allTransactions);
+    return allTransactions;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const createShippingService = async (
   shippingData: ShippingServiceProps
 ) => {

@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { selectAdmin, setShouldAdminSideBarMinimize } from "../adminSlice";
 import ArrowMaximize from "../../../components/admin/dashboard/ArrowMaximize";
 import ArrowMinimize from "../../../components/admin/dashboard/ArrowMinimize";
-import HamburgerMenu from "../../../assets/icons/menu-align-left.svg?react";
+import HamburgerMenu from "../../../assets/icons/menu.svg?react";
 import MobileSideBar from "../../../components/admin/header/MobileSideBar";
 import { getAllUser, selectAuth } from "../../auth/authSlice";
 import {
@@ -40,7 +40,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title }) => {
   useEffect(() => {
     refreshAllUsers && dispatch(getAllUser());
     refreshTransaction &&
-      dispatch(getAllTransaction()).then(() => {
+      dispatch(getAllTransaction(1)).then(() => {
         dispatch(calcualateTotalRevenue());
       });
   }, []);
@@ -61,7 +61,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title }) => {
           onClick={handleShowMobileSideBar}
           className={`flex lg:hidden fixed cursor-pointer z-50 top-5 left-[5%]`}
         >
-          <HamburgerMenu className="w-9 h-9 text-gray-700" />
+          <HamburgerMenu className="w-8 h-8 text-gray-500" />
         </div>
         <div className="lg:hidden">
           <MobileSideBar

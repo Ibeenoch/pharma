@@ -17,9 +17,10 @@ import LargeImageSize from "../../components/common/LargeImageSize";
 import { lightgrayBgColor } from "../../constants/appColor";
 import ProfileLists from "../../components/auth/ProfileLists";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { addProfilePics, selectAuth, toggleProfileTocheckOut } from "./authSlice";
-import { getShippingDetails, selectOrder } from "../order/orderSlice";
+import { addProfilePics, logoutUser, resetUserState, selectAuth, toggleProfileTocheckOut } from "./authSlice";
+import { getShippingDetails, resetShippingDetails, selectOrder } from "../order/orderSlice";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
+import Logout from "../../components/common/Logout";
 
 const Profile = () => {
   const [imageFiles, setImageFiles] = useState<File[]>([])
@@ -67,6 +68,13 @@ const Profile = () => {
     navigate("/");
   };
 
+    const handleLogout = () => {
+      dispatch(logoutUser())
+        .then(() => dispatch(resetUserState()))
+        .then(() => dispatch(resetShippingDetails()))
+        .then(() => navigate("/login"));
+    };
+
   useEffect(() => {
     shippingDetail.address.length < 1 && user && user.userId && dispatch(getShippingDetails(user.userId));
   }, [])
@@ -94,7 +102,7 @@ const Profile = () => {
      <LargeImageSize img={user && user.image || img2} />
 
       <section className={`p-4 ${lightgrayBgColor}`}>
-        <div className=" flex justify-between items-center">
+        <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <img
               src={user && user.image || img2}
@@ -115,7 +123,7 @@ const Profile = () => {
             </div>
           </div>
 
-            <div onClick={uploadImage} className="p-2 rounded-md bg-amber-500/20 font-semibold flex items-center gap-2 cursor-pointer">
+            <div onClick={uploadImage} className="p-2 mx-1 rounded-md bg-amber-500/20 font-semibold flex items-center gap-2 cursor-pointer">
               <Upload className="w-4 h-4 text-amber-500" />
               <p className="text-amber-500 text-xs"> upload photo</p>
             </div>
@@ -123,18 +131,30 @@ const Profile = () => {
           <input type="file" hidden ref={imageRef} name="profile-img" id="profile-img" onChange={handleImageUploaded} />
 
 
-          <div className="flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-3">
             <div onClick={navigateHome} className="cursor-pointer">
-              <Home className="w-8 h-8" />
+              <Home className="w-8 h-8 text-amber-500" />
             </div>
             <div onClick={() => navigate('/cart')} className="cursor-pointer">
-              <Cart className="w-6 h-6" />
+              <Cart className="w-6 h-6 text-amber-500" />
             </div>
             <div onClick={() => navigate(`/order_history/${user && user.userId}`)} className="cursor-pointer">
-              <Bag className="w-6 h-6" />
+              <Bag className="w-6 h-6 text-amber-500" />
             </div>
           </div>
         </div>
+
+        <div className="flex lg:hidden justify-between my-2 px-2 items-center gap-3">
+            <div onClick={navigateHome} className="cursor-pointer">
+              <Home className="w-8 h-8 text-amber-500" />
+            </div>
+            <div onClick={() => navigate('/cart')} className="cursor-pointer">
+              <Cart className="w-6 h-6 text-amber-500" />
+            </div>
+            <div onClick={() => navigate(`/order_history/${user && user.userId}`)} className="cursor-pointer">
+              <Bag className="w-6 h-6 text-amber-500" />
+            </div>
+          </div>
 
         <div className="pb-4 border-b border-gray-300">
           <CustomText
@@ -205,6 +225,9 @@ const Profile = () => {
               <CustomText text="Update Now" textType="normal" weightType="medium" color="text-amber-500" extraStyle="cursor-pointer" />
             </div>
           </div>)}
+          <div className="py-3">
+            <Logout iconColor="text-red-500" textColor="text-red-500" handleLogout={handleLogout} />
+          </div>
       </section>
     </main>
     -

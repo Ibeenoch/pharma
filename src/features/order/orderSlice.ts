@@ -253,6 +253,19 @@ export const getAllTransaction = createAsyncThunk(
   }
 );
 
+export const getAllTransactionWithoutPagination = createAsyncThunk(
+  "order/getAllTransactionWithoutPagination",
+  async (_, { rejectWithValue }) => {
+    try {
+      return await api.getAllTransactionWithoutPagination();
+    } catch (error: any) {
+      return rejectWithValue(
+        error.message || "failed to get all transaction details"
+      );
+    }
+  }
+);
+
 export const postShippingDetails = createAsyncThunk(
   "order/postdetails",
   async (shippingDetails: ShippingDetailsProps, { rejectWithValue }) => {
@@ -466,6 +479,7 @@ const orderSlice = createSlice({
       .addCase(getAllOrder.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload) {
+          console.log('action order ', action.payload);
           state.orders = action.payload;
           state.refreshOrder = false;
         }
@@ -484,6 +498,19 @@ const orderSlice = createSlice({
         }
       })
       .addCase(getAllTransaction.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(getAllTransactionWithoutPagination.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getAllTransactionWithoutPagination.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload) {
+          state.transactions = action.payload;
+          state.refreshTransaction = false;
+        }
+      })
+      .addCase(getAllTransactionWithoutPagination.rejected, (state) => {
         state.status = "failure";
       })
       .addCase(totalOrderPages.pending, (state) => {

@@ -87,7 +87,7 @@ const Header = () => {
         <div className="hidden lg:flex lg:flex-col lg:items-center gap-5">
           {user && user.email ? (
             <div className="hidden lg:flex items-center gap-5">
-              <Logout handleLogout={handleLogout} />
+              <Logout iconColor="text-red-500" textColor="text-red-500" handleLogout={handleLogout} />
               <ProfilePics navigate={navigate} user={user} />
             </div>
           ) : (

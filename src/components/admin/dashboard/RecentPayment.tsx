@@ -1,11 +1,40 @@
+import { useEffect, useState } from "react";
+import { getAllTransaction, getAllTransactionWithoutPagination, selectOrder, totalTrasactionPages } from "../../../features/order/orderSlice";
+import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
   paymentColumns,
   recentPaymentData,
 } from "../../../utils/admin/dashBoardLists";
+import { mappedDashboardRecentTransaction } from "../../../utils/admin/transaction/mappedTransaction";
 import Table from "../../common/Table";
 import CustomText from "../../common/Text";
+import TableSkeleton from "../../common/animations/TableSkeleton";
 
 const RecentPayment = () => {
+  const { transactions, totalTransactionPage, status } = useAppSelector(selectOrder);
+    const [pageNum, setPageNum] = useState<number>(0);
+    const [curPage, setCurPage] = useState<number>(0);
+    
+    const handlePageClicked = (i: number) => {
+      setCurPage(i)
+      setPageNum(i)
+    };
+  
+  const dispatch = useAppDispatch();
+
+    useEffect(() => {
+      dispatch(totalTrasactionPages())
+
+      if(!transactions) dispatch(getAllTransaction(pageNum));   
+    }, [transactions]);
+
+    useEffect(() => {
+        if(pageNum) dispatch(getAllTransaction(pageNum));
+    }, [pageNum])
+
+
+  const filteredTransaction = transactions && Array.isArray(transactions) ? mappedDashboardRecentTransaction(transactions) : [];
+
   return (
     <div className="p-4 shadow-lg bg-white rounded-xl my-3">
       <CustomText
@@ -15,12 +44,39 @@ const RecentPayment = () => {
         extraStyle="my-3"
       />
 
-      <Table
-        columns={paymentColumns}
-        data={recentPaymentData}
-        tableHeaderTxtColor="text-black"
-        whichTable="dashboard"
-      />
+    {filteredTransaction && filteredTransaction.length > 0 ? (  
+      <>
+      {
+        status === 'loading' ? <TableSkeleton /> : (
+          <>
+            <Table
+              columns={paymentColumns}
+              data={filteredTransaction}
+              tableHeaderTxtColor="text-black"
+              whichTable="dashboard"
+            />
+            <div className="flex items-center gap-2 my-2"> 
+                {
+                  totalTransactionPage > 1 && Array.from({length : totalTransactionPage}, (_, i) => (
+                    <div
+                    className={`border  ${curPage === i ? 'bg-black text-white border-black' : 'border-gray-300' } rounded-lg py-2 px-3 text-[12px] flex justify-center items-center cursor-pointer hover:bg-black hover:text-white`}
+                    onClick={() => {
+                      handlePageClicked(i);
+                    }}
+                  >
+                    {i + 1}
+                  </div>
+                  ))
+                }
+            </div>
+          </>
+        )
+      }
+      </>) : (
+        <div className="flex justify-center items-center h-20 text-[12px]">
+          No recent transaction found.
+        </div>
+      )}
     </div>
   );
 };

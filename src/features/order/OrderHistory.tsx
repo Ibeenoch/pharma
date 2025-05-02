@@ -9,6 +9,7 @@ import { getAllOrder, selectOrder } from "./orderSlice";
 import { useParams } from "react-router-dom";
 import { mapOrderHistory } from "../../utils/orders/orderHistoryMap";
 import { OrderPaginatedArgs } from "../../types/order/OrderType";
+import TableSkeleton from "../../components/common/animations/TableSkeleton";
 
 const OrderHistory = () => {
   const [started, setStarted] = useState<string>("");
@@ -20,19 +21,21 @@ const OrderHistory = () => {
       setCurPage(i)
       setPageNum(i)
     };
-  const { orders, refreshOrder } = useAppSelector(selectOrder);
+  const { orders, totalOrderPage, status } = useAppSelector(selectOrder);
   
   const dispatch = useAppDispatch();
   const { userId } = useParams();
 
   useEffect(() => {
-    if (userId) {
+    console.log('pageNum ', pageNum)
+    if (userId && pageNum) {
       const orderData: OrderPaginatedArgs = { userId, page: pageNum}
       dispatch(getAllOrder(orderData)).then((res) => console.log('get order ', res.payload));
     }
-  }, [refreshOrder, pageNum]);
 
-  const mappedOrder = mapOrderHistory(orders);
+  }, [pageNum]);
+
+  const mappedOrder = orders && Array.isArray(orders) ? mapOrderHistory(orders) : [];
 
   return (
     <>
@@ -109,21 +112,35 @@ const OrderHistory = () => {
             </div>
           </div>
         </div>
+       {
+        status === 'loading' ? <TableSkeleton /> : (
+          <>
+            <Table
+              columns={orderColumns}
+              data={mappedOrder}
+              tableHeaderBg="bg-white"
+              tableHeaderTxtColor="text-black"
+              whichTable="order"
+            />
+            <div className="flex items-center gap-2 my-2"> 
+                {
+                  totalOrderPage > 1 && Array.from({length : totalOrderPage}, (_, i) => (
+                    <div
+                    className={`border  ${curPage === i ? 'bg-black text-white border-black' : 'border-gray-300' } rounded-lg py-2 px-3 text-[12px] flex justify-center items-center cursor-pointer hover:bg-black hover:text-white`}
+                    onClick={() => {
+                      handlePageClicked(i);
+                    }}
+                  >
+                    {i + 1}
+                  </div>
+                  ))
+                }
+              </div>
+          </>
+        )
+       } 
 
-        <Table
-          columns={orderColumns}
-          data={mappedOrder}
-          tableHeaderBg="bg-white"
-          tableHeaderTxtColor="text-black"
-          whichTable="order"
-        />
-
-        <CustomButton
-        onClick={() => setPageNum((prev) => prev + 1)}
-          text="Show next 10 orders"
-          showArrow={true}
-          className="my-3"
-        />
+       
       </section>
       ) : (
         <div className="flex justify-center items-center h-screen">

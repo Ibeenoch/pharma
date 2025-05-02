@@ -4,11 +4,17 @@ import SearchWhite from "../../../assets/icons/search-alt-white.svg?react";
 import Bell from "../../../assets/icons/bell.svg?react";
 import { useState } from "react";
 import CustomInput from "../../common/Input";
-import profileImg from "../../../assets/images/profile7.png";
+import profileImg from "../../../assets/images/placeholder.jfif";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAppSelector } from "../../../hooks/reduxHooks";
+import { selectAuth } from "../../../features/auth/authSlice";
 
 const NavItems = () => {
   const [search, setSearch] = useState<string>("");
   const [showSearchInput, setShowSearchInput] = useState<boolean>(false);
+  const { userId } = useParams();
+  const { user } = useAppSelector(selectAuth);
+  const navigate = useNavigate()
 
   const _showSearchInput = () => setShowSearchInput(true);
   const _hideSearchInput = () => setShowSearchInput(false);
@@ -51,11 +57,13 @@ const NavItems = () => {
           </span>
         </div>
 
-        <img
-          src={profileImg}
-          alt="dashboard image"
-          className="w-10 h-10 rounded-full object-cover cursor-pointer border border-white"
-        />
+       <div onClick={() => navigate(`/profile/${userId}`)}>
+          <img
+            src={ user && user.image || profileImg}
+            alt="dashboard image"
+            className="w-10 h-10 rounded-full object-cover cursor-pointer border border-white"
+          />
+       </div>
       </div>
     </div>
   );

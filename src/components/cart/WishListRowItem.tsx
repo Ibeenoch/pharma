@@ -6,8 +6,8 @@ import QtyUpdateBtn from "../product/QtyUpdateBtn";
 import CustomButton from "../common/Button";
 import ShoppinCart from "../../assets/icons/cart-fill-white.svg?react";
 import { CartProductDataProps, cartProps, ProductDataProps } from "../../types/product/ProductData";
-import { useAppDispatch } from "../../hooks/reduxHooks";
-import { addToCart } from "../../features/cart/cartSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { addToCart, selectCart } from "../../features/cart/cartSlice";
 
 interface WishListRowItemProps {
   wishlistData:  ProductDataProps[];
@@ -33,6 +33,7 @@ const WishListRowItem: React.FC<WishListRowItemProps> = ({
   id,
 }) => {
   const dispatch = useAppDispatch();
+  const { cart } = useAppSelector(selectCart)
   const addItemToCart = (id: string) => {
     const cartProduct = wishlistData.find((w) => w.$id === id);
     if(cartProduct){
@@ -63,7 +64,9 @@ const WishListRowItem: React.FC<WishListRowItemProps> = ({
         />
         <CustomText text={price} textType="normal" weightType="bold" />
       </div>
-      <div className="hidden md:block md:w-max m-auto">
+    { cart && Array.isArray(cart) && cart.find((c) => c.item.$id === id)?.item.$id === id ? (
+      <></>
+    ) : <div className="hidden md:block md:w-max m-auto">
         <CustomButton
           text="Add To Cart"
           textSize="normal"
@@ -73,7 +76,7 @@ const WishListRowItem: React.FC<WishListRowItemProps> = ({
           PreFixIcon={ShoppinCart}
           onClick={() => addItemToCart(id)}
         />
-      </div>
+      </div>}
 
       <div
         onClick={() => removeItemFromCart(id)}
@@ -95,11 +98,16 @@ const WishListRowItem: React.FC<WishListRowItemProps> = ({
         )}
       </div>
       {/* for mobile device  */}
-      <div className="md:hidden flex flex-col justify-around">
-        
+      <div className="md:hidden mx-auto my-auto">
+      { cart && Array.isArray(cart) && cart.find((c) => c.item.$id === id)?.item.$id === id ? (
+      <></>
+    ) : (<div onClick={() => addItemToCart(id)} className="md:w-max m-auto pb-4">
+          <IconAndText text="Add" Icon={ShoppinCart} fillColor="text-amber-500" textColor="text-amber-500"  />
+      </div>)
+      }
 
         <div onClick={() => removeItemFromCart(id)} className="">
-          <IconAndText text="Remove" Icon={Trash} fillColor="red-500" />
+          <IconAndText text="Remove" Icon={Trash} fillColor="text-red-500" textColor="text-red-500" />
         </div>
       </div>
     </div>

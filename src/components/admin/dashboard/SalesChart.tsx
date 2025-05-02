@@ -44,7 +44,7 @@ const categoryColors: { [key: string]: string } = {
 // Custom legend component
 const CustomLegend: React.FC = () => {
   return (
-    <div className="flex justify-center gap-4 mb-2">
+    <div className="flex justify-center gap-2 lg:gap-4 mb-2 pt-2 px-2">
       {Object.entries(categoryColors).map(([category, color]) => (
         <div key={category} className="flex items-center gap-2">
           <span
@@ -60,11 +60,12 @@ const CustomLegend: React.FC = () => {
 
 const SalesChart: React.FC = () => {
   return (
-    <div className="p-4 shadow-lg my-3 rounded-lg bg-neutral-50">
+    <div className="py-4 shadow-lg my-3 rounded-lg bg-neutral-50">
       <CustomText
         text="Sales Performance"
         textType="medium"
         weightType="semibold"
+        extraStyle="px-4"
       />
 
       {/* Custom Legend at the top */}
@@ -73,7 +74,7 @@ const SalesChart: React.FC = () => {
       <ResponsiveContainer width="100%" height={300} className="text-xs">
         <BarChart
           data={data}
-          margin={{ top: 10, right: 5, left: 0, bottom: 10 }}
+          margin={{ top: 10, right: 0, left: 0, bottom: 10 }}
           barGap={10} // Controls space between bars
           barCategoryGap={15} // Controls space between groups
         >

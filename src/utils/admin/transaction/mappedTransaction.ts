@@ -1,6 +1,7 @@
 import { AllOrderResultData } from "../../../types/order/OrderType";
 import { TransactionProps } from "../../../types/payment/FlutterwavePaymentType";
-import { formatFullDateTime } from "../../dateFormatter";
+import { MappedDashboardRecentTransactionProps } from "../../../types/payment/MappedPaymentType";
+import { formatDate, formatFullDateTime } from "../../dateFormatter";
 import { formatWithCommas } from "../../formatAmount";
 
 export const mappedTransaction = (transactionsList: TransactionProps[], orders: AllOrderResultData[]) => {
@@ -37,3 +38,15 @@ let totalQty = orders.find((o) => o.transaction.$id === t.$id)?.cart.forEach((c)
     })
   });
 };
+
+
+export const mappedDashboardRecentTransaction = (transaction: TransactionProps[] ): MappedDashboardRecentTransactionProps[] => {
+    return transaction.map((t) => ({
+      order_id : t.$id ? t.$id.slice(0, 8) + '...' : '',
+      customer_name: t.customerName,
+     date: formatDate(t.createdAt ?? ''),
+     payment_method: t.payMethod,
+     price: (`₦${t.amount}`),
+     status: t.status,
+   }))
+}
