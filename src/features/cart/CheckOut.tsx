@@ -70,7 +70,7 @@ const CheckOut = () => {
   const { cart, total } = useAppSelector(selectCart);
   const { transaction } = useAppSelector(selectOrder);
   const { status, hasPreviousShippingDetails, shippingDetail } =  useAppSelector(selectOrder);
-console.log('profileToCheckOut ', profileToCheckOut);
+
   const handleTransaction = (transactionDetails:  TransactionProps, hotDealsNum: UpdatedHotProductProps[]) => {
 
     dispatch(postTransaction(transactionDetails)).then(() => {

@@ -39,6 +39,7 @@ const Home = () => {
       hasFetchAllProduct === false &&
       dispatch(fetchAllProductWithoutPagination());
   }, [hasFetchAllProduct]);
+  console.log('productAdmin ', productAdmin);
 
     useEffect(() => {
       // when the user visit the page move the page to the top
