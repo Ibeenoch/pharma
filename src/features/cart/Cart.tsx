@@ -69,15 +69,15 @@ const Cart: React.FC<CartProps> = ({
     if(!user || !user.userId){ 
       navigate('/login')
     }else{
-
+        // yes means its coming from profile page
+        if(profileToCheckOut === "yes"){
+          dispatch(toggleProfileTocheckOut('no'))
+        }
       user &&
         user.userId &&
         hasPreviousShippingDetails === false &&
         dispatch(getShippingDetails(user && user.userId));
 
-       if(profileToCheckOut === "yes"){
-          dispatch(toggleProfileTocheckOut('no'))
-        }
       navigate(`/checkout/${user && user.userId}`);
     }
   };
@@ -86,7 +86,7 @@ const Cart: React.FC<CartProps> = ({
     // start the page from the top when a user visit the page
     window.scrollTo(0,0)
   },[])
-console.log('cart ', cart)
+
   return (
     <section
       className={`mt-20 h-min ${

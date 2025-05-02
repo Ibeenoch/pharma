@@ -76,14 +76,15 @@ const CartItems: React.FC<CartItemsProps> = ({
     if(!user || !user.userId){ 
       navigate('/login')
     } else{
-
+      // yes means its coming from profile to checkout
+      if(profileToCheckOut === "yes"){
+        dispatch(toggleProfileTocheckOut('no'))
+      }
       user &&
         user.userId &&
         hasPreviousShippingDetails === false &&
         dispatch(getShippingDetails(user && user.userId));
-         if(profileToCheckOut === "yes"){
-            dispatch(toggleProfileTocheckOut('no'))
-          }
+     
       navigate(`/checkout/${user && user.userId}`);
     }
   };

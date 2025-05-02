@@ -70,7 +70,7 @@ const CheckOut = () => {
   const { cart, total } = useAppSelector(selectCart);
   const { transaction } = useAppSelector(selectOrder);
   const { status, hasPreviousShippingDetails, shippingDetail } =  useAppSelector(selectOrder);
-
+console.log('profileToCheckOut ', profileToCheckOut);
   const handleTransaction = (transactionDetails:  TransactionProps, hotDealsNum: UpdatedHotProductProps[]) => {
 
     dispatch(postTransaction(transactionDetails)).then(() => {
@@ -136,7 +136,7 @@ const CheckOut = () => {
                     console.log('stage 5');
                    hotDealsNum.forEach((h) => {
                      let hotDealData: UpdatedHotProductProps = {isHotDeal: h.isHotDeal, productId: h.productId};
-                     dispatch(updateHotProductNum(hotDealData)).then((res) => {
+                     dispatch(updateHotProductNum(hotDealData)).then(() => {
                       console.log('stage 6 ');
                          dispatch(removeAllItemsInCart());
                          navigate(`/payment_status/${userId}/${response.$id}`);
