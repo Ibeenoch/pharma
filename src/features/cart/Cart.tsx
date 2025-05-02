@@ -69,7 +69,7 @@ const Cart: React.FC<CartProps> = ({
     if(!user || !user.userId){ 
       navigate('/login')
     }else{
-        // yes means its coming from profile page
+        // yes means its coming from profile page 
       dispatch(toggleProfileTocheckOut('no'));
       user &&
         user.userId &&
