@@ -1,4 +1,4 @@
-import img2 from "../../assets/images/placeholder.jfif";
+import img2 from "../../assets/images/noprofileimage.png";
 import CustomText from "../../components/common/Text";
 import Home from "../../assets/icons/home2.svg?react";
 import Cart from "../../assets/icons/cart-shopping.svg?react";
@@ -125,7 +125,7 @@ const Profile = () => {
 
             <div onClick={uploadImage} className="p-2 mx-1 rounded-md bg-amber-500/20 font-semibold flex items-center gap-2 cursor-pointer">
               <Upload className="w-4 h-4 text-amber-500" />
-              <p className="text-amber-500 text-xs"> upload photo</p>
+              <p className="text-amber-500 text-xs"> change photo</p>
             </div>
            
           <input type="file" hidden ref={imageRef} name="profile-img" id="profile-img" onChange={handleImageUploaded} />

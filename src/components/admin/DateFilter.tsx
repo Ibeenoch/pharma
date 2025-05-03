@@ -19,12 +19,14 @@ const DateFilter: React.FC<DateFilterProps> = ({
   applyCallback,
 }) => {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-start gap-6 pt-2 overflow-x-auto">
-      <div className="block sm:flex gap-2 items-center">
+    <div className="md:flex md:justify-between my-3">
+    <div className=" md:flex items-center gap-2 overflow-x-auto">
+      <div className="md:flex gap-2 items-center">
         <CustomText
           text="Start"
-          textType="small"          
-          weightType="medium"
+          textType="small"
+          weightType="semibold"
+          extraStyle="text-gray-500 my-1"
         />
         <CustomInput
           value={started}
@@ -32,18 +34,31 @@ const DateFilter: React.FC<DateFilterProps> = ({
           type="date"
           Id="started"
           showFullWidth={true}
+          placeholder="Start Date"
         />
       </div>
-      <div className="block sm:flex gap-2 items-center">
+      <div className="md:flex gap-2 items-center my-2">
         <CustomText
           text="End"
           textType="small"
-          weightType="medium"
+          weightType="semibold"
+          extraStyle="text-gray-500"
         />
-        <CustomInput value={ended} onChange={setEnded} type="date" Id="ended"   showFullWidth={true} />
+        <CustomInput
+          value={ended}
+          onChange={setEnded}
+          type="date"
+          Id="ended"
+          showFullWidth={true}
+          placeholder="End Date"
+        />
       </div>
-      <CustomButton text="Apply" onClick={applyCallback} fullwidth={true} />
     </div>
+
+    <div className="w-full sm:w-[300px] my-1">
+      <CustomButton text="Apply" fullwidth={true} onClick={applyCallback} />
+    </div>
+  </div>
   );
 };
 

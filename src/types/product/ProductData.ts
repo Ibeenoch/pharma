@@ -16,6 +16,11 @@ export interface ProductDataProps {
   createdAt?: string;
 }
 
+export interface SimilarProductProps {
+  category?: string;
+  brand?: string;
+}
+
 export interface CartProductDataProps {
   $id?: string;
   creator: string;

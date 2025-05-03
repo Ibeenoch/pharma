@@ -3,7 +3,7 @@ import {
   lightgrayBgColor,
 } from "../../../../constants/appColor";
 import CustomText from "../../../common/Text";
-import img from "../../../../assets/images/person4.png";
+import img from "../../../../assets/images/noprofileimage.png";
 import LongArrow from "../../../../assets/icons/arrow-up.svg?react";
 import Plus from "../../../../assets/icons/plus-slim.svg?react";
 import Times from "../../../../assets/icons/cancel-close.svg?react";
@@ -12,15 +12,19 @@ import CustomInput from "../../../common/Input";
 import CustomButton from "../../../common/Button";
 import Modal from "../../../common/Modal";
 import PasswordReset from "./PasswordReset";
+import { useAppSelector } from "../../../../hooks/reduxHooks";
+import { selectAuth } from "../../../../features/auth/authSlice";
 
 const AccountSettingsDetails = () => {
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
+  const { user } = useAppSelector(selectAuth);
+  const [firstName, setFirstName] = useState<string>(user && user.firstName || "");
+  const [lastName, setLastName] = useState<string>(user && user.lastName || "");
+  const [email, setEmail] = useState<string>(user && user.email || "");
   const [isEditEmail, setIsEditEmail] = useState<boolean>(false);
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [isEditPassword, setIsEditPassword] = useState<boolean>(false);
-  const [newPassword, setNewPassword] = useState<string>("");
+  const [newPassword, setNewPassword] = useState<string>(user && user.password || "");
+  const [image, setimage] = useState<string>(user && user.image || "");
   const [error, setError] = useState<{
     email?: string;
     currentPassword?: string;
@@ -63,7 +67,7 @@ const AccountSettingsDetails = () => {
         <div className="flex items-center justify-between">
           <div className="flex gap-2 items-center">
             <img
-              src={img}
+              src={image || img}
               alt="profile pics"
               className="w-18 h-18 rounded-full border border-gray-300"
             />
@@ -105,7 +109,7 @@ const AccountSettingsDetails = () => {
             roundedBorder={true}
             onChange={setFirstName}
             showborder={false}
-            value="Adewale"
+            value={firstName}
             type="text"
             disabled={true}
             showFullWidth={true}
@@ -115,7 +119,7 @@ const AccountSettingsDetails = () => {
             labelStyle="text-gray-500 text-xs"
             roundedBorder={true}
             onChange={setLastName}
-            value="Bolaji"
+            value={lastName}
             type="text"
             disabled={true}
             showborder={false}
@@ -144,7 +148,7 @@ const AccountSettingsDetails = () => {
             labelStyle="text-gray-500 text-xs"
             roundedBorder={true}
             onChange={setEmail}
-            value={isEditEmail ? email : "Adewalebolaji@gmail.com"}
+            value={isEditEmail ? email : email}
             type="email"
             disabled={!isEditEmail}
             showFullWidth={true}
@@ -174,7 +178,7 @@ const AccountSettingsDetails = () => {
             ) : (
               <div
                 onClick={enableEmailEdit}
-                className="w-max p-2 mt-3 md:mt-8 rounded-lg border border-gray-300 flex items-center gap-1"
+                className="w-max p-2 mt-3 md:mt-8 rounded-lg border border-gray-300 flex items-center gap-1 cursor-pointer"
               >
                 <Plus className="w-3 h-3 text-gray-500" />
                 <CustomText
@@ -206,7 +210,7 @@ const AccountSettingsDetails = () => {
             roundedBorder={true}
             showborder={false}
             onChange={setCurrentPassword}
-            value={isEditPassword ? currentPassword : "Adewale"}
+            value={isEditPassword ? currentPassword : currentPassword}
             type="password"
             disabled={!isEditPassword}
             showFullWidth={true}
@@ -215,7 +219,7 @@ const AccountSettingsDetails = () => {
           <div className="w-full flex justify-end">
             <div
               onClick={enablePasswordEdit}
-              className="w-max p-2 mt-3 md:mt-8 rounded-lg border border-gray-300 flex items-center gap-1"
+              className="w-max p-2 mt-3 md:mt-8 rounded-lg border border-gray-300 flex items-center gap-1 cursor-pointer"
             >
               <Plus className="w-3 h-3 text-gray-500" />
               <CustomText

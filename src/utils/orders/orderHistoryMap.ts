@@ -4,14 +4,26 @@ import { formatWithCommas } from "../formatAmount";
 
 export const mapOrderHistory = (orderList: AllOrderResultData[]) => {
   let mappedOrderHistory = orderList.map((order) => ({
-    id: `#${order.$id}`,
+    id: `${order.$id}`,
     qty: order.cart.length,
     paymentMethod: order.transaction.payMethod,
     status: order.transaction.status,
     total: `₦${order.transaction.amount}`,
+    customerName: order.shippingDetails.fullname,
+    phone: order.shippingDetails.phoneNumber,
+    email: order.shippingDetails.email,    
+    address: order.shippingDetails.address,
+    totalItems: order.cart.map((curr) => curr.quantity),
+    totalAmount: order.cart.map((curr) => curr.total),
+    orderDate: order.$createdAt,
+    image: order.cart.map((c) => c.imagesUrl),
+    productCategory: order.cart.map((c) => c.category),
+    productname: order.cart.map((c) => c.name),
+    // totalItemPerProduct: order.cart[0].
   }));
   return mappedOrderHistory;
 };
+
 
 const calTotalAmount = (cart: any[]) => {
   return cart.reduce((_, curr) => {

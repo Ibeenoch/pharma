@@ -63,6 +63,13 @@ export interface OrderPaginatedArgs {
   page: number;
 }
 
+export interface OrderPaginatedFilteredArgs {
+  userId: string;
+  page: number;
+  start: string;
+  end: string;
+}
+
 interface orderCartProp {
   $id?: string;
   $createdAt?: string;
@@ -123,6 +130,24 @@ export interface AllOrderResultData {
   cart: orderCartProp[];
   shippingDetails: orderShippingDetails;
   transaction: orderTransactionDetails;
+}
+
+export interface AllOrderUserResultData {
+  id: string;
+  qty: number;
+  paymentMethod: string;
+  status: string;
+  total: string;
+  customerName: string;
+  phone: string;
+  email: string;    
+  address: string;
+  totalItems: number[];
+  totalAmount: number[];
+  orderDate: string;
+  image: string[][];
+  productCategory: string[];
+  productname: string[];
 }
 
 export interface mappedAllOrdersProps {

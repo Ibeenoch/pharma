@@ -1,7 +1,7 @@
 import { ID } from "node-appwrite";
 import { database, storage } from "../../../lib/appwriteConfig";
 import { Query } from "appwrite";
-import { PrescriptionProps, ProductDataProps, UpdatedHotProductProps } from "../../../types/product/ProductData";
+import { PrescriptionProps, ProductDataProps, SimilarProductProps, UpdatedHotProductProps } from "../../../types/product/ProductData";
 import { UpdateProductCart } from "../../../types/cart/CartData";
 import { ITEMS_PER_PAGE } from "../../../constants/pagianation";
 
@@ -277,6 +277,51 @@ export const allProduct = async (pageNum: number) => {
         Query.limit(ITEMS_PER_PAGE),
         Query.offset(offset)
       ]
+    );
+
+    const allProductList: ProductDataProps[] = allproduct.documents.map(
+      (product: any) => ({
+        creator: product?.creator,
+        name: product?.name,
+        description: product?.description,
+        brand: product?.brand,
+        category: product?.category,
+        imagesUrl: product?.imagesUrl,
+        price: product?.price,
+        quantity: product?.quantity,
+        additionalInfo: product?.additionalInfo,
+        discount: product?.discount,
+        expirationDate: product?.expirationDate,
+        isHotDeal: product?.isHotDeal,
+        $id: product?.$id,
+        productSerialNo: product?.productSerialNo,
+        createdAt: product?.$createdAt,
+      })
+    );
+
+    return allProductList;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const similarProduct = async (similarProductData: SimilarProductProps) => {
+  try {
+    const queries = [];
+
+    if (similarProductData.category) {
+      queries.push(Query.equal('category', similarProductData.category));
+    }
+
+    if (similarProductData.brand) {
+      queries.push(Query.equal('brand', similarProductData.brand));
+    }
+
+    queries.push(Query.limit(7));
+    let allproduct = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
+      queries
     );
 
     const allProductList: ProductDataProps[] = allproduct.documents.map(

@@ -4,7 +4,7 @@ import SearchWhite from "../../../assets/icons/search-alt-white.svg?react";
 import Bell from "../../../assets/icons/bell.svg?react";
 import { useState } from "react";
 import CustomInput from "../../common/Input";
-import profileImg from "../../../assets/images/placeholder.jfif";
+import profileImg from "../../../assets/images/noprofileimage.png";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../../hooks/reduxHooks";
 import { selectAuth } from "../../../features/auth/authSlice";

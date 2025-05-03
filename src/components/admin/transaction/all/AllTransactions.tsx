@@ -6,6 +6,8 @@ import TransactionDetails from "../TransactionDetails";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import {
   getAllOrder,
+  getAllTransaction,
+  getAllTransactionFilteredByDate,
   resetRefreshOrder,
   selectOrder,
   totalOrderPages,
@@ -14,6 +16,10 @@ import { mappedTransaction } from "../../../../utils/admin/transaction/mappedTra
 import TransactionsSkeleton from "../../../common/animations/TransactionsSkeleton";
 import { useParams } from "react-router-dom";
 import { OrderPaginatedArgs } from "../../../../types/order/OrderType";
+import CustomText from "../../../common/Text";
+import Reset from '../../../../assets/icons/reset.svg?react'
+import { TransactionDateFilterProps } from "../../../../types/payment/FlutterwavePaymentType";
+import DateFilter from "../../DateFilter";
 
 interface AllTransactionsProps {
   whichType?: "pending" | "cancelled" | "successful" | "failed" | "all";
@@ -23,6 +29,10 @@ const AllTransactions: React.FC<AllTransactionsProps> = ({
   whichType = "all",
 }) => {
   const [showDetails, setShowDetails] = useState<boolean>(false);
+  const [started, setStarted] = useState<string>("");
+  const [ended, setEnded] = useState<string>("");
+  const [pageNum, setPageNum] = useState<number>(0);
+  const [resetPage, setResetPage] = useState<boolean>(false);
   const [currIndex, setCurrIndex] = useState<string>("");
   const [shippingid, setShippingId] = useState<string>("");
   const { transactions, status, orders, totalOrderPage, refreshOrder } =
@@ -42,7 +52,7 @@ const AllTransactions: React.FC<AllTransactionsProps> = ({
   };
 
   const [orderpaginationProps, setOrderPaginationProps] =
-    useState<OrderPaginatedArgs>({ page: 1, userId: userId ?? "" });
+    useState<OrderPaginatedArgs>({ page: 0, userId: userId ?? "" });
 
   const handlePageClicked = (i: number, userId: string) => {
     dispatch(resetRefreshOrder());
@@ -52,10 +62,11 @@ const AllTransactions: React.FC<AllTransactionsProps> = ({
   useEffect(() => {
     if (userId) {
       // refreshOrder &&
-      dispatch(getAllOrder(orderpaginationProps));
+      dispatch(getAllTransaction(1))
+      dispatch(getAllOrder(orderpaginationProps)).then((res) => console.log('all transaction ', res.payload));
       dispatch(totalOrderPages());
     }
-  }, [refreshOrder, userId]);
+  }, [refreshOrder, userId, resetPage]);
 
   let filteredOrder =
     whichType === "all"
@@ -87,12 +98,28 @@ const AllTransactions: React.FC<AllTransactionsProps> = ({
     (t) => t.transaction.shippingId === shippingid
   );
 
+      const handleTransactionFilter = () => {
+        if(!started || !ended) return;
+    
+        if(userId){
+          setPageNum(0)
+          const start = new Date(started).toISOString();
+          const end = new Date(ended).toISOString();
+          
+          const data: TransactionDateFilterProps = { end, start, pageNum: 0}
+          dispatch(getAllTransactionFilteredByDate(data));
+        }
+    
+      }
+
   return (
     <>
       {status === "loading" ? (
         <TransactionsSkeleton />
-      ) : (
+      ) : allMappedTransaction && allMappedTransaction.length > 0 ? (
         <>
+        <DateFilter setEnded={setEnded} setStarted={setStarted} applyCallback={handleTransactionFilter} started={started} ended={ended} />
+            
           <section
             className={`lg:grid grid-cols-2 p-4 my-3 gap-3  ${lightgrayBgColor} rounded-xl`}
           >
@@ -162,7 +189,17 @@ const AllTransactions: React.FC<AllTransactionsProps> = ({
               ))}
           </div>
         </>
-      )}
+      ): (
+        <section className="flex justify-center h-screen items-center">
+          <div>
+          <CustomText text="No Record Found" />
+          <div onClick={() => setResetPage(true)} className="flex p-2 my-4 items-center bg-amber-500/30 gap-1 rounded-md cursor-pointer w-max">
+            <Reset className="w-4 h-4 text-amber-500" />
+            <CustomText text="Reset" textType="normal" weightType="medium" color="text-amber-500" />
+          </div>
+          </div>
+        </section>
+      ) }
     </>
   );
 };

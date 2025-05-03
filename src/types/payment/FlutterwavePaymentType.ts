@@ -44,3 +44,9 @@ export interface TransactionProps {
   shippingStatus: string;
   customerName: string;
 }
+
+export interface TransactionDateFilterProps{
+  pageNum: number;
+  start: string;
+  end: string;
+}

@@ -28,7 +28,7 @@ const Modal: React.FC<ModalProps> = ({
       ) : (
         <div
           onClick={(e) => e.stopPropagation()}
-          className={`${lightgrayBgColor} p-4 rounded-lg shadow-lg w-[400px] md:w-[550px] relative`}
+          className={`${lightgrayBgColor} p-4 rounded-lg shadow-lg mx-4 sm:mx-0 w-[400px] md:w-[550px] relative`}
         >
           <div
             onClick={onClose}

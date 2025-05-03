@@ -7,22 +7,10 @@ interface TransactionLayoutProps {
 }
 
 const TransactionLayout: React.FC<TransactionLayoutProps> = ({ child }) => {
-  const [started, setStarted] = useState<string>("");
-  const [ended, setEnded] = useState<string>("");
 
   return (
-    <main className={`md:mt-12 mt-20 ${adminDefaultBgColor}`}>
-      <div className="flex flex-col md:flex-row p-4 items-center justify-between">
-        <div></div>
-
-        <DateFilter
-          applyCallback={() => {}}
-          ended={ended}
-          started={started}
-          setEnded={setEnded}
-          setStarted={setStarted}
-        />
-      </div>
+    <main className={`md:mt-15 mt-20 ${adminDefaultBgColor}`}>
+      
 
       <section className="my-3">{child}</section>
     </main>

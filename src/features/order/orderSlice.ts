@@ -4,6 +4,7 @@ import {
   AllOrderResultData,
   OrderArgs,
   OrderPaginatedArgs,
+  OrderPaginatedFilteredArgs,
   OrderProps,
   OrderStatusProps,
   ShippingDetailsProps,
@@ -11,7 +12,7 @@ import {
   UpdateShippingArgs,
 } from "../../types/order/OrderType";
 import { RootState } from "../../redux/store";
-import { TransactionProps } from "../../types/payment/FlutterwavePaymentType";
+import { TransactionDateFilterProps, TransactionProps } from "../../types/payment/FlutterwavePaymentType";
 
 interface orderState {
   hasShippingDetailsSubmitted: boolean;
@@ -253,6 +254,19 @@ export const getAllTransaction = createAsyncThunk(
   }
 );
 
+export const getAllTransactionFilteredByDate = createAsyncThunk(
+  "order/getAllTransactionFilteredByDate",
+  async (pageData: TransactionDateFilterProps, { rejectWithValue }) => {
+    try {
+      return await api.getAllTransactionFilteredByDate(pageData);
+    } catch (error: any) {
+      return rejectWithValue(
+        error.message || "failed to get all transaction details"
+      );
+    }
+  }
+);
+
 export const getAllTransactionWithoutPagination = createAsyncThunk(
   "order/getAllTransactionWithoutPagination",
   async (_, { rejectWithValue }) => {
@@ -351,6 +365,19 @@ export const getAllOrder = createAsyncThunk(
   }
 );
 
+export const getAllFilteredOrderByDate = createAsyncThunk(
+  "order/getAllFilteredOrderByDate",
+  async (data: OrderPaginatedFilteredArgs, { rejectWithValue }) => {
+    try {
+      return await api.filterOrdersWithDate(data);
+    } catch (error: any) {
+      return rejectWithValue(
+        error.message || "failed to get all orders details"
+      );
+    }
+  }
+);
+
 const orderSlice = createSlice({
   name: "order",
   initialState,
@@ -402,7 +429,6 @@ const orderSlice = createSlice({
       })
       .addCase(postTransaction.fulfilled, (state, action) => {
         state.status = "success";
-        console.log("postTransaction.fulfilled ", action.payload);
         if (state.status === "success" && action.payload) {
           state.transaction = action.payload;
           state.refreshTransaction = true;
@@ -418,7 +444,6 @@ const orderSlice = createSlice({
       })
       .addCase(getATransaction.fulfilled, (state, action) => {
         state.status = "success";
-        console.log("getATransaction fulfilled ", action.payload);
         if (state.status === "success" && action.payload) {
           state.transaction = action.payload;
           state.refreshATransaction = false;
@@ -446,12 +471,10 @@ const orderSlice = createSlice({
       })
       .addCase(updateOrderStatus.fulfilled, (state, action) => {
         state.status = "success";
-        console.log("updateOrderStatus fulfilled ", action.payload);
         if (state.status === "success" && action.payload) {
           const index = state.orders.findIndex(
             (s) => (s.$id = action.payload.$id)
           );
-          console.log("searching", index, state.orders);
           state.orders[index] = action.payload;
           state.refreshOrder = true;
           state.refreshAnOrder = true;
@@ -479,12 +502,24 @@ const orderSlice = createSlice({
       .addCase(getAllOrder.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload) {
-          console.log('action order ', action.payload);
           state.orders = action.payload;
           state.refreshOrder = false;
         }
       })
       .addCase(getAllOrder.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(getAllFilteredOrderByDate.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getAllFilteredOrderByDate.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload) {
+          console.log('action order ', action.payload);
+          state.orders = action.payload;
+        }
+      })
+      .addCase(getAllFilteredOrderByDate.rejected, (state) => {
         state.status = "failure";
       })
       .addCase(getAllTransaction.pending, (state) => {
@@ -498,6 +533,19 @@ const orderSlice = createSlice({
         }
       })
       .addCase(getAllTransaction.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(getAllTransactionFilteredByDate.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getAllTransactionFilteredByDate.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload) {
+          state.transactions = action.payload;
+          state.refreshTransaction = false;
+        }
+      })
+      .addCase(getAllTransactionFilteredByDate.rejected, (state) => {
         state.status = "failure";
       })
       .addCase(getAllTransactionWithoutPagination.pending, (state) => {

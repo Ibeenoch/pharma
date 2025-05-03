@@ -15,7 +15,7 @@ import Heart from "../../assets/icons/heart.svg?react";
 import Cart from "../../assets/icons/cart-fill-white.svg?react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { selectproductAdmin } from "../admin/product/productSlice";
+import { fetchSimilarProduct, selectproductAdmin } from "../admin/product/productSlice";
 import Brand from '../../assets/icons/brand-unity3d.svg?react';
 import Category from '../../assets/icons/category.svg?react';
 import {
@@ -31,16 +31,26 @@ import {
 import {
   CartProductDataProps,
   cartProps,
+  SimilarProductProps,
 } from "../../types/product/ProductData";
 
 const ProductDetails = () => {
   const [qty, setQty] = useState<number>(1);
   const dispatch = useAppDispatch();
   const { id } = useParams();
-  const { productAdmin } = useAppSelector(selectproductAdmin);
+  const { productAdmin, productSimilar } = useAppSelector(selectproductAdmin);
   const { cart, wishlist, subTotal, total } = useAppSelector(selectCart);
 
+  console.log('product similar ', productSimilar);
+
+
+
   const productItem = productAdmin.find((item) => item.$id === id)!;
+
+  useEffect(() => {
+    const data: SimilarProductProps = {brand: productItem.brand, category: productItem.category}
+    dispatch(fetchSimilarProduct(data)).then((res) => console.log('fetched similar product ', res.payload))
+  }, [])
   const productCart: CartProductDataProps = {
     ...productItem,
     subtotal: subTotal,
@@ -357,56 +367,22 @@ const ProductDetails = () => {
         />
 
         <div className="flex items-center gap-2 overflow-x-auto">
-          <SingleProduct
-            onAddCart={handleAddToCart}
-            onAddWishlist={handleAddToWishList}
-            id=""
-            discount={0}
-            productImage={img3}
-            price="₦4,100"
-            textTitle="Procold"
-            textDesc="Relieves Cold, flu symptoms, nasal congestion, and fever"
-          />
-          <SingleProduct
-            onAddCart={handleAddToCart}
-            onAddWishlist={handleAddToWishList}
-            id=""
-            discount={0}
-            productImage={img3}
-            price="₦4,100"
-            textTitle="Procold"
-            textDesc="Relieves Cold, flu symptoms, nasal congestion, and fever"
-          />
-          <SingleProduct
-            onAddCart={handleAddToCart}
-            onAddWishlist={handleAddToWishList}
-            id=""
-            discount={0}
-            productImage={img3}
-            price="₦4,100"
-            textTitle="Procold"
-            textDesc="Relieves Cold, flu symptoms, nasal congestion, and fever"
-          />
-          <SingleProduct
-            onAddCart={handleAddToCart}
-            onAddWishlist={handleAddToWishList}
-            id=""
-            discount={0}
-            productImage={img3}
-            price="₦4,100"
-            textTitle="Procold"
-            textDesc="Relieves Cold, flu symptoms, nasal congestion, and fever"
-          />
-          <SingleProduct
-            onAddCart={handleAddToCart}
-            onAddWishlist={handleAddToWishList}
-            id=""
-            discount={0}
-            productImage={img3}
-            price="₦4,100"
-            textTitle="Procold"
-            textDesc="Relieves Cold, flu symptoms, nasal congestion, and fever"
-          />
+          {
+            productSimilar && Array.isArray(productSimilar) && productSimilar.map((p) => (
+
+            p && p.$id && <SingleProduct
+                onAddCart={handleAddToCart}
+                onAddWishlist={handleAddToWishList}
+                id={p.$id}
+                discount={0}
+                productImage={p.imagesUrl[0]}
+                price={`₦${p.price}`}
+                textTitle={p.name}
+                textDesc={p.description.slice(0, 20)}
+              />
+            ))
+          }
+       
         </div>
       </section>
     </>

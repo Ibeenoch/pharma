@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../../redux/store";
-import { PrescriptionProps, ProductDataProps, UpdatedHotProductProps } from "../../../types/product/ProductData";
+import { PrescriptionProps, ProductDataProps, SimilarProductProps, UpdatedHotProductProps } from "../../../types/product/ProductData";
 import * as api from "./productService";
 import { UpdateProductCart } from "../../../types/cart/CartData";
 
@@ -9,6 +9,7 @@ interface productAdminState {
   productAdmin: ProductDataProps[]; // with pagination
   allProduct: ProductDataProps[]; // without pagination
   productSearched: ProductDataProps[];
+  productSimilar: ProductDataProps[];
   prescription: PrescriptionProps[]; // with pagination
   prescriptionWithoutPagination: PrescriptionProps[]; // without pagination
   hasFetchAllProduct: boolean;
@@ -26,6 +27,7 @@ interface productAdminState {
 const initialState: productAdminState = {
   status: "idle",
   productAdmin: [],
+  productSimilar: [],
   allProduct: [],
   hasFetchAllProduct: false,
   hasFetchAllProductWithoutPagination: false,
@@ -117,6 +119,17 @@ export const fetchAllUserProduct = createAsyncThunk(
   async (pageNum: number, { rejectWithValue }) => {
     try {
       return await api.allProduct(pageNum);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+);
+
+export const fetchSimilarProduct = createAsyncThunk(
+  "product/fetchSimilarProduct",
+  async (data: SimilarProductProps, { rejectWithValue }) => {
+    try {
+      return await api.similarProduct(data);
     } catch (error: any) {
       return rejectWithValue(error.message || "Something went wrong");
     }
@@ -369,6 +382,18 @@ const productAdminSlice = createSlice({
         }
       })
       .addCase(fetchAllUserProduct.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(fetchSimilarProduct.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchSimilarProduct.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload !== undefined) {
+          state.productSimilar = action.payload;
+        }
+      })
+      .addCase(fetchSimilarProduct.rejected, (state) => {
         state.status = "failure";
       })
       .addCase(fetchAllProductWithoutPagination.pending, (state) => {

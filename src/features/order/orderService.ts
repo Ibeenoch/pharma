@@ -4,6 +4,7 @@ import {
   AllOrderResultData,
   OrderArgs,
   OrderPaginatedArgs,
+  OrderPaginatedFilteredArgs,
   OrderProps,
   OrderStatusProps,
   ShippingDetailsProps,
@@ -11,7 +12,7 @@ import {
   ShippingServiceUpdateProps,
   UpdateShippingArgs,
 } from "../../types/order/OrderType";
-import { TransactionProps } from "../../types/payment/FlutterwavePaymentType";
+import { TransactionDateFilterProps, TransactionProps } from "../../types/payment/FlutterwavePaymentType";
 import { ITEMS_PER_PAGE } from "../../constants/pagianation";
 
 // service order
@@ -240,6 +241,48 @@ export const getAllTransaction = async (pageNum:  number) => {
       [
         Query.limit(ItemPerPage),
         Query.offset(offset),
+      ]
+    );
+    const transactionDoc = transactionarr.documents;
+    let allTransactions: TransactionProps[] = [];
+    transactionDoc.forEach((transaction) => {
+      let transactionItem = {
+        $id: transaction.$id,
+        payerId: transaction.payerId,
+        status: transaction.status,
+        amount: transaction.amount,
+        transactionId: transaction.transactionId,
+        transactionRef: transaction.transactionRef,
+        createdAt: transaction.$createdAt,
+        payMethod: transaction.payMethod,
+        imageUrl: transaction.imageUrl,
+        productName: transaction.productName,
+        productQty: transaction.productQty,
+        shippingId: transaction.shippingId,
+        shippingType: transaction.shippingType,
+        shippingStatus: transaction.shippingStatus,
+        customerName: transaction.customerName,
+      } as TransactionProps;
+      allTransactions.push(transactionItem);
+    });
+    console.log("allTransactions ", allTransactions);
+    return allTransactions;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAllTransactionFilteredByDate = async (pageData:  TransactionDateFilterProps) => {
+  try {
+    let ItemPerPage = 6;
+    let offset = ((pageData.pageNum > 0 ? pageData.pageNum : 1) - 1) * ItemPerPage;
+    const transactionarr = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_TRANSACTION_COLLECTION_ID, // collection id
+      [
+        Query.limit(ItemPerPage),
+        Query.offset(offset),
+        Query.between('$createdAt', pageData.start, pageData.end)
       ]
     );
     const transactionDoc = transactionarr.documents;
@@ -503,6 +546,39 @@ export const findAllOrders = async (dataProps: OrderPaginatedArgs) => {
         Query.limit(ITEMS_PER_PAGE),
         Query.offset(offset),
         Query.equal("userId", dataProps.userId),
+      ]
+    );
+
+    const allOrder: AllOrderResultData[] = orderArr.documents.map((order) => ({
+      $id: order.$id,
+      $createdAt: order.$createdAt,
+      $updatedAt: order.$createdAt,
+      cart: order.cart,
+      orderStatus: order.orderStatus,
+      shippingDetails: order.shippingDetails,
+      transaction: order.transaction,
+      userId: order.userId,
+    }));
+
+    return allOrder;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const filterOrdersWithDate = async (dataProps: OrderPaginatedFilteredArgs) => {
+  try {
+    const p = dataProps.page;
+    const offset = ((p > 0 ? p : 1) - 1) * ITEMS_PER_PAGE;
+    console.log('dataProps ', dataProps)
+    const orderArr = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_ORDER_COLLECTION_ID, // collection id
+      [
+        Query.limit(ITEMS_PER_PAGE),
+        Query.offset(offset),
+        Query.equal("userId", dataProps.userId),
+        Query.between("$createdAt", dataProps.start, dataProps.end)
       ]
     );
 
