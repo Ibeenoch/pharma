@@ -16,43 +16,19 @@ interface BrandsProps{
 }
 
 const Brands:React.FC<BrandsProps> = ({ navigate }) => {
-  
-  const brandImage = [b1, b2, b3, b4, b5, b6, b7];
-  const brands = [
-    'A & J Pharmaceutical Nig. Ltd.',
-'Abumec Pharmaceuticals Ltd.',
-'AC Drugs Limited.',
-'Adler Products Limited.',
-'Afrab-Chem Limited.',
-'Afrik Pharmaceuticals Plc.',
-'Agary Pharmaceutical Limited.',
-'Alben Healthcare Industries Limited.',
-'Archy Pharmaceutical Nigeria Limited.',
-'Swiss Pharma Nigeria Limited.',
-'Fidson Healthcare.',
-'Emzor Pharmaceutical.',
-'GlaxoSmithKline Nigeria.',
-'May & Baker Nigeria Plc.',
-'Mopson Pharmaceutical Limited.',
-'New Height Pharmaceuticals.',
-'Neros Pharmaceuticals',
-'Chemiron International Limited.',
-'Olex Pharmaceuticals.',
-'Zolon Healthcare.',
-  ];
 
   const handleNavBrand = (name: string) => {
     navigate(`/brand/${name}`)
   }
 
   return (
-    <section className="border-b border-black mb-2 pb-4 animate-on-scroll">
+    <section className="border-b border-black mx-4 sm:mx-0 mb-2 pb-4 animate-on-scroll">
       <TwoTextSpan leftText="Top Brands" />
 
       <article className="flex items-center lg:grid lg:grid-cols-7 gap-4 overflow-x-auto">
         {productBrands.slice(1).map((item, index) => (
           <div onClick={() => handleNavBrand(item.label)} className="cursor-pointer" key={index}>
-            <div className="h-22 w-20 md:h-30 md:w-28 lg:h-38 lg:w-32 xl:h-48 xl:w-42 flex items-center justify-center rounded-xl p-2 bg-white mb-4">
+            <div className="h-46 w-40 xl:h-48 xl:w-42 flex items-center justify-center rounded-xl p-2 bg-white mb-4">
               <img
                 src={item.companyImage}
                 alt="medication categories"
@@ -61,7 +37,7 @@ const Brands:React.FC<BrandsProps> = ({ navigate }) => {
             </div>
             <article>
               <CustomText
-                text={item.label}
+                text={item && item.label && item.label.length > 18 ? item.label.slice(0,18) + '...' :item.label}
                 textType="small"
                 weightType="bold"
               />

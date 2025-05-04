@@ -55,8 +55,8 @@ const SingleProduct: React.FC<SingleProductProps> = ({
         />
         <div className="flex md:justify-between gap-2 md:gap-0 items-center">
           <div className="flex items-center gap-2">
-            <CustomText text={'₦' + String((parseInt(price.slice(1)) - (((discount === 0 ? 1 : (discount / 100))) * parseInt(price.slice(1)))) )} textType="medium" weightType="bold" color="text-amber-600" />
-            <CustomText text={`₦${price}`} textType="normal" weightType="medium" color="text-gray-500" extraStyle="line-through" />
+            <CustomText text={'₦' + String((parseInt(price) - (((discount === 0 ? 1 : (discount / 100))) * parseInt(price))) )} textType="medium" weightType="bold" color="text-amber-500" />
+            <CustomText text={`₦${price}`} textType="small" weightType="normal" color="text-gray-400" extraStyle="line-through" />
           </div>
 
           <div className="flex gap-3 items-center">

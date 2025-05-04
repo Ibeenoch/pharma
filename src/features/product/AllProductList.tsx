@@ -137,7 +137,7 @@ const AllProductList = () => {
                       ? p.description.slice(0, 80) + "..."
                       : p.description
                   }
-                  price={`₦${p.price}`}
+                  price={`${p.price}`}
                   discount={p.discount}
                 />
               )

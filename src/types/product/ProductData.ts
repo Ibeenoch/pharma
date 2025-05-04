@@ -19,6 +19,7 @@ export interface ProductDataProps {
 export interface SimilarProductProps {
   category?: string;
   brand?: string;
+  producTId: string;
 }
 
 export interface CartProductDataProps {

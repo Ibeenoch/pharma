@@ -310,11 +310,12 @@ export const similarProduct = async (similarProductData: SimilarProductProps) =>
     const queries = [];
 
     if (similarProductData.category) {
-      queries.push(Query.equal('category', similarProductData.category));
+      queries.push(Query.equal('category', similarProductData.category.toLowerCase()));
     }
 
     if (similarProductData.brand) {
-      queries.push(Query.equal('brand', similarProductData.brand));
+      queries.push(Query.notEqual('$id', similarProductData.producTId),);
+      // queries.push(Query.equal('brand', similarProductData.brand));
     }
 
     queries.push(Query.limit(7));
@@ -323,7 +324,7 @@ export const similarProduct = async (similarProductData: SimilarProductProps) =>
       import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
       queries
     );
-
+console.log('allproduct ', allproduct)
     const allProductList: ProductDataProps[] = allproduct.documents.map(
       (product: any) => ({
         creator: product?.creator,

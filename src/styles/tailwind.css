@@ -21,14 +21,14 @@
     /* font-family: system-ui, Avenir, Helvetica, Arial, sans-serif; */
     font-family: "SawarabiGothic-Regular", sans-serif;
     line-height: 1.5;
-    --color-graybg: #f4f4f4;
+    --color-graybg: #eeecee;
     --color-graytext: #adafb2;
     --color-whitebg: #ffffff;
     --color-blackbg: #000000;
     --color-ambergray: #e6e1d8;
     --color-red: red;
   }
-
+  /* --color-graybg: #f4f4f4; */
   body {
     background-color: var(--color-graybg);
     font-family: "SawarabiGothic-Regular", sans-serif;

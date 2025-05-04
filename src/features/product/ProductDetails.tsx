@@ -41,15 +41,13 @@ const ProductDetails = () => {
   const { productAdmin, productSimilar } = useAppSelector(selectproductAdmin);
   const { cart, wishlist, subTotal, total } = useAppSelector(selectCart);
 
-  console.log('product similar ', productSimilar);
-
-
-
   const productItem = productAdmin.find((item) => item.$id === id)!;
 
   useEffect(() => {
-    const data: SimilarProductProps = {brand: productItem.brand, category: productItem.category}
-    dispatch(fetchSimilarProduct(data)).then((res) => console.log('fetched similar product ', res.payload))
+    if(productItem && productItem.$id){
+      const data: SimilarProductProps = {brand: productItem.brand, category: productItem.category, producTId: productItem.$id};
+      dispatch(fetchSimilarProduct(data))
+    }
   }, [])
   const productCart: CartProductDataProps = {
     ...productItem,
@@ -202,7 +200,7 @@ const ProductDetails = () => {
                     product.item.discount &&
                     (
                       (product.item.price -
-                        (product.item.discount / 100) * product.item.price) *
+                        ((product.item.discount / 100) * product.item.price)) *
                       qty
                     ).toFixed(2)
                   } `}
@@ -370,15 +368,17 @@ const ProductDetails = () => {
           {
             productSimilar && Array.isArray(productSimilar) && productSimilar.map((p) => (
 
-            p && p.$id && <SingleProduct
+            p && p.$id && p.discount &&
+            <SingleProduct
                 onAddCart={handleAddToCart}
                 onAddWishlist={handleAddToWishList}
                 id={p.$id}
-                discount={0}
+                discount={p.discount}
                 productImage={p.imagesUrl[0]}
-                price={`₦${p.price}`}
+                price={`${p.price}`}
                 textTitle={p.name}
                 textDesc={p.description.slice(0, 20)}
+                key={p.$id}
               />
             ))
           }

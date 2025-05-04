@@ -55,7 +55,7 @@ const Home = () => {
       <HeroSection navigate={navigate} />
       <Category navigate={navigate} productAdmin={productAdmin} />
       <Banner />
-      <Recommendation navigate={navigate} productAdmin={productAdmin} />
+      <Recommendation navigate={navigate} productAdmin={productAdmin}  />
       <HotDeals  navigate={navigate} productAdmin={productAdmin} />
       <TopSelling navigate={navigate} productAdmin={productAdmin} />
       <DiscountBanner />

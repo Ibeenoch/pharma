@@ -33,7 +33,7 @@ const handleCategoryNav = (name: string) => {
 
         {productCategory && Array.isArray(productCategory) && productCategory.map((item, index) => (
           <div onClick={() =>handleCategoryNav( item.category)} className="cursor-pointer" key={index}>
-            <div className="h-22 w-20 md:h-30 md:w-28 lg:h-38 lg:w-32 xl:h-48 xl:w-42 flex items-center justify-center rounded-xl p-2 bg-white mb-4">
+            <div className="h-46 w-40 md:h-30 md:w-28 lg:h-38 lg:w-32 xl:h-48 xl:w-42 flex items-center justify-center rounded-xl p-2 bg-white mb-4">
               <img
                 src={item.image}
                 alt="medication categories"

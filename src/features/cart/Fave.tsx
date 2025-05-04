@@ -46,8 +46,8 @@ const Fave: React.FC<FaveProps> = ({
       // start the page from the top when a user visit the page
       window.scrollTo(0,0)
     },[])
-    console.log('wishlist length ', wishlist.length, wishlist)
-  return (
+
+    return (
     <section
       className={`mt-20 h-min ${
         isCheckOutPage ? "bg-white" : "md:w-[70%] md:mx-auto"
@@ -60,7 +60,7 @@ const Fave: React.FC<FaveProps> = ({
       ) : (
         <div className="flex justify-between items-center my-2">
           <CustomText
-            text={isCheckOutPage ? "Review Your Cart" : "Shopping Cart"}
+            text={isCheckOutPage ? "Review Your Cart" : "Favorite"}
             textType="medium"
             weightType="semibold"
           />
