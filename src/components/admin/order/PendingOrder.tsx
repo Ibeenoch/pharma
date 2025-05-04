@@ -1,7 +1,7 @@
 import AllOrder from "./AllOrder";
 
 const PendingOrder = () => {
-  return <AllOrder whichType="pending" />;
+  return <AllOrder whichType="Processing" />;
 };
 
 export default PendingOrder;

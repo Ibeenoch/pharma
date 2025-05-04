@@ -46,13 +46,7 @@ const AdminUsers = () => {
       </section>
       <div className="flex flex-col md:flex-row  items-center justify-between">
         <div></div>
-        {/* <NavTab
-          handleTabclicked={handleUserTabs}
-          indexClicked={adminUsertabIndex}
-          navLists={userLists}
-
-        /> */}
-
+        
         <DateFilter
           applyCallback={() => {}}
           ended={ended}

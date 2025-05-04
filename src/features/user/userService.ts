@@ -1,6 +1,8 @@
 import { ID } from "appwrite";
 import { database } from "../../lib/appwriteConfig";
 import { ContactProps, EmailSubProps } from "../../types/user/contact";
+import { Query } from "node-appwrite";
+import { ITEMS_PER_PAGE } from "../../constants/pagianation";
 
 // Handles API calls for home data
 
@@ -31,12 +33,16 @@ export const sendContactMsg = async(contactData: ContactProps) => {
 
 }
 
-export const getContactMsg = async() => {
+export const getContactMsg = async(p: number) => {
     try {
-
+      let offset = ((p > 0 ? p : 1) -1) * 6
       const contacts = await database.listDocuments(
         import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
         import.meta.env.VITE_APPWRITE_CONTACT_ID, // product collection id
+        [
+          Query.limit(6),
+          Query.offset(offset)
+        ]
       );
 
       const getContacts = contacts.documents.map((contact) => ({
@@ -49,6 +55,25 @@ export const getContactMsg = async() => {
         phone: contact.phone,
       }))
   
+      return getContacts;
+    } catch (error) {
+        throw error;
+    }
+
+}
+
+export const getTotalPageForContactMsg = async() => {
+    try {
+
+      const contacts = await database.listDocuments(
+        import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+        import.meta.env.VITE_APPWRITE_CONTACT_ID, // product collection id
+        [
+          Query.limit(1)
+        ]
+      );
+
+      const getContacts = contacts.total;
       return getContacts;
     } catch (error) {
         throw error;
@@ -79,12 +104,17 @@ export const sendEmailSub = async(email: string) => {
 
 }
 
-export const getEmailSub = async() => {
+export const getEmailSub = async(p: number) => {
     try {
+      let offset = ((p > 0 ? p : 1) -1) * ITEMS_PER_PAGE
 
       const emails = await database.listDocuments(
         import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
         import.meta.env.VITE_APPWRITE_EMAIL_SUB_ID, // product collection id
+        [
+          Query.limit(ITEMS_PER_PAGE),
+          Query.offset(offset)
+        ]
       );
 
       const getEmail = emails.documents.map((email) => ({
@@ -92,6 +122,26 @@ export const getEmailSub = async() => {
         $createdAt: email.$createdAt,
         email: email.email,
       }))
+  
+      return getEmail;
+    } catch (error) {
+        throw error;
+    }
+
+}
+
+export const getTotalPageForEmailSub = async() => {
+    try {
+
+      const emails = await database.listDocuments(
+        import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+        import.meta.env.VITE_APPWRITE_EMAIL_SUB_ID, // product collection id
+        [
+          Query.limit(1)
+        ]
+      );
+
+      const getEmail = emails.total;
   
       return getEmail;
     } catch (error) {

@@ -3,6 +3,8 @@ import { account, database, storage } from "../../lib/appwriteConfig";
 import { UserDataProps, } from "../../types/auth/UserData";
 import { Query } from "node-appwrite";
 import { URL } from "../../constants/appGeneral";
+import { ITEMS_PER_PAGE } from "../../constants/pagianation";
+import { UserDateFilterProps } from "../../types/user/contact";
 
 export const registerUser = async (userData: UserDataProps) => {
   try {
@@ -242,6 +244,8 @@ export const getCurrentLoginUser = async () => {
   }
 };
 
+
+
 export const checkIfUserExist = async (email: string) => {
   try {
     // fetch all users
@@ -258,12 +262,67 @@ export const checkIfUserExist = async (email: string) => {
   }
 };
 
-export const getAllUsers = async () => {
+export const getAllUsers = async (p: number) => {
   try {
+    const offset = ((p > 0 ? p : 1) - 1) * ITEMS_PER_PAGE;    // fetch all users
+    const user = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID,
+      import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID,
+      [
+        Query.limit(ITEMS_PER_PAGE),
+        Query.offset(offset),
+      ]
+    );
+    const userFound: UserDataProps[] = user.documents.map((u) => ({
+      userId: u.userId,
+      $id: u.$id,
+      email: u.email,
+      firstName: u.firstName,
+      lastName: u.lastName,
+      dob: u.dob,
+      role: u.role,
+      gender: u.gender,
+      passcode: u.passcode,
+      password: u.password,
+      createdAt: u.$createdAt,
+      image: u.image,
+    }));
+    return userFound;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getTotalUsersPage = async () => {
+  try {
+
     // fetch all users
     const user = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID,
-      import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID
+      import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID,
+      [
+        Query.limit(1),
+      ]
+    );
+  const totalPage = user.total;
+    return totalPage;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAllUsersWithDateFilter = async (userData: UserDateFilterProps) => {
+  try {
+    let offset = (userData.pageNum > 0 ? userData.pageNum : 1) * ITEMS_PER_PAGE;
+    // fetch all users
+    const user = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID,
+      import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID,
+      [
+        Query.limit(ITEMS_PER_PAGE),
+        Query.offset(offset),
+        Query.between('$createdAt', userData.start, userData.end)
+      ]
     );
     const userFound: UserDataProps[] = user.documents.map((u) => ({
       userId: u.userId,

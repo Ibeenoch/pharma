@@ -38,14 +38,7 @@ const GeneralSettingsDetails = () => {
 
   return (
     <main className={`md:mt-12 mt-20 ${adminDefaultBgColor}`}>
-      <div className="flex flex-col md:flex-row p-4 items-center justify-between">
-        <NavTab
-          handleTabclicked={handleOrderTabs}
-          indexClicked={0}
-          // indexClicked={adminOrdertabIndex}
-          navLists={generalSettingsTabList}
-        />
-      </div>
+     
 
       <div className={` mx-auto w-full ${adminDefaultBgColor}`}>
         <section className={`${lightgrayBgColor} p-4 rounded-xl mb-3  pb-8`}>
@@ -62,7 +55,7 @@ const GeneralSettingsDetails = () => {
             extraStyle="my-1 pb-4 border-b border-gray-300"
           />
 
-          <div className="grid grid-cols-2 ">
+          <div className="md:grid grid-cols-2 ">
             <div>
               <CustomText
                 text="Card Details"
@@ -89,7 +82,7 @@ const GeneralSettingsDetails = () => {
               </div>
             </div>
             <div>
-              <div className="flex gap-2 items-center">
+              <div className="block md:flex gap-2 items-center">
                 <CustomInput
                   label="Card Name"
                   labelStyle="text-gray-500 text-xs"
@@ -113,7 +106,7 @@ const GeneralSettingsDetails = () => {
                   showFullWidth={true}
                 />
               </div>
-              <div className="flex gap-2 items-center">
+              <div className="block md:flex gap-2 items-center">
                 <CustomInput
                   label="Card Number"
                   labelStyle="text-gray-500 text-xs"

@@ -117,12 +117,10 @@ const Table: React.FC<TableProps> = ({
       setShowModal(true);
     } else if (whichTable.toLowerCase() === "order") {
       let order = row as mappedAllOrdersProps;
-      console.log('orders ', order)
       order && order?.$id && setOrderPreview(order);
       setShowOrderModal(true);
     } else if (whichTable.toLowerCase() === "customerorder") {
       let order = row as AllOrderUserResultData;
-      console.log('orders ', order)
       order && order.id && setOrderCustomerPreview(order);
       setShowOrderCustomerModal(true);
     }
@@ -158,6 +156,9 @@ const Table: React.FC<TableProps> = ({
                       <div className="rounded-lg p-2 bg-white w-max">
                         <img src={row[key]} alt="image prescription" className="w-12 h-12 rounded-md" />
                       </div>
+                    ) : key && key.toLowerCase() === 'status' ? (
+                      
+                      <p className={`p-2 rounded-md w-max ${row[key] === 'Processing' ? 'bg-amber-500/30 text-amber-500' : row[key] === 'Delivered' ? 'bg-green-500/30 text-green-500': row[key] === 'Shipped' ? ' bg-blue-500/30 text-blue-500': row[key] === 'Cancelled' ? 'bg-red-500/30 text-red-500' : ''} `}> {row[key]}</p>
                     ) :
                     key && key.toLowerCase() !== 'actions' && (row[key])} 
 

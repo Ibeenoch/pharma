@@ -102,7 +102,7 @@ const CartItems: React.FC<CartItemsProps> = ({
           onClick={handleRemoveAllFromCart}
           className="flex items-center gap-1 cursor-pointer"
         >
-          <CancelCircle className="ml-4 w-4 h-4 stroke-gray-400 cursor-pointer" />
+          <CancelCircle className="ml-4 w-4 h-4 text-amber-500 cursor-pointer" />
           <CustomText
             text="Remove All"
             textType="extrasmall"
@@ -178,7 +178,7 @@ const CartItems: React.FC<CartItemsProps> = ({
                     handleRemoveFromCart(p && p.item && p.item.$id, i);
                 }}
               >
-                <CancelCircle className="ml-4 w-7 h-5 stroke-gray-400 cursor-pointer" />
+                <CancelCircle className="ml-4 w-7 h-5 text-amber-500 cursor-pointer" />
               </div>
             </div>
           ))}
@@ -206,7 +206,10 @@ const CartItems: React.FC<CartItemsProps> = ({
           text="View Cart"
           showArrow={true}
           textSize="normal"
-          defaultBackgroundColor="bg-amber-500"
+          defaultTextColor="text-white group-hover:text-amber-500"
+          defaultArrowColor="fill-white group-hover:fill-amber-500"
+          defaultBackgroundColor="bg-amber-500 hover:bg-white"
+          defaultBorderColor="border border-amber-500"
           fullwidth={true}
           onClick={viewCartPage}
         />

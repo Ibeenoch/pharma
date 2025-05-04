@@ -54,8 +54,14 @@ const Header = () => {
   }, []);
 
   // toggle cart and favorite card
-  const displayShowCart = () => setShowCart(true);
-  const displayShowWishlist = () => setShowWishlist(true);
+  const displayShowCart = () => {
+    setShowCart(true);
+    setShowWishlist(false);
+  };
+  const displayShowWishlist = () => {
+    setShowWishlist(true);
+    setShowCart(false);
+  };
   const hideShowCart = () => setShowCart(false);
   const hideShowWishList = () => setShowWishlist(false);
 // navigate to the login or resgister page or logout

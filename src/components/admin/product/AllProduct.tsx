@@ -12,6 +12,7 @@ import { selectAuth } from "../../../features/auth/authSlice";
 import { mapProductToTableData } from "../../../utils/admin/product/productMap";
 import CustomText from "../../common/Text";
 import TableSkeleton from "../../common/animations/TableSkeleton";
+import Pagination from "../../pagination";
 
 const AllProduct = () => {
   const dispatch = useAppDispatch();
@@ -54,20 +55,9 @@ const AllProduct = () => {
                 tableHeaderTxtColor="text-gray-400"
                 whichTable="product"
               />
-              <div className="flex items-center gap-2 my-2"> 
-                {
-                  totalProductPage > 1 && Array.from({length : totalProductPage}, (_, i) => (
-                    <div
-                    className={`border  ${curPage === i ? 'bg-black text-white border-black' : 'border-gray-300' } rounded-lg py-2 px-3 text-[12px] flex justify-center items-center cursor-pointer hover:bg-black hover:text-white`}
-                    onClick={() => {
-                      handlePageClicked(i);
-                    }}
-                  >
-                    {i + 1}
-                  </div>
-                  ))
-                }
-              </div>
+              <Pagination currentPage={curPage} totalPages={totalProductPage} onPageChange={(i) => {
+                    handlePageClicked(i);
+              }} />
             </>
             )}
           </div>

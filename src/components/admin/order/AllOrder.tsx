@@ -22,14 +22,14 @@ import CustomInput from "../../common/Input";
 import CustomButton from "../../common/Button";
 import Reset from '../../../assets/icons/reset.svg?react'
 import DateFilter from "../DateFilter";
+import Pagination from "../../pagination";
 interface AllOrdersProps {
   whichType?:
-    | "pending"
-    | "cancelled"
-    | "successful"
-    | "failed"
-    | "all"
-    | "active";
+    | "Processing"
+    | "Cancelled"
+    | "Shipped"
+    | "Delivered"
+    | "all";
 }
 
 const AllOrder: React.FC<AllOrdersProps> = ({ whichType = "all" }) => {
@@ -46,26 +46,27 @@ const AllOrder: React.FC<AllOrdersProps> = ({ whichType = "all" }) => {
   const mappedOrder: mappedAllOrdersProps[] = orders && Array.isArray(orders) &&
     whichType === "all"
       ?  mappedAllOrders(orders)
-      : whichType === "pending"
+      : whichType === "Processing"
         ? mappedAllOrders(orders).filter(
-            (m) => m.status.toLowerCase() === "pending"
+            (m) => m.status.toLowerCase() === "processing"
           )
-        : whichType === "cancelled"
+        : whichType === "Cancelled"
           ? mappedAllOrders(orders).filter(
               (m) => m.status.toLowerCase() === "cancelled"
             )
-          : whichType === "active"
-            ? mappedAllOrders(orders).filter(
-                (m) => m.status.toLowerCase() === "shipped"
-              )
+        : whichType === "Delivered"
+          ? mappedAllOrders(orders).filter(
+              (m) => m.status.toLowerCase() === "delivered"
+            )
             : mappedAllOrders(orders).filter(
-                (m) => m.status.toLowerCase() === "completed"
+                (m) => m.status.toLowerCase() === "delivered"
               );
   const [orderpaginationProps, setOrderPaginationProps] =
     useState<OrderPaginatedArgs>({ page: 0, userId: userId ?? "" });
 
   const handlePageClicked = (i: number, userId: string) => {
     dispatch(resetRefreshOrder());
+    setPageNum(i)
     setCurPage(i)
     setOrderPaginationProps({ page: i, userId: userId });
   };
@@ -75,20 +76,20 @@ const AllOrder: React.FC<AllOrdersProps> = ({ whichType = "all" }) => {
       dispatch(getAllOrder(orderpaginationProps));
       dispatch(totalOrderPages());
     }
-  }, [ userId, resetPage]);
+  }, [ userId, pageNum]);
 
-    const handleOrderFilter = () => {
-      if(!started || !ended) return;
-  
-      if(userId){
-        setPageNum(0)
-        const start = new Date(started).toISOString();
-        const end = new Date(ended).toISOString();
-        const data: OrderPaginatedFilteredArgs = { end, start, page: 0, userId}
-        dispatch(getAllFilteredOrderByDate(data));
-      }
-  
+  const handleOrderFilter = () => {
+    if(!started || !ended) return;
+
+    if(userId){
+      setPageNum(0)
+      const start = new Date(started).toISOString();
+      const end = new Date(ended).toISOString();
+      const data: OrderPaginatedFilteredArgs = { end, start, page: 0, userId}
+      dispatch(getAllFilteredOrderByDate(data));
     }
+
+  }
   
     
   return (
@@ -108,19 +109,10 @@ const AllOrder: React.FC<AllOrdersProps> = ({ whichType = "all" }) => {
                   tableHeaderTxtColor="text-gray-400"
                   whichTable="order"
                 />
-                <div className="flex items-center gap-2 my-2">
-                  {totalOrderPage > 1 &&
-                    Array.from({ length: totalOrderPage }, (_, i) => (
-                      <div
-                        className={`border  ${curPage === i ? 'bg-black text-white border-black' : 'border-gray-300' } rounded-lg py-2 px-3 text-[12px] flex justify-center items-center cursor-pointer hover:bg-black hover:text-white`}
-                        onClick={() => {
-                          userId && handlePageClicked(i + 1, userId);
-                        }}
-                      >
-                        {i + 1}
-                      </div>
-                    ))}
-                </div>
+                <Pagination currentPage={pageNum} totalPages={totalOrderPage} onPageChange={(i) => {
+                  userId && handlePageClicked(i, userId);
+                }} />
+              
               </div>
             </section>
           )}

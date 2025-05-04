@@ -18,13 +18,13 @@ import Product from "../../assets/icons/product-tag.svg?react";
 import Order from "../../assets/icons/order.svg?react";
 import Transaction from "../../assets/icons/transaction.svg?react";
 import Settings from "../../assets/icons/setting.svg?react";
-import Pharmacist from "../../assets/icons/pharmacist.svg?react";
+import Messages from "../../assets/icons/email.svg?react";
 import AddProduct from "../../assets/icons/addproduct.svg?react";
 import Prescription from "../../assets/icons/prescription-pills.svg?react";
 import OrderActive from "../../assets/icons/activeorder.svg?react";
 import OrderCancelled from "../../assets/icons/ordercancelled.svg?react";
 import OrderCompleted from "../../assets/icons/completeorder.svg?react";
-import OrderPending from "../../assets/icons/order.svg?react";
+import Subscription from "../../assets/icons/list-email.svg?react";
 import SuccessTran from "../../assets/icons/status-success.svg?react";
 import FailedTran from "../../assets/icons/failed-transaction.svg?react";
 import PendingTran from "../../assets/icons/contract-pending.svg?react";
@@ -45,7 +45,7 @@ export const subNavIcons = [
     name: "User",
     children: [
       { icons: User, text: "All", route: "/admin/users/all" },
-      { icons: Pharmacist, text: "Pharmacist", route: "/admin/users/pharmacy" }, // customer
+      { icons: Messages, text: "Message", route: "/admin/users/message" }, // customer
     ],
   },
   {
@@ -60,8 +60,7 @@ export const subNavIcons = [
     name: "Order",
     children: [
       { icons: Order, text: "All", route: "/admin/order/all" },
-      { icons: OrderActive, text: "Active", route: "/admin/order/active" },
-      { icons: OrderPending, text: "Pending", route: "/admin/order/pending" },
+      { icons: OrderActive, text: "Pending", route: "/admin/order/pending" },
       {
         icons: OrderCancelled,
         text: "Cancelled",

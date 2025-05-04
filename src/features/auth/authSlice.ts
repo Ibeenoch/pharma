@@ -2,10 +2,12 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserDataProps } from "../../types/auth/UserData";
 import * as api from "./authService";
 import { RootState } from "../../redux/store";
+import { UserDateFilterProps } from "../../types/user/contact";
 
 interface authState {
   status: "idle" | "loading" | "success" | "failure";
   user: UserDataProps;
+  userWIthPassword: UserDataProps;
   refreshToken: string | null;
   accessToken: string | null;
   sentRecoveryEmail?: boolean;
@@ -16,6 +18,7 @@ interface authState {
   users: UserDataProps[];
   refreshAllUsers: boolean;
   navpageIndex: number;
+  totalUserPage: number;
   navpageName: string;
   profileToCheckOut: 'yes' | 'no';
 }
@@ -23,7 +26,19 @@ interface authState {
 const initialState: authState = {
   status: "idle",
   profileToCheckOut: 'no',
+  totalUserPage: 0,
   user: {
+    userId: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    dob: "",
+    gender: "",
+    passcode: "",
+    password: "",
+    role: "",
+  },
+  userWIthPassword: {
     userId: "",
     firstName: "",
     lastName: "",
@@ -45,6 +60,7 @@ const initialState: authState = {
   refreshAllUsers: false,
   navpageIndex: 0,
   navpageName: "",
+  
 };
 
 export const registerUser = createAsyncThunk(
@@ -103,6 +119,7 @@ export const getCuurentLoginUserData = createAsyncThunk(
   }
 );
 
+
 export const passwordRecoveryLink = createAsyncThunk(
   "auth/passwordRecoveryLink",
   async (email: string, { rejectWithValue }) => {
@@ -147,9 +164,31 @@ export const checkIfUserExist = createAsyncThunk(
 
 export const getAllUser = createAsyncThunk(
   "auth/getAllUser",
+  async (pageNum: number, { rejectWithValue }) => {
+    try {
+      return await api.getAllUsers(pageNum);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "failed to find all user");
+    }
+  }
+);
+
+export const getTotalUserPage = createAsyncThunk(
+  "auth/getTotalUserPage",
   async (_, { rejectWithValue }) => {
     try {
-      return await api.getAllUsers();
+      return await api.getTotalUsersPage();
+    } catch (error: any) {
+      return rejectWithValue(error.message || "failed to find all user");
+    }
+  }
+);
+
+export const getAllUsersWithDateFilter = createAsyncThunk(
+  "auth/getAllUsersWithDateFilter",
+  async (userData: UserDateFilterProps, { rejectWithValue }) => {
+    try {
+      return await api.getAllUsersWithDateFilter(userData);
     } catch (error: any) {
       return rejectWithValue(error.message || "failed to find all user");
     }
@@ -283,6 +322,19 @@ const authSlice = createSlice({
         state.status = "failure";
         state.errorMsg = action.payload;
       })
+      .addCase(getTotalUserPage.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getTotalUserPage.fulfilled, (state, action) => {
+        state.status = "success";
+        if (action.payload) {
+          state.totalUserPage = action.payload;
+        }
+      })
+      .addCase(getTotalUserPage.rejected, (state, action) => {
+        state.status = "failure";
+        state.errorMsg = action.payload;
+      })
       .addCase(logoutUser.pending, (state) => {
         state.status = "loading";
       })
@@ -307,6 +359,19 @@ const authSlice = createSlice({
         }
       })
       .addCase(getAllUser.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(getAllUsersWithDateFilter.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getAllUsersWithDateFilter.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload) {
+          state.users = action.payload;
+          state.refreshAllUsers = false;
+        }
+      })
+      .addCase(getAllUsersWithDateFilter.rejected, (state) => {
         state.status = "failure";
       })
       .addCase(passwordRecoveryLink.pending, (state) => {

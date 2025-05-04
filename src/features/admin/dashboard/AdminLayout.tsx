@@ -38,7 +38,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title }) => {
   };
 
   useEffect(() => {
-    refreshAllUsers && dispatch(getAllUser());
+    refreshAllUsers && dispatch(getAllUser(0));
     refreshTransaction &&
       dispatch(getAllTransaction(1)).then(() => {
         dispatch(calcualateTotalRevenue());

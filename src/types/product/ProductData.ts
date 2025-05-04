@@ -81,7 +81,7 @@ export interface PrescriptionProps {
   $id?: string;
   $updatedAt?: string;
   $createdAt?: string;
-  sastifiedClient?: number;
+  sastifiedClient?: string[];
   productId: string;
   productName: string;
   productImage: string;

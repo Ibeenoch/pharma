@@ -2,12 +2,13 @@ import Cancel from "../../assets/icons/cancel-close.svg?react";
 import CancelCircle from "../../assets/icons/trash-bin.svg?react";
 import CustomText from "../common/Text";
 import CustomButton from "../common/Button";
-import { ProductDataProps, WishListProps } from "../../types/product/ProductData";
-import { useAppDispatch } from "../../hooks/reduxHooks";
+import { ProductDataProps } from "../../types/product/ProductData";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { useNavigate } from "react-router-dom";
 import {
   removeAllItemsInwishlist,
   removeFromwishlist,
+  selectCart,
 } from "../../features/cart/cartSlice";
 
 interface WishListItemsProps {
@@ -23,10 +24,11 @@ const WishListItems: React.FC<WishListItemsProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { wishlist } = useAppSelector(selectCart)
 
-  const handleRemoveFromwishList = (id: string, i: number) => {
+  const handleRemoveFromwishList = (id: string) => {
     dispatch(removeFromwishlist(id));
-    i === 0 && hideShowwishList();
+    wishlist.length === 1 && hideShowwishList();
   };
 
   const handleRemoveAllFromwishList = () => {
@@ -56,7 +58,7 @@ const WishListItems: React.FC<WishListItemsProps> = ({
           onClick={handleRemoveAllFromwishList}
           className="flex items-center gap-1 cursor-pointer"
         >
-          <CancelCircle className="ml-4 w-4 h-4 stroke-gray-400 cursor-pointer" />
+          <CancelCircle className="ml-4 w-4 h-4 text-amber-500 cursor-pointer" />
           <CustomText
             text="Remove All"
             textType="extrasmall"
@@ -68,7 +70,7 @@ const WishListItems: React.FC<WishListItemsProps> = ({
       <div>
         {/* wishList item  */}
         {product &&
-          product.map((p, i) => (
+          product.map((p) => (
             <div className="flex gap-1 items-center mb-2 pb-3 border-b border-gray-300">
               <div className="p-1 flex justify-center items-center ">
                 <img
@@ -90,10 +92,10 @@ const WishListItems: React.FC<WishListItemsProps> = ({
                   p &&
                     p &&
                     p.$id &&
-                    handleRemoveFromwishList(p && p && p.$id, i);
+                    handleRemoveFromwishList(p && p && p.$id);
                 }}
               >
-                <CancelCircle className="ml-4 w-7 h-5 stroke-gray-400 cursor-pointer" />
+                <CancelCircle className="ml-4 w-7 h-5 text-amber-500 cursor-pointer" />
               </div>
             </div>
           ))}
@@ -101,10 +103,13 @@ const WishListItems: React.FC<WishListItemsProps> = ({
 
       <div className="flex flex-col gap-3 w-max items-center mx-auto justify-center">
         <CustomButton
-          text="View wishList"
+          text="View Favorite"
           showArrow={true}
           textSize="normal"
-          defaultBackgroundColor="bg-amber-500"
+          defaultTextColor="text-white group-hover:text-amber-500"
+          defaultArrowColor="fill-white group-hover:fill-amber-500"
+          defaultBackgroundColor="bg-amber-500 hover:bg-white"
+          defaultBorderColor="border border-amber-500"
           fullwidth={true}
           onClick={viewWishListPage}
         />

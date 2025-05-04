@@ -1,5 +1,7 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
+import MessagePage from "./pages/admin/users/MessagePage";
+import SubscriptionPage from "./pages/admin/users/SubscriptionPage";
 const BrandPage = lazy(() => import("./pages/BrandPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
@@ -21,7 +23,7 @@ const DashBoardPage = lazy(() => import("./pages/admin/DashBoardPage"));
 const TransactionPage = lazy(() => import("./pages/admin/transactions/TransactionPage"));
 const ALlUsersPage = lazy(() => import("./pages/admin/users/AllUsersPage"));
 const UsersAdminPage = lazy(() => import("./pages/admin/users/UsersAdminPage"));
-const PharmacyPage = lazy(() => import("./pages/admin/users/PharmacyPage"));
+const PharmacyPage = lazy(() => import("./pages/admin/users/SubscriptionPage"));
 const CustomerPage = lazy(() => import("./pages/admin/users/CustomerPage"));
 const ProductPage = lazy(() => import("./pages/admin/products/ProductPage"));
 const AddProductPage = lazy(() => import("./pages/admin/products/AddProductPage"));
@@ -168,11 +170,20 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/admin/users/pharmacy/:userId",
+    path: "/admin/users/message/:userId",
     element: (
       <SecureAdminPage
-        child={<PharmacyPage />}
-        redirectUrl="/admin/users/pharmacy/:userId"
+        child={<MessagePage />}
+        redirectUrl="/admin/users/message/:userId"
+      />
+    ),
+  },
+  {
+    path: "/admin/users/subscription/:userId",
+    element: (
+      <SecureAdminPage
+        child={<SubscriptionPage />}
+        redirectUrl="/admin/users/subscription/:userId"
       />
     ),
   },

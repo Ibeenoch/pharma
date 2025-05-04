@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import * as api from "./userService";
 import { RootState } from "../../redux/store";
 import { ContactProps, EmailSubProps } from "../../types/user/contact";
@@ -7,12 +7,16 @@ interface authState {
   status: "idle" | "loading" | "success" | "failure";
   contacts: ContactProps[];
   emailSub: EmailSubProps[];
+  totalContactPage: number;
+  totalEmailSubPage: number;
 }
 
 const initialState: authState = {
   status: "idle",
   contacts: [],
   emailSub: [],
+  totalContactPage: 0,
+  totalEmailSubPage: 0,
 };
 
 export const sendContactMessage = createAsyncThunk(
@@ -39,9 +43,31 @@ export const sendEmailSubscription = createAsyncThunk(
 
 export const getContactMessage = createAsyncThunk(
   "user/getContactMessage",
+  async (pageNum: number, { rejectWithValue }) => {
+    try {
+      return await api.getContactMsg(pageNum);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wromg");
+    }
+  }
+);
+
+export const getTotalContactPage = createAsyncThunk(
+  "user/getTotalContactPage",
   async (_, { rejectWithValue }) => {
     try {
-      return await api.getContactMsg();
+      return await api.getTotalPageForContactMsg();
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wromg");
+    }
+  }
+);
+
+export const getTotalEmailSubPage = createAsyncThunk(
+  "user/getTotalEmailSubPage",
+  async (_, { rejectWithValue }) => {
+    try {
+      return await api.getTotalPageForEmailSub();
     } catch (error: any) {
       return rejectWithValue(error.message || "Something went wromg");
     }
@@ -50,9 +76,9 @@ export const getContactMessage = createAsyncThunk(
 
 export const getEmailSubscription = createAsyncThunk(
   "user/getEmailSubscription",
-  async (_, { rejectWithValue }) => {
+  async (pageNum: number, { rejectWithValue }) => {
     try {
-      return await api.getEmailSub();
+      return await api.getEmailSub(pageNum);
     } catch (error: any) {
       return rejectWithValue(error.message || "Something went wromg");
     }
@@ -90,6 +116,30 @@ const userSlice = createSlice({
         }
       })
       .addCase(getContactMessage.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(getTotalContactPage.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getTotalContactPage.fulfilled, (state, action) => {
+        state.status = "success";
+        if (action.payload) {
+          state.totalContactPage = action.payload;
+        }
+      })
+      .addCase(getTotalContactPage.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(getTotalEmailSubPage.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getTotalEmailSubPage.fulfilled, (state, action) => {
+        state.status = "success";
+        if (action.payload) {
+          state.totalEmailSubPage = action.payload;
+        }
+      })
+      .addCase(getTotalEmailSubPage.rejected, (state) => {
         state.status = "failure";
       })
       .addCase(sendEmailSubscription.pending, (state) => {

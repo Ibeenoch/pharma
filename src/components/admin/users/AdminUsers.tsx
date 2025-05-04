@@ -1,30 +1,13 @@
 import { adminDefaultBgColor } from "../../../constants/appColor";
-import { userLists, userStatitics } from "../../../utils/admin/user/users";
-import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
-import {
-  selectAdmin,
-  setAdminUserTabIndex,
-} from "../../../features/admin/adminSlice";
+import { userStatitics } from "../../../utils/admin/user/users";
+import { useAppSelector } from "../../../hooks/reduxHooks";
 import CustomText from "../../common/Text";
-import { useEffect, useState } from "react";
 import UserAdmin from "./UserAdmin";
-import UserPharma from "./UserPharma";
-import UserCustomer from "./UserCustomer";
-import NavTab from "../NavTab";
-import DateFilter from "../DateFilter";
-import { getAllUser, selectAuth } from "../../../features/auth/authSlice";
+import { selectAuth } from "../../../features/auth/authSlice";
 
 const AdminUsers = () => {
-  const [started, setStarted] = useState<string>("");
-  const [ended, setEnded] = useState<string>("");
-  const dispatch = useAppDispatch();
+ 
   const { users } = useAppSelector(selectAuth);
-
-  const handleFilter = (start: string, end: string) => {
-    const startDate = new Date(start).toISOString();
-    const endDate = new Date(end).toISOString();
-    console.log(startDate, endDate)
-  }
 
   return (
     <main className={`md:mt-12 mt-20 p-4 ${adminDefaultBgColor}`}>

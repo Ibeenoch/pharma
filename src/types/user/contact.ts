@@ -13,3 +13,10 @@ export interface EmailSubProps {
     $createdAt?: string; 
     email: string;
 }
+
+export interface UserDateFilterProps{
+    pageNum: number;
+    start: string;
+    end: string;
+  }
+  

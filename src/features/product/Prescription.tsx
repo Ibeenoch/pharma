@@ -12,15 +12,17 @@ const Prescription = () => {
   const [searchDrug, setSearchDrug] = useState<string>("");
   const dispatch = useAppDispatch();
   const { prescription, hasFetchAllPrescription } = useAppSelector(selectproductAdmin);
-  const [prescriptionArr, setPrescriptionArr] = useState<PrescriptionProps[]>([])
+  const [prescriptionArr, setPrescriptionArr] = useState<PrescriptionProps[]>([]);
+  const [pageNum, setPageNum] = useState<number>(0);
+
 
 
      useEffect(() => {
        if(!prescription){
-         dispatch(fetchAllPrescriptions())
+         dispatch(fetchAllPrescriptions(pageNum))
          setPrescriptionArr(prescription);
        }else{
-         hasFetchAllPrescription === false && dispatch(fetchAllPrescriptions());
+         hasFetchAllPrescription === false && dispatch(fetchAllPrescriptions(pageNum));
          setPrescriptionArr(prescription);
        }
      }, [prescription]);
@@ -45,12 +47,12 @@ const Prescription = () => {
         runSearch();
      }
 
-       useEffect(() => {
-           // when the user visit the page move the page to the top
-           window.scrollTo(0,0);
-           // set the correct navbar active text
-           dispatch(setNavIndexLink({ name: links[2].name, index: 2 }));
-        },[])
+  useEffect(() => {
+      // when the user visit the page move the page to the top
+      window.scrollTo(0,0);
+      // set the correct navbar active text
+      dispatch(setNavIndexLink({ name: links[2].name, index: 2 }));
+  },[])
         
   return (
     <main className=" mt-20 mb-1">
