@@ -13,12 +13,14 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { selectCart, updateShowModal, updateToastKeyAndMsg } from "../../features/cart/cartSlice";
 import AnimatedToast from "../common/AnimatedToast";
 import { selectUser, sendEmailSubscription } from "../../features/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
   const [email, setEmail] = useState<string>("");
   const { showModal, isCart, toastKey, toastMessage } = useAppSelector(selectCart);
   const { status } = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate()
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -36,7 +38,12 @@ const Footer = () => {
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 
-  const socialIcons = [Facebook, Twitter, Instagram, Whatsapp];
+  const socialIcons = [
+    {Icon: Facebook, route: 'https://facebook.com/ibewunjoenoch'}, 
+    {Icon: Twitter, route: 'https://x.com/ibeenoch'}, 
+    {Icon: Instagram, route: 'https://x.com/ibeenoch'}, 
+    {Icon: Whatsapp, route: 'https://x.com/ibeenoch'}, 
+    ];
   const siteMap = [
     { name: "About Us", route: "/about" },
     { name: "Return & Refund Policy", route: "#" },
@@ -160,17 +167,22 @@ const Footer = () => {
             />
             <div className="flex gap-3 mt-2 items-center">
               {socialIcons.map((Item, index) => (
-                <Item
-                  key={index}
-                  className="w-4 h-4 fill-white cursor-pointer"
-                />
+                <div onClick={() => window.open(Item.route, "_blank")}>
+                  <Item.Icon
+                    key={index}
+                    className="w-4 h-4 fill-white cursor-pointer"
+                  />
+                </div>
               ))}
             </div>
           </div>
         </article>
       </div>
       <p className="text-white text-[9px] pt-2 text-center flex justify-center items-center">
-        &copy; 2025. Made with <span className="px-1"><Love className="w-4 h-4 text-red-500" /> </span> by Ibewunjo Enoch for ChiMark Pharmacy. All rights reserved.
+        &copy; 2025. ChiMark Pharmacy. All rights reserved.
+      </p>
+      <p className="text-white text-[9px] pt-2 text-center flex justify-center items-center">
+      Made with <span className="px-1"><Love className="w-4 h-4 text-amber-500" /> </span> by Ibewunjo Enoch 
       </p>
     </footer>
   );
