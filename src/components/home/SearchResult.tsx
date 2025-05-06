@@ -56,12 +56,13 @@ const SearchResult = () => {
           {productSearched.map(
             (p) =>
               p &&
-              p.$id && (
+              p.$id && p.discount && (
                 <SingleProduct
                   onAddCart={handleAddToCart}
                   onAddWishlist={handleAddToWishList}
                   productImage={p.imagesUrl[0]}
                   textTitle={p.name}
+                  discount={p.discount}
                   id={p.$id}
                   textDesc={
                     p && p.description.length > 80
