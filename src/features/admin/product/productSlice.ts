@@ -358,10 +358,20 @@ const productAdminSlice = createSlice({
         state.status = "loading";
       })
       .addCase(deleteproduct.fulfilled, (state, action) => {
+      
+        if (action.payload !== undefined) {
+   
+         state.allProduct = state.allProduct.filter((res) => {
+          return res?.$id !== action.payload;
+        });
+        
+         state.productAdmin = state.productAdmin.filter((res) => {
+          return res?.$id !== action.payload;
+        });
+        
+          // state.hasFetchAllProduct = false;
+          }
         state.status = "success";
-        if (state.status === "success" && action.payload !== undefined) {
-        }
-        state.hasFetchAllProduct = false;
       })
       .addCase(deleteproduct.rejected, (state) => {
         state.status = "failure";
@@ -372,8 +382,17 @@ const productAdminSlice = createSlice({
       .addCase(deletePrescription.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
+       
+         state.prescriptionWithoutPagination = state.prescriptionWithoutPagination.filter((res) => {
+          return res?.$id !== action.payload;
+        });
+        
+         state.prescription = state.prescription.filter((res) => {
+          return res?.$id !== action.payload;
+        });
+        
         }
-        state.hasFetchAllPrescriptionWithoutPagination = false;
+        // state.hasFetchAllPrescriptionWithoutPagination = false;
       })
       .addCase(deletePrescription.rejected, (state) => {
         state.status = "failure";

@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useLayoutEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
 import CustomText from "../../common/Text";
 import { validator } from "../../../utils/validator";
 import CustomInput from "../../common/Input";
@@ -15,9 +15,11 @@ import {
   createProduct,
   invalidateFetchAllProductCache,
   selectproductAdmin,
+  setProductSubTabIndex,
   updateProduct,
 } from "../../../features/admin/product/productSlice";
 import { useNavigate, useParams } from "react-router-dom";
+import { setTitleIndex } from "../../../features/admin/adminSlice";
 
 const AddProduct = () => {
   const { user } = useAppSelector(selectAuth);
@@ -37,6 +39,11 @@ const AddProduct = () => {
     additionalInfo: "",
     quantity: null,
   };
+
+  useEffect(() => {
+      dispatch(setTitleIndex(2));
+      dispatch(setProductSubTabIndex(1));
+  }, [])
   const imageRef = useRef<HTMLInputElement>(null); 
   const [uploadedImages, setUploadedImages] = useState<string[]>(
     id ? singleProduct?.imagesUrl ?? [] : []

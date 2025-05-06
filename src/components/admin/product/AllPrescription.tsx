@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { fetchAllPrescriptions,  selectproductAdmin, totalPrescriptionPages } from '../../../features/admin/product/productSlice';
+import { fetchAllPrescriptions,  selectproductAdmin, setProductSubTabIndex, totalPrescriptionPages } from '../../../features/admin/product/productSlice';
 import CustomText from '../../common/Text';
 import Table from '../../common/Table';
 import { allPrescriptionColumn } from '../../../utils/admin/product/productList';
@@ -8,6 +8,7 @@ import { PrescriptionTableProps } from '../../../types/product/ProductData';
 import { mappedPrescription } from '../../../utils/admin/product/productMap';
 import TableSkeleton from '../../common/animations/TableSkeleton';
 import Pagination from '../../Pagination';
+import { setTitleIndex } from '../../../features/admin/adminSlice';
 
 const AllPrescription = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +26,11 @@ const AllPrescription = () => {
     dispatch(totalPrescriptionPages());
     dispatch(fetchAllPrescriptions(pageNum));
    }, [pageNum])
+
+     useEffect(() => {
+         dispatch(setTitleIndex(2)); // product
+         dispatch(setProductSubTabIndex(2)); // all prescription
+     }, [])
 
    const allPrescriptionData: PrescriptionTableProps[] = prescription && Array.isArray(prescription) ? mappedPrescription(prescription) : []
 

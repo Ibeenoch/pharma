@@ -9,31 +9,32 @@ import { navToAllProduct } from "../../helpers/productFuncHelper";
 
 export interface CommonProductProps {
   navigate: NavigateFunction;
-  productAdmin: ProductDataProps[];
+  allProduct: ProductDataProps[];
 }
 
-const Category: React.FC<CommonProductProps> = ({  productAdmin, navigate }) => {
+const Category: React.FC<CommonProductProps> = ({  allProduct, navigate }) => {
   const dispatch = useAppDispatch();
-    const productCategory = productAdmin && Array.isArray(productAdmin) ?  Array.from(
+    const productCategory = allProduct && Array.isArray(allProduct) ?  Array.from(
       new Map(
-        productAdmin.map((p) => [p.category, { category: p.category, image: p.imagesUrl[0], id: p.$id}])
+        allProduct.map((p) => [p.category, { category: p.category, image: p.imagesUrl[0], id: p.$id}])
       ).values()
     ).slice(0, 7) : [];
 
+    
 const handleCategoryNav = (name: string) => {
   dispatch(setProductCategoryName(name));
   navigate(`/allProduct`);
 }
           
   return (
-    <section className="border-b border-black mb-2 pb-4 animate-on-scroll px-4 sm:px-0">
+    <section className="border-b border-black mb-2 pb-4 animate-on-scroll px-2 sm:px-0">
       <TwoTextSpan leftText="Categories"  onClick={() => navToAllProduct(navigate)} />
 
-      <article className="flex items-center lg:grid lg:grid-cols-7 gap-4 overflow-x-auto">
+      <article className="flex items-center lg:grid lg:grid-cols-7 gap-2 overflow-x-auto">
 
         {productCategory && Array.isArray(productCategory) && productCategory.map((item, index) => (
           <div onClick={() =>handleCategoryNav( item.category)} className="cursor-pointer" key={index}>
-            <div className="h-46 w-40 md:h-30 md:w-28 lg:h-38 lg:w-32 xl:h-48 xl:w-42 flex items-center justify-center rounded-xl p-2 bg-white mb-4">
+            <div className="h-40 w-30 lg:h-40 lg:w-32 xl:h-48 xl:w-42 flex items-center justify-center rounded-xl p-2 bg-white mb-4">
               <img
                 src={item.image}
                 alt="medication categories"
@@ -42,7 +43,7 @@ const handleCategoryNav = (name: string) => {
             </div>
             <article>
               <CustomText
-                text={item.category}
+                text={item.category.length > 18 ? item.category.slice(0, 18) + '...' : item.category}
                 textType="small"
                 weightType="bold"
               />

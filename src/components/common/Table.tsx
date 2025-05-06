@@ -135,15 +135,15 @@ const Table: React.FC<TableProps> = ({
         <div className={`md:hidden w-full block bg-white rounded-lg`}>
           {
          
-          data && Array.isArray(data) && data.map((row) => (
-            <div onClick={() => previewRow(row)} className={`my-4 ${lightgrayBgColor} w-full rounded-lg border-b border-gray-300 py-4 px-2`}>
+          data && Array.isArray(data) && data.map((row, index) => (
+            <div key={index} onClick={() => previewRow(row)} className={`my-4 ${lightgrayBgColor} w-full rounded-lg border-b border-gray-300 py-4 px-2`}>
             {
-                columns && Array.isArray(columns) && columns.map((col) => {
+                columns && Array.isArray(columns) && columns.map((col, b) => {
                 let key = col && col.key, label = col && col.label;  
                 return (
-                  <div className="w-full grid grid-cols-[42%_53%] items-center gap-3 p-2 border-b border-gray-300/50 break-words whitespace-normal">
+                  <div key={b} className="w-full grid grid-cols-[42%_53%] items-center gap-3 p-2 border-b border-gray-300/50 break-words whitespace-normal">
                   <CustomText text={ col.label} textType="normal" weightType="medium" />
-                  <p className="text-gray-500 text-[9px] sm:text-[12px]">
+                  <div className="text-gray-500 text-[9px] sm:text-[12px]">
                     
                     {/* handle action button on small devices */}
                     { 
@@ -273,7 +273,7 @@ const Table: React.FC<TableProps> = ({
                       </>
                     )
                   }
-                  </p>
+                  </div>
                   
                 </div>
                 )

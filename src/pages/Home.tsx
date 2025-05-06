@@ -40,7 +40,7 @@ const Home = () => {
       dispatch(fetchAllProductWithoutPagination());
   }, [hasFetchAllProduct]);
 
-    useEffect(() => {
+  useEffect(() => {
       // when the user visit the page move the page to the top
       window.scrollTo(0,0);
       // set the correct navbar active text
@@ -52,11 +52,11 @@ const Home = () => {
     <main className={`${pageSpacing}`}>
       <Header />
       <HeroSection navigate={navigate} />
-      <Category navigate={navigate} productAdmin={allProduct} />
+      <Category navigate={navigate} allProduct={allProduct} />
       <Banner />
-      <Recommendation navigate={navigate} productAdmin={allProduct}  />
-      <HotDeals  navigate={navigate} productAdmin={allProduct} />
-      <TopSelling navigate={navigate} productAdmin={allProduct} />
+      <Recommendation navigate={navigate} allProduct={allProduct}  />
+      <HotDeals  navigate={navigate} allProduct={allProduct} />
+      <TopSelling navigate={navigate} allProduct={allProduct} />
       <DiscountBanner />
       <Brands navigate={navigate} />
       <Faq />

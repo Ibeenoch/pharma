@@ -51,7 +51,7 @@ const Categories = () => {
               throw new Error("Function not implemented.");
             } } onAddWishlist={function (e: React.MouseEvent, id: string): void {
               throw new Error("Function not implemented.");
-            } }          />
+            } } discount={0}          />
         </div>
       </section>
     </main>

@@ -205,7 +205,10 @@ export const getATransaction = async (id: string) => {
     const transactionarr = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_TRANSACTION_COLLECTION_ID, // collection id
-      [Query.equal("$id", id)]
+      [
+        Query.equal("$id", id),  
+        Query.orderDesc('$createdAt')
+      ]
     );
     const transaction = transactionarr.documents[0];
 
@@ -241,6 +244,7 @@ export const getAllTransaction = async (pageNum:  number) => {
       [
         Query.limit(ItemPerPage),
         Query.offset(offset),
+        Query.orderDesc('$createdAt')
       ]
     );
     const transactionDoc = transactionarr.documents;
@@ -282,7 +286,8 @@ export const getAllTransactionFilteredByDate = async (pageData:  TransactionDate
       [
         Query.limit(ItemPerPage),
         Query.offset(offset),
-        Query.between('$createdAt', pageData.start, pageData.end)
+        Query.between('$createdAt', pageData.start, pageData.end),
+        Query.orderDesc('$createdAt')
       ]
     );
     const transactionDoc = transactionarr.documents;
@@ -320,6 +325,9 @@ export const getAllTransactionWithoutPagination = async () => {
     const transactionarr = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_TRANSACTION_COLLECTION_ID, // collection id
+      [
+        Query.orderDesc('$createdAt')
+      ]
     );
     const transactionDoc = transactionarr.documents;
     let allTransactions: TransactionProps[] = [];
@@ -546,6 +554,7 @@ export const findAllOrders = async (dataProps: OrderPaginatedArgs) => {
         Query.limit(ITEMS_PER_PAGE),
         Query.offset(offset),
         Query.equal("userId", dataProps.userId),
+        Query.orderDesc('$createdAt')
       ]
     );
 
@@ -578,7 +587,8 @@ export const filterOrdersWithDate = async (dataProps: OrderPaginatedFilteredArgs
         Query.limit(ITEMS_PER_PAGE),
         Query.offset(offset),
         Query.equal("userId", dataProps.userId),
-        Query.between("$createdAt", dataProps.start, dataProps.end)
+        Query.between("$createdAt", dataProps.start, dataProps.end),
+        Query.orderDesc('$createdAt')
       ]
     );
 

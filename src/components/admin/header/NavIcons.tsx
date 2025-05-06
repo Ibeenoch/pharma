@@ -46,7 +46,7 @@ const NavIcons: React.FC<NavIconsProps> = ({
   return (
     <div className={`flex flex-col `}>
       {navIcons.map((Item, index) => (
-        <div onClick={() => handleIndexClicked(index)} className={``}>
+        <div key={index} onClick={() => handleIndexClicked(index)} className={``}>
           <div
             onClick={() => toggleSideBar(index)}
             className={`flex items-center justify-between ${

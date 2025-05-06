@@ -8,8 +8,8 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
   return (
-    <div className='mx-4 sm:mx-0'>
-        <div className="h-46 w-40 xl:h-48 xl:w-42 flex items-center justify-center rounded-xl p-2 bg-white mb-3">
+    <div className=''>
+        <div className="h-40 w-30 lg:h-40 lg:w-32 xl:h-48 xl:w-42 flex items-center justify-center rounded-xl p-2 bg-white mb-4">
             <img
             src={item && item.imagesUrl && item.imagesUrl[0]}
             alt="medication categories"
@@ -18,10 +18,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
         </div>
         <article>
             <CustomText
-                text={item && item.name && item.name.length > 10 ? item.name.slice(0,10) + '...' :item.name}
+                text={item.name}
                 textType="small"
                 weightType="bold"
-                extraStyle="text-ellipsis"
+                extraStyle="lg:text-ellipsis"
             />
             <div className="flex gap-3 items-center">
             

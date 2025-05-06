@@ -6,6 +6,7 @@ import {
   fetchAllUserProduct,
   invalidateFetchAllProductCache,
   selectproductAdmin,
+  setProductSubTabIndex,
   totalProductPages,
 } from "../../../features/admin/product/productSlice";
 import { selectAuth } from "../../../features/auth/authSlice";
@@ -13,10 +14,11 @@ import { mapProductToTableData } from "../../../utils/admin/product/productMap";
 import CustomText from "../../common/Text";
 import TableSkeleton from "../../common/animations/TableSkeleton";
 import Pagination from "../../Pagination";
+import { current } from "@reduxjs/toolkit";
+import { setTitleIndex } from "../../../features/admin/adminSlice";
 
 const AllProduct = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector(selectAuth);
   const { productAdmin, hasFetchAllProduct, totalProductPage, status } =
     useAppSelector(selectproductAdmin);
   const [pageNum, setPageNum] = useState<number>(0);
@@ -33,13 +35,19 @@ const AllProduct = () => {
     if(!productAdmin){
       dispatch(fetchAllUserProduct(pageNum))
     };
-      dispatch(fetchAllUserProduct(pageNum));
-  }, [pageNum]);
+    hasFetchAllProduct === false &&  dispatch(fetchAllUserProduct(pageNum));
+  }, [pageNum, hasFetchAllProduct]);
 
   const productData =
     productAdmin && Array.isArray(productAdmin)
       ? mapProductToTableData(productAdmin)
       : [];
+  
+      useEffect(() => {
+        // update the current tab color 
+        dispatch(setTitleIndex(2)); // product
+          dispatch(setProductSubTabIndex(0)); // all product
+      }, [])
   return (
     <section>
       <div className="p-4 my-3 bg-white rounded-xl">

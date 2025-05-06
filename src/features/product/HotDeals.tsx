@@ -4,10 +4,10 @@ const ProductCard = lazy(() =>import("../../components/product/ProductCard"));
 import { CommonProductProps } from "./Category";
 import { handleHomeNavToProductDetails, navToAllProduct } from "../../helpers/productFuncHelper";
 
-const HotDeals: React.FC<CommonProductProps> = ({ navigate, productAdmin }) => {
+const HotDeals: React.FC<CommonProductProps> = ({ navigate, allProduct }) => {
   
-  const hotDealsProduct = productAdmin && Array.isArray(productAdmin)
-  ? productAdmin
+  const hotDealsProduct = allProduct && Array.isArray(allProduct)
+  ? allProduct
       .filter((p) => p.isHotDeal) // Only products with isHotDeal truthy
       .sort((a, b) => (b.isHotDeal ?? 0) - (a.isHotDeal ?? 0)) // Sort from highest to lowest isHotDeal
      .slice(0, 7)
@@ -18,7 +18,7 @@ const HotDeals: React.FC<CommonProductProps> = ({ navigate, productAdmin }) => {
     <section className="border-b border-black mb-2 pb-4 animate-on-scroll">
       <TwoTextSpan leftText="Hot Deals"  onClick={() => navToAllProduct(navigate)} />
 
-      <article className="flex items-center lg:grid lg:grid-cols-7 gap-4 overflow-x-auto">
+      <article className="flex items-center lg:grid lg:grid-cols-7 gap-4 overflow-x-auto mx-2 lg:mx-0">
         {hotDealsProduct && Array.isArray(hotDealsProduct) && hotDealsProduct.map((item, index) => (
           <div onClick={() =>{item && item.$id && handleHomeNavToProductDetails(navigate, item.$id)}} className="cursor-pointer relative" key={index}>
             <ProductCard item={item} key={item.$id} />

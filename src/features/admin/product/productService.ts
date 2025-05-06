@@ -238,16 +238,13 @@ export const updateHotProduct = async (updateHotProductData: UpdatedHotProductPr
 
 export const deleteProduct = async (productId: string) => {
   try {
-    await database.deleteDocument(
+     await database.deleteDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
       productId
     );
-    await database.deleteDocument(
-      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
-      import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID, // product collection id
-      productId
-    );
+    
+    return productId;
   } catch (error) {
     throw error;
     console.log(error);
@@ -275,7 +272,8 @@ export const allProduct = async (pageNum: number) => {
       import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
       [
         Query.limit(ITEMS_PER_PAGE),
-        Query.offset(offset)
+        Query.offset(offset),
+        Query.orderDesc('$createdAt')
       ]
     );
 
@@ -357,6 +355,9 @@ export const allProductWithoutPagination = async () => {
     let allproduct = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
+      [
+        Query.orderDesc('$createdAt'),
+      ]
     );
 
     const allProductList: ProductDataProps[] = allproduct.documents.map(
@@ -431,7 +432,10 @@ export const searchProduct = async (searchTerm: string) => {
   try {
     let allproduct = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
-      import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID // product collection id
+      import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
+      [
+        Query.orderDesc('$createdAt')
+      ]
     );
     console.log("allproduct ", allproduct);
     const search = allproduct.documents.filter((doc) => {
@@ -566,7 +570,8 @@ export const allPrescription = async (pageNum: number) => {
       import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID, // product collection id
       [
         Query.limit(ITEMS_PER_PAGE),
-        Query.offset(offset)
+        Query.offset(offset),
+        Query.orderDesc('$createdAt')
       ]
     );
 
@@ -604,6 +609,9 @@ export const allPrescriptionWithoutPagination = async () => {
     let allproduct = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID, // product collection id
+      [
+        Query.orderDesc('$createdAt')
+      ]
     );
 
     const allProductPrescription: PrescriptionProps[] = allproduct.documents.map(
@@ -685,6 +693,7 @@ export const deletePrescription = async (productId: string) => {
       import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID, // product collection id
       productId
     );
+    return productId;
   } catch (error) {
     throw error;
     console.log(error);

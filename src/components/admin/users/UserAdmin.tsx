@@ -36,7 +36,7 @@ const UserAdmin: React.FC<UserAdminProps> = ({ users }) => {
     }
   
     useEffect(() => {
-      dispatch(getAllUser(pageNum)).then((res) => console.log('lojmk ', res.payload))
+      dispatch(getAllUser(pageNum))
     }, [pageNum])
 
     const handlePageClicked = (i: number) => {

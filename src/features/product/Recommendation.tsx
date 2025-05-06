@@ -6,9 +6,9 @@ import { CommonProductProps } from "./Category";
 
 
 
-const Recommendation: React.FC<CommonProductProps> = ({ navigate, productAdmin}) => {
+const Recommendation: React.FC<CommonProductProps> = ({ navigate, allProduct}) => {
 
-  const recommendedProducts = productAdmin && Array.isArray(productAdmin) && productAdmin.filter((p) => {
+  const recommendedProducts = allProduct && Array.isArray(allProduct) && allProduct.filter((p) => {
    return p.name.length < 14
   }).slice(0, 14)
  
@@ -16,7 +16,7 @@ const Recommendation: React.FC<CommonProductProps> = ({ navigate, productAdmin})
     <section className="border-b border-black mb-2 pb-4 animate-on-scroll">
       <TwoTextSpan leftText="Recommendations"  onClick={() => navToAllProduct(navigate)} />
 
-      <article className="flex items-center lg:grid lg:grid-cols-7 gap-4 overflow-x-auto">
+      <article className="flex items-center lg:grid lg:grid-cols-7 gap-2 overflow-x-auto mx-2 lg:mx-0">
         {recommendedProducts && Array.isArray(recommendedProducts) && recommendedProducts.map((item, index) => (
           <div onClick={() =>{item && item.$id && handleHomeNavToProductDetails(navigate, item.$id)}} className="cursor-pointer" key={index}>
            <ProductCard item={item} />
