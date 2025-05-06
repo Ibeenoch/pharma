@@ -37,7 +37,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({
       onClick={() => navigateProduct(id)}
       className="p-4 bg-white rounded-lg mx-auto cursor-pointer"
     >
-      <div className="p-2 bg-[#fbfcf8] rounded-md flex justify-center h-35 md:h-46 lg:h-54 items-center">
+      <div className="p-2 bg-[#fbfcf8] rounded-md flex justify-center h-35 md:h-46 lg:h-54 xl:h-62 items-center">
         <img src={productImage} alt="cart image" className="w-25 md:w-48 h-auto" />
       </div>
       <div>
@@ -56,7 +56,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({
         <div className="flex md:justify-between gap-2 md:gap-0 items-center">
           <div className="flex items-center gap-2">
             <CustomText text={'₦' + String((parseInt(price) - (((discount === 0 ? 1 : (discount / 100))) * parseInt(price))) )} textType="medium" weightType="bold" color="text-amber-500" />
-            <div className="hidden md:block">
+            <div className="hidden lg:block">
               <CustomText text={`₦${price}`} textType="small" weightType="normal" color="text-gray-400" extraStyle="line-through" />
             </div>
           </div>
