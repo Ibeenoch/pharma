@@ -13,22 +13,22 @@ import { setNavIndexLink } from "../auth/authSlice";
 import { links } from "../../utils/listLink";
 
 const AllProductList = () => {
-  const { productAdmin, productCategoryName } = useAppSelector(selectproductAdmin);
+  const { allProduct, productCategoryName } = useAppSelector(selectproductAdmin);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([productCategoryName ? productCategoryName : '']);
   const dispatch = useAppDispatch();
 
 
   // filter out only the category without any duplicate
-  const productCategories = productAdmin && Array.isArray(productAdmin) ?  Array.from(
+  const productCategories = allProduct && Array.isArray(allProduct) ?  Array.from(
     new Map(
-      productAdmin.map((p) => [p.category, { category: p.category}])
+      allProduct.map((p) => [p.category, { category: p.category}])
     ).values()
   ) : []
 
   // add product to cart
   const handleAddToCart = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    const productItem = productAdmin.find((item) => item.$id === id)!;
+    const productItem = allProduct.find((item) => item.$id === id)!;
     const productCart: CartProductDataProps = {
       ...productItem,
       subtotal:
@@ -47,7 +47,7 @@ const AllProductList = () => {
   // add product to favorite
   const handleAddToWishList = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    const productItem = productAdmin.find((item) => item.$id === id)!;
+    const productItem = allProduct.find((item) => item.$id === id)!;
     const wishList = { item: productItem };
     dispatch(addTowishlist(wishList));
   };
@@ -64,7 +64,7 @@ const AllProductList = () => {
   }
 
   // filter what product to show and what not to show
-  let filteredProduct = productAdmin && Array.isArray(productAdmin) && selectedCategories.length === 1 && selectedCategories[0] === '' ? productAdmin : productAdmin.filter((p) => {
+  let filteredProduct = allProduct && Array.isArray(allProduct) && selectedCategories.length === 1 && selectedCategories[0] === '' ? allProduct : allProduct.filter((p) => {
     return selectedCategories.some((s) => s === p.category);
   });
 
@@ -106,7 +106,7 @@ const AllProductList = () => {
             text="Product Categories"
             textType="medium"
             weightType="bold"
-            extraStyle="border-b border-black w-max"
+            extraStyle=""
           />
           {/* product category  */}
           {
@@ -117,9 +117,9 @@ const AllProductList = () => {
          
         </div>
       </section>
-      <section className="pt-4">
+      <section className="p-2">
        
-        <div className="grid p-2 grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           
           {/* map through cart item  */}
           {filteredProduct && Array.isArray(filteredProduct) && filteredProduct.map(

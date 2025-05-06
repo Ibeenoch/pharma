@@ -12,7 +12,7 @@ const DrugTab: React.FC<DrugTabProps> = ({ topText, bottomText, bgColor }) => {
     <div className={`p-3 rounded-lg my-1 ${bgColor ? bgColor : "bg-white"}`}>
       <CustomText
         text={topText}
-        textType="small"
+        textType="extrasmall"
         weightType="medium"
         color="text-gray-400"
         extraStyle="text-center"

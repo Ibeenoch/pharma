@@ -38,10 +38,10 @@ const ProductDetails = () => {
   const [qty, setQty] = useState<number>(1);
   const dispatch = useAppDispatch();
   const { id } = useParams();
-  const { productAdmin, productSimilar } = useAppSelector(selectproductAdmin);
+  const { allProduct, productSimilar } = useAppSelector(selectproductAdmin);
   const { cart, wishlist, subTotal, total } = useAppSelector(selectCart);
 
-  const productItem = productAdmin.find((item) => item.$id === id)!;
+  const productItem = allProduct.find((item) => item.$id === id)!;
 
   useEffect(() => {
     if(productItem && productItem.$id){
@@ -121,7 +121,7 @@ const ProductDetails = () => {
   // similar products
   const handleAddToCart = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    const productItem = productAdmin.find((item) => item.$id === id)!;
+    const productItem = allProduct.find((item) => item.$id === id)!;
     const productCart: CartProductDataProps = {
       ...productItem,
       subtotal:
@@ -139,7 +139,7 @@ const ProductDetails = () => {
   };
   const handleAddToWishList = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    const productItem = productAdmin.find((item) => item.$id === id)!;
+    const productItem = allProduct.find((item) => item.$id === id)!;
     const wishList = { item: productItem };
     dispatch(addTowishlist(wishList));
   };

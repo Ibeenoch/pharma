@@ -74,7 +74,7 @@ const Prescription = () => {
           />
         </div>
       </form>
-      <div className={`block md:grid md:grid-cols-3 h-full gap-2 my-2 p-2`}>
+      <div className={`block md:grid md:grid-cols-1 lg:grid-cols-2 h-full gap-2 my-2 p-4`}>
 
         {
           prescriptionArr && Array.isArray(prescriptionArr) && prescriptionArr.map((p) => (

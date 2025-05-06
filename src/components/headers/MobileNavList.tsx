@@ -20,16 +20,16 @@ const MobileNavList: React.FC<MobileNavListProps> = ({ Icon, text, onClick, rout
   return (
     <li onClick={() => onClick(route)} className="p-2 flex justify-between items-center">
       <div className="flex gap-2 items-center">
-        <Icon className="w-5 h-5 text-gray-500" />
+        <Icon className={`${ text.toLowerCase() === 'home' ? 'w-7 h-7' : 'w-5 h-5'} text-black`} />
         <CustomText
           text={text}
           textType="medium"
           weightType="medium"
-          extraStyle=""
+          color="text-black"
         />
       </div>
 
-      <ArrowRight className="w-4 h-4 text-gray-500" />
+      <ArrowRight className="w-4 h-4 text-black" />
     </li>
   );
 };

@@ -22,7 +22,7 @@ import { links } from "../utils/listLink";
 const Home = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { productAdmin, hasFetchAllProduct } = useAppSelector(selectproductAdmin);
+  const { allProduct, hasFetchAllProduct } = useAppSelector(selectproductAdmin);
 
   const getCurrentUser = () => {
     dispatch(getCuurentLoginUserData());
@@ -33,13 +33,12 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if(!productAdmin){
+    if(!allProduct){
       dispatch(fetchAllProductWithoutPagination())
     };
       hasFetchAllProduct === false &&
       dispatch(fetchAllProductWithoutPagination());
   }, [hasFetchAllProduct]);
-  console.log('productAdmin ', productAdmin);
 
     useEffect(() => {
       // when the user visit the page move the page to the top
@@ -53,11 +52,11 @@ const Home = () => {
     <main className={`${pageSpacing}`}>
       <Header />
       <HeroSection navigate={navigate} />
-      <Category navigate={navigate} productAdmin={productAdmin} />
+      <Category navigate={navigate} productAdmin={allProduct} />
       <Banner />
-      <Recommendation navigate={navigate} productAdmin={productAdmin}  />
-      <HotDeals  navigate={navigate} productAdmin={productAdmin} />
-      <TopSelling navigate={navigate} productAdmin={productAdmin} />
+      <Recommendation navigate={navigate} productAdmin={allProduct}  />
+      <HotDeals  navigate={navigate} productAdmin={allProduct} />
+      <TopSelling navigate={navigate} productAdmin={allProduct} />
       <DiscountBanner />
       <Brands navigate={navigate} />
       <Faq />

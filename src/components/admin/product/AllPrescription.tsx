@@ -7,11 +7,11 @@ import { allPrescriptionColumn } from '../../../utils/admin/product/productList'
 import { PrescriptionTableProps } from '../../../types/product/ProductData';
 import { mappedPrescription } from '../../../utils/admin/product/productMap';
 import TableSkeleton from '../../common/animations/TableSkeleton';
-import Pagination from '../../pagination';
+import Pagination from '../../Pagination';
 
 const AllPrescription = () => {
   const dispatch = useAppDispatch();
-  const { prescription, status, totalPrescriptionPage } = useAppSelector(selectproductAdmin);
+  const { prescription, status, totalPrescriptionPage, hasFetchAllPrescriptionWithoutPagination } = useAppSelector(selectproductAdmin);
     const [pageNum, setPageNum] = useState<number>(0);
     const [curPage, setCurPage] = useState<number>(0);
     

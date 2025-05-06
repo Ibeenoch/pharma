@@ -12,7 +12,7 @@ import { selectAuth } from "../../../features/auth/authSlice";
 import { mapProductToTableData } from "../../../utils/admin/product/productMap";
 import CustomText from "../../common/Text";
 import TableSkeleton from "../../common/animations/TableSkeleton";
-import Pagination from "../../pagination";
+import Pagination from "../../Pagination";
 
 const AllProduct = () => {
   const dispatch = useAppDispatch();
@@ -33,9 +33,8 @@ const AllProduct = () => {
     if(!productAdmin){
       dispatch(fetchAllUserProduct(pageNum))
     };
-      hasFetchAllProduct === false &&
       dispatch(fetchAllUserProduct(pageNum));
-  }, [user, hasFetchAllProduct]);
+  }, [pageNum]);
 
   const productData =
     productAdmin && Array.isArray(productAdmin)

@@ -269,7 +269,8 @@ const productAdminSlice = createSlice({
       .addCase(createProduct.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
-          state.productAdmin.push(action.payload);
+          state.allProduct.push(action.payload);
+          state.hasFetchAllProduct = false;
         }
       })
       .addCase(createProduct.rejected, (state) => {
@@ -281,8 +282,8 @@ const productAdminSlice = createSlice({
       .addCase(createPrescription.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
-          console.log('prescription payload', action.payload)
-          state.prescription.push(action.payload);
+          state.prescriptionWithoutPagination.push(action.payload);
+          state.hasFetchAllPrescriptionWithoutPagination = false;       
         }
       })
       .addCase(createPrescription.rejected, (state) => {
@@ -294,10 +295,11 @@ const productAdminSlice = createSlice({
       .addCase(updateProduct.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
-          const index = state.productAdmin.findIndex(
+          const index = state.allProduct.findIndex(
             (p) => p.$id === action.payload?.$id
           );
-          state.productAdmin[index] = action.payload;
+          state.allProduct[index] = action.payload;
+          state.hasFetchAllProduct = false; 
         }
       })
       .addCase(updateProduct.rejected, (state) => {
@@ -309,10 +311,11 @@ const productAdminSlice = createSlice({
       .addCase(updatePrescription.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
-          const index = state.prescription.findIndex(
+          const index = state.prescriptionWithoutPagination.findIndex(
             (p) => p.$id === action.payload?.$id
           );
-          state.prescription[index] = action.payload;
+          state.prescriptionWithoutPagination[index] = action.payload;
+          state.hasFetchAllPrescriptionWithoutPagination = false;
           console.log('update prescription ', action.payload)
         }
       })
@@ -325,10 +328,11 @@ const productAdminSlice = createSlice({
       .addCase(updateProductStockQuantity.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
-          const index = state.productAdmin.findIndex(
+          const index = state.allProduct.findIndex(
             (p) => p.$id === action.payload?.$id
           );
-          state.productAdmin[index] = action.payload;
+          state.allProduct[index] = action.payload;
+          state.hasFetchAllProduct = false;
         }
       })
       .addCase(updateProductStockQuantity.rejected, (state) => {
@@ -340,10 +344,11 @@ const productAdminSlice = createSlice({
       .addCase(updateHotProductNum.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
-          const index = state.productAdmin.findIndex(
+          const index = state.allProduct.findIndex(
             (p) => p.$id === action.payload?.$id
           );
-          state.productAdmin[index] = action.payload;
+          state.allProduct[index] = action.payload;
+          state.hasFetchAllProduct = false;
         }
       })
       .addCase(updateHotProductNum.rejected, (state) => {
@@ -356,6 +361,7 @@ const productAdminSlice = createSlice({
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
         }
+        state.hasFetchAllProduct = false;
       })
       .addCase(deleteproduct.rejected, (state) => {
         state.status = "failure";
@@ -367,6 +373,7 @@ const productAdminSlice = createSlice({
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
         }
+        state.hasFetchAllPrescriptionWithoutPagination = false;
       })
       .addCase(deletePrescription.rejected, (state) => {
         state.status = "failure";
@@ -377,7 +384,6 @@ const productAdminSlice = createSlice({
       .addCase(fetchAllUserProduct.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
-          state.hasFetchAllProduct = true;
           state.productAdmin = action.payload;
         }
       })
@@ -402,8 +408,8 @@ const productAdminSlice = createSlice({
       .addCase(fetchAllProductWithoutPagination.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
-          state.hasFetchAllProduct = true;
           state.allProduct = action.payload;
+          state.hasFetchAllProduct = true;
         }
       })
       .addCase(fetchAllProductWithoutPagination.rejected, (state) => {
@@ -428,8 +434,8 @@ const productAdminSlice = createSlice({
       .addCase(fetchAllPrescriptionsWithoutPagination.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
-          state.hasFetchAllPrescription = true;
           state.prescriptionWithoutPagination = action.payload;
+          state.hasFetchAllPrescriptionWithoutPagination = true;
           console.log('all prescription payload ', action.payload)
         }
       })
