@@ -6,11 +6,7 @@ const UserCustomer = () => {
   return (
     <section>
       <div className="p-4 my-3 bg-white rounded-xl">
-        <Table
-          columns={allUsersColumn}
-          data={filteredData}
-          tableHeaderTxtColor="text-black"
-        />
+       
       </div>
     </section>
   );

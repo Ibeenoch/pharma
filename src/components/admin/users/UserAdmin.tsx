@@ -5,10 +5,9 @@ import { allUsersColumn, } from "../../../utils/admin/user/users";
 import Table from "../../common/Table";
 import DateFilter from "../DateFilter";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
-import { TransactionDateFilterProps } from "../../../types/payment/FlutterwavePaymentType";
 import { UserDateFilterProps } from "../../../types/user/contact";
 import { getAllUser, getAllUsersWithDateFilter, selectAuth } from "../../../features/auth/authSlice";
-import Pagination from "../../pagination";
+import Pagination from "../../Pagination";
 
 interface UserAdminProps {
   users: UserDataProps[]

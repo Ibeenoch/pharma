@@ -18,11 +18,9 @@ import {
 } from "../../../types/order/OrderType";
 import CustomText from "../../common/Text";
 import TableSkeleton from "../../common/animations/TableSkeleton";
-import CustomInput from "../../common/Input";
-import CustomButton from "../../common/Button";
 import Reset from '../../../assets/icons/reset.svg?react'
 import DateFilter from "../DateFilter";
-import Pagination from "../../pagination";
+import Pagination from "../../Pagination";
 interface AllOrdersProps {
   whichType?:
     | "Processing"
@@ -33,7 +31,7 @@ interface AllOrdersProps {
 }
 
 const AllOrder: React.FC<AllOrdersProps> = ({ whichType = "all" }) => {
-  const { orders, refreshOrder, totalOrderPage, status } =
+  const { orders, totalOrderPage, status } =
     useAppSelector(selectOrder);
     const [started, setStarted] = useState<string>("");
     const [ended, setEnded] = useState<string>("");

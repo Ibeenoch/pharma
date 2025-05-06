@@ -51,31 +51,7 @@ const CustomerUser = () => {
           </div>
         ))}
       </section>
-      <div className="flex flex-col md:flex-row  items-center justify-between">
-        <NavTab
-          handleTabclicked={handleUserTabs}
-          indexClicked={adminUsertabIndex}
-          navLists={userLists}
-        />
-
-        <DateFilter
-          applyCallback={() => {}}
-          ended={ended}
-          started={started}
-          setEnded={setEnded}
-          setStarted={setStarted}
-        />
-      </div>
-
-      <section>
-        <div className="p-4 my-3 bg-white rounded-xl">
-          <Table
-            columns={allUsersColumn}
-            data={filteredData}
-            tableHeaderTxtColor="text-black"
-          />
-        </div>
-      </section>
+     
     </main>
   );
 };

@@ -1,25 +1,22 @@
-import { useEffect } from "react";
 import { adminDefaultBgColor } from "../../../constants/appColor";
 import { selectproductAdmin } from "../../../features/admin/product/productSlice";
 import {
-  calcualateTotalRevenue,
-  getAllTransaction,
+  
   selectOrder,
 } from "../../../features/order/orderSlice";
-import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
+import {  useAppSelector } from "../../../hooks/reduxHooks";
 import { cardLists } from "../../../utils/admin/dashBoardLists";
 import BodyCard from "./BodyCard";
 import InventoryPieChart from "./InventoryPieChart";
 import RecentPayment from "./RecentPayment";
 import SalesChart from "./SalesChart";
 import { formatWithCommas } from "../../../utils/formatAmount";
-import { getAllUser, selectAuth } from "../../../features/auth/authSlice";
+import {  selectAuth } from "../../../features/auth/authSlice";
 
 const Body = () => {
-  const dispatch = useAppDispatch();
   const { productAdmin } = useAppSelector(selectproductAdmin);
-  const { users, refreshAllUsers } = useAppSelector(selectAuth);
-  const { transactions, transaction, totalRevenue, refreshTransaction } =
+  const { users,  } = useAppSelector(selectAuth);
+  const {  totalRevenue,  } =
     useAppSelector(selectOrder);
 
     

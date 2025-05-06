@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { getContactMessage,  getTotalContactPage,  selectUser } from '../../../features/user/userSlice'
 import MessageCard from './MessageCard';
 import Pagination from '../../Pagination';
-import ContactMsg from '../../common/animations/ContactMsgSkeleton';
 import ContactMsgSkeleton from '../../common/animations/ContactMsgSkeleton';
 
 const UserMessage = () => {
