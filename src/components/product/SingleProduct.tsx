@@ -27,17 +27,18 @@ const SingleProduct: React.FC<SingleProductProps> = ({
   onAddCart,
   onAddWishlist,
 }) => {
+  const navigate = useNavigate();
   const { cart, wishlist} = useAppSelector(selectCart);
   const navigateProduct = (id: string) => {
-    // navigate(`/product_details/${id}`);
-    window.open(`/product_details/${id}`, '_blank');
+    navigate(`/product_details/${id}`);
+    // window.open(`/product_details/${id}`, '_blank');
   };
   return (
     <div
       onClick={() => navigateProduct(id)}
       className="p-4 bg-white rounded-lg mx-auto md:mx-0 cursor-pointer"
     >
-      <div className="p-2 bg-[#fbfcf8] rounded-md flex justify-center h-35 md:h-40  items-center">
+      <div className="p-2 bg-[#fbfcf8] rounded-md flex justify-center h-30 md:h-40  items-center">
         <img src={productImage} alt="cart image" className="w-25 md:w-25 h-auto" />
       </div>
       <div>
@@ -45,13 +46,14 @@ const SingleProduct: React.FC<SingleProductProps> = ({
            <CustomText text={textTitle && textTitle.length > 10 ? textTitle.slice(0, 10) + '...' : textTitle} textType="medium" weightType="bold" />
         </div>
         <div className="hidden lg:block">
-           <CustomText text={textTitle} textType="medium" weightType="bold" />
+           <CustomText text={textTitle.length > 18 ? textTitle.slice(0, 18) + '...' : textTitle} textType="medium" weightType="bold" extraStyle="" />
         </div>
         <CustomText
           text={textDesc}
-          textType="small"
-          weightType="semibold"
-          color="text-gray-400 my-2 lg:w-40"
+          textType="extrasmall"
+          weightType="medium"
+          color="text-gray-400"
+          extraStyle=" my-2 lg:max-w-60"
         />
         <div className="flex md:justify-between gap-2 md:gap-0 items-center">
           <div className="flex items-center gap-2">

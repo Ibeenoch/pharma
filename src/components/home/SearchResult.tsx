@@ -69,7 +69,7 @@ const SearchResult = () => {
                       ? p.description.slice(0, 80) + "..."
                       : p.description
                   }
-                  price={`₦${p.price - p.price * (p && p.discount ? p.discount / 100 : 0)}`}
+                  price={`${p.price - p.price * (p && p.discount ? p.discount / 100 : 0)}`}
                 />
               )
           )}

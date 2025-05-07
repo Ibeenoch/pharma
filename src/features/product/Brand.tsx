@@ -63,7 +63,7 @@ const Brand = () => {
        
       </section>
       {/* for large screen size  */}
-      <section className="hidden md:block p-4 bg-white">
+      <section className="hidden md:block p-4 bg-white rounded-md">
         <div className="w-48  break-words whitespace-normal">
           <CustomText
             text={`${name}`}
