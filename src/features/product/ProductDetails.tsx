@@ -361,10 +361,10 @@ const ProductDetails = () => {
           text="You May Also Like"
           textType="large"
           weightType="semibold"
-          extraStyle="my-3"
+          extraStyle="my-3 px-2 lg:px-0"
         />
 
-        <div className="flex items-center gap-2 overflow-x-auto">
+        <div className="flex items-center gap-2 overflow-x-auto px-2 lg:px-0">
           {
             productSimilar && Array.isArray(productSimilar) && productSimilar.map((p) => (
 
@@ -377,7 +377,7 @@ const ProductDetails = () => {
                 productImage={p.imagesUrl[0]}
                 price={`${p.price}`}
                 textTitle={p.name}
-                textDesc={p.description.slice(0, 20)}
+                textDesc={p.description.slice(0, 50)}
                 key={p.$id}
               />
             ))

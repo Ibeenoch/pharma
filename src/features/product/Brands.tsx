@@ -19,7 +19,7 @@ const Brands:React.FC<BrandsProps> = ({ navigate }) => {
       <TwoTextSpan leftText="Top Brands" />
 
       <article className="flex items-center lg:grid grid-cols-2 lg:grid-cols-7 gap-4 overflow-x-auto mx-2 lg:mx-0">
-        {productBrands.slice(1).map((item, index) => (
+        {productBrands && productBrands.length > 1 ? productBrands.slice(1).map((item, index) => (
           <div onClick={() => handleNavBrand(item.label)} className="cursor-pointer" key={index}>
             <div className="h-40 w-30 lg:h-40 lg:w-32 xl:h-48 xl:w-42 flex items-center justify-center rounded-xl p-2 bg-white mb-4">
               <img
@@ -36,7 +36,11 @@ const Brands:React.FC<BrandsProps> = ({ navigate }) => {
               />
             </article>
           </div>
-        ))}
+        )) : (
+          <div className="h-screen flex items-center justify-center">
+            <CustomText text="No product found" textType="normal" weightType="semibold"/>
+          </div>
+        )}
       </article>
     </section>
   );

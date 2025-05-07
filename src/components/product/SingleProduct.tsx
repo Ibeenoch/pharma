@@ -27,18 +27,18 @@ const SingleProduct: React.FC<SingleProductProps> = ({
   onAddCart,
   onAddWishlist,
 }) => {
-  const navigate = useNavigate();
   const { cart, wishlist} = useAppSelector(selectCart);
   const navigateProduct = (id: string) => {
-    navigate(`/product_details/${id}`);
+    // navigate(`/product_details/${id}`);
+    window.open(`/product_details/${id}`, '_blank');
   };
   return (
     <div
       onClick={() => navigateProduct(id)}
-      className="p-4 bg-white rounded-lg mx-auto cursor-pointer"
+      className="p-4 bg-white rounded-lg mx-auto md:mx-0 cursor-pointer"
     >
-      <div className="p-2 bg-[#fbfcf8] rounded-md flex justify-center h-35 md:h-46 lg:h-54 xl:h-62 items-center">
-        <img src={productImage} alt="cart image" className="w-25 md:w-48 h-auto" />
+      <div className="p-2 bg-[#fbfcf8] rounded-md flex justify-center h-35 md:h-40  items-center">
+        <img src={productImage} alt="cart image" className="w-25 md:w-25 h-auto" />
       </div>
       <div>
         <div className="md:hidden">
@@ -51,13 +51,13 @@ const SingleProduct: React.FC<SingleProductProps> = ({
           text={textDesc}
           textType="small"
           weightType="semibold"
-          color="text-gray-400 my-2"
+          color="text-gray-400 my-2 lg:w-40"
         />
         <div className="flex md:justify-between gap-2 md:gap-0 items-center">
           <div className="flex items-center gap-2">
             <CustomText text={'₦' + String((parseInt(price) - (((discount === 0 ? 1 : (discount / 100))) * parseInt(price))) )} textType="medium" weightType="bold" color="text-amber-500" />
             <div className="hidden lg:block">
-              <CustomText text={`₦${price}`} textType="small" weightType="normal" color="text-gray-400" extraStyle="line-through" />
+              <CustomText text={`₦${price}`} textType="small" weightType="normal" color="text-gray-400" extraStyle="line-through px-2" />
             </div>
           </div>
 

@@ -34,7 +34,7 @@ const Home = () => {
 
   useEffect(() => {
     if(!allProduct){
-      dispatch(fetchAllProductWithoutPagination())
+      dispatch(fetchAllProductWithoutPagination());
     };
       hasFetchAllProduct === false &&
       dispatch(fetchAllProductWithoutPagination());
@@ -46,6 +46,10 @@ const Home = () => {
       // set the correct navbar active text
       dispatch(setNavIndexLink({ name: links[0].name, index: 0 }));
     },[])
+
+    const handleNavToProductDetails = (id: string) => {
+      navigate(``)
+    }
 
 
   return (
