@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import Cart from "../../assets/icons/cart-fill-white.svg?react";
 import Fave from "../../assets/icons/heart-fill-3.svg?react";
 import CustomText from "../common/Text";
@@ -27,10 +26,8 @@ const SingleProduct: React.FC<SingleProductProps> = ({
   onAddCart,
   onAddWishlist,
 }) => {
-  const navigate = useNavigate();
   const { cart, wishlist} = useAppSelector(selectCart);
   const navigateProduct = (id: string) => {
-    // navigate(`/product_details/${id}`);
     window.open(`/product_details/${id}`, '_blank');
   };
   return (
