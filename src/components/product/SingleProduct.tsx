@@ -30,8 +30,8 @@ const SingleProduct: React.FC<SingleProductProps> = ({
   const navigate = useNavigate();
   const { cart, wishlist} = useAppSelector(selectCart);
   const navigateProduct = (id: string) => {
-    navigate(`/product_details/${id}`);
-    // window.open(`/product_details/${id}`, '_blank');
+    // navigate(`/product_details/${id}`);
+    window.open(`/product_details/${id}`, '_blank');
   };
   return (
     <div
