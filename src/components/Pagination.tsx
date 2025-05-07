@@ -8,13 +8,12 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange, itemPerPage = 2 }) => {
+const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange, }) => {
   if (totalPages <= 1) return null;
-  let pagePaginationLength = totalPages / itemPerPage
 
   return (
     <div className="flex items-center gap-2 my-2">
-      {Array.from({ length: pagePaginationLength }, (_, i) => (
+      {Array.from({ length: totalPages }, (_, i) => (
         <div
           key={i}
           className={`border ${

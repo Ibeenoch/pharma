@@ -38,7 +38,7 @@ const calTotalAmount = (cart: any[]) => {
 
 export const mappedAllOrders = (orderList: AllOrderResultData[]) => {
   let mappedOrder = orderList.map((order) => ({
-    orderId: `#${order.$id}`,
+    orderId: `${order.$id.slice(0,7)}`,
     customerName: order.shippingDetails.fullname,
     phone: order.shippingDetails.phoneNumber,
     email: order.shippingDetails.email,

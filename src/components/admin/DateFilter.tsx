@@ -55,7 +55,7 @@ const DateFilter: React.FC<DateFilterProps> = ({
       </div>
     </div>
 
-    <div className="w-full sm:w-[300px] my-1">
+    <div className="w-full sm:w-[200px] my-1">
       <CustomButton text="Apply" fullwidth={true} onClick={applyCallback} />
     </div>
   </div>

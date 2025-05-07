@@ -44,6 +44,7 @@ const AddProduct = () => {
       dispatch(setTitleIndex(2));
       dispatch(setProductSubTabIndex(1));
   }, [])
+  
   const imageRef = useRef<HTMLInputElement>(null); 
   const [uploadedImages, setUploadedImages] = useState<string[]>(
     id ? singleProduct?.imagesUrl ?? [] : []

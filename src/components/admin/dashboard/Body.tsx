@@ -4,7 +4,7 @@ import {
   
   selectOrder,
 } from "../../../features/order/orderSlice";
-import {  useAppSelector } from "../../../hooks/reduxHooks";
+import {  useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { cardLists } from "../../../utils/admin/dashBoardLists";
 import BodyCard from "./BodyCard";
 import InventoryPieChart from "./InventoryPieChart";
@@ -12,13 +12,19 @@ import RecentPayment from "./RecentPayment";
 import SalesChart from "./SalesChart";
 import { formatWithCommas } from "../../../utils/formatAmount";
 import {  selectAuth } from "../../../features/auth/authSlice";
+import { useEffect } from "react";
+import { setSideBarIndex } from "../../../features/admin/adminSlice";
 
 const Body = () => {
   const { productAdmin } = useAppSelector(selectproductAdmin);
   const { users,  } = useAppSelector(selectAuth);
   const {  totalRevenue,  } =
     useAppSelector(selectOrder);
+  const dispatch = useAppDispatch();
 
+      useEffect(() => {
+          dispatch(setSideBarIndex(0));
+      }, [])
     
   const middletext = (word: string, num: number): string => {
     switch (num) {
@@ -37,7 +43,6 @@ const Body = () => {
   };
   return (
     <main className={`w-full p-0 lg:p-4 md:p-0 ${adminDefaultBgColor}`}>
-      {/* bg-[#329DFF] blue  bg-[#1EBFC4] cyan bg-[#FDD603] YELLOW bg-[#ed686c] red*/}
       <div className="flex flex-col md:flex-row items-center gap-4 md:gap-2 md:px-3 pt-7 mt-10 overflow-x-auto">
         {cardLists && Array.isArray(cardLists) && cardLists.map((item, index) => (
           <BodyCard
