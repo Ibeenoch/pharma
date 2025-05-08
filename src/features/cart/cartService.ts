@@ -3,7 +3,6 @@ import { database } from "../../lib/appwriteConfig";
 import {
   CartProductDataProps,
   cartProps,
-  ProductDataProps,
 } from "../../types/product/ProductData";
 import { CartOrderedPropsData } from "../../types/cart/CartData";
 

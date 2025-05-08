@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { selectAuth, setNavIndexLink } from "../../features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import CustomText from "./Text";
+import { lazy } from "react";
+const CustomText = lazy(() => import("./Text"));
+
 
 interface ListProps {
   lists: {

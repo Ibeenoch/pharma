@@ -1,7 +1,8 @@
+import { lazy } from "react";
 import { useNavigate } from "react-router-dom";
 import cards from "../../assets/images/cards.png";
-import CustomButton from "../common/Button";
-import CustomText from "../common/Text";
+const CustomText = lazy(() =>import("../../components/common/Text"));
+const CustomButton = lazy(() =>import("../common/Button"));
 
 const DiscountBanner = () => {
   const navigate = useNavigate();

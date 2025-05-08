@@ -1,18 +1,19 @@
-import CustomText from "../common/Text";
-import CustomInput from "../common/Input";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, lazy, useEffect, useState } from "react";
 import { validator } from "../../utils/validator";
 import User from "../../assets/icons/user.svg?react";
 import Email from "../../assets/icons/email.svg?react";
 import Phone from "../../assets/icons/mobile-phone.svg?react";
-import CustomButton from "../common/Button";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { setNavIndexLink } from "../../features/auth/authSlice";
 import { links } from "../../utils/listLink";
 import { ContactProps } from "../../types/user/contact";
 import { selectUser, sendContactMessage } from "../../features/user/userSlice";
-import CustomTextArea from "../common/TextArea";
 import { updateShowModal, updateToastKeyAndMsg } from "../../features/cart/cartSlice";
+const CustomButton = lazy(() =>import("../common/Button"));
+const CustomTextArea = lazy(() =>import("../common/TextArea"));
+const CustomInput = lazy(() =>import("../common/Input"));
+const CustomText = lazy(() =>import('../common/Text'));
+
 
 const Contact = () => {
   const { status } = useAppSelector(selectUser);
@@ -56,7 +57,6 @@ const Contact = () => {
       return;
     }
 
-    console.log(firstName, lastName, email, phone, message);
     const contactData : ContactProps = {email, firstName, lastName, message, phone };
     dispatch(sendContactMessage(contactData)).then(() => {
       dispatch(updateToastKeyAndMsg('Your message has been submitted'));

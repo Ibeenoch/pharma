@@ -1,5 +1,11 @@
 // displays home ui
 import { lazy, useEffect } from "react";
+import { pageSpacing } from "../constants/appText";
+import { useAppDispatch, useAppSelector,  } from "../hooks/reduxHooks";
+import { getCuurentLoginUserData, setNavIndexLink,  } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import { fetchAllProductWithoutPagination, selectproductAdmin } from "../features/admin/product/productSlice";
+import { links } from "../utils/listLink";
 const Banner = lazy(() =>import("../components/home/Banner"));
 const HeroSection = lazy(() =>import("../components/home/HeroSection"));
 const Recommendation = lazy(() =>import("../features/product/Recommendation"));
@@ -12,12 +18,6 @@ const TopSelling = lazy(() =>import("../features/product/TopSelling"));
 const Faq = lazy(() =>import("../components/home/Faq"));
 const Footer = lazy(() =>import("../components/layout/Footer"));
 const NavHelper = lazy(() =>import("../components/common/NavHelper"));
-import { pageSpacing } from "../constants/appText";
-import { useAppDispatch, useAppSelector,  } from "../hooks/reduxHooks";
-import { getCuurentLoginUserData, setNavIndexLink,  } from "../features/auth/authSlice";
-import { useNavigate } from "react-router-dom";
-import { fetchAllProductWithoutPagination, fetchAllUserProduct, selectproductAdmin } from "../features/admin/product/productSlice";
-import { links } from "../utils/listLink";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -47,10 +47,7 @@ const Home = () => {
       dispatch(setNavIndexLink({ name: links[0].name, index: 0 }));
     },[])
 
-    const handleNavToProductDetails = (id: string) => {
-      navigate(``)
-    }
-
+ 
 
   return (
     <main className={`${pageSpacing}`}>

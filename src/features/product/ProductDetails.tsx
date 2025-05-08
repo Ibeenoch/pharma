@@ -1,14 +1,5 @@
 import { useState, lazy, useEffect } from "react";
 import { MARGIN_TOP } from "../../constants/appText";
-import img3 from "../../assets/images/reco4.png";
-const LargeImageSize = lazy(() => import("../../components/common/LargeImageSize"));
-const PreviewImage = lazy(() => import("../../components/common/PreviewImage"));
-const CustomText = lazy(() => import("../../components/common/Text"));
-const CustomButton = lazy(() => import("../../components/common/Button"));
-const SingleProduct = lazy(() => import("../../components/product/SingleProduct"));
-const IconShowList = lazy(() => import("../../components/product/IconShowList"));
-const QtyProductUpdateBtn = lazy(() => import("../../components/product/QtyProductUpdateBtn"));
-const QtyUpdateBtn = lazy(() => import("../../components/product/QtyUpdateBtn"));
 import Clock from "../../assets/icons/clock.svg?react";
 import Quantity from "../../assets/icons/product.svg?react";
 import Heart from "../../assets/icons/heart.svg?react";
@@ -33,6 +24,14 @@ import {
   cartProps,
   SimilarProductProps,
 } from "../../types/product/ProductData";
+const LargeImageSize = lazy(() => import("../../components/common/LargeImageSize"));
+const PreviewImage = lazy(() => import("../../components/common/PreviewImage"));
+const CustomText = lazy(() => import("../../components/common/Text"));
+const CustomButton = lazy(() => import("../../components/common/Button"));
+const SingleProduct = lazy(() => import("../../components/product/SingleProduct"));
+const IconShowList = lazy(() => import("../../components/product/IconShowList"));
+const QtyProductUpdateBtn = lazy(() => import("../../components/product/QtyProductUpdateBtn"));
+const QtyUpdateBtn = lazy(() => import("../../components/product/QtyUpdateBtn"));
 
 const ProductDetails = () => {
   const [qty, setQty] = useState<number>(1);

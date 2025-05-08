@@ -1,5 +1,7 @@
+import { lazy } from "react";
 import emailpics from "../../assets/images/email.png";
-import CustomText from "../../components/common/Text";
+const CustomText = lazy(() =>import('../../components/common/Text'));
+
 
 const EmailVerificationPending = () => {
   return (

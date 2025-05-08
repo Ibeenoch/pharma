@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { lazy, useState } from "react";
 import Prescription from "../../assets/icons/prescription-pills.svg?react";
 import Trash from "../../assets/icons/trash-bin.svg?react";
 import Pen from "../../assets/icons/pencil.svg?react";
@@ -21,12 +21,12 @@ import { useNavigate } from "react-router-dom";
 import {
   mappedProductProps,
 } from "../../types/product/ProductData";
-import Modal from "./Modal";
-import ProductDetails from "../admin/product/ProductDetails";
 import { AllOrderUserResultData, mappedAllOrdersProps } from "../../types/order/OrderType";
-import OrderDetails from "../admin/order/OrderDetails";
-import CustomText from "./Text";
-import CustomerOrderDetails from "../admin/order/CustomerOrderDetails";
+const OrderDetails = lazy(() => import("../admin/order/OrderDetails"));
+const CustomerOrderDetails = lazy(() => import("../admin/order/CustomerOrderDetails"));
+const CustomText = lazy(() => import("./Text"));
+const Modal = lazy(() => import("./Modal"));
+const ProductDetails = lazy(() => import("../admin/product/ProductDetails"));
 
 interface Columns {
   key: string;

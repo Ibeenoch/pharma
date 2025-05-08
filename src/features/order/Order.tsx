@@ -1,10 +1,4 @@
-import { FormEvent, useState } from "react";
-import CustomInput from "../../components/common/Input";
-import CustomButton from "../../components/common/Button";
-import TrackIcon from "../../components/cart/TrackIcon";
-import CustomText from "../../components/common/Text";
-import OrderDetails from "../../components/order/OrderDetails";
-import VerticaltrackedOrder from "../../components/order/VerticaltrackedOrder";
+import { FormEvent, lazy, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { OrderArgs } from "../../types/order/OrderType";
@@ -13,6 +7,12 @@ import {
   formatDateWithOrdinal,
   getRelativeTime,
 } from "../../utils/dateFormatter";
+const CustomText = lazy(() => import("../../components/common/Text"));
+const CustomInput = lazy(() => import("../../components/common/Input"));
+const CustomButton = lazy(() => import("../../components/common/Button"));
+const TrackIcon = lazy(() => import("../../components/cart/TrackIcon"));
+const OrderDetails = lazy(() => import("../../components/order/OrderDetails"));
+const VerticaltrackedOrder = lazy(() => import("../../components/order/VerticaltrackedOrder"));
 
 const Order = () => {
   const { orderId, userId } = useParams();

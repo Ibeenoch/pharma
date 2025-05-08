@@ -1,5 +1,6 @@
-import AdminLayout from "../../../../features/admin/dashboard/AdminLayout";
-import AccountSettingsDetails from "./AccountSettingsDetails";
+import { lazy } from "react";
+const AdminLayout = lazy(() => import("../../../../features/admin/dashboard/AdminLayout"));
+const AccountSettingsDetails = lazy(() => import("./AccountSettingsDetails"));
 
 const AccountSettingManagement = () => {
   return (

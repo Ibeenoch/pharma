@@ -1,9 +1,10 @@
+import { lazy } from "react";
 import { adminDefaultBgColor } from "../../../constants/appColor";
 import { userStatitics } from "../../../utils/admin/user/users";
 import { useAppSelector } from "../../../hooks/reduxHooks";
-import CustomText from "../../common/Text";
-import UserAdmin from "./UserAdmin";
 import { selectAuth } from "../../../features/auth/authSlice";
+const CustomText = lazy(() => import("../../common/Text"));
+const UserAdmin = lazy(() => import("./UserAdmin"));
 
 const AdminUsers = () => {
  

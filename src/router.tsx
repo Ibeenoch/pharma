@@ -23,7 +23,7 @@ const DashBoardPage = lazy(() => import("./pages/admin/DashBoardPage"));
 const TransactionPage = lazy(() => import("./pages/admin/transactions/TransactionPage"));
 const ALlUsersPage = lazy(() => import("./pages/admin/users/AllUsersPage"));
 const UsersAdminPage = lazy(() => import("./pages/admin/users/UsersAdminPage"));
-const PharmacyPage = lazy(() => import("./pages/admin/users/SubscriptionPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const CustomerPage = lazy(() => import("./pages/admin/users/CustomerPage"));
 const ProductPage = lazy(() => import("./pages/admin/products/ProductPage"));
 const AddProductPage = lazy(() => import("./pages/admin/products/AddProductPage"));
@@ -52,6 +52,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
   {
     path: "/login",

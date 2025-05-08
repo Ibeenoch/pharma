@@ -1,12 +1,12 @@
-import NavIcons from "./NavIcons";
+import React, { lazy } from "react";
+const NavIcons = lazy(() => import("./NavIcons"));
+const CompanyLogo = lazy(() => import("../../common/CompanyLogo"));
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
   selectAdmin,
   setSideBarIndex,
 } from "../../../features/admin/adminSlice";
-import CompanyLogo from "../../common/CompanyLogo";
-import React from "react";
 import { animateTransition } from "../../../constants/appText";
 import { selectAuth } from "../../../features/auth/authSlice";
 

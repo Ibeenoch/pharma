@@ -1,7 +1,7 @@
-import React from "react";
+import React, { lazy } from "react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { inventoryData } from "../../../utils/admin/dashBoardLists";
-import CustomText from "../../common/Text";
+const CustomText = lazy(() => import("../../common/Text"));
 
 // Custom legend component
 const CustomLegend: React.FC = () => {

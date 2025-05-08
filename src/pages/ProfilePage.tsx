@@ -1,5 +1,5 @@
-import Footer from "../components/layout/Footer";
-import Profile from "../features/auth/Profile";
+import { lazy } from "react";
+const Profile = lazy(() =>import("../features/auth/Profile"));
 
 const ProfilePage = () => {
   return (

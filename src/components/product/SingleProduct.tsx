@@ -1,7 +1,7 @@
+import React, { lazy } from "react";
 import Cart from "../../assets/icons/cart-fill-white.svg?react";
 import Fave from "../../assets/icons/heart-fill-3.svg?react";
-import CustomText from "../common/Text";
-import React from "react";
+const CustomText = lazy(() =>import('../common/Text'));
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { selectCart } from "../../features/cart/cartSlice";
 

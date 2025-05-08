@@ -1,7 +1,6 @@
+import { lazy } from "react";
 import Cancel from "../../assets/icons/cancel-close.svg?react";
 import CancelCircle from "../../assets/icons/trash-bin.svg?react";
-import CustomText from "../common/Text";
-import CustomButton from "../common/Button";
 import { ProductDataProps } from "../../types/product/ProductData";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +9,8 @@ import {
   removeFromwishlist,
   selectCart,
 } from "../../features/cart/cartSlice";
+const CustomText = lazy(() =>import("../../components/common/Text"));
+const CustomButton = lazy(() =>import("../common/Button"));
 
 interface WishListItemsProps {
   showwishList: boolean;

@@ -1,4 +1,5 @@
-import CancelledTransactionManagement from "../../../components/admin/transaction/cancelled/CancelledTransactionManagement";
+import { lazy } from "react";
+const CancelledTransactionManagement = lazy(() =>import("../../../components/admin/transaction/cancelled/CancelledTransactionManagement"));
 
 const CancelledTransaction = () => {
   return (

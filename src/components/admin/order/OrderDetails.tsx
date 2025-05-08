@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import CustomText from "../../common/Text";
+import React, { lazy, useState } from "react";
 import {
   mappedAllOrdersProps,
   OrderStatusProps,
 } from "../../../types/order/OrderType";
-import CustomSelect from "../../common/Select";
+const CustomText = lazy(() => import("../../common/Text"));
+const CustomSelect = lazy(() => import("../../common/Select"));
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { updateOrderStatus } from "../../../features/order/orderSlice";
 import { selectAuth } from "../../../features/auth/authSlice";

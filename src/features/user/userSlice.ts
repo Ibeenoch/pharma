@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import * as api from "./userService";
 import { RootState } from "../../redux/store";
 import { ContactProps, EmailSubProps } from "../../types/user/contact";
+import { NotificationProps } from "../../types/notification/Notification";
 
 interface authState {
   status: "idle" | "loading" | "success" | "failure";
@@ -9,12 +10,16 @@ interface authState {
   emailSub: EmailSubProps[];
   totalContactPage: number;
   totalEmailSubPage: number;
+  notifications: NotificationProps[];
+  totalUnreadnotification: number;
 }
 
 const initialState: authState = {
   status: "idle",
   contacts: [],
   emailSub: [],
+  notifications: [],
+  totalUnreadnotification: 0,
   totalContactPage: 0,
   totalEmailSubPage: 0,
 };
@@ -85,6 +90,49 @@ export const getEmailSubscription = createAsyncThunk(
   }
 );
 
+export const createNotification = createAsyncThunk(
+  "notification/createNotification",
+  async (notificationData: NotificationProps, { rejectWithValue }) => {
+    try {
+      return await api.createNotification(notificationData);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wromg");
+    }
+  }
+);
+
+export const updateReadNotification = createAsyncThunk(
+  "notification/updateReadNotification",
+  async (notificationData: NotificationProps, { rejectWithValue }) => {
+    try {
+      return await api.markReadNotification(notificationData);
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wromg");
+    }
+  }
+);
+
+export const fetchAllNotification = createAsyncThunk(
+  "notification/fetchAllNotification",
+  async (_, { rejectWithValue }) => {
+    try {
+      return await api.getAllNotifications();
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wromg");
+    }
+  }
+);
+
+export const fetchAllUnReadNotification = createAsyncThunk(
+  "notification/fetchAllUnReadNotification",
+  async (_, { rejectWithValue }) => {
+    try {
+      return await api.getUnreadNotifications();
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Something went wromg");
+    }
+  }
+);
 
 
 const userSlice = createSlice({
@@ -164,6 +212,55 @@ const userSlice = createSlice({
         }
       })
       .addCase(getEmailSubscription.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(createNotification.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(createNotification.fulfilled, (state, action) => {
+        state.status = "success";
+        if (action.payload !== undefined) {
+          state.notifications.push(action.payload);
+        }
+      })
+      .addCase(createNotification.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(updateReadNotification.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(updateReadNotification.fulfilled, (state, action) => {
+        state.status = "success";
+        if (action.payload !== undefined) {
+          const index = state.notifications.findIndex((n) => n.$id === action.payload?.$id)
+          state.notifications[index] = action.payload;
+        }
+      })
+      .addCase(updateReadNotification.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(fetchAllNotification.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchAllNotification.fulfilled, (state, action) => {
+        state.status = "success";
+        if (action.payload !== undefined) {
+          state.notifications = action.payload;
+        }
+      })
+      .addCase(fetchAllNotification.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(fetchAllUnReadNotification.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchAllUnReadNotification.fulfilled, (state, action) => {
+        state.status = "success";
+        if (action.payload !== undefined) {
+          state.totalUnreadnotification = action.payload.length;
+        }
+      })
+      .addCase(fetchAllUnReadNotification.rejected, (state) => {
         state.status = "failure";
       });
    

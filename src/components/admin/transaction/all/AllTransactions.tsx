@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { lazy, useEffect, useState } from "react";
 import { lightgrayBgColor } from "../../../../constants/appColor";
-import TransactionCard from "../TransactionCard";
-import Modal from "../../../common/Modal";
-import TransactionDetails from "../TransactionDetails";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import {
   getAllOrder,
@@ -13,13 +10,16 @@ import {
   totalOrderPages,
 } from "../../../../features/order/orderSlice";
 import { mappedTransaction } from "../../../../utils/admin/transaction/mappedTransaction";
-import TransactionsSkeleton from "../../../common/animations/TransactionsSkeleton";
 import { useParams } from "react-router-dom";
 import { OrderPaginatedArgs } from "../../../../types/order/OrderType";
-import CustomText from "../../../common/Text";
 import Reset from '../../../../assets/icons/reset.svg?react'
 import { TransactionDateFilterProps } from "../../../../types/payment/FlutterwavePaymentType";
-import DateFilter from "../../DateFilter";
+const DateFilter = lazy(() => import("../../DateFilter"));
+const CustomText = lazy(() => import("../../../common/Text"));
+const TransactionCard = lazy(() => import("../TransactionCard"));
+const Modal = lazy(() => import("../../../common/Modal"));
+const TransactionDetails = lazy(() => import("../TransactionDetails"));
+const TransactionsSkeleton = lazy(() => import("../../../common/animations/TransactionsSkeleton"));
 
 interface AllTransactionsProps {
   whichType?: "pending" | "cancelled" | "successful" | "failed" | "all";
@@ -28,6 +28,8 @@ interface AllTransactionsProps {
 const AllTransactions: React.FC<AllTransactionsProps> = ({
   whichType = "all",
 }) => {
+  const { userId } = useParams();
+  const [orderpaginationProps, setOrderPaginationProps] = useState<OrderPaginatedArgs>({ page: 0, userId: userId ?? "" });
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const [started, setStarted] = useState<string>("");
   const [ended, setEnded] = useState<string>("");
@@ -35,11 +37,9 @@ const AllTransactions: React.FC<AllTransactionsProps> = ({
   const [resetPage, setResetPage] = useState<boolean>(false);
   const [currIndex, setCurrIndex] = useState<string>("");
   const [shippingid, setShippingId] = useState<string>("");
-  const { transactions, status, orders, totalOrderPage, refreshOrder } =
-    useAppSelector(selectOrder);
+  const { transactions, status, orders, totalOrderPage, refreshOrder } = useAppSelector(selectOrder);
   
   const dispatch = useAppDispatch();
-  const { userId } = useParams();
 
   const handleShowDetails = (index: string, shippingId: string) => {
     setShippingId(shippingId);
@@ -51,19 +51,19 @@ const AllTransactions: React.FC<AllTransactionsProps> = ({
     setShowDetails(false);
   };
 
-  const [orderpaginationProps, setOrderPaginationProps] =
-    useState<OrderPaginatedArgs>({ page: 0, userId: userId ?? "" });
 
   const handlePageClicked = (i: number, userId: string) => {
     dispatch(resetRefreshOrder());
+    setPageNum(i);
     setOrderPaginationProps({ page: i, userId: userId });
+    console.log(pageNum)
   };
 
   useEffect(() => {
     if (userId) {
       // refreshOrder &&
       dispatch(getAllTransaction(1))
-      dispatch(getAllOrder(orderpaginationProps)).then((res) => console.log('all transaction ', res.payload));
+      dispatch(getAllOrder(orderpaginationProps))
       dispatch(totalOrderPages());
     }
   }, [refreshOrder, userId, resetPage]);

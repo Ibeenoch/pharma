@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
-import CustomText from "../common/Text";
+import React, { lazy, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { resetSearchProduct } from "../../features/admin/product/productSlice";
 import Cancel from "../../assets/icons/cancel-close.svg?react";
+const CustomText = lazy(() => import("../common/Text"));
+
 
 interface SearchResultProps {
   searchResultArr: {

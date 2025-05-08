@@ -1,5 +1,5 @@
+import { ChangeEvent, lazy, useEffect, useRef, useState } from "react";
 import img2 from "../../assets/images/noprofileimage.png";
-import CustomText from "../../components/common/Text";
 import Home from "../../assets/icons/home2.svg?react";
 import Cart from "../../assets/icons/cart-shopping.svg?react";
 import Bag from "../../assets/icons/bag.svg?react";
@@ -13,14 +13,15 @@ import Email from "../../assets/icons/email.svg?react";
 import EditPen from "../../assets/icons/pencil.svg?react";
 import Location from "../../assets/icons/globe.svg?react";
 import { useNavigate } from "react-router-dom";
-import LargeImageSize from "../../components/common/LargeImageSize";
 import { lightgrayBgColor } from "../../constants/appColor";
-import ProfileLists from "../../components/auth/ProfileLists";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { addProfilePics, logoutUser, resetUserState, selectAuth, toggleProfileTocheckOut } from "./authSlice";
 import { getShippingDetails, resetShippingDetails, selectOrder } from "../order/orderSlice";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-import Logout from "../../components/common/Logout";
+const LargeImageSize = lazy(() => import("../../components/common/LargeImageSize"));
+const CustomText = lazy(() => import("../../components/common/Text"));
+const ProfileLists = lazy(() => import("../../components/auth/ProfileLists"));
+const Logout = lazy(() => import("../../components/common/Logout"));
+
 
 const Profile = () => {
   const [imageFiles, setImageFiles] = useState<File[]>([])

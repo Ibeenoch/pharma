@@ -1,7 +1,8 @@
-import React from "react";
-import CustomButton from "../common/Button";
-import CustomText from "../common/Text";
-import CustomInput from "../common/Input";
+import React, { lazy } from "react";
+const CustomButton = lazy(() => import("../common/Button"));
+const CustomText = lazy(() => import("../common/Text"));
+const CustomInput = lazy(() => import("../common/Input"));
+
 
 interface DateFilterProps {
   started: string;

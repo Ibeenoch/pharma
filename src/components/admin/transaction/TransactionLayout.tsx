@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { adminDefaultBgColor } from "../../../constants/appColor";
-import DateFilter from "../DateFilter";
 
 interface TransactionLayoutProps {
   child: React.ReactNode;

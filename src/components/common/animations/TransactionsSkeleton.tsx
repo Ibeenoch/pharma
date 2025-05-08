@@ -1,4 +1,3 @@
-import React from "react";
 
 const TransactionsSkeleton = () => {
   return (
@@ -7,6 +6,7 @@ const TransactionsSkeleton = () => {
     >
       {Array.from({ length: 6 }, (_, i) => (
         <div
+        key={i}
           className={`p-4 rounded-xl bg-white my-3 lg:my-0 hover:bg-white/50 group`}
         >
           <div className="flex justify-between items-center pb-3 border-b border-dashed border-gray-200">

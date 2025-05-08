@@ -1,9 +1,9 @@
-import React from "react";
-import CustomText from "../../components/common/Text";
-import Trash from "../../assets/icons/trash-bin.svg?react";
-import IconAndText from "../../components/cart/IconAndText";
-import QtyUpdateBtn from "../../components/product/QtyUpdateBtn";
+import React, { lazy } from "react";
 import { useNavigate } from "react-router-dom";
+import Trash from "../../assets/icons/trash-bin.svg?react";
+const CustomText = lazy(() => import("../../components/common/Text"));
+const IconAndText = lazy(() => import("../../components/cart/IconAndText"));
+const QtyUpdateBtn = lazy(() => import("../../components/product/QtyUpdateBtn"));
 
 interface CartRowItemProps {
   image: string;

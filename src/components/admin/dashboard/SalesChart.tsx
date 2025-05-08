@@ -1,3 +1,4 @@
+import { lazy } from "react";
 import {
   Bar,
   BarChart,
@@ -6,12 +7,11 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
-import CustomText from "../../common/Text";
+const CustomText = lazy(() => import("../../common/Text"));
 import { salesData } from "../../../utils/admin/dashBoardLists";
 import {
   darkblue,
   darkGreen,
-  darkOrange,
   darkred,
   darkyellow,
 } from "../../../constants/appColor";

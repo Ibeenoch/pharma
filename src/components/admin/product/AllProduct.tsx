@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { allproductColumn } from "../../../utils/admin/product/productList";
-import Table from "../../common/Table";
 import {
   fetchAllUserProduct,
   invalidateFetchAllProductCache,
@@ -10,10 +9,11 @@ import {
   totalProductPages,
 } from "../../../features/admin/product/productSlice";
 import { mapProductToTableData } from "../../../utils/admin/product/productMap";
-import CustomText from "../../common/Text";
-import TableSkeleton from "../../common/animations/TableSkeleton";
-import Pagination from "../../Pagination";
 import { setTitleIndex } from "../../../features/admin/adminSlice";
+const Pagination = lazy(() => import('../../Pagination'));
+const TableSkeleton = lazy(() => import('../../common/animations/TableSkeleton'));
+const CustomText = lazy(() => import('../../common/Text'));
+const Table = lazy(() => import('../../common/Table'));
 
 const AllProduct = () => {
   const dispatch = useAppDispatch();

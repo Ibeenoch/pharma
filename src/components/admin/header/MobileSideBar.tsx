@@ -1,3 +1,4 @@
+import { lazy } from "react";
 import Cancel from "../../../assets/icons/cancel-slim.svg?react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
@@ -5,7 +6,7 @@ import {
   selectAdmin,
   setSideBarIndex,
 } from "../../../features/admin/adminSlice";
-import CompanyLogo from "../../common/CompanyLogo";
+const CompanyLogo = lazy(() => import("../../common/CompanyLogo"));
 import { animateTransition } from "../../../constants/appText";
 import MobileNavIcons from "./MobileNavIcons1";
 import { selectAuth } from "../../../features/auth/authSlice";

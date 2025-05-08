@@ -1,5 +1,6 @@
-import PageLayout from "../components/common/PageLayout";
-import Register from "../features/auth/Register";
+import { lazy } from "react";
+const PageLayout = lazy(() =>import("../components/common/PageLayout"));
+const Register = lazy(() =>import("../features/auth/Register"));
 
 const RegisterPage = () => {
   return <PageLayout child={<Register />} />;

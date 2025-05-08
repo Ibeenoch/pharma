@@ -1,14 +1,6 @@
-import CustomButton from "../common/Button";
-import NavLinks from "../headers/NavLinks";
+import { lazy, useEffect, useState } from "react";
 import ShoppingCart from "../../assets/icons/cart-shopping.svg?react";
-import MobileNav from "../headers/MobileNav";
-import CartItems from "../home/CartItems";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CompanyLogo from "../common/CompanyLogo";
-import Cart from "../common/Cart";
-import Love from "../../assets/icons/heart.svg?react";
-import WishList from "../common/WishList";
 import { animateTransition } from "../../constants/appText";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import {
@@ -16,13 +8,20 @@ import {
   resetUserState,
   selectAuth,
 } from "../../features/auth/authSlice";
-import noprofileImage from "../../assets/images/noprofileimage.png";
-import Logout from "../common/Logout";
 import { selectCart } from "../../features/cart/cartSlice";
-import WishListItems from "../home/WishlistItems";
 import { fetchAllProductWithoutPagination, selectproductAdmin } from "../../features/admin/product/productSlice";
-import ProfilePics from "../headers/ProfilePics";
 import { resetShippingDetails } from "../../features/order/orderSlice";
+import Love from "../../assets/icons/heart.svg?react";
+const MobileNav = lazy(() =>import("../headers/MobileNav"));
+const CartItems = lazy(() =>import("../home/CartItems"));
+const CompanyLogo = lazy(() =>import("../common/CompanyLogo"));
+const Cart = lazy(() =>import("../common/Cart"));
+const WishList = lazy(() =>import("../common/WishList"));
+const WishListItems = lazy(() =>import("../home/WishlistItems"));
+const ProfilePics = lazy(() =>import("../headers/ProfilePics"));
+const Logout = lazy(() =>import("../common/Logout"));
+const NavLinks = lazy(() =>import("../headers/NavLinks"));
+const CustomButton = lazy(() =>import("../common/Button"));
 
 const Header = () => {
   const [showCart, setShowCart] = useState<boolean>(false);

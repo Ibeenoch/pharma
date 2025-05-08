@@ -1,5 +1,6 @@
-import AddProductManager from "../../../components/admin/product/AddProductManager";
-import AdminLayout from "../dashboard/AdminLayout";
+import { lazy } from "react";
+const AdminLayout = lazy(() =>import('../dashboard/AdminLayout'));
+const AddProductManager = lazy(() =>import("../../../components/admin/product/AddProductManager"));
 
 const AddProduct = () => {
   return <AdminLayout title="Add Product" children={<AddProductManager />} />;

@@ -24,7 +24,6 @@ import Prescription from "../../assets/icons/prescription-pills.svg?react";
 import OrderActive from "../../assets/icons/activeorder.svg?react";
 import OrderCancelled from "../../assets/icons/ordercancelled.svg?react";
 import OrderCompleted from "../../assets/icons/completeorder.svg?react";
-import Subscription from "../../assets/icons/list-email.svg?react";
 import SuccessTran from "../../assets/icons/status-success.svg?react";
 import FailedTran from "../../assets/icons/failed-transaction.svg?react";
 import PendingTran from "../../assets/icons/contract-pending.svg?react";

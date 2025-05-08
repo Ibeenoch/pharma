@@ -1,6 +1,8 @@
-import TransactionLayout from '../TransactionLayout'
-import AdminLayout from '../../../../features/admin/dashboard/AdminLayout'
-import PendingTransactions from './PendingTransactions'
+import { lazy } from 'react';
+const PendingTransactions = lazy(() => import('./PendingTransactions'));
+const AdminLayout = lazy(() => import('../../../../features/admin/dashboard/AdminLayout'));
+const TransactionLayout = lazy(() => import('../TransactionLayout'));
+
 
 const PendingTransactionManagement = () => {
   return (

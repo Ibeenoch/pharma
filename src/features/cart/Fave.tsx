@@ -1,13 +1,5 @@
-import CustomText from "../../components/common/Text";
+import { lazy, useEffect } from "react";
 import Trash from "../../assets/icons/trash-bin.svg?react";
-import Lock from "../../assets/icons/lock.svg?react";
-import productImg1 from "../../assets/images/cc4.png";
-import productImg2 from "../../assets/images/cc3.png";
-import IconAndText from "../../components/cart/IconAndText";
-import { useEffect, useState } from "react";
-import CartRowItem from "../../components/cart/CartRowItem";
-import CustomButton from "../../components/common/Button";
-import CartTwoText from "../../components/cart/CartTwoText";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import {
   checkIfItemHasBeenAddedToWishlist,
@@ -15,8 +7,9 @@ import {
   removeFromwishlist,
   selectCart,
 } from "./cartSlice";
-import WishListRowItem from "../../components/cart/WishListRowItem";
-import { cartProps } from "../../types/product/ProductData";
+const CustomText = lazy(() => import("../../components/common/Text"));
+const IconAndText = lazy(() => import("../../components/cart/IconAndText"));
+const WishListRowItem = lazy(() => import("../../components/cart/WishListRowItem"));
 
 interface FaveProps {
   showCheckOutBtn?: boolean;
@@ -24,10 +17,8 @@ interface FaveProps {
 }
 
 const Fave: React.FC<FaveProps> = ({
-  showCheckOutBtn = true,
   isCheckOutPage = false,
 }) => {
-  const [qty, setQty] = useState<number>(1);
   const dispatch = useAppDispatch();
   const { wishlist } = useAppSelector(selectCart);
 
@@ -90,7 +81,6 @@ const Fave: React.FC<FaveProps> = ({
                 itemTitle={w && w && w.name}
                 itemdesc="Size: 250ml"
                 price={`₦${w && w && w.price}`}
-                qty={w && w && w.quantity}
                 isCheckOut={isCheckOutPage}
                 id={w && w && w.$id}
               />

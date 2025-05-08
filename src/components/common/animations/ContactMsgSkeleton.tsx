@@ -1,4 +1,3 @@
-import React from 'react'
 
 const ContactMsgSkeleton = () => {
   return (
@@ -6,7 +5,7 @@ const ContactMsgSkeleton = () => {
       {
         Array.from( { length : 4 }, (_ , i) => (
 
-        <div className='p-4 rounded-xl bg-white m-2 animate-pulse'>
+        <div key={i} className='p-4 rounded-xl bg-white m-2 animate-pulse'>
           <div className='flex gap-2 items-center'>
             <div className='w-8 h-8 rounded-full p-2 flex justify-center items-center bg-gray-200'></div>
 

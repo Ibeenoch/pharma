@@ -1,13 +1,12 @@
-import React from "react";
-import CustomText from "../common/Text";
+import React, { lazy } from "react";
 import Trash from "../../assets/icons/trash-filled.svg?react";
-import IconAndText from "./IconAndText";
-import QtyUpdateBtn from "../product/QtyUpdateBtn";
-import CustomButton from "../common/Button";
 import ShoppinCart from "../../assets/icons/cart-fill-white.svg?react";
-import { CartProductDataProps, cartProps, ProductDataProps } from "../../types/product/ProductData";
+import { cartProps, ProductDataProps } from "../../types/product/ProductData";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { addToCart, selectCart } from "../../features/cart/cartSlice";
+const IconAndText = lazy(() => import("./IconAndText"));
+const CustomButton = lazy(() => import("../common/Button"));
+const CustomText = lazy(() => import("../common/Text"));
 
 interface WishListRowItemProps {
   wishlistData:  ProductDataProps[];
@@ -15,7 +14,6 @@ interface WishListRowItemProps {
   itemTitle: string;
   itemdesc?: string;
   price: string;
-  qty: number;
   removeItemFromCart: (id: string) => void;
   isCheckOut?: boolean;
   id: string;
@@ -27,7 +25,7 @@ const WishListRowItem: React.FC<WishListRowItemProps> = ({
   itemTitle,
   itemdesc,
   price,
-  qty,
+  
   removeItemFromCart,
   isCheckOut = false,
   id,

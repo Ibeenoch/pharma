@@ -1,11 +1,11 @@
 import { lazy } from "react";
-const TwoTextSpan = lazy(() =>import("../../components/home/TwoTextSpan"));
-const CustomText = lazy(() =>import("../../components/common/Text"));
 import { NavigateFunction,  } from "react-router-dom";
 import { ProductDataProps } from "../../types/product/ProductData";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { setProductCategoryName } from "../admin/product/productSlice";
 import { navToAllProduct } from "../../helpers/productFuncHelper";
+const TwoTextSpan = lazy(() =>import("../../components/home/TwoTextSpan"));
+const CustomText = lazy(() =>import("../../components/common/Text"));
 
 export interface CommonProductProps {
   navigate: NavigateFunction;

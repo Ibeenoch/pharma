@@ -1,6 +1,6 @@
-import React from "react";
-import CustomText from "../common/Text";
-import CheckMark from "./CheckMark";
+import React, { lazy } from "react";
+const CustomText = lazy(() => import("../common/Text"));
+const CheckMark = lazy(() => import("./CheckMark"));
 
 interface TrackIconProps {
   stage?: number;

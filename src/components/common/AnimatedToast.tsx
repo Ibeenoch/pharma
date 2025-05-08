@@ -1,9 +1,10 @@
-import React from "react";
+import React, { lazy } from "react";
 import Mark from "../../assets/icons/check-mark.svg?react";
 import Danger from "../../assets/icons/exclamation-mark.svg?react";
 import Cart from "../../assets/icons/cart-fill-white.svg?react";
 import Fave from "../../assets/icons/heart.svg?react";
-import CustomText from "./Text";
+const CustomText = lazy(() => import("./Text"));
+
 
 interface AnimatedToastProps {
   IconType?: "success" | "failed" | "cart" | "fave";

@@ -1,8 +1,8 @@
 import { lazy } from "react";
-const TwoTextSpan = lazy(() =>import("../../components/home/TwoTextSpan"));
-const ProductCard = lazy(() =>import("../../components/product/ProductCard"));
 import { CommonProductProps } from "./Category";
 import { handleHomeNavToProductDetails, navToAllProduct } from "../../helpers/productFuncHelper";
+const TwoTextSpan = lazy(() =>import("../../components/home/TwoTextSpan"));
+const ProductCard = lazy(() =>import("../../components/product/ProductCard"));
 
 const HotDeals: React.FC<CommonProductProps> = ({ navigate, allProduct }) => {
   

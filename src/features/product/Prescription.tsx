@@ -1,12 +1,12 @@
-import { FormEvent, useEffect, useState } from "react";
-import CustomInput from "../../components/common/Input";
-import CustomButton from "../../components/common/Button";
-import PrescriptionCard from "../../components/home/PrescriptionCard";
+import { FormEvent, lazy, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { fetchAllPrescriptions, selectproductAdmin } from "../admin/product/productSlice";
 import { PrescriptionProps } from "../../types/product/ProductData";
 import { setNavIndexLink } from "../auth/authSlice";
 import { links } from "../../utils/listLink";
+const CustomInput = lazy(() => import("../../components/common/Input"));
+const CustomButton = lazy(() => import("../../components/common/Button"));
+const PrescriptionCard = lazy(() => import("../../components/home/PrescriptionCard"));
 
 const Prescription = () => {
   const [searchDrug, setSearchDrug] = useState<string>("");

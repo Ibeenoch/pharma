@@ -1,4 +1,6 @@
-import AllProduct from "./AllProduct";
+import { lazy } from "react";
+const AllProduct = lazy(() => import("./AllProduct"));
+
 
 const ProductManagement = () => {
   return (

@@ -1,5 +1,4 @@
 import {
-  mappedSearchResultProps,
   PrescriptionProps,
   PrescriptionTableProps,
   ProductDataProps,

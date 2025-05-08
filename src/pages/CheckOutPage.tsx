@@ -1,5 +1,6 @@
-import CheckOut from "../features/cart/CheckOut";
-import PageLayout from "../components/common/PageLayout";
+import { lazy } from "react";
+const PageLayout = lazy(() =>import("../components/common/PageLayout"));
+const CheckOut = lazy(() =>import("../features/cart/CheckOut"));
 
 const CheckOutPage = () => {
   return <PageLayout child={<CheckOut />} />;

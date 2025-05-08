@@ -1,5 +1,5 @@
-import React from "react";
-import CustomText from "../../common/Text";
+import React, { lazy } from "react";
+const CustomText = lazy(() => import("../../common/Text"));
 
 interface BodyCardProps {
   Icon: React.FunctionComponent<
@@ -35,6 +35,7 @@ const BodyCard: React.FC<BodyCardProps> = ({
       <div className="flex justify-between items-center gap-2 my-3">
         <div>
           <CustomText
+            key={topText}
             text={topText}
             textType="small"
             color={textcolor}
@@ -42,6 +43,7 @@ const BodyCard: React.FC<BodyCardProps> = ({
           />
 
           <CustomText
+            key={middleText}
             text={middleText}
             textType="medium"
             weightType="semibold"
@@ -55,6 +57,7 @@ const BodyCard: React.FC<BodyCardProps> = ({
       </div>
       <div>
         <CustomText
+          key={endText}
           text={endText}
           textType="small"
           weightType="medium"

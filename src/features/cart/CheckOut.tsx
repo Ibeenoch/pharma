@@ -1,11 +1,4 @@
 import {  FormEvent, lazy, useEffect, useState } from "react";
-const Cart = lazy(() => import("./Cart"));
-const CustomText = lazy(() => import("../../components/common/Text"));
-const CustomInput = lazy(() => import("../../components/common/Input"));
-const PaymentOption = lazy(() => import("../../components/common/PaymentOption"));
-const CustomSelect = lazy(() => import("../../components/common/Select"));
-const CustomButton = lazy(() => import("../../components/common/Button"));
-const Modal = lazy(() => import("../../components/common/Modal"));
 import { pageSpacing } from "../../constants/appText";
 import { validator } from "../../utils/validator";
 import User from "../../assets/icons/user.svg?react";
@@ -56,9 +49,18 @@ import {
 } from "../../types/cart/CartData";
 import { useNavigate, useParams } from "react-router-dom";
 import { updateHotProductNum, updateProductStockQuantity } from "../admin/product/productSlice";
-import DeliveryOption from "../../components/common/DeliveryOption";
 import { generateRandomCode } from "../../utils/randomCodeGenerator";
 import { UpdatedHotProductProps } from "../../types/product/ProductData";
+import { NotificationProps } from "../../types/notification/Notification";
+import { createNotification } from "../user/userSlice";
+const DeliveryOption = lazy(() => import("../../components/common/DeliveryOption"));
+const Cart = lazy(() => import("./Cart"));
+const CustomText = lazy(() => import("../../components/common/Text"));
+const CustomInput = lazy(() => import("../../components/common/Input"));
+const PaymentOption = lazy(() => import("../../components/common/PaymentOption"));
+const CustomSelect = lazy(() => import("../../components/common/Select"));
+const CustomButton = lazy(() => import("../../components/common/Button"));
+const Modal = lazy(() => import("../../components/common/Modal"));
 
 
 const CheckOut = () => {
@@ -133,13 +135,22 @@ const CheckOut = () => {
                   dispatch(
                     updateProductStockQuantity(productStockUpdataData)
                   ).then(() => {
-                    console.log('stage 5');
+                    
                    hotDealsNum.forEach((h) => {
                      let hotDealData: UpdatedHotProductProps = {isHotDeal: h.isHotDeal, productId: h.productId};
                      dispatch(updateHotProductNum(hotDealData)).then(() => {
-                      console.log('stage 6 ');
-                         dispatch(removeAllItemsInCart());
-                         navigate(`/payment_status/${userId}/${response.$id}`);
+                        const orderNotificationData: NotificationProps = {
+                          message: `${firstName} ${lastName} has ordered ${cart.length} items, waiting to be delivered. order id ${response.$id}`
+                        }
+                        const transactionNotificationData: NotificationProps = {
+                          message: `A sum of ${total} was paid by ${firstName} ${lastName} from ${PaymentOption} 2 ${cart.length} items, waiting to be review.`
+                        }
+                        dispatch(createNotification(orderNotificationData)).then(() => {
+                          dispatch(createNotification(transactionNotificationData)).then(() => {
+                            dispatch(removeAllItemsInCart());
+                            navigate(`/payment_status/${userId}/${response.$id}`);
+                          })
+                        })
                      })
                    })
 

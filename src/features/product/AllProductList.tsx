@@ -1,6 +1,4 @@
-import CustomText from "../../components/common/Text";
-import SingleProduct from "../../components/product/SingleProduct";
-import SingleCategoryItem from "../../components/product/SingleCategoryItem";
+import { lazy, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { selectproductAdmin, setProductCategoryName } from "../admin/product/productSlice";
 import {
@@ -8,9 +6,11 @@ import {
   cartProps,
 } from "../../types/product/ProductData";
 import { addToCart, addTowishlist } from "../cart/cartSlice";
-import { useEffect, useState } from "react";
 import { setNavIndexLink } from "../auth/authSlice";
 import { links } from "../../utils/listLink";
+const CustomText = lazy(() => import("../../components/common/Text"));
+const SingleProduct = lazy(() => import("../../components/product/SingleProduct"));
+const SingleCategoryItem = lazy(() => import("../../components/product/SingleCategoryItem"));
 
 const AllProductList = () => {
   const { allProduct, productCategoryName } = useAppSelector(selectproductAdmin);

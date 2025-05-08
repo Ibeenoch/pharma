@@ -1,5 +1,5 @@
-import React from "react";
-import CustomText from "../../common/Text";
+import React, { lazy } from "react";
+const CustomText = lazy(() => import("../../common/Text"));
 import { formatDate } from "../../../utils/dateFormatter";
 import { AllOrderResultData } from "../../../types/order/OrderType";
 import { TransactionProps } from "../../../types/payment/FlutterwavePaymentType";

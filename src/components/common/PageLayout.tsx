@@ -1,7 +1,7 @@
-import React from "react";
+import React, { lazy } from "react";
 import { pageSpacing } from "../../constants/appText";
-import Footer from "../layout/Footer";
-import Header from "../layout/Header";
+const Footer = lazy(() => import("../layout/Footer"));
+const Header = lazy(() => import("../layout/Header"));
 
 interface PageLayoutProps {
   child: React.ReactNode;

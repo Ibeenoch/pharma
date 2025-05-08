@@ -1,9 +1,6 @@
 import { FormEvent, lazy, useEffect, useState } from "react";
 import { COMPANY_NAME, MARGIN_TOP } from "../../constants/appText";
 import manWalk from "../../assets/images/manwalk.png";
-const CustomInput = lazy(() => import('../../components/common/Input'));
-const CustomText = lazy(() => import("../../components/common/Text"));
-const CustomButton = lazy(() => import("../../components/common/Button"));
 import Email from "../../assets/icons/email.svg?react";
 import Google from "../../assets/icons/google-colored.svg?react";
 import Facebook from "../../assets/icons/facebook-colored.svg?react";
@@ -12,9 +9,12 @@ import { useNavigate } from "react-router-dom";
 import { validator } from "../../utils/validator";
 import { useAppDispatch, } from "../../hooks/reduxHooks";
 import { facebookLogin, googleLogin, loginUser, } from "./authSlice";
-import Toast from "../../components/common/Toast";
-import AlertModal from "../../components/auth/AlertModal";
 import { UserDataProps } from "../../types/auth/UserData";
+const AlertModal = lazy(() =>import("../../components/auth/AlertModal"));
+const Toast = lazy(() =>import("../../components/common/Toast"));
+const CustomInput = lazy(() => import('../../components/common/Input'));
+const CustomText = lazy(() => import("../../components/common/Text"));
+const CustomButton = lazy(() => import("../../components/common/Button"));
 
 interface LoginProps {
   redirectUrl?: string;

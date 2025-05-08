@@ -1,11 +1,6 @@
 import { lazy, useEffect } from "react";
-import CustomText from "../../components/common/Text";
 import Trash from "../../assets/icons/trash-bin.svg?react";
 import Lock from "../../assets/icons/lock.svg?react";
-const IconAndText = lazy(() => import("../../components/cart/IconAndText"));
-const CustomButton = lazy(() => import("../../components/common/Button"));
-const CartTwoText = lazy(() => import("../../components/cart/CartTwoText"));
-import CartRowItem from "../../components/cart/CartRowItem";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import {
   calculateSubTotal,
@@ -20,6 +15,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import { selectAuth, toggleProfileTocheckOut } from "../auth/authSlice";
 import { getShippingDetails, selectOrder } from "../order/orderSlice";
+const IconAndText = lazy(() => import("../../components/cart/IconAndText"));
+const CustomButton = lazy(() => import("../../components/common/Button"));
+const CartTwoText = lazy(() => import("../../components/cart/CartTwoText"));
+const CustomText = lazy(() => import("../../components/common/Text"));
+const CartRowItem = lazy(() =>import("../../components/cart/CartRowItem"));
 
 interface CartProps {
   showCheckOutBtn?: boolean;

@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import { UserDataProps, UserMappedProps } from "../../../types/auth/UserData";
 import { mappedUser } from "../../../utils/admin/user/mappedUser";
 import { allUsersColumn, } from "../../../utils/admin/user/users";
-import Table from "../../common/Table";
-import DateFilter from "../DateFilter";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { UserDateFilterProps } from "../../../types/user/contact";
 import { getAllUser, getAllUsersWithDateFilter, selectAuth } from "../../../features/auth/authSlice";
-import Pagination from "../../Pagination";
+const Table = lazy(() => import("../../common/Table"));
+const DateFilter = lazy(() => import("../DateFilter"));
+const Pagination = lazy(() => import("../../Pagination"));
 
 interface UserAdminProps {
   users: UserDataProps[]

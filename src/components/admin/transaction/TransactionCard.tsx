@@ -1,6 +1,7 @@
-import React from "react";
+import React, { lazy } from "react";
 import Menu from "../../../assets/icons/about.svg?react";
-import CustomText from "../../common/Text";
+const CustomText = lazy(() => import("../../common/Text"));
+
 
 export interface TransactionCardProps {
   image: string;

@@ -2,9 +2,7 @@ import {
   adminDefaultBgColor,
   lightgrayBgColor,
 } from "../../../../constants/appColor";
-import { generalSettingsTabList } from "../../../../utils/admin/settings/settingsList";
 import CustomText from "../../../common/Text";
-import NavTab from "../../NavTab";
 import Add from "../../../../assets/icons/plus-slim.svg?react";
 import CustomInput from "../../../common/Input";
 import { useState } from "react";

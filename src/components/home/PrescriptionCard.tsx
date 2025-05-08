@@ -1,7 +1,4 @@
-import React, { useEffect } from "react";
-import DrugTab from "../common/DrugTab";
-import CustomText from "../common/Text";
-import CustomButton from "../common/Button";
+import React, { lazy, useEffect } from "react";
 import Heart from "../../assets/icons/heart.svg?react";
 import Cart from "../../assets/icons/cart-fill-white.svg?react";
 import Ok from "../../assets/icons/like.svg?react";
@@ -12,6 +9,9 @@ import {  fetchAllProductWithoutPagination, selectproductAdmin, updatePrescripti
 import { addToCart, addTowishlist, selectCart } from "../../features/cart/cartSlice";
 import { useNavigate } from "react-router-dom";
 import { selectAuth } from "../../features/auth/authSlice";
+const CustomText = lazy(() =>import("../../components/common/Text"));
+const CustomButton = lazy(() =>import("../common/Button"));
+const DrugTab = lazy(() =>import("../common/DrugTab"));
 
 
 const PrescriptionCard: React.FC<PrescriptionProps> = ({ aboutDrug,ageRange, concentration, dosage, dosageForm, duration, frequency, ingredient,methodOfUsage, productId,  productImage, productName ,productSummary, whenTakeDosage, sastifiedClient, $id }) => {

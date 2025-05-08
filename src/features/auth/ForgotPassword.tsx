@@ -1,19 +1,19 @@
 import { ChangeEvent, useEffect, useState, lazy } from "react";
 import { MARGIN_TOP } from "../../constants/appText";
 import manWalk from "../../assets/images/forgetpassword1.png";
-const CustomInput = lazy(() => import('../../components/common/Input'));
-const CustomText = lazy(() => import("../../components/common/Text"));
-const CustomButton = lazy(() => import("../../components/common/Button"));
 import Email from "../../assets/icons/email.svg?react";
 import { validator } from "../../utils/validator";
-import AlertModal from "../../components/auth/AlertModal";
-import Toast from "../../components/common/Toast";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import {
   passwordRecoveryLink,
   selectAuth,
   setRecoveryPasswordLink,
 } from "./authSlice";
+const CustomInput = lazy(() => import('../../components/common/Input'));
+const CustomText = lazy(() => import("../../components/common/Text"));
+const CustomButton = lazy(() => import("../../components/common/Button"));
+const AlertModal = lazy(() =>import("../../components/auth/AlertModal"));
+const Toast = lazy(() =>import("../../components/common/Toast"));
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState<string>("");

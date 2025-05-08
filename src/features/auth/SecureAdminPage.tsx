@@ -1,7 +1,7 @@
-import React from "react";
+import React, { lazy } from "react";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { selectAuth } from "./authSlice";
-import LoginPage from "../../pages/LoginPage";
+const LoginPage = lazy(() =>import("../../pages/LoginPage"));
 
 interface SecureAdminPageProps {
   child: React.ReactNode;

@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import { lazy, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { fetchAllPrescriptions,  selectproductAdmin, setProductSubTabIndex, totalPrescriptionPages } from '../../../features/admin/product/productSlice';
-import CustomText from '../../common/Text';
-import Table from '../../common/Table';
 import { allPrescriptionColumn } from '../../../utils/admin/product/productList';
 import { PrescriptionTableProps } from '../../../types/product/ProductData';
 import { mappedPrescription } from '../../../utils/admin/product/productMap';
-import TableSkeleton from '../../common/animations/TableSkeleton';
-import Pagination from '../../Pagination';
 import { setTitleIndex } from '../../../features/admin/adminSlice';
+const Pagination = lazy(() => import('../../Pagination'));
+const TableSkeleton = lazy(() => import('../../common/animations/TableSkeleton'));
+const CustomText = lazy(() => import('../../common/Text'));
+const Table = lazy(() => import('../../common/Table'));
 
 const AllPrescription = () => {
   const dispatch = useAppDispatch();
-  const { prescription, status, totalPrescriptionPage, hasFetchAllPrescriptionWithoutPagination } = useAppSelector(selectproductAdmin);
+  const { prescription, status, totalPrescriptionPage } = useAppSelector(selectproductAdmin);
     const [pageNum, setPageNum] = useState<number>(0);
     const [curPage, setCurPage] = useState<number>(0);
     

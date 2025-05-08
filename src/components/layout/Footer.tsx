@@ -1,9 +1,5 @@
-import { FormEvent, useEffect, useState } from "react";
-import CustomInput from "../common/Input";
-import CustomText from "../common/Text";
+import { FormEvent, lazy, useEffect, useState } from "react";
 import Email from "../../assets/icons/email.svg?react";
-import CustomButton from "../common/Button";
-import Lists from "../common/Lists";
 import Facebook from "../../assets/icons/facebook.svg?react";
 import Twitter from "../../assets/icons/twitter.svg?react";
 import Instagram from "../../assets/icons/instagram.svg?react";
@@ -12,15 +8,19 @@ import Love from "../../assets/icons/heart-fill-3.svg?react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { selectCart, updateShowModal, updateToastKeyAndMsg } from "../../features/cart/cartSlice";
 import AnimatedToast from "../common/AnimatedToast";
-import { selectUser, sendEmailSubscription } from "../../features/user/userSlice";
-import { useNavigate } from "react-router-dom";
+import { createNotification, selectUser, sendEmailSubscription } from "../../features/user/userSlice";
+import { NotificationProps } from "../../types/notification/Notification";
+const CustomInput = lazy(() =>import("../common/Input"));
+const Lists = lazy(() =>import("../common/Lists"));
+const CustomText = lazy(() =>import("../common/Text"));
+const CustomButton = lazy(() =>import("../common/Button"));
+
 
 const Footer = () => {
   const [email, setEmail] = useState<string>("");
   const { showModal, isCart, toastKey, toastMessage } = useAppSelector(selectCart);
   const { status } = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate()
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -60,9 +60,15 @@ const Footer = () => {
   const handleEmailSubscribers = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if(email) dispatch(sendEmailSubscription(email)).then(() => {
+      const notificationData : NotificationProps = {
+        message: `A user with an email of ${email} has subscribed to the newsletter`
+      }
       dispatch(updateToastKeyAndMsg('Thank you for subscripting to our newsletter'));
       dispatch(updateShowModal(true))
-      setEmail('')
+      dispatch(createNotification(notificationData)).then((res) => {
+        console.log('meaas ', res.payload)
+        setEmail('')
+      })
     });
   }
 

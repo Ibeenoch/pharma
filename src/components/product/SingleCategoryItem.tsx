@@ -1,5 +1,5 @@
-import React from "react";
-import CustomText from "../common/Text";
+import React, { lazy } from "react";
+const CustomText = lazy(() =>import('../common/Text'));
 
 interface SingleCategoryItemProps {
   name: string;
@@ -9,7 +9,7 @@ interface SingleCategoryItemProps {
 }[]
 }
 
-const SingleCategoryItem: React.FC<SingleCategoryItemProps> = ({ name, onChange, productCategories }) => {
+const SingleCategoryItem: React.FC<SingleCategoryItemProps> = ({ name, onChange, }) => {
   return (
     <div className="flex items-center gap-2">
       <input type="checkbox"  onChange={(e) => onChange(e.target.checked, name)}  name="category" id={`category-${name}`} />

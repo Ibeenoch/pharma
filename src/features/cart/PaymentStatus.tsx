@@ -1,11 +1,12 @@
-import CustomText from "../../components/common/Text";
+import { lazy } from "react";
 import successImg from "../../assets/images/successpay.png";
 import sadImg from "../../assets/images/sadness.png";
-import TrackIcon from "../../components/cart/TrackIcon";
-import CheckMark from "../../components/cart/CheckMark";
-import CustomButton from "../../components/common/Button";
 import Exclamation from "../../assets/icons/exclamation-mark.svg?react";
 import { useNavigate, useParams } from "react-router-dom";
+const CustomText = lazy(() => import("../../components/common/Text"));
+const TrackIcon = lazy(() => import("../../components/cart/TrackIcon"));
+const CheckMark = lazy(() => import("../../components/cart/CheckMark"));
+const CustomButton = lazy(() => import("../../components/common/Button"));
 
 const PaymentStatus = () => {
   const navigate = useNavigate();

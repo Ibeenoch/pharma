@@ -1,4 +1,4 @@
-import CustomText from "../common/Text";
+import { lazy, useEffect } from "react";
 import { COMPANY_NAME } from "../../constants/appText";
 import aboutImg1 from "../../assets/images/about1.png";
 import aboutImg2 from "../../assets/images/about2.png";
@@ -7,11 +7,11 @@ import WareHouse from "../../assets/icons/warehouse2.svg?react";
 import Employee from "../../assets/icons/scientist-dark-skin-tone.svg?react";
 import Customers from "../../assets/icons/client.svg?react";
 import UseRevealer from "../common/animations/UseRevealer";
-import NumberCount from "../home/NumberCount";
-import { useEffect } from "react";
 import { links } from "../../utils/listLink";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { setNavIndexLink } from "../../features/auth/authSlice";
+const CustomText = lazy(() =>import('../common/Text'));
+const NumberCount = lazy(() =>import("../home/NumberCount"));
 
 const About = () => {
   const dispatch = useAppDispatch();

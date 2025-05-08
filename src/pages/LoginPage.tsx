@@ -1,5 +1,6 @@
-import React from "react";
-import PageLayout from "../components/common/PageLayout";
+import React, { lazy } from "react";
+const PageLayout = lazy(() =>import("../components/common/PageLayout"));
+
 import Login from "../features/auth/Login";
 interface LoginPageProps {
   redirectUrl?: string

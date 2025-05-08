@@ -1,5 +1,4 @@
-import CustomText from "../common/Text";
-import SingleProduct from "../product/SingleProduct";
+import { lazy } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { selectproductAdmin } from "../../features/admin/product/productSlice";
 import {
@@ -7,6 +6,8 @@ import {
   cartProps,
 } from "../../types/product/ProductData";
 import { addToCart, addTowishlist } from "../../features/cart/cartSlice";
+const CustomText = lazy(() =>import("../../components/common/Text"));
+const SingleProduct = lazy(() =>import("../product/SingleProduct"));
 
 const SearchResult = () => {
   const dispatch = useAppDispatch();

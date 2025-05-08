@@ -1,16 +1,15 @@
-import CustomText from "../../components/common/Text";
-import CustomInput from "../../components/common/Input";
-import { useEffect, useState } from "react";
-import CustomButton from "../../components/common/Button";
-import Table from "../../components/common/Table";
-import { orderColumns, orderRowsData } from "../../utils/orders/order";
+import { lazy, useEffect, useState } from "react";
+import { orderColumns,  } from "../../utils/orders/order";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { getAllFilteredOrderByDate, getAllOrder, selectOrder } from "./orderSlice";
 import { useParams } from "react-router-dom";
 import { mapOrderHistory } from "../../utils/orders/orderHistoryMap";
 import { OrderPaginatedArgs, OrderPaginatedFilteredArgs } from "../../types/order/OrderType";
-import TableSkeleton from "../../components/common/animations/TableSkeleton";
-import DateFilter from "../../components/admin/DateFilter";
+const CustomText = lazy(() => import("../../components/common/Text"));
+const CustomButton = lazy(() => import("../../components/common/Button"));
+const Table = lazy(() => import("../../components/common/Table"));
+const TableSkeleton = lazy(() => import("../../components/common/animations/TableSkeleton"));
+const DateFilter = lazy(() => import("../../components/admin/DateFilter"));
 
 const OrderHistory = () => {
   const [started, setStarted] = useState<string>("");

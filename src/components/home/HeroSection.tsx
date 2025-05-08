@@ -1,10 +1,11 @@
-import CustomText from "../common/Text";
+import { lazy } from "react";
 import heroImage from "../../assets/images/person3.png";
-import CustomButton from "../common/Button";
 import MedCross from "../../assets/icons/medical-cross.svg?react";
 import { MARGIN_TOP } from "../../constants/appText";
-import NumberCount from "./NumberCount";
 import { NavigateFunction } from "react-router-dom";
+const NumberCount = lazy(() =>import("./NumberCount"));
+const CustomText = lazy(() =>import("../../components/common/Text"));
+const CustomButton = lazy(() =>import("../common/Button"));
 
 interface HeroSectionProps {
   navigate: NavigateFunction;

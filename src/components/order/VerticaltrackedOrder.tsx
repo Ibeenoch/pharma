@@ -1,7 +1,7 @@
-import React from "react";
-import CheckMark from "../cart/CheckMark";
-import CustomText from "../common/Text";
+import React, { lazy } from "react";
 import { formatFullDateTime } from "../../utils/dateFormatter";
+const CheckMark = lazy(() =>import("../cart/CheckMark"));
+const CustomText = lazy(() =>import('../common/Text'));
 
 interface VerticaltrackedOrderProps {
   steps?: number;

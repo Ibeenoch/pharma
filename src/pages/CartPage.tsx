@@ -1,5 +1,6 @@
-import Cart from "../features/cart/Cart";
-import PageLayout from "../components/common/PageLayout";
+import { lazy } from "react";
+const PageLayout = lazy(() =>import("../components/common/PageLayout"));
+const Cart = lazy(() =>import("../features/cart/Cart"));
 
 const CartPage = () => {
   return <PageLayout child={<Cart />} />;

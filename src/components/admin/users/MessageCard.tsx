@@ -1,5 +1,5 @@
-import React from 'react'
-import CustomText from '../../common/Text'
+import React, { lazy } from 'react'
+const CustomText = lazy(() => import("../../common/Text"));
 import Mail from '../../../assets/icons/email.svg?react';
 import Phone from '../../../assets/icons/phone.svg?react';
 

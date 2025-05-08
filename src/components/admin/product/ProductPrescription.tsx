@@ -9,10 +9,6 @@ const CustomButton = lazy(() => import("../../common/Button"));
 const CustomInput = lazy(() => import("../../common/Input"));
 const CustomTextArea = lazy(() => import("../../common/TextArea"));
 const SelectedTab = lazy(() => import("../users/SelectedTab"));
-// import CustomText from "../../common/Text";
-// import CustomInput from "../../common/Input";
-// import CustomTextArea from "../../common/TextArea";
-// import SelectedTab from "../users/SelectedTab";
 import {
   createPrescription,
   fetchAllPrescriptionsWithoutPagination,

@@ -1,5 +1,5 @@
-import React from "react";
-import CustomText from "../common/Text";
+import React, { lazy } from "react";
+const CustomText = lazy(() => import("../common/Text"));
 
 interface IconAndTextProps {
   Icon: React.FunctionComponent<

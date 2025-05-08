@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import { ProductDataProps } from '../../types/product/ProductData'
-import CustomText from '../common/Text'
+const CustomText = lazy(() =>import('../common/Text'));
 
 interface ProductCardProps {
     item: ProductDataProps
@@ -18,7 +18,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
         </div>
         <article>
             <CustomText
-                text={item.name}
+                text={item.name.length > 18 ? item.name.slice(0, 18) + '...' : item.name}
                 textType="small"
                 weightType="bold"
                 extraStyle="lg:text-ellipsis"

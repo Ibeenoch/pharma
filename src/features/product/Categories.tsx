@@ -1,7 +1,7 @@
+import { lazy } from "react";
 import cartImg from "../../assets/images/anti11.png";
-import CustomText from "../../components/common/Text";
-import SingleProduct from "../../components/product/SingleProduct";
-import SingleCategoryItem from "../../components/product/SingleCategoryItem";
+const CustomText = lazy(() => import("../../components/common/Text"));
+const SingleProduct = lazy(() => import("../../components/product/SingleProduct"));
 
 const Categories = () => {
   return (

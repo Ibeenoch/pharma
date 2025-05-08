@@ -1,3 +1,4 @@
+import { lazy, useState } from "react";
 import Menu from "../../assets/icons/menu.svg?react";
 import Cancel from "../../assets/icons/cancel-close.svg?react";
 import ShoppingCart from "../../assets/icons/cart-shopping.svg?react";
@@ -6,12 +7,7 @@ import Product from "../../assets/icons/product-tag.svg?react";
 import Call from "../../assets/icons/phone.svg?react";
 import Drug from "../../assets/icons/product.svg?react";
 import About from "../../assets/icons/about.svg?react";
-import { useState } from "react";
-import CustomButton from "../common/Button";
-import MobileNavList from "./MobileNavList";
 import { useNavigate } from "react-router-dom";
-import WishList from "../common/WishList";
-import Cart from "../common/Cart";
 import Love from "../../assets/icons/heart.svg?react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import {
@@ -19,11 +15,15 @@ import {
   resetUserState,
   selectAuth,
 } from "../../features/auth/authSlice";
-import noprofileImage from "../../assets/images/noprofileimage.png";
-import Logout from "../common/Logout";
 import { selectCart } from "../../features/cart/cartSlice";
-import SearchBar from "./SearchBar";
-import ProfilePics from "./ProfilePics";
+const WishList = lazy(() => import("../common/WishList"));
+const Cart = lazy(() => import("../common/Cart"));
+const CustomButton = lazy(() => import("../common/Button"));
+const MobileNavList = lazy(() => import("./MobileNavList"));
+const Logout = lazy(() => import("../common/Logout"));
+const SearchBar = lazy(() => import("./SearchBar"));
+const ProfilePics = lazy(() => import("./ProfilePics"));
+
 
 const MobileNav = () => {
   const [showSideBar, setShowSideBar] = useState<boolean>(false);
@@ -53,7 +53,6 @@ const MobileNav = () => {
 
   const displayShowCart = () => setShowCart(true);
   const displayShowWishlist = () => setShowWishlist(true);
-  const hideShowCart = () => setShowCart(false);
 
   const handleLogout = () => {
     dispatch(logoutUser())

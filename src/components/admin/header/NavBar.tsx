@@ -1,7 +1,8 @@
-import React, {  } from "react";
+import React, { lazy } from "react";
 import { adminDefaultBgColor } from "../../../constants/appColor";
-import CustomText from "../../common/Text";
-import NavItems from "./NavItems";
+const CustomText = lazy(() => import("../../common/Text"));
+const NavItems = lazy(() => import("./NavItems"));
+
 
 
 interface NavBarProps {

@@ -1,10 +1,10 @@
 // displays home ui
-
-import Header from "../components/layout/Header";
-import Footer from "../components/layout/Footer";
-import NavHelper from "../components/common/NavHelper";
+import { lazy } from "react";
 import { pageSpacing } from "../constants/appText";
-import SearchResult from "../components/home/SearchResult";
+const Header = lazy(() =>import("../components/layout/Header"));
+const Footer = lazy(() =>import("../components/layout/Footer"));
+const NavHelper = lazy(() =>import("../components/common/NavHelper"));
+const SearchResult = lazy(() =>import("../components/home/SearchResult"));
 
 const SearchResultPage = () => {
   return (

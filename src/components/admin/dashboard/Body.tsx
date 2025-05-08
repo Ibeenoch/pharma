@@ -1,18 +1,15 @@
+import { lazy, useEffect } from "react";
 import { adminDefaultBgColor } from "../../../constants/appColor";
 import { selectproductAdmin } from "../../../features/admin/product/productSlice";
-import {
-  
-  selectOrder,
-} from "../../../features/order/orderSlice";
+import { selectOrder } from "../../../features/order/orderSlice";
 import {  useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { cardLists } from "../../../utils/admin/dashBoardLists";
-import BodyCard from "./BodyCard";
-import InventoryPieChart from "./InventoryPieChart";
-import RecentPayment from "./RecentPayment";
-import SalesChart from "./SalesChart";
+const BodyCard = lazy(() => import("./BodyCard"));
+const InventoryPieChart = lazy(() => import("./InventoryPieChart"));
+const RecentPayment = lazy(() => import("./RecentPayment"));
+const SalesChart = lazy(() => import("./SalesChart"));
 import { formatWithCommas } from "../../../utils/formatAmount";
 import {  selectAuth } from "../../../features/auth/authSlice";
-import { useEffect } from "react";
 import { setSideBarIndex } from "../../../features/admin/adminSlice";
 
 const Body = () => {
@@ -46,6 +43,7 @@ const Body = () => {
       <div className="flex flex-col md:flex-row items-center gap-4 md:gap-2 md:px-3 pt-7 mt-10 overflow-x-auto">
         {cardLists && Array.isArray(cardLists) && cardLists.map((item, index) => (
           <BodyCard
+            key={index}
             Icon={item.Icon}
             index={index}
             color={item.color}

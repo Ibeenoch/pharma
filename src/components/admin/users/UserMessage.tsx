@@ -1,9 +1,10 @@
-import  { useEffect, useState } from 'react'
+import  { lazy, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { getContactMessage,  getTotalContactPage,  selectUser } from '../../../features/user/userSlice'
-import MessageCard from './MessageCard';
-import Pagination from '../../Pagination';
-import ContactMsgSkeleton from '../../common/animations/ContactMsgSkeleton';
+import { getContactMessage,  getTotalContactPage,  selectUser } from '../../../features/user/userSlice';
+const MessageCard = lazy(() => import('./MessageCard'));
+const Pagination = lazy(() => import('../../Pagination'));
+const ContactMsgSkeleton = lazy(() => import('../../common/animations/ContactMsgSkeleton'));
+
 
 const UserMessage = () => {
   const dispatch = useAppDispatch();
@@ -40,7 +41,7 @@ const UserMessage = () => {
           </>
         ))
       }
-      <Pagination itemPerPage={6} currentPage={currPage} totalPages={totalContactPage} onPageChange={(i) => {
+      <Pagination currentPage={currPage} totalPages={totalContactPage} onPageChange={(i) => {
         handlePageClick(i)
       }} />
       </div>

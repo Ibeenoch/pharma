@@ -1,5 +1,7 @@
-import Body from "../../../components/admin/dashboard/Body";
-import AdminLayout from "./AdminLayout";
+import { lazy } from "react";
+const Body = lazy(() =>import("../../../components/admin/dashboard/Body"));
+const AdminLayout = lazy(() =>import("./AdminLayout"));
+
 
 const Dashboard = () => {
   return <AdminLayout title="Dashboard" children={<Body />} />;

@@ -1,7 +1,7 @@
-import React from "react";
-import CustomSelect from "../../common/Select";
+import React, { lazy } from "react";
 import { lightgrayBgColor } from "../../../constants/appColor";
-import CustomText from "../../common/Text";
+const CustomText = lazy(() => import('../../common/Text'));
+const CustomSelect = lazy(() => import("../../common/Select"));
 import { validator } from "../../../utils/validator";
 import {
   productBrands,

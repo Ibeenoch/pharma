@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import CustomText from "../../../common/Text";
 import CustomInput from "../../../common/Input";
 import { validator } from "../../../../utils/validator";

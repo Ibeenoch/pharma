@@ -1,8 +1,8 @@
 import { lazy } from "react";
-const TwoTextSpan = lazy(() =>import("../../components/home/TwoTextSpan"));
-const ProductCard = lazy(() =>import("../../components/product/ProductCard"));
 import { handleHomeNavToProductDetails, navToAllProduct } from "../../helpers/productFuncHelper";
 import { CommonProductProps } from "./Category";
+const TwoTextSpan = lazy(() =>import("../../components/home/TwoTextSpan"));
+const ProductCard = lazy(() =>import("../../components/product/ProductCard"));
 
 
 
@@ -10,7 +10,7 @@ const Recommendation: React.FC<CommonProductProps> = ({ navigate, allProduct}) =
 
   const recommendedProducts = allProduct && Array.isArray(allProduct) && allProduct.filter((p) => {
    return p.name.length < 14
-  }).slice(0, 14)
+  }).slice(0, 7)
  
   return (
     <section className="border-b border-black mb-2 pb-4 animate-on-scroll">

@@ -3,6 +3,7 @@ import { database } from "../../lib/appwriteConfig";
 import { ContactProps, EmailSubProps } from "../../types/user/contact";
 import { Query } from "node-appwrite";
 import { ITEMS_PER_PAGE } from "../../constants/pagianation";
+import { NotificationProps } from "../../types/notification/Notification";
 
 // Handles API calls for home data
 
@@ -73,7 +74,7 @@ export const getTotalPageForContactMsg = async() => {
         ]
       );
 
-      const getContacts = contacts.total;
+      const getContacts = Math.ceil(contacts.total / 6);
       return getContacts;
     } catch (error) {
         throw error;
@@ -141,12 +142,116 @@ export const getTotalPageForEmailSub = async() => {
         ]
       );
 
-      const getEmail = emails.total;
+      const getEmail = Math.ceil(emails.total / ITEMS_PER_PAGE);
   
       return getEmail;
     } catch (error) {
         throw error;
     }
+}
+
+
+export const createNotification = async(notificationData: NotificationProps) => {
+  try {
+     const { message, link } = notificationData;
+  const notificationCreation = await database.createDocument(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_NOTIFICATION_ID, // product collection id
+      ID.unique(),
+      {
+         message, 
+         link: link ?? '',
+      }
+    );
+
+    return {
+      message: notificationCreation.message,
+      link: notificationCreation.link,
+      $id: notificationCreation.$id,
+      hasBeenRead: notificationCreation.hasBeenRead,
+      $createdAt: notificationCreation.$createdAt,
+      $updatedAt: notificationCreation.$updatedAt,
+    } as NotificationProps; 
+  } catch (error) {
+      throw error;
+  }
 
 }
 
+export const getAllNotifications = async() => {
+  try {
+  const notifications = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_NOTIFICATION_ID, // product collection id
+    
+    );
+
+    const notification = notifications.documents.map((n) => ({
+      message: n.message,
+      link: n.link,
+      $id: n.$id,
+      hasBeenRead: n.hasBeenRead,
+      $createdAt: n.$createdAt,
+      $updatedAt: n.$updatedAt,
+    }))
+
+    return notification; 
+  } catch (error) {
+      throw error;
+  }
+
+}
+
+export const getUnreadNotifications = async() => {
+  try {
+  const notifications = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_NOTIFICATION_ID, // product collection id
+      [
+        Query.equal('hasBeenRead', false)
+      ]
+    );
+
+    const notification = notifications.documents.map((n) => ({
+      message: n.message,
+      link: n.link,
+      $id: n.$id,
+      hasBeenRead: n.hasBeenRead,
+      $createdAt: n.$createdAt,
+      $updatedAt: n.$updatedAt,
+    }))
+
+    return notification; 
+  } catch (error) {
+      throw error;
+  }
+
+}
+
+export const markReadNotification = async(notificationData: NotificationProps) => {
+  try {
+  if(notificationData.$id){
+
+    const notificationCreation = await database.updateDocument(
+        import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+        import.meta.env.VITE_APPWRITE_NOTIFICATION_ID, // product collection id
+       notificationData.$id,
+        {
+           hasBeenRead: true,
+        }
+      );
+  
+      return {
+        message: notificationCreation.message,
+        link: notificationCreation.link,
+        $id: notificationCreation.$id,
+        hasBeenRead: notificationCreation.hasBeenRead,
+        $createdAt: notificationCreation.$createdAt,
+        $updatedAt: notificationCreation.$updatedAt,
+      } as NotificationProps; 
+  }  
+  } catch (error) {
+      throw error;
+  }
+
+}

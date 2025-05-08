@@ -9,8 +9,8 @@ import { validator } from "../../utils/validator";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { hidePasswordResetModal, passwordReset, selectAuth } from "./authSlice";
-import Toast from "../../components/common/Toast";
-import AlertModal from "../../components/auth/AlertModal";
+const AlertModal = lazy(() =>import("../../components/auth/AlertModal"));
+const Toast = lazy(() =>import("../../components/common/Toast"));
 
 const ResetPassword = () => {
   const [password, setPassword] = useState<string>("");

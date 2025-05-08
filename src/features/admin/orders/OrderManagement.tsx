@@ -1,6 +1,7 @@
-import AdminLayout from "../dashboard/AdminLayout";
-import OrderLayout from "../../../components/admin/order/OrderLayout";
-import OrderTabsManagement from "../../../components/admin/order/OrderTabsManagement";
+import { lazy } from "react";
+const AdminLayout = lazy(() =>import('../dashboard/AdminLayout'));
+const OrderLayout = lazy(() =>import("../../../components/admin/order/OrderLayout"));
+const OrderTabsManagement = lazy(() =>import("../../../components/admin/order/OrderTabsManagement"));
 
 const OrderManagement = () => {
   return (

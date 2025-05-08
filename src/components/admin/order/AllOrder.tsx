@@ -1,4 +1,4 @@
-import Table from "../../common/Table";
+import { lazy, useEffect, useState } from "react";
 import { orderListsColumn } from "../../../utils/admin/order/orderLists";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
@@ -8,7 +8,6 @@ import {
   selectOrder,
   totalOrderPages,
 } from "../../../features/order/orderSlice";
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { mappedAllOrders } from "../../../utils/orders/orderHistoryMap";
 import {
@@ -16,11 +15,12 @@ import {
   OrderPaginatedArgs,
   OrderPaginatedFilteredArgs,
 } from "../../../types/order/OrderType";
-import CustomText from "../../common/Text";
-import TableSkeleton from "../../common/animations/TableSkeleton";
+const Table = lazy(() => import("../../common/Table"));
+const CustomText = lazy(() => import("../../common/Text"));
+const TableSkeleton = lazy(() => import("../../common/animations/TableSkeleton"));
+const DateFilter = lazy(() => import("../DateFilter"));
+const Pagination = lazy(() => import("../../Pagination"));
 import Reset from '../../../assets/icons/reset.svg?react'
-import DateFilter from "../DateFilter";
-import Pagination from "../../Pagination";
 interface AllOrdersProps {
   whichType?:
     | "Processing"
@@ -95,10 +95,10 @@ const AllOrder: React.FC<AllOrdersProps> = ({ whichType = "all" }) => {
       {mappedOrder && Array.isArray(mappedOrder) && mappedOrder.length > 0 ? (
         <>
           {status === "loading" ? (
-            <TableSkeleton />
+            <TableSkeleton  key={`${started}-${ended}`} />
           ) : (
             <section>
-            <DateFilter setEnded={setEnded} setStarted={setStarted} applyCallback={handleOrderFilter} started={started} ended={ended} />
+            <DateFilter  key={`${started}-${ended}`} setEnded={setEnded} setStarted={setStarted} applyCallback={handleOrderFilter} started={started} ended={ended} />
 
               <div className="p-4 my-3 bg-white rounded-xl">
                 <Table
@@ -106,8 +106,9 @@ const AllOrder: React.FC<AllOrdersProps> = ({ whichType = "all" }) => {
                   data={mappedOrder}
                   tableHeaderTxtColor="text-gray-400"
                   whichTable="order"
+                  key={`${started}-${ended}`}
                 />
-                <Pagination currentPage={pageNum} totalPages={totalOrderPage} onPageChange={(i) => {
+                <Pagination key={pageNum} currentPage={pageNum} totalPages={totalOrderPage} onPageChange={(i) => {
                   userId && handlePageClicked(i, userId);
                 }} />
               

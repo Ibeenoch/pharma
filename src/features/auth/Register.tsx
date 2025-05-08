@@ -21,8 +21,8 @@ import {
   googleLogin,
   registerUser,
 } from "./authSlice";
-import Toast from "../../components/common/Toast";
-import AlertModal from "../../components/auth/AlertModal";
+const AlertModal = lazy(() =>import("../../components/auth/AlertModal"));
+const Toast = lazy(() =>import("../../components/common/Toast"));
 
 const Register = () => {
   const [firstName, setFirstNamel] = useState<string>("");

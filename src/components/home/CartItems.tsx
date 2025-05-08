@@ -1,8 +1,7 @@
+import { lazy, useEffect, useState } from "react";
 import Cancel from "../../assets/icons/cancel-close.svg?react";
 import CancelCircle from "../../assets/icons/trash-bin.svg?react";
-import CustomText from "../common/Text";
-import CustomButton from "../common/Button";
-import { cartProps, ProductDataProps } from "../../types/product/ProductData";
+import { cartProps, } from "../../types/product/ProductData";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { useNavigate } from "react-router-dom";
 import {
@@ -12,15 +11,14 @@ import {
   removeAllItemsInCart,
   removeFromCart,
   selectCart,
-  updateCartIndex,
-  updateCartQty,
 } from "../../features/cart/cartSlice";
-import { useEffect, useState } from "react";
 import { selectAuth, toggleProfileTocheckOut } from "../../features/auth/authSlice";
 import {
   getShippingDetails,
   selectOrder,
 } from "../../features/order/orderSlice";
+const CustomText = lazy(() =>import("../../components/common/Text"));
+const CustomButton = lazy(() =>import("../common/Button"));
 
 interface CartItemsProps {
   showCart: boolean;
@@ -34,7 +32,7 @@ const CartItems: React.FC<CartItemsProps> = ({
   product,
 }) => {
   const { subTotal, cart } = useAppSelector(selectCart);
-  const { user, profileToCheckOut } = useAppSelector(selectAuth);
+  const { user,  } = useAppSelector(selectAuth);
   const { hasPreviousShippingDetails } = useAppSelector(selectOrder);
 
   const [cQty, setCQty] = useState<number>(0);

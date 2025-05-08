@@ -1,4 +1,5 @@
-import CompletedTransactionManagement from "../../../components/admin/transaction/completed/CompletedTransactionManagement";
+import { lazy } from "react";
+const CompletedTransactionManagement = lazy(() =>import("../../../components/admin/transaction/completed/CompletedTransactionManagement"));
 
 const CompletedTransaction = () => {
   return (

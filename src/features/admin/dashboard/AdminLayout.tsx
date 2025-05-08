@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from "react";
-import NavBar from "../../../components/admin/header/NavBar";
-import SideBar from "../../../components/admin/header/SideBar";
+import React, { lazy, useEffect, useState } from "react";
+
 import { adminDefaultBgColor } from "../../../constants/appColor";
 import ArrowLeft from "../../../assets/icons/arrow-left.svg?react";
 import ArrowRight from "../../../assets/icons/arrow-right2.svg?react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { selectAdmin, setShouldAdminSideBarMinimize } from "../adminSlice";
-import ArrowMaximize from "../../../components/admin/dashboard/ArrowMaximize";
-import ArrowMinimize from "../../../components/admin/dashboard/ArrowMinimize";
 import HamburgerMenu from "../../../assets/icons/menu.svg?react";
-import MobileSideBar from "../../../components/admin/header/MobileSideBar";
 import { getAllUser, selectAuth } from "../../auth/authSlice";
 import {
   calcualateTotalRevenue,
   getAllTransaction,
   selectOrder,
 } from "../../order/orderSlice";
+const MobileSideBar = lazy(() =>import("../../../components/admin/header/MobileSideBar"));
+const ArrowMaximize = lazy(() =>import("../../../components/admin/dashboard/ArrowMaximize"));
+const ArrowMinimize = lazy(() =>import("../../../components/admin/dashboard/ArrowMinimize"));
+const SideBar = lazy(() =>import("../../../components/admin/header/SideBar"));
+const NavBar = lazy(() =>import("../../../components/admin/header/NavBar"));
+
 interface AdminLayoutProps {
   children: React.ReactNode;
   title: string;
