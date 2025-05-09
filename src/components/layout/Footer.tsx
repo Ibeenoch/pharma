@@ -61,7 +61,8 @@ const Footer = () => {
     e.preventDefault();
     if(email) dispatch(sendEmailSubscription(email)).then(() => {
       const notificationData : NotificationProps = {
-        message: `A user with an email of ${email} has subscribed to the newsletter`
+        message: `A user with an email of ${email} has subscribed to the newsletter`,
+        notificationType: 'subscription',
       }
       dispatch(updateToastKeyAndMsg('Thank you for subscripting to our newsletter'));
       dispatch(updateShowModal(true))

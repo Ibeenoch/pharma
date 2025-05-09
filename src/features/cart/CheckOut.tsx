@@ -140,10 +140,12 @@ const CheckOut = () => {
                      let hotDealData: UpdatedHotProductProps = {isHotDeal: h.isHotDeal, productId: h.productId};
                      dispatch(updateHotProductNum(hotDealData)).then(() => {
                         const orderNotificationData: NotificationProps = {
-                          message: `${firstName} ${lastName} has ordered ${cart.length} items, waiting to be delivered. order id ${response.$id}`
+                          message: `${firstName} ${lastName} has ordered ${cart.length} items, waiting to be delivered. order id ${response.$id}`,
+                          notificationType: 'order',
                         }
                         const transactionNotificationData: NotificationProps = {
-                          message: `A sum of ${total} was paid by ${firstName} ${lastName} from ${PaymentOption} 2 ${cart.length} items, waiting to be review.`
+                          message: `A sum of ${total} was paid by ${firstName} ${lastName} from ${PaymentOption} 2 ${cart.length} items, waiting to be review.`,
+                          notificationType: 'transaction',
                         }
                         dispatch(createNotification(orderNotificationData)).then(() => {
                           dispatch(createNotification(transactionNotificationData)).then(() => {

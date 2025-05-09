@@ -153,7 +153,7 @@ export const getTotalPageForEmailSub = async() => {
 
 export const createNotification = async(notificationData: NotificationProps) => {
   try {
-     const { message, link } = notificationData;
+     const { message, link, notificationType } = notificationData;
   const notificationCreation = await database.createDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_NOTIFICATION_ID, // product collection id
@@ -161,6 +161,7 @@ export const createNotification = async(notificationData: NotificationProps) => 
       {
          message, 
          link: link ?? '',
+         notificationType,
       }
     );
 
@@ -169,6 +170,7 @@ export const createNotification = async(notificationData: NotificationProps) => 
       link: notificationCreation.link,
       $id: notificationCreation.$id,
       hasBeenRead: notificationCreation.hasBeenRead,
+      notificationType: notificationCreation.notificationType,
       $createdAt: notificationCreation.$createdAt,
       $updatedAt: notificationCreation.$updatedAt,
     } as NotificationProps; 
@@ -191,6 +193,7 @@ export const getAllNotifications = async() => {
       link: n.link,
       $id: n.$id,
       hasBeenRead: n.hasBeenRead,
+      notificationType: n.notificationType,
       $createdAt: n.$createdAt,
       $updatedAt: n.$updatedAt,
     }))
@@ -217,6 +220,7 @@ export const getUnreadNotifications = async() => {
       link: n.link,
       $id: n.$id,
       hasBeenRead: n.hasBeenRead,
+      notificationType: n.notificationType,
       $createdAt: n.$createdAt,
       $updatedAt: n.$updatedAt,
     }))
@@ -246,6 +250,7 @@ export const markReadNotification = async(notificationData: NotificationProps) =
         link: notificationCreation.link,
         $id: notificationCreation.$id,
         hasBeenRead: notificationCreation.hasBeenRead,
+        notificationType: notificationCreation.notificationType,
         $createdAt: notificationCreation.$createdAt,
         $updatedAt: notificationCreation.$updatedAt,
       } as NotificationProps; 

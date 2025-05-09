@@ -7,8 +7,9 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { setNavIndexLink } from "../../features/auth/authSlice";
 import { links } from "../../utils/listLink";
 import { ContactProps } from "../../types/user/contact";
-import { selectUser, sendContactMessage } from "../../features/user/userSlice";
+import { createNotification, selectUser, sendContactMessage } from "../../features/user/userSlice";
 import { updateShowModal, updateToastKeyAndMsg } from "../../features/cart/cartSlice";
+import { NotificationProps } from "../../types/notification/Notification";
 const CustomButton = lazy(() =>import("../common/Button"));
 const CustomTextArea = lazy(() =>import("../common/TextArea"));
 const CustomInput = lazy(() =>import("../common/Input"));
@@ -61,6 +62,11 @@ const Contact = () => {
     dispatch(sendContactMessage(contactData)).then(() => {
       dispatch(updateToastKeyAndMsg('Your message has been submitted'));
       dispatch(updateShowModal(true));
+      const contactData: NotificationProps = {
+        message: `${firstName} ${lastName} just sent you a message.`,
+        notificationType: 'message',
+      }
+      dispatch(createNotification(contactData)).then((res) => console.log(`conatct `, res.payload))
       setFirstNamel(''), setLastName(''), setEmail(''), setPhone(''), setMessage('');
     })
   };

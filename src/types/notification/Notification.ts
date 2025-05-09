@@ -4,5 +4,6 @@ export interface NotificationProps {
     $updatedAt?: string;
     message?: string;
     link?: string;
+    notificationType?: 'order' | 'transaction' | 'subscription' | 'message';
     hasBeenRead?: boolean;
 }
