@@ -16,7 +16,7 @@ import { createMigrate, persistReducer } from "redux-persist";
 // “Hey, this version of my state is version 1. If a user's saved state is older than this, run a migration to update it.”
 
 const migrations = {
-  6.9: (state: any) => {
+  7.0: (state: any) => {
     return {
       ...state,
       productAdmin: {
@@ -98,6 +98,31 @@ const migrations = {
             },
           },
         ],
+        ordersWithoutPagination: [
+          {
+            $id: "",
+            cart: [],
+            shippingDetail: {
+              userId: "",
+              address: "",
+              country: "",
+              lga: "",
+              phoneNumber: "",
+              state: "",
+              zipcode: "",
+            },
+            transaction: {
+              $id: "",
+              status: "",
+              transactionId: "",
+              amount: 0,
+              transactionRef: "",
+              createdAt: "",
+              payerId: "",
+              payMethod: "",
+            },
+          },
+        ],
         refreshOrder: false,
         refreshAnOrder: false,
         refreshTransaction: false,
@@ -116,6 +141,15 @@ const migrations = {
         },
         transactions: [],
       },
+      user: {
+        status: "idle",
+        contacts: [],
+        emailSub: [],
+        notifications: [],
+        totalUnreadnotification: 0,
+        totalContactPage: 0,
+        totalEmailSubPage: 0,
+      },
     };
   },
 };
@@ -123,7 +157,7 @@ const migrations = {
 const persistConfig = {
   key: "root",
   storage,
-  version: 6.9,
+  version: 7.0,
   migrate: createMigrate(migrations, { debug: false }),
   // blackList: ["auth", "checkout"],
 };

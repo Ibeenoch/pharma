@@ -115,3 +115,9 @@ export interface UpdatedHotProductProps{
   isHotDeal: number;
 }
 
+
+export interface SalesDataProps {
+  month: string;
+  category: string;
+  qty: number;
+}

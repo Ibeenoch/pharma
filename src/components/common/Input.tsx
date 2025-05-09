@@ -11,6 +11,7 @@ interface CustomInputProps {
   value: string;
   onChange: (value: React.SetStateAction<string>) => void;
   required?: boolean;
+  ignoreEmptyTextfield?: boolean;
   showFullWidth?: boolean;
   roundedBorder?: boolean;
   showSideBtn?: boolean;
@@ -37,6 +38,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   value,
   onChange,
   required = false,
+  ignoreEmptyTextfield,
   showFullWidth = false,
   roundedBorder = false,
   showSideBtn,
@@ -83,7 +85,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           } p-[9px] ${roundedBorder ? "rounded-md" : ""} ${
             showborder ? "border" : "border-none"
           } ${borderColor} ${bgColor} ${
-            hasError ? "border-red-500" : ""
+            hasError && ignoreEmptyTextfield === false ? "border-red-500" : ""
           } ${className} `}
         >
           {prefixIcon && <span className="pr-2">{prefixIcon}</span>}
@@ -122,7 +124,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
       <div className="block w-[194px] md:hidden">
         {showSideBtn && sideBtn}
         </div>
-      {hasError && (
+      {hasError && ignoreEmptyTextfield === false && (
         <div className="pt-[0.5px] flex gap-1 item-center">
           <div className="mt-[1.8px]">
             <Warning className="w-4 h-4 text-red-500" />

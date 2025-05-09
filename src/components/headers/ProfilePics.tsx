@@ -1,17 +1,21 @@
 import React from 'react'
 import noprofileImage from "../../assets/images/noprofileimage.png";
-import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { NavigateFunction } from 'react-router-dom';
 import { UserDataProps } from '../../types/auth/UserData';
+import { useAppDispatch } from '../../hooks/reduxHooks';
+import { fetchAllUnReadNotification } from '../../features/user/userSlice';
 
 interface ProfilePicsProps{
     navigate: NavigateFunction;
     user: UserDataProps;
 }
 
+
 const ProfilePics: React.FC<ProfilePicsProps> = ({ navigate, user }) => {
- 
+ const dispatch = useAppDispatch();
     const handleProfile = () => {
         if (user && user.role && user.role?.toLowerCase() === "admin") {
+          dispatch(fetchAllUnReadNotification())
           navigate(`/admin/dashboard/${user && user.userId}`);
         }else if( user && user.role?.toLowerCase() === 'customer'){
           navigate(`/profile/${user.userId}`)

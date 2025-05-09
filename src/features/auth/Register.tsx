@@ -14,13 +14,15 @@ import Gender from "../../assets/icons/gender.svg?react";
 import Lock from "../../assets/icons/lock.svg?react";
 import { useNavigate } from "react-router-dom";
 import { validator } from "../../utils/validator";
-import { useAppDispatch } from "../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import {
   checkIfUserExist,
   facebookLogin,
   googleLogin,
   registerUser,
+  selectAuth,
 } from "./authSlice";
+import { selectUser } from "../user/userSlice";
 const AlertModal = lazy(() =>import("../../components/auth/AlertModal"));
 const Toast = lazy(() =>import("../../components/common/Toast"));
 
@@ -48,6 +50,7 @@ const Register = () => {
   }>({});
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { status } = useAppSelector(selectAuth)
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -103,19 +106,22 @@ const Register = () => {
       !passwordValid ||
       !role
     ) {
-      setError({
-        firstName: firstNameValid ? undefined : "First name is required",
-        lastName: lastNameValid ? undefined : "Last name is required",
-        dob: dobValid ? undefined : "Date of birth is required",
-        gender: genderValid ? undefined : "Gender is required",
-        email: emailValid ? undefined : "Email address is required",
-        password: passwordValid
-          ? undefined
-          : "Password must be at least 8 characters, include a number & special character",
-        role: roleValid ? undefined : "Role is required",
-      });
-      setIsSubmitting(false);
-      return;
+      if(status !== 'success'){
+
+        setError({
+          firstName: firstNameValid ? undefined : "First name is required",
+          lastName: lastNameValid ? undefined : "Last name is required",
+          dob: dobValid ? undefined : "Date of birth is required",
+          gender: genderValid ? undefined : "Gender is required",
+          email: emailValid ? undefined : "Email address is required",
+          password: passwordValid
+            ? undefined
+            : "Password must be at least 8 characters, include a number & special character",
+          role: roleValid ? undefined : "Role is required",
+        });
+        setIsSubmitting(false);
+        return;
+      }
     }
     if (role === "Admin" && !passcode) {
       setError({

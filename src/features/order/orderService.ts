@@ -575,6 +575,31 @@ export const findAllOrders = async (dataProps: OrderPaginatedArgs) => {
   }
 };
 
+export const findAllOrdersWithoutPagination = async () => {
+  try {
+  
+    const orderArr = await database.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_ORDER_COLLECTION_ID, // collection id
+    );
+
+    const allOrder: AllOrderResultData[] = orderArr.documents.map((order) => ({
+      $id: order.$id,
+      $createdAt: order.$createdAt,
+      $updatedAt: order.$createdAt,
+      cart: order.cart,
+      orderStatus: order.orderStatus,
+      shippingDetails: order.shippingDetails,
+      transaction: order.transaction,
+      userId: order.userId,
+    }));
+
+    return allOrder;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const filterOrdersWithDate = async (dataProps: OrderPaginatedFilteredArgs) => {
   try {
     const p = dataProps.page;

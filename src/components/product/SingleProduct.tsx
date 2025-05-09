@@ -33,7 +33,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({
   return (
     <div
       onClick={() => navigateProduct(id)}
-      className="p-4 bg-white rounded-lg mx-auto md:mx-0 cursor-pointer"
+      className="p-4 bg-white rounded-lg  md:mx-0 cursor-pointer"
     >
       <div className="p-2 bg-[#fbfcf8] rounded-md flex justify-center h-30 md:h-40  items-center">
         <img src={productImage} alt="cart image" className="w-25 md:w-25 h-auto" />

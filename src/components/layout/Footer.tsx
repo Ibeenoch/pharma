@@ -18,6 +18,7 @@ const CustomButton = lazy(() =>import("../common/Button"));
 
 const Footer = () => {
   const [email, setEmail] = useState<string>("");
+  const [ignoreErr, setIgnoreErr] = useState<boolean>(false);
   const { showModal, isCart, toastKey, toastMessage } = useAppSelector(selectCart);
   const { status } = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
@@ -66,12 +67,16 @@ const Footer = () => {
       }
       dispatch(updateToastKeyAndMsg('Thank you for subscripting to our newsletter'));
       dispatch(updateShowModal(true))
-      dispatch(createNotification(notificationData)).then((res) => {
-        console.log('meaas ', res.payload)
+      dispatch(createNotification(notificationData)).then(() => {
+        setIgnoreErr(true)
         setEmail('')
-      })
+      }) 
     });
   }
+
+  useEffect(() => {
+    setIgnoreErr(false);
+  }, [])
 
   return (
     <footer className="bg-black p-8">
@@ -147,6 +152,7 @@ const Footer = () => {
               required={true}
               validate={validateEmail}
               placeholder="Your Email Address"
+              ignoreEmptyTextfield={ignoreErr}
               prefixIcon={<Email className="w-4 h-4" />}
               errorMessage={
                 validateEmail(email) === false

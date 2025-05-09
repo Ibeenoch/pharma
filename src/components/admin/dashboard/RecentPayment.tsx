@@ -25,7 +25,7 @@ const RecentPayment = () => {
     useEffect(() => {
       dispatch(totalTrasactionPages())
 
-      if(!transactions) dispatch(getAllTransaction(pageNum));   
+      if(!transactions || transactions.length < 1) dispatch(getAllTransaction(pageNum));   
     }, [transactions]);
 
     useEffect(() => {

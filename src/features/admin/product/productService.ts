@@ -437,7 +437,6 @@ export const searchProduct = async (searchTerm: string) => {
         Query.orderDesc('$createdAt')
       ]
     );
-    console.log("allproduct ", allproduct);
     const search = allproduct.documents.filter((doc) => {
       return (
         doc.name.toLowerCase().includes(searchTerm) ||

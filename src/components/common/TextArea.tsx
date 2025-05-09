@@ -11,6 +11,7 @@ interface CustomTextAreaProps {
   onChange: (value: React.SetStateAction<string>) => void;
   required?: boolean;
   showFullWidth?: boolean;
+  ignoreEmptyTextfield?: boolean;
   roundedBorder?: boolean;
   showSideBtn?: boolean;
   sideBtn?: React.ReactNode;
@@ -38,6 +39,7 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
   postLabel,
   required = false,
   showFullWidth = false,
+  ignoreEmptyTextfield,
   roundedBorder = false,
   showSideBtn,
   sideBtn,
@@ -83,7 +85,7 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
           } p-[9px] ${roundedBorder ? "rounded-md" : ""} ${
             showborder ? "border" : "border-none"
           } ${borderColor} ${bgColor} ${
-            hasError ? "border-red-500" : ""
+            hasError && ignoreEmptyTextfield === false ? "border-red-500" : ""
           } ${className} `}
         >
           {prefixIcon && <span className="pr-2">{prefixIcon}</span>}
@@ -115,7 +117,7 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
         </div>
         {showSideBtn && sideBtn}
       </div>
-      {hasError && (
+      {hasError && ignoreEmptyTextfield === false && (
         <p className="text-red-500 mt-[0.3px] text-[12px] font-medium">
           {errorMessage}
         </p>

@@ -51,6 +51,11 @@ export const formatDateWithOrdinal = (dateStr: string): string => {
   // Output: "Fri, April 18th 2025"
 };
 
+export const getMonth = (createdAt: string) => {
+  const monthName = new Date(createdAt).toLocaleString('default', { month: 'long' });
+  return monthName
+}
+
 export const getRelativeTime = (dateStr: string): string => {
   const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
   const now = new Date();

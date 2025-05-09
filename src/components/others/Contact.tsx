@@ -23,6 +23,7 @@ const Contact = () => {
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [message, setMessage] = useState<string>("");
+  const [ignoreErr, setIgnoreErr] = useState<boolean>(false);
   const [error, setError] = useState<{
     firstName?: string;
     lastName?: string;
@@ -48,14 +49,17 @@ const Contact = () => {
       !phoneValid ||
       !messageValid
     ) {
-      setError({
-        firstName: firstNameValid ? undefined : "First name is required",
-        lastName: lastNameValid ? undefined : "Last name is required",
-        email: emailValid ? undefined : "Email is required",
-        phone: phoneValid ? undefined : "Phone is required",
-        message: messageValid ? undefined : "Message is required",
-      });
-      return;
+      if (status !== 'success' && status !== 'failure'){
+
+        setError({
+          firstName: firstNameValid ? undefined : "First name is required",
+          lastName: lastNameValid ? undefined : "Last name is required",
+          email: emailValid ? undefined : "Email is required",
+          phone: phoneValid ? undefined : "Phone is required",
+          message: messageValid ? undefined : "Message is required",
+        });
+        return;
+      }
     }
 
     const contactData : ContactProps = {email, firstName, lastName, message, phone };
@@ -66,8 +70,10 @@ const Contact = () => {
         message: `${firstName} ${lastName} just sent you a message.`,
         notificationType: 'message',
       }
-      dispatch(createNotification(contactData)).then((res) => console.log(`conatct `, res.payload))
-      setFirstNamel(''), setLastName(''), setEmail(''), setPhone(''), setMessage('');
+      dispatch(createNotification(contactData)).then((res) => {
+        setIgnoreErr(true);
+        setFirstNamel(''), setLastName(''), setEmail(''), setPhone(''), setMessage('');
+      })
     })
   };
 
@@ -76,6 +82,7 @@ const Contact = () => {
         window.scrollTo(0,0);
         // set the correct navbar active text
         dispatch(setNavIndexLink({ name: links[4].name, index: 4 }));
+        setIgnoreErr(false)
       },[])
 
   return (
@@ -106,6 +113,7 @@ const Contact = () => {
             showFullWidth={true}
             placeholder="Your First Name"
             validate={(value) => validator(value, "others")}
+            ignoreEmptyTextfield={ignoreErr}
             errorMessage={error.firstName || "First name is required"}
           />
           <CustomInput
@@ -119,6 +127,7 @@ const Contact = () => {
             required={true}
             showFullWidth={true}
             placeholder="Your Last Name"
+            ignoreEmptyTextfield={ignoreErr}
             validate={(value) => validator(value, "others")}
             errorMessage={error.lastName || "Last Name is required"}
           />
@@ -134,6 +143,7 @@ const Contact = () => {
           required={true}
           showFullWidth={true}
           placeholder="Your Email"
+          ignoreEmptyTextfield={ignoreErr}
           validate={(value) => validator(value, "others")}
           errorMessage={error.email || "Email is required"}
         />
@@ -147,6 +157,7 @@ const Contact = () => {
           roundedBorder={true}
           required={true}
           showFullWidth={true}
+          ignoreEmptyTextfield={ignoreErr}
           placeholder="Your phone number"
           validate={(value) => validator(value, "others")}
           errorMessage={error.phone || "Phone number is required"}
@@ -159,6 +170,7 @@ const Contact = () => {
           onChange={setMessage}
           required={true}
           showFullWidth={true}
+          ignoreEmptyTextfield={ignoreErr}
           placeholder="Your message"
           validate={(value) => validator(value, "others")}
           errorMessage={error.message || "message is required"}

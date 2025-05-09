@@ -1,7 +1,7 @@
 import { lazy, useEffect } from "react";
 import { adminDefaultBgColor } from "../../../constants/appColor";
 import { selectproductAdmin } from "../../../features/admin/product/productSlice";
-import { selectOrder } from "../../../features/order/orderSlice";
+import { calcualateTotalRevenue, getAllOrder, getAllOrderWithoutPagination, selectOrder } from "../../../features/order/orderSlice";
 import {  useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { cardLists } from "../../../utils/admin/dashBoardLists";
 const BodyCard = lazy(() => import("./BodyCard"));
@@ -13,20 +13,21 @@ import {  selectAuth } from "../../../features/auth/authSlice";
 import { setSideBarIndex } from "../../../features/admin/adminSlice";
 
 const Body = () => {
-  const { productAdmin } = useAppSelector(selectproductAdmin);
+  const { allProduct } = useAppSelector(selectproductAdmin);
   const { users,  } = useAppSelector(selectAuth);
-  const {  totalRevenue,  } =
-    useAppSelector(selectOrder);
+  const {  totalRevenue, ordersWithoutPagination } = useAppSelector(selectOrder);
   const dispatch = useAppDispatch();
 
-      useEffect(() => {
-          dispatch(setSideBarIndex(0));
-      }, [])
+  useEffect(() => {
+      dispatch(setSideBarIndex(0));
+      dispatch(getAllOrderWithoutPagination());
+      dispatch(calcualateTotalRevenue())
+  }, [])
     
   const middletext = (word: string, num: number): string => {
     switch (num) {
       case 0:
-        return `${formatWithCommas(productAdmin && productAdmin.length)}`;
+        return `${formatWithCommas(allProduct && allProduct.length)}`;
         break;
       case 1:
         return `₦${formatWithCommas(totalRevenue)}`;
@@ -56,8 +57,8 @@ const Body = () => {
       </div>
 
       <section className="md:grid md:grid-cols-[55%_45%] lg:grid-cols-[60%_38%] md:gap-2 lg:gap-4 my-6 items-center px-2">
-        <SalesChart />
-        <InventoryPieChart />
+        <SalesChart orders={ordersWithoutPagination} />
+        <InventoryPieChart allProduct={allProduct} />
       </section>
       <section className="lg:px-4">
         <RecentPayment />

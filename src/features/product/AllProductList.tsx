@@ -85,7 +85,7 @@ const AllProductList = () => {
           text="Product Categories"
           textType="medium"
           weightType="bold"
-          extraStyle="border-b border-black w-max mx-auto"
+          extraStyle="w-max mx-auto"
         />
         <div className="flex gap-2 items-center m-2 w-full overflow-x-auto">
 

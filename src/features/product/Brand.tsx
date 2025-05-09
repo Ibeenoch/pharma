@@ -15,7 +15,6 @@ const Brand = () => {
   useEffect(() => {
     if(searchedBrand) dispatch(searchedProductBrand(searchedBrand));
   }, [searchedBrand])
-  // text={`${name?.replace(/([a-z])([A-Z])/g, '$1 $2')}`}
 
     // add product to cart
     const handleAddToCart = (e: React.MouseEvent, id: string) => {
@@ -74,7 +73,7 @@ const Brand = () => {
         </div>
       </section>
       <section className="">
-        <div className="flex flex-wrap items-center lg:grid grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="flex flex-wrap justify-center items-center lg:grid grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-4">
           {/* map through cart item  */}
           {
             productSearched && Array.isArray(productSearched) && productSearched.map((p) => (

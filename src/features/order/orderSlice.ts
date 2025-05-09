@@ -23,6 +23,7 @@ interface orderState {
   transaction: TransactionProps;
   order: AllOrderResultData;
   orders: AllOrderResultData[];
+  ordersWithoutPagination: AllOrderResultData[];
   refreshOrder: boolean;
   refreshAnOrder: boolean;
   refreshTransaction: boolean;
@@ -108,6 +109,64 @@ const initialState: orderState = {
     },
   },
   orders: [
+    {
+      $id: "",
+      userId: "",
+      cart: [
+        {
+          $id: "",
+          $createdAt: "",
+          $updatedAt: "",
+          brand: "",
+          cartId: "",
+          category: "",
+          creator: "",
+          description: "",
+          discount: 0,
+          imagesUrl: [],
+          name: "",
+          productId: "",
+          productSerialNo: "",
+          quantity: 0,
+          price: 0,
+          subtotal: 0,
+          total: 0
+        },
+      ],
+      shippingDetails: {
+        userId: "",
+        address: "",
+        country: "",
+        lga: "",
+        phoneNumber: "",
+        state: "",
+        zipcode: "",
+        $createdAt: "",
+        $id: "",
+        $updatedAt: "",
+        fullname: "",
+        email: "",
+      },
+      transaction: {
+        $id: "",
+        status: "",
+        transactionId: "",
+        amount: 0,
+        transactionRef: "",
+        payerId: "",
+        payMethod: "",
+        $createdAt: "",
+        $updatedAt: "",
+        shippingId: "",
+        shippingStatus: "",
+        shippingType: "",
+      },
+      $createdAt: "",
+      $updatedAt: "",
+      orderStatus: "",
+    },
+  ],
+  ordersWithoutPagination: [
     {
       $id: "",
       userId: "",
@@ -365,6 +424,19 @@ export const getAllOrder = createAsyncThunk(
   }
 );
 
+export const getAllOrderWithoutPagination = createAsyncThunk(
+  "order/getAllOrderWithoutPagination",
+  async (_, { rejectWithValue }) => {
+    try {
+      return await api.findAllOrdersWithoutPagination();
+    } catch (error: any) {
+      return rejectWithValue(
+        error.message || "failed to get all orders details"
+      );
+    }
+  }
+);
+
 export const getAllFilteredOrderByDate = createAsyncThunk(
   "order/getAllFilteredOrderByDate",
   async (data: OrderPaginatedFilteredArgs, { rejectWithValue }) => {
@@ -507,6 +579,19 @@ const orderSlice = createSlice({
         }
       })
       .addCase(getAllOrder.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(getAllOrderWithoutPagination.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getAllOrderWithoutPagination.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload) {
+          state.ordersWithoutPagination = action.payload;
+          state.refreshOrder = false;
+        }
+      })
+      .addCase(getAllOrderWithoutPagination.rejected, (state) => {
         state.status = "failure";
       })
       .addCase(getAllFilteredOrderByDate.pending, (state) => {
