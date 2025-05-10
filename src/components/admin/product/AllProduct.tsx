@@ -30,11 +30,12 @@ const AllProduct = () => {
 
   useEffect(() => {
     dispatch(totalProductPages())
-    if(!productAdmin){
+    if(!productAdmin || productAdmin.length < 1){
       dispatch(fetchAllUserProduct(pageNum))
     };
     hasFetchAllProduct === false &&  dispatch(fetchAllUserProduct(pageNum));
   }, [pageNum, hasFetchAllProduct]);
+
 
   const productData =
     productAdmin && Array.isArray(productAdmin)
