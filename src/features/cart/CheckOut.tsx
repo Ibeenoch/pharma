@@ -140,7 +140,7 @@ const CheckOut = () => {
                      let hotDealData: UpdatedHotProductProps = {isHotDeal: h.isHotDeal, productId: h.productId};
                      dispatch(updateHotProductNum(hotDealData)).then(() => {
                         const orderNotificationData: NotificationProps = {
-                          message: `${firstName} ${lastName} has ordered ${cart.length} items, waiting to be delivered. order id ${response.$id}`,
+                          message: `${firstName} ${lastName} has ordered ${cart.length} item${cart.length > 1 ? 's': ''}, waiting to be delivered. order id ${response.$id}`,
                           notificationType: 'order',
                         }
                         const transactionNotificationData: NotificationProps = {
