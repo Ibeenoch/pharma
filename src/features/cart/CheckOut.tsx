@@ -144,7 +144,7 @@ const CheckOut = () => {
                           notificationType: 'order',
                         }
                         const transactionNotificationData: NotificationProps = {
-                          message: `A sum of ${total} was paid by ${firstName} ${lastName} from ${PaymentOption} 2 ${cart.length} items, waiting to be review.`,
+                          message: `A sum of ₦${total} was paid by ${firstName} ${lastName} from ${response.transaction.payMethod} conatining ${cart.length} item${cart.length > 1 ? 's': ''}, waiting to be review.`,
                           notificationType: 'transaction',
                         }
                         dispatch(createNotification(orderNotificationData)).then(() => {
