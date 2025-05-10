@@ -168,7 +168,7 @@ const Order = () => {
             </div>
           </div>
 
-          <div className="bg-white p-4 my-4 rounded-xl">
+          <div className="bg-white p-4 my-4 rounded-xl h-max">
             <div className="border-b border-gray-300 pb-4 flex justify-between items-center">
               <CustomText
                 text="Delivery Status"
