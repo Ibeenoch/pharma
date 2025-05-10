@@ -439,11 +439,11 @@ export const searchProduct = async (searchTerm: string) => {
     );
     const search = allproduct.documents.filter((doc) => {
       return (
-        doc.name.toLowerCase().includes(searchTerm) ||
-        doc.description.toLowerCase().includes(searchTerm) ||
-        doc.category.toLowerCase().includes(searchTerm) ||
-        doc.brand.toLowerCase().includes(searchTerm) ||
-        doc.additionalInfo.toLowerCase().includes(searchTerm)
+        doc.name.toLowerCase().startsWith(searchTerm.toLowerCase()) ||
+        doc.description.toLowerCase().startsWith(searchTerm.toLowerCase()) ||
+        doc.category.toLowerCase().startsWith(searchTerm.toLowerCase()) ||
+        doc.brand.toLowerCase().startsWith(searchTerm.toLowerCase()) ||
+        doc.additionalInfo.toLowerCase().startsWith(searchTerm.toLowerCase())
       );
     });
 

@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { searchedProductBrand, selectproductAdmin } from "../admin/product/productSlice";
 import { CartProductDataProps, cartProps } from "../../types/product/ProductData";
 import { addToCart, addTowishlist } from "../cart/cartSlice";
+import NoResult from "../../components/admin/header/search/NoResult";
 const CustomText = lazy(() => import("../../components/common/Text"));
 const SingleProduct = lazy(() => import("../../components/product/SingleProduct"));
 
@@ -62,7 +63,7 @@ const Brand = () => {
        
       </section>
       {/* for large screen size  */}
-      <section className="hidden md:block p-4 bg-white rounded-md">
+      <section className="hidden md:block p-4 bg-white mt-2 rounded-md">
         <div className="w-48  break-words whitespace-normal">
           <CustomText
             text={`${name}`}
@@ -73,10 +74,11 @@ const Brand = () => {
         </div>
       </section>
       <section className="">
-        <div className="flex flex-wrap justify-center items-center lg:grid grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-4">
           {/* map through cart item  */}
-          {
-            productSearched && Array.isArray(productSearched) && productSearched.map((p) => (
+       {   productSearched && Array.isArray(productSearched) && productSearched.length > 0 ? 
+       <div className="flex flex-wrap justify-center items-center lg:grid grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-4">
+        {  
+           productSearched.map((p) => (
               <>
              { p && p.$id && p.discount &&  ( 
               <SingleProduct
@@ -92,9 +94,13 @@ const Brand = () => {
                 />
                 )}
                 </>
-            ))
+            )) }
+        </div> : (
+            <div className="mr-3  mt-2">
+              <NoResult />
+            </div>
+            )
           }
-        </div>
       </section>
     </main>
   );

@@ -7,7 +7,7 @@ interface NoResultProps {
 
 const NoResult: React.FC<NoResultProps> = ({ title}) => {
   return (
-    <div className='w-full h-20 bg-white flex justify-center items-center'>
+    <div className='w-full h-30 bg-white flex justify-center items-center'>
       <CustomText
       text={`No ${title ? title.toLowerCase() : 'record'} found`}
       textType='normal'

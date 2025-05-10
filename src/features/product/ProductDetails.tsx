@@ -229,7 +229,7 @@ const ProductDetails = () => {
                 }`}
                 textType="normal"
                 weightType="medium"
-                color="text-gray-500"
+                color="text-gray-400"
                 extraStyle={`${
                   product && product.item && product.item.discount
                     ? "line-through"
@@ -258,17 +258,29 @@ const ProductDetails = () => {
           </div>
 
           <CustomText
+            text='Product Details'
+            textType="normal"
+            weightType="semibold"
+            extraStyle="pt-4"
+          />
+          <CustomText
             text={product && product.item && product.item.description}
             textType="small"
             weightType="thin"
-            extraStyle="text-gray-500 my-5"
+            extraStyle="text-gray-500 my-2"
           />
 
+    {product && product.item && product.item.additionalInfo && product.item.additionalInfo.length > 0 &&
+     (      <CustomText
+            text='Additional Information'
+            textType="normal"
+            weightType="semibold"
+          />)}
           <CustomText
             text={product && product.item && product.item.additionalInfo}
             textType="small"
             weightType="thin"
-            extraStyle="text-gray-500 my-5"
+            extraStyle="text-gray-500 my-2"
           />
           <div className="block md:grid grid-cols-2">
 

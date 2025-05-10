@@ -80,7 +80,7 @@ const AllProductList = () => {
       className={`block mt-20 mb-1 md:grid md:grid-cols-[20%_80%] h-full gap-2`}
     >
       {/* for mobile device */}
-      <section className="md:hidden overflow-x-auto">
+      <section className="md:hidden overflow-x-auto p-4">
         <CustomText
           text="Product Categories"
           textType="medium"
@@ -100,13 +100,13 @@ const AllProductList = () => {
         </div>
       </section>
       {/* for large screen size  */}
-      <section className="hidden md:block p-4 bg-white">
+      <section className="hidden md:block p-4 bg-white rounded-md mt-2">
         <div>
           <CustomText
             text="Product Categories"
             textType="medium"
             weightType="bold"
-            extraStyle=""
+            extraStyle="pb-1"
           />
           {/* product category  */}
           {

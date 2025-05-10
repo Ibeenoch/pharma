@@ -72,26 +72,26 @@ const searchEntity = () => {
     if(searchType === 'user'){
 
       let findUser = users.filter((u) => {
-       return (u.firstName?.toLowerCase().includes(search.toLowerCase()) ||
-       u.lastName?.toLowerCase().includes(search.toLowerCase()) ||
-       u.email?.toLowerCase().includes(search.toLowerCase()) )
+       return (u.firstName?.toLowerCase().startsWith(search.toLowerCase()) ||
+       u.lastName?.toLowerCase().startsWith(search.toLowerCase()) ||
+       u.email?.toLowerCase().startsWith(search.toLowerCase()) )
       
       });
       setFoundUser(findUser);
     }else if(searchType === 'order') {
       let findOrder = ordersWithoutPagination.filter((f) => {
         return (
-          f.$id.toLowerCase().includes(search.toLowerCase()) ||
-          f.orderStatus.toLowerCase().includes(search.toLowerCase()) 
+          f.$id.toLowerCase().startsWith(search.toLowerCase()) ||
+          f.orderStatus.toLowerCase().startsWith(search.toLowerCase()) 
         )
       });
       setFoundOrder(findOrder);
     }else if(searchType === 'product') {
       let findProduct = allProduct.filter((p) => {
         return (
-          p.brand.toLowerCase().includes(search.toLowerCase()) ||
-          p.category.toLowerCase().includes(search.toLowerCase()) ||
-          p.name.toLowerCase().includes(search.toLowerCase()) 
+          p.brand.toLowerCase().startsWith(search.toLowerCase()) ||
+          p.category.toLowerCase().startsWith(search.toLowerCase()) ||
+          p.name.toLowerCase().startsWith(search.toLowerCase()) 
         )
       });
       setFoundProduct(findProduct);
@@ -99,10 +99,10 @@ const searchEntity = () => {
       let findTransaction = transactions.filter((t) => {
         return (
           String(t.amount) === search ||
-         t.status.toLowerCase().includes(search.toLowerCase()) ||
-         t.customerName.toLowerCase().includes(search.toLowerCase()) ||
-         t.payMethod.toLowerCase().includes(search.toLowerCase()) ||
-         t.status.toLowerCase().includes(search.toLowerCase())
+         t.status.toLowerCase().startsWith(search.toLowerCase()) ||
+         t.customerName.toLowerCase().startsWith(search.toLowerCase()) ||
+         t.payMethod.toLowerCase().startsWith(search.toLowerCase()) ||
+         t.status.toLowerCase().startsWith(search.toLowerCase())
         )
       });
       setFoundTransaction(findTransaction);
@@ -113,10 +113,6 @@ const searchEntity = () => {
 
 }
 
-console.log('foundUser ', foundUser,
- 'foundOrder ', foundOrder,
-'foundProduct',  foundProduct,
-'foundTransaction',  foundTransaction)
   useEffect(() => {
      searchEntity()
   }, [search, searchType])

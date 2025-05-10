@@ -24,7 +24,6 @@ const TransactionPage = lazy(() => import("./pages/admin/transactions/Transactio
 const ALlUsersPage = lazy(() => import("./pages/admin/users/AllUsersPage"));
 const UsersAdminPage = lazy(() => import("./pages/admin/users/UsersAdminPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
-const CustomerPage = lazy(() => import("./pages/admin/users/CustomerPage"));
 const ProductPage = lazy(() => import("./pages/admin/products/ProductPage"));
 const AddProductPage = lazy(() => import("./pages/admin/products/AddProductPage"));
 const OrderPage = lazy(() => import("./pages/admin/orders/OrderPage"));
@@ -191,15 +190,7 @@ const router = createBrowserRouter([
       />
     ),
   },
-  {
-    path: "/admin/users/customer/:userId",
-    element: (
-      <SecureAdminPage
-        child={<CustomerPage />}
-        redirectUrl="/admin/users/customer/:userId"
-      />
-    ),
-  },
+ 
   {
     path: "/admin/product/all/:userId",
     element: (
