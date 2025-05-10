@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import { lazy, useEffect } from "react";
 import successImg from "../../assets/images/successpay.png";
 import sadImg from "../../assets/images/sadness.png";
 import Exclamation from "../../assets/icons/exclamation-mark.svg?react";
@@ -14,6 +14,10 @@ const PaymentStatus = () => {
   const handleTrackOrder = () => {
     navigate(`/order_tracking/${userId}/${orderId}`);
   };
+
+  useEffect(() => {
+    window.scrollTo(0,0)
+  }, [])
   return (
     <section className="md:grid lg:grid-cols-2 mt-20 md:mt-0 items-center h-screen">
       <div className="mx-auto flex justify-center">

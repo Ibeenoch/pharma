@@ -14,7 +14,7 @@ const CheckMark: React.FC<CheckMarkProps> = ({
     <div
       className={`w-${containerSize} h-${containerSize} ${extraStyle} rounded-full p-[2.5px] bg-amber-500 flex justify-center items-center`}
     >
-      <Checker className={`w-${iconSize} h-${iconSize}`} />
+      <Checker className={`w-${iconSize} h-${iconSize} text-white`} />
     </div>
   );
 };

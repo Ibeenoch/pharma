@@ -1,4 +1,4 @@
-import { FormEvent, lazy, useState } from "react";
+import { FormEvent, lazy, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { OrderArgs } from "../../types/order/OrderType";
@@ -20,48 +20,26 @@ const Order = () => {
   const navigate = useNavigate();
   const [orderNum, setOrderNum] = useState<string>(orderId ?? "");
   const [orderFound, setOrderFound] = useState<boolean>(false);
-  const { status, order } = useAppSelector(selectOrder);
+  const { order } = useAppSelector(selectOrder);
 
-  const handleFindOrder = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const navigateShippingUpdate = () => {
+    navigate(`/order_history/${userId}`);
+  };
+
+
+  useEffect(() => {
     if (orderNum) {
       const orderData = { orderId: orderNum, userId } as OrderArgs;
       dispatch(getOrder(orderData)).then((res) => {
         if (res.payload) setOrderFound(true);
       });
     }
-  };
-  const navigateShippingUpdate = () => {
-    navigate(`/order_history/${userId}`);
-  };
+  }, [orderNum])
   return (
     <>
-      <form
-        onSubmit={handleFindOrder}
-        className="mx-auto md:w-[50%] mt-25 px-4 md:px-0"
-      >
-        <CustomInput
-          value={orderNum}
-          onChange={setOrderNum}
-          type="search"
-          Id="orderNum"
-          placeholder="Enter your order number to track your item"
-          required={true}
-          showFullWidth={true}
-          label="Track Your Order"
-        />
-        <CustomButton
-          text="Track Order"
-          type="submit"
-          textSize="normal"
-          fullwidth={true}
-          showArrow={true}
-          className="my-4"
-          isLoading={status === "loading"}
-        />
-      </form>
+    
       {orderFound && order && order.$id ? (
-        <section className="h-full md:grid md:grid-cols-2 gap-2 px-4 md:px-0">
+        <section className="h-full md:grid md:grid-cols-2 mt-20 gap-2 px-4 md:px-0">
           <div>
             <div className="my-2 p-4 mx-auto bg-white rounded-xl">
               <CustomText
@@ -118,6 +96,75 @@ const Order = () => {
                   order && order.$updatedAt && getRelativeTime(order.$updatedAt)
                 }
               />
+            </div>
+
+            <div className="bg-white p-4 mx-auto my-4 rounded-xl">
+              <CustomText
+                text="Product Details"
+                textType="normal"
+                weightType="semibold"
+              />
+
+              {
+              order && order.cart && Array.isArray(order.cart) && order.cart.map((c) => (
+
+                <div className="flex items-start justify-between my-3 pb-3 border-b border-gray-300/30">
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 bg-gray-100 rounded-md">
+                      <img src={c && c.imagesUrl[0]} alt="order image" className="w-7 h-" />
+                    </div>
+                    <div>
+                    <CustomText 
+                    text={c.name}
+                    textType="normal"
+                    weightType="semibold"
+                    />
+                    <CustomText 
+                    text={c.category}
+                    textType="small"
+                    weightType="medium"
+                    color="text-gray-500"
+                    />
+                    <CustomText 
+                    text={`${String(c.quantity)} item${c.quantity === 1 ? '': 's'}`}
+                    textType="extrasmall"
+                    weightType="medium"
+                    color="text-gray-500"
+                    />
+                    </div>
+                  </div>
+
+                  <div>
+                     <CustomText 
+                    text='Price'
+                    textType="normal"
+                    weightType="semibold"
+                    />
+                      <CustomText 
+                      text={`₦${c.price}`}
+                        textType="small"
+                    weightType="medium"
+                    color="text-gray-500"
+                      />
+                  </div>
+
+                  <div>
+                     <CustomText 
+                    text='Total Amount'
+                    textType="normal"
+                    weightType="semibold"
+                    />
+                      <CustomText 
+                      text={`₦${c.price * c.quantity}`}
+                        textType="small"
+                    weightType="medium"
+                    color="text-gray-500"
+                      />
+                  </div>
+                </div>
+              ))
+              }
+            
             </div>
           </div>
 

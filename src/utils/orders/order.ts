@@ -39,4 +39,5 @@ export const orderColumns = [
         : "",
   },
   { key: "total", label: "Total" },
+  { key: "view", label: "View" },
 ];

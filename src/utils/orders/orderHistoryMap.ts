@@ -20,6 +20,7 @@ export const mapOrderHistory = (orderList: AllOrderResultData[]) => {
     image: order.cart.map((c) => c.imagesUrl),
     productCategory: order.cart.map((c) => c.category),
     productname: order.cart.map((c) => c.name),
+    userId: order.shippingDetails.userId,
     // totalItemPerProduct: order.cart[0].
   }));
   return mappedOrderHistory;
