@@ -41,7 +41,7 @@ const AllOrder: React.FC<AllOrdersProps> = ({ whichType = "all" }) => {
 
     const dispatch = useAppDispatch();
   const { userId } = useParams();
-  const mappedOrder: mappedAllOrdersProps[] = orders && Array.isArray(orders) &&
+  const mappedOrder: mappedAllOrdersProps[] = orders && Array.isArray(orders) && orders.length > 0 ?
     whichType === "all"
       ?  mappedAllOrders(orders)
       : whichType === "Processing"
@@ -58,7 +58,7 @@ const AllOrder: React.FC<AllOrdersProps> = ({ whichType = "all" }) => {
             )
             : mappedAllOrders(orders).filter(
                 (m) => m.status.toLowerCase() === "delivered"
-              );
+              ) : [];
   const [orderpaginationProps, setOrderPaginationProps] =
     useState<OrderPaginatedArgs>({ page: 0, userId: userId ?? "" });
 

@@ -34,7 +34,7 @@ const OrderHistory = () => {
 
   }, [pageNum]);
 
-  const mappedOrder = orders && Array.isArray(orders) ? mapOrderHistory(orders) : [];
+  const mappedOrder = orders && Array.isArray(orders) && orders.length > 0 ? mapOrderHistory(orders) : [];
 
   const handleOrderFilter = () => {
     if(!started || !ended) return;
