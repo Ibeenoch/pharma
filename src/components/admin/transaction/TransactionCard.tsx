@@ -1,5 +1,8 @@
 import React, { lazy } from "react";
 import Menu from "../../../assets/icons/about.svg?react";
+import Trash from "../../../assets/icons/trash-filled.svg?react";
+import { useAppDispatch } from "../../../hooks/reduxHooks";
+import { deleteATransaction } from "../../../features/order/orderSlice";
 const CustomText = lazy(() => import("../../common/Text"));
 
 
@@ -16,6 +19,7 @@ export interface TransactionCardProps {
   paymentMethod: string;
   textColor: string;
   textBgColor: string;
+  tId?: string;
   onClick: () => void;
 }
 
@@ -27,6 +31,7 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
   itemQty,
   itemTitle,
   amount,
+  tId,
   orderDate,
   customerName,
   paymentMethod,
@@ -34,6 +39,13 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
   textColor,
   onClick,
 }) => {
+  const dispatch = useAppDispatch()
+  const deleteTransaction = (id: string) => {
+      let getConfirmation = window.confirm(`Are you sure you want to delete this transaction with id #${id} ?`);
+      if(getConfirmation){
+        dispatch(deleteATransaction(id))
+      }
+  }
   return (
     <div
       className={`p-4 rounded-xl bg-white my-3 lg:my-0 hover:bg-white/50 group`}
@@ -70,6 +82,12 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
             className={`py-1 px-2 flex items-center justify-center rounded-xl cursor-pointer`}
           >
             <Menu className={`w-4 h-4 ${textColor}`} />
+          </div>
+          <div
+            onClick={() => tId && deleteTransaction(tId)}
+            className={`py-1 flex items-center justify-center rounded-xl cursor-pointer`}
+          >
+            <Trash className={`w-4 h-4 ${textColor}`} />
           </div>
         </div>
       </div>

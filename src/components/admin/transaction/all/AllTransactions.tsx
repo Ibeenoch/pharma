@@ -14,6 +14,7 @@ import { useParams } from "react-router-dom";
 import { OrderPaginatedArgs } from "../../../../types/order/OrderType";
 import Reset from '../../../../assets/icons/reset.svg?react'
 import { TransactionDateFilterProps } from "../../../../types/payment/FlutterwavePaymentType";
+import NoResult from "../../header/search/NoResult";
 const DateFilter = lazy(() => import("../../DateFilter"));
 const CustomText = lazy(() => import("../../../common/Text"));
 const TransactionCard = lazy(() => import("../TransactionCard"));
@@ -56,19 +57,18 @@ const AllTransactions: React.FC<AllTransactionsProps> = ({
     dispatch(resetRefreshOrder());
     setPageNum(i);
     setOrderPaginationProps({ page: i, userId: userId });
-    console.log(pageNum)
   };
 
   useEffect(() => {
     if (userId) {
       // refreshOrder &&
-      dispatch(getAllTransaction(1))
+      dispatch(getAllTransaction(pageNum))
       dispatch(getAllOrder(orderpaginationProps))
-      dispatch(totalOrderPages());
+      dispatch(totalOrderPages()).then((res) => console.log('res all order page ', res.payload));
     }
   }, [refreshOrder, userId, resetPage]);
 
-  let filteredOrder =
+  let filteredOrder = orders && Array.isArray(orders) && orders.length > 0 ?
     whichType === "all"
       ? orders
       : whichType === "pending"
@@ -77,9 +77,9 @@ const AllTransactions: React.FC<AllTransactionsProps> = ({
           ? orders.filter((s) => s.orderStatus.toLowerCase() === "shipped")
           : whichType === "failed"
             ? orders.filter((s) => s.orderStatus.toLowerCase() === "cancelled")
-            : orders.filter((s) => s.orderStatus.toLowerCase() === "delivered");
+            : orders.filter((s) => s.orderStatus.toLowerCase() === "delivered") : [];
 
-  const allMappedTransaction =
+  const allMappedTransaction = transactions && Array.isArray(transactions) && transactions.length > 0 ?
     whichType === "all"
       ? mappedTransaction(transactions, orders)
       : whichType === "cancelled"
@@ -92,7 +92,7 @@ const AllTransactions: React.FC<AllTransactionsProps> = ({
             )
           : mappedTransaction(transactions, orders).filter(
               (m) => m.shippingStatus.toLowerCase() === "delivered"
-            );
+            ) : [];
   const transactionPreview = transactions.find((t) => t.$id === currIndex);
   const orderPreview = filteredOrder.find(
     (t) => t.transaction.shippingId === shippingid
@@ -120,10 +120,11 @@ const AllTransactions: React.FC<AllTransactionsProps> = ({
         <>
         <DateFilter setEnded={setEnded} setStarted={setStarted} applyCallback={handleTransactionFilter} started={started} ended={ended} />
             
-          <section
+      { allMappedTransaction && Array.isArray(allMappedTransaction) && allMappedTransaction.length > 0 ?   
+      <section
             className={`lg:grid grid-cols-2 p-4 my-3 gap-3  ${lightgrayBgColor} rounded-xl`}
           >
-            {allMappedTransaction.map((transaction, index) => (
+            { allMappedTransaction.map((transaction, index) => (
               <div className="relative">
                 <TransactionCard
                   key={index}
@@ -144,6 +145,7 @@ const AllTransactions: React.FC<AllTransactionsProps> = ({
                       | "Cancelled"
                   }
                   shippingType={transaction.shippingType}
+                  tId={transaction.id}
                   onClick={() => {
                     allMappedTransaction &&
                       allMappedTransaction[index] &&
@@ -173,15 +175,17 @@ const AllTransactions: React.FC<AllTransactionsProps> = ({
                     />
                   )}
               </div>
-            ))}
-          </section>
+            )) }
+          </section> :(
+              <NoResult title="transaction" />
+            )}
           <div className="flex items-center gap-2 my-2">
             {totalOrderPage > 1 &&
               Array.from({ length: totalOrderPage }, (_, i) => (
                 <div
-                  className="border border-gray-300 rounded-lg py-2 px-3 text-[12px] flex justify-center items-center cursor-pointer hover:bg-black hover:text-white"
+                  className={`${pageNum === i ? 'bg-black text-white' : ''} border border-gray-300 rounded-lg py-2 px-3 text-[12px] flex justify-center items-center cursor-pointer hover:bg-black hover:text-white`}
                   onClick={() => {
-                    userId && handlePageClicked(i + 1, userId);
+                    userId && handlePageClicked(i, userId);
                   }}
                 >
                   {i + 1}

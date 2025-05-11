@@ -41,7 +41,7 @@ const Order = () => {
       {orderFound && order && order.$id ? (
         <section className="h-full md:grid md:grid-cols-2 mt-20 gap-2 px-4 md:px-0">
           <div>
-            <div className="my-2 p-4 mx-auto bg-white rounded-xl">
+            <div className="md:my-2 mb-2 mt-4 p-4 mx-auto bg-white rounded-xl">
               <CustomText
                 text={`Your Order #${order && order.$id} is being processed`}
                 textType="normal"

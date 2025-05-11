@@ -234,6 +234,20 @@ export const getATransaction = async (id: string) => {
   }
 };
 
+export const deleteTransaction = async (id: string) => {
+  try {
+     await database.deleteDocument(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
+      import.meta.env.VITE_APPWRITE_TRANSACTION_COLLECTION_ID, // collection id
+      id
+    );
+
+    return id;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getAllTransaction = async (pageNum:  number) => {
   try {
     let ItemPerPage = 6;
@@ -312,7 +326,7 @@ export const getAllTransactionFilteredByDate = async (pageData:  TransactionDate
       } as TransactionProps;
       allTransactions.push(transactionItem);
     });
-    console.log("allTransactions ", allTransactions);
+
     return allTransactions;
   } catch (error) {
     throw error;
@@ -351,7 +365,7 @@ export const getAllTransactionWithoutPagination = async () => {
       } as TransactionProps;
       allTransactions.push(transactionItem);
     });
-    console.log("allTransactions ", allTransactions);
+
     return allTransactions;
   } catch (error) {
     throw error;

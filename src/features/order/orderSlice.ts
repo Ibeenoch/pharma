@@ -326,6 +326,19 @@ export const getAllTransactionFilteredByDate = createAsyncThunk(
   }
 );
 
+export const deleteATransaction = createAsyncThunk(
+  "transaction/deleteATransaction",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      return await api.deleteTransaction(id);
+    } catch (error: any) {
+      return rejectWithValue(
+        error.message || "failed to delete transaction details"
+      );
+    }
+  }
+);
+
 export const getAllTransactionWithoutPagination = createAsyncThunk(
   "order/getAllTransactionWithoutPagination",
   async (_, { rejectWithValue }) => {
@@ -509,6 +522,21 @@ const orderSlice = createSlice({
         }
       })
       .addCase(postTransaction.rejected, (state) => {
+        state.status = "failure";
+      })
+      .addCase(deleteATransaction.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(deleteATransaction.fulfilled, (state, action) => {
+        state.status = "success";
+        if (state.status === "success" && action.payload) {
+          state.transactions = state.transactions.filter((t) => t.$id !== action.payload);
+          state.refreshTransaction = true;
+          state.refreshATransaction = true;
+          state.refreshOrder = true;
+        }
+      })
+      .addCase(deleteATransaction.rejected, (state) => {
         state.status = "failure";
       })
       .addCase(getATransaction.pending, (state) => {
