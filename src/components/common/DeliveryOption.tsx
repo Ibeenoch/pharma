@@ -11,7 +11,7 @@ const DeliveryOption: React.FC<DeliveryOptionProps> = ({ img, active }) => {
   return (
     <div className="flex flex-col items-center gap-2 cursor-pointer">
       <div
-        className={`p-3 border ${
+        className={`md:p-3 p-1 border ${
           active ? "border-amber-500 " : "border-gray-200 "
         } rounded-xl`}
       >

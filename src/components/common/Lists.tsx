@@ -19,7 +19,7 @@ interface ListProps {
     | "extralarge"
     | "huge"
     | "superhuge";
-  weightType: "normal" | "medium" | "bold" | "thin" | "superbold";
+  weightType: "normal" | "medium"  | "semibold" | "bold" | "thin" | "superbold";
   extraStyle?: string;
   isVertical?: boolean;
   showOnMobile?: boolean;

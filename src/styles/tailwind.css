@@ -27,6 +27,9 @@
     --color-blackbg: #000000;
     --color-ambergray: #e6e1d8;
     --color-red: red;
+    --slider-width: 100px;
+    --slider-height: 100px;
+    --slider-img-quantity: 12;
   }
   /* --color-graybg: #f4f4f4; */
   body {
@@ -120,4 +123,46 @@
 }
 
 
+  /* partners  */
+  .slider{
+    width: 100%;
+    height: var(--slider-height);
+    overflow: hidden;
+    /* background-image not good to blur the side use mask-image */
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 10% 90%,
+      transparent
+    );
+  }
+ /* parent  */
+  .slider .list{ 
+    display: flex;
+    width: 100%;
+    min-width: calc(var(--slider-width) * var(--slider-img-quantity));
+    position: relative;
+  }
+/* child runs the animation */
+  .slider .list .item{
+    width: var(--slider-width);
+    height: var(--slider-height);
+    position: absolute;
+    left: 100%;
+    animation: autoRun 10s linear infinite;
+    animation-delay: calc( (10s / var(--slider-img-quantity) * (var(--position) - 1) ));
+  }
+
+  .slider .list .item > img{
+    width: 100%;
+  }
+
+  @keyframes autoRun {
+   from{
+      left: 100%;
+    }
+    to{
+      left: calc(var(--slider-width) * -1);
+    }
+  }
   }

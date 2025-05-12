@@ -12,7 +12,7 @@ const NavLinks = () => {
       <Lists
         lists={links}
         textType="normal"
-        weightType="medium"
+        weightType="semibold"
         extraStyle="hover:border-b-2 hover:border-amber-500 cursor-pointer"
         isFooter={false}
       />
