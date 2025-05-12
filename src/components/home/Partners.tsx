@@ -20,7 +20,7 @@ const Partners = () => {
         part1, part2, part3, part4, part5, part6, part7, part8, part9, part10, part11, part12
     ]
   return (
-    <div>
+    <div className='my-3 border-b border-black pb-10'>
      <CustomText text='Our Partners' textType='medium' weightType='bold' extraStyle='text-center mt-3 mb-5'/>
         <div className='slider' >
             <div className='list'>
