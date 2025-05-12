@@ -73,19 +73,20 @@ const Testimony = () => {
                 <ArrowRight className='w-20 h-20  hover:text-amber-500' />
             </div>)}
             {/* current image  */}
-            <div className='mx-4 md:mx-0 relative md:absolute md:-top-5 md:left-[10%] w-full md:w-[70%] grid grid-cols-[60%_40%] md:grid-cols-[40%_60%] gap-4 items-center  bg-white p-4 rounded-xl'>
+            <div className='mx-4 md:mx-0 relative md:absolute md:-top-5 md:left-[10%] w-[90%] md:w-[70%] grid grid-cols-[60%_40%] md:grid-cols-[40%_60%] gap-4 items-center  bg-white p-4 rounded-xl'>
                 <div>
-                    <img src={testmonyItems[imageIndex].img} alt="current testimony" className='w-250 h-100 md:h-130 bg-amber-500 transform -skew-y-4' />
+                    <img src={testmonyItems[imageIndex].img} alt="current testimony" className='w-250 h-80 md:h-130 bg-amber-500 transform -skew-y-4' />
                 </div>
-                <div>
+                <div className='p-2'>
                     <div className='absolute top-5 right-5'>
-                        <BlockQuock className='w-20 h-20 text-gray-400 ' />
+                        <BlockQuock className='w-14 h-14 md:w-20 md:h-20 text-gray-400 ' />
                     </div>
                     <CustomText 
                     text={testmonyItems[imageIndex].testimony}
                     textType='normal'
                     color='text-gray-600'
                     weightType='medium'
+                    extraStyle='my-3'
                     />
                     <CustomText 
                     text={testmonyItems[imageIndex].name}
@@ -101,11 +102,11 @@ const Testimony = () => {
                     />
 
                 </div>
-                {testmonyItems[imageIndex - 1]?.img && (  <div onClick={() => setImageIndex((prev) => prev <= 0 ? 0 : prev - 1)} className='md:hidden absolute top-[60%] left-4 cursor-pointer'>
-                <ArrowLeft className='w-20 h-20 text-black/50' />
+                {testmonyItems[imageIndex - 1]?.img && (  <div onClick={() => setImageIndex((prev) => prev <= 0 ? 0 : prev - 1)} className='md:hidden absolute top-[50%] left-4 cursor-pointer'>
+                <ArrowLeft className='w-20 h-20 text-black/30' />
             </div>)}
-          { testmonyItems[imageIndex + 1]?.img && (  <div onClick={() => setImageIndex((curr) => curr >= testmonyItems.length - 1 ? testmonyItems.length - 1 : curr + 1)} className='md:hidden absolute top-[60%] right-4 cursor-pointer'>
-                <ArrowRight className='w-20 h-20 text-black/50' />
+          { testmonyItems[imageIndex + 1]?.img && (  <div onClick={() => setImageIndex((curr) => curr >= testmonyItems.length - 1 ? testmonyItems.length - 1 : curr + 1)} className='md:hidden absolute top-[50%] right-4 cursor-pointer'>
+                <ArrowRight className='w-20 h-20 text-black/30' />
             </div>)}
             </div>
         </div>
