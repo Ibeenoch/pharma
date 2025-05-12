@@ -27,7 +27,7 @@ const ProfilePics: React.FC<ProfilePicsProps> = ({ navigate, user }) => {
   return (
     <div onClick={handleProfile}>
     <img
-      src={noprofileImage}
+      src={user && user.image || noprofileImage}
       alt="login user image"
       className="w-10 h-10 rounded-full border border-gray-200 cursor-pointer"
     />
