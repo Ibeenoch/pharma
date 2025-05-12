@@ -165,4 +165,16 @@
       left: calc(var(--slider-width) * -1);
     }
   }
+
+  /* pause the animation:  when user hover ; */
+  .slider:hover .item{
+    animation-play-state: paused;
+    /* when user hover all image or item turns grey color ie black and white  */
+    filter: grayscale(1);
+    cursor: pointer;
+  }
+  /* for the item currently hover it should retain its color  */
+  .slider .item:hover{
+    filter: grayscale(0);
+  }
   }
