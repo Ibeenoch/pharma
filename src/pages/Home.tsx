@@ -6,6 +6,7 @@ import { getCuurentLoginUserData, setNavIndexLink,  } from "../features/auth/aut
 import { useNavigate } from "react-router-dom";
 import { fetchAllProductWithoutPagination, selectproductAdmin } from "../features/admin/product/productSlice";
 import { links } from "../utils/listLink";
+const Testimony = lazy(() =>import("../components/Testimony"));
 const Banner = lazy(() =>import("../components/home/Banner"));
 const HeroSection = lazy(() =>import("../components/home/HeroSection"));
 const Recommendation = lazy(() =>import("../features/product/Recommendation"));
@@ -60,6 +61,7 @@ const Home = () => {
       <TopSelling navigate={navigate} allProduct={allProduct} />
       <DiscountBanner />
       <Brands navigate={navigate} />
+      <Testimony />
       <Faq />
       <Footer />
       <NavHelper />
