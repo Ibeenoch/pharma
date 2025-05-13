@@ -1,12 +1,12 @@
 import { lazy, useEffect, useState } from "react";
-import Search from "../../../assets/icons/search-alt-black.svg?react";
-import Cancel from "../../../assets/icons/cancel-close.svg?react";
-import SearchWhite from "../../../assets/icons/search-alt-white.svg?react";
-import Bag from "../../../assets/icons/order.svg?react";
-import Message from "../../../assets/icons/email.svg?react";
-import ListMessage from "../../../assets/icons/rss.svg?react";
-import Payment from "../../../assets/icons/cash.svg?react";
-import Bell from "../../../assets/icons/bell.svg?react";
+const Search = lazy(() => import("../../../assets/icons/search-alt-black.svg?react"));
+const Cancel = lazy(() => import("../../../assets/icons/cancel-close.svg?react"));
+const SearchWhite = lazy(() => import("../../../assets/icons/search-alt-white.svg?react"));
+const Bag = lazy(() => import("../../../assets/icons/order.svg?react"));
+const Message = lazy(() => import("../../../assets/icons/email.svg?react"));
+const ListMessage = lazy(() => import("../../../assets/icons/rss.svg?react"));
+const Payment = lazy(() => import("../../../assets/icons/cash.svg?react"));
+const Bell = lazy(() => import("../../../assets/icons/bell.svg?react"));
 const CustomText = lazy(() => import("../../common/Text"));
 const CustomInput = lazy(() => import("../../common/Input"));
 import profileImg from "../../../assets/images/noprofileimage.png";
@@ -22,11 +22,11 @@ import { selectproductAdmin } from "../../../features/admin/product/productSlice
 import { ProductDataProps } from "../../../types/product/ProductData";
 import { AllOrderResultData } from "../../../types/order/OrderType";
 import { TransactionProps } from "../../../types/payment/FlutterwavePaymentType";
-import UserSearchList from "./search/UserSearchList";
-import NoResult from "./search/NoResult";
-import ProductSearchList from "./search/ProductSearchList";
-import OrderSearchList from "./search/OrderSearchList";
-import TransactionSearchList from "./search/TransactionSearchList";
+const UserSearchList = lazy(() => import("./search/UserSearchList"));
+const NoResult = lazy(() => import("./search/NoResult"));
+const ProductSearchList = lazy(() => import("./search/ProductSearchList"));
+const OrderSearchList = lazy(() => import("./search/OrderSearchList"));
+const TransactionSearchList = lazy(() => import("./search/TransactionSearchList"));
 
 const NavItems = () => {
   const [search, setSearch] = useState<string>("");
@@ -219,6 +219,7 @@ const searchEntity = () => {
               src={ user && user.image || profileImg}
               alt="dashboard image"
               className="w-10 h-10 rounded-full object-cover cursor-pointer border border-white"
+              loading="lazy"
             />
         </div>
         </div>

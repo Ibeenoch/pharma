@@ -26,6 +26,7 @@ const Brands:React.FC<BrandsProps> = ({ navigate }) => {
                 src={item.companyImage}
                 alt="medication categories"
                 className="w-46 h-auto object-fill bg-white"
+                loading="lazy"
               />
             </div>
             <article>

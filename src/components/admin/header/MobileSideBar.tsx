@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import Cancel from "../../../assets/icons/cancel-slim.svg?react";
+const Cancel = lazy(() => import("../../../assets/icons/cancel-slim.svg?react"));
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {

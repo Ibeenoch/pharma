@@ -1,4 +1,6 @@
-import Checker from "../../assets/icons/check-mark.svg?react";
+import { lazy } from "react";
+const Checker = lazy(() => import("../../assets/icons/check-mark.svg?react"));
+
 interface CheckMarkProps {
   containerSize?: number;
   iconSize?: number;

@@ -1,6 +1,6 @@
 import React, { lazy } from "react";
 const CustomText = lazy(() => import("../../common/Text"));
-import ArrowRight from "../../../assets/icons/arrow-right2.svg?react";
+const ArrowRight = lazy(() => import("../../../assets/icons/arrow-right2.svg?react"));
 import { animateTransition } from "../../../constants/appText";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";

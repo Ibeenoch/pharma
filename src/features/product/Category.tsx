@@ -39,6 +39,7 @@ const handleCategoryNav = (name: string) => {
                 src={item.image}
                 alt="medication categories"
                 className="w-46 h-auto object-fill"
+                loading="lazy"
               />
             </div>
             <article>

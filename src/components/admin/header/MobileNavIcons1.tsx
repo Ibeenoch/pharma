@@ -1,7 +1,7 @@
 import { lazy } from "react";
-import ArrowUp from "../../../assets/icons/arrow-upicon.svg?react";
-import ArrowDown from "../../../assets/icons/arrow-down.svg?react";
-import Logout from "../../../assets/icons/logout.svg?react";
+const ArrowUp = lazy(() => import("../../../assets/icons/arrow-upicon.svg?react"));
+const ArrowDown = lazy(() => import("../../../assets/icons/arrow-down.svg?react"));
+const Logout = lazy(() => import("../../../assets/icons/logout.svg?react"));
 const CustomText = lazy(() => import("../../common/Text"));
 const SubTitle = lazy(() => import("./SubTitle"));
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";

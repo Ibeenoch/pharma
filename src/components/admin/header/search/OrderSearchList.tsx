@@ -1,6 +1,6 @@
 import React, { lazy } from 'react'
 import { AllOrderResultData } from '../../../../types/order/OrderType';
-import Cash from "../../../../assets/icons/cash.svg?react";
+const Cash = lazy(() => import("../../../../assets/icons/cash.svg?react")) ;
 const CustomText = lazy(() => import('../../../common/Text')) ;
 
 

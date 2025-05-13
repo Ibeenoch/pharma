@@ -20,7 +20,7 @@ const CustomText = lazy(() => import("../../common/Text"));
 const TableSkeleton = lazy(() => import("../../common/animations/TableSkeleton"));
 const DateFilter = lazy(() => import("../DateFilter"));
 const Pagination = lazy(() => import("../../Pagination"));
-import Reset from '../../../assets/icons/reset.svg?react'
+const Reset = lazy(() => import('../../../assets/icons/reset.svg?react'));
 interface AllOrdersProps {
   whichType?:
     | "Processing"

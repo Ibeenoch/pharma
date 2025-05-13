@@ -1,6 +1,6 @@
 import React, { lazy } from "react";
 import { useNavigate } from "react-router-dom";
-import Trash from "../../assets/icons/trash-bin.svg?react";
+const Trash = lazy(() => import("../../assets/icons/trash-bin.svg?react"));
 const CustomText = lazy(() => import("../../components/common/Text"));
 const IconAndText = lazy(() => import("../../components/cart/IconAndText"));
 const QtyUpdateBtn = lazy(() => import("../../components/product/QtyUpdateBtn"));
@@ -44,7 +44,7 @@ const CartRowItem: React.FC<CartRowItemProps> = ({
           isCheckOut ? "bg-[#f4f4f4]" : "bg-white"
         } flex justify-center items-center p-2 cursor-pointer rounded-xl`}
       >
-        <img src={image} alt="item in cart" className="w-full h-auto" />
+        <img src={image} alt="item in cart" className="w-full h-auto" loading="lazy" />
       </div>
       <div className="m-auto ">
         <CustomText text={itemTitle} textType="normal" weightType="semibold" />

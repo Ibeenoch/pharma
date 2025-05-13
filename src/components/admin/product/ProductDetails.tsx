@@ -36,6 +36,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
               src={product && product.imagesUrl[0]}
               alt="items-img"
               className="w-7 h-7"
+              loading="lazy"
             />
           </div>
           <div>

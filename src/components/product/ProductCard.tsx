@@ -14,6 +14,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
             src={item && item.imagesUrl && item.imagesUrl[0]}
             alt="medication categories"
             className="w-46 h-auto object-fill"
+            loading='lazy'
             />
         </div>
         <article>

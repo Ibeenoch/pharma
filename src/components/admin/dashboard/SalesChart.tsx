@@ -24,7 +24,6 @@ interface SalesChartProps{
 
 const SalesChart: React.FC<SalesChartProps> = ({ orders }) => {
   const orderMapped = mappedSales(orders);
-  console.log('all orders ', orderMapped)
   // Function to transform data into chart format
   const processData = (data: typeof salesData) => {
     
