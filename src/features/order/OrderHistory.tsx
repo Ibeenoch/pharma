@@ -29,7 +29,7 @@ const OrderHistory = () => {
   useEffect(() => {
     if (userId && pageNum >= 0) {
       const orderData: OrderPaginatedArgs = { userId, page: pageNum}
-      dispatch(getAllOrder(orderData)).then((res) => console.log('get order ', res.payload));
+      dispatch(getAllOrder(orderData))
     }
 
   }, [pageNum]);
@@ -64,9 +64,7 @@ const OrderHistory = () => {
         <div className="md:flex md:justify-between my-3">
         <DateFilter setEnded={setEnded} setStarted={setStarted} applyCallback={handleOrderFilter} started={started} ended={ended} />
 
-          <div className="w-[300px] px-2 my-1">
-            <CustomButton text="Apply" fullwidth={true} onClick={handleOrderFilter} />
-          </div>
+         
         </div>
        {
         status === 'loading' ? <TableSkeleton /> : (

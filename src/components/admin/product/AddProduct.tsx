@@ -225,7 +225,7 @@ const AddProduct = () => {
       className="my-3 block w-full mx-auto md:grid grid-cols-[58%_41%] gap-3"
       onSubmit={handleProductFormSubmit}
     >
-      <div className="w-full">
+      <div className="w-full pt-2">
         <section className={`${lightgrayBgColor} w-full p-4 rounded-xl mb-3  pb-8`}>
           <CustomText
             text="General information"
@@ -375,7 +375,7 @@ const AddProduct = () => {
         </section>
       </div>
       {/* image, categories and brands */}
-      <div>
+      <div className="pb-4">
         <section className={`${lightgrayBgColor} p-4 rounded-xl pb-8`}>
           <div className="flex items-center gap-2">
             <CustomText

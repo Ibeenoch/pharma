@@ -213,7 +213,7 @@ const Register = () => {
           text={`Sign up to ${COMPANY_NAME}`}
           textType="medium"
           weightType="bold"
-          extraStyle="text-center"
+          extraStyle="text-center pt-6"
         />
       </article>
 
@@ -357,24 +357,34 @@ const Register = () => {
           />
         )}
 
-      <article className="mx-auto flex items-center " >
+      <article className="flex items-center " >
         <CustomText
-          text={`You already have an account`}
+          text={`You already have an account ?`}
           textType="normal"
           weightType="medium"
           color="text-gray-600"
           extraStyle="text-[14px]"
         />
-        <CustomText
+        &nbsp;
+        <div onClick={switchToLoginPage}>
+          <CustomText
+            text={`Login here!`}
+            textType="normal"
+            weightType="medium"
+            color="text-amber-600"
+            extraStyle="text-[14px]"
+          />
+        </div>
+        {/* <CustomText
           textType="normal"
           weightType="medium"
           isTwoSpanText={true}
-          leftText="you can"
+          leftText="You already have an account? you can"
           rightText="login here!"
           color="text-gray-600"
           extraStyle="text-[14px]"
           rightTextFunc={switchToLoginPage}
-        />
+        /> */}
       </article>
 
         <div className="flex gap-1 my-5 items-center justify-center">
