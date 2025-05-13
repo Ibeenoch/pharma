@@ -1,6 +1,6 @@
 import React, { lazy } from "react";
-import Cart from "../../assets/icons/cart-fill-white.svg?react";
-import Fave from "../../assets/icons/heart-fill-3.svg?react";
+const Cart = lazy(() =>import("../../assets/icons/cart-fill-white.svg?react"));
+const Fave = lazy(() =>import("../../assets/icons/heart-fill-3.svg?react"));
 const CustomText = lazy(() =>import('../common/Text'));
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { selectCart } from "../../features/cart/cartSlice";
@@ -36,7 +36,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({
       className="p-4 bg-white rounded-lg  md:mx-0 cursor-pointer"
     >
       <div className="p-2 bg-[#fbfcf8] rounded-md flex justify-center h-30 md:h-40  items-center">
-        <img src={productImage} alt="cart image" className="w-25 md:w-25 h-auto" />
+        <img src={productImage} alt="cart image" className="w-25 md:w-25 h-auto" loading="lazy" />
       </div>
       <div>
         <div className="md:hidden">
