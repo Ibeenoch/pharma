@@ -8,7 +8,7 @@ import {
 import { animateTransition } from "../../../constants/appText";
 import { selectAuth } from "../../../features/auth/authSlice";
 import CompanyLogo from "../../common/CompanyLogo";
-import NavIcons from "./MobileNavIcons";
+import NavIcons from "./NavIcons";
 
 interface SideBarProps {
   shouldMinimize: boolean;
