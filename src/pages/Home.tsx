@@ -43,7 +43,7 @@ const Home = () => {
       // when the user visit the page move the page to the top
       window.scrollTo(0,0);
       // set the correct navbar active text
-      fetchAllProductWithoutPagination()
+      dispatch(fetchAllProductWithoutPagination());
       dispatch(setNavIndexLink({ name: links[0].name, index: 0 }));
     },[])
 
