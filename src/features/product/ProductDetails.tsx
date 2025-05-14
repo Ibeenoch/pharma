@@ -162,8 +162,8 @@ const ProductDetails = () => {
 
             {product &&
               product.item &&
-              product.item.imagesUrl &&
-              product.item.imagesUrl.map((img, index) => (
+              product.item.imagesUrl && Array.isArray(product.item.imagesUrl) &&
+              product.item.imagesUrl.filter((p) => p !== undefined).map((img, index) => (
                 <div onClick={() => handleImgClick(index)}>
                   <PreviewImage img={img} />
                 </div>
