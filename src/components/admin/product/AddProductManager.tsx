@@ -1,6 +1,4 @@
-import { lazy } from "react";
-const AddProduct = lazy(() => import("./AddProduct"));
-
+import AddProduct from "./AddProduct";
 
 const AddProductManager = () => {
   return (

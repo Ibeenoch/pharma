@@ -1,7 +1,7 @@
-import React, { lazy } from "react";
-const CustomText = lazy(() => import("../../common/Text"));
+import React from "react";
 import { AllOrderUserResultData } from "../../../types/order/OrderType";
 import {  formatDateWithOrdinal } from "../../../utils/dateFormatter";
+import CustomText from "../../common/Text";
 
 interface CustomerOrderDetailsProps {
   order: AllOrderUserResultData | undefined;

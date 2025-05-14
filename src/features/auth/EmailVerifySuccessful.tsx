@@ -1,10 +1,9 @@
-import { lazy, useEffect } from "react";
+import { useEffect } from "react";
 import { MARGIN_TOP } from "../../constants/appText";
 import emailpics from "../../assets/images/emailverify.png";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { emailVerifing } from "./authSlice";
-const CustomText = lazy(() =>import('../../components/common/Text'));
-
+import CustomText from "../../components/common/Text";
 
 const EmailVerifySuccessful = () => {
   const dispatch = useAppDispatch();

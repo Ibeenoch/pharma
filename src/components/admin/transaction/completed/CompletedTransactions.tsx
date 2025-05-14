@@ -1,6 +1,4 @@
-import { lazy } from "react";
-const AllTransactions = lazy(() => import("../all/AllTransactions"));
-
+import AllTransactions from "../all/AllTransactions";
 
 const CompletedTransactions = () => {
   return <AllTransactions whichType="successful" />;

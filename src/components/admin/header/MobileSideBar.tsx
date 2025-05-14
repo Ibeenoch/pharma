@@ -1,15 +1,14 @@
-import { lazy } from "react";
-const Cancel = lazy(() => import("../../../assets/icons/cancel-slim.svg?react"));
+import Cancel from "../../../assets/icons/cancel-slim.svg?react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
   selectAdmin,
   setSideBarIndex,
 } from "../../../features/admin/adminSlice";
-const CompanyLogo = lazy(() => import("../../common/CompanyLogo"));
 import { animateTransition } from "../../../constants/appText";
 import MobileNavIcons from "./MobileNavIcons1";
 import { selectAuth } from "../../../features/auth/authSlice";
+import CompanyLogo from "../../common/CompanyLogo";
 
 interface MobileSideBarProps {
   showSideBar: boolean;

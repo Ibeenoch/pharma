@@ -1,7 +1,8 @@
-import React, { lazy } from "react";
+import React from "react";
 import { adminDefaultBgColor } from "../../../constants/appColor";
-const CustomText = lazy(() => import("../../common/Text"));
-const NavItems = lazy(() => import("./NavItems"));
+import CustomText from "../../common/Text";
+import NavItems from "./NavItems";
+
 
 
 

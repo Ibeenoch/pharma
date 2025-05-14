@@ -1,6 +1,6 @@
 import SignOut from "../../assets/icons/logout.svg?react";
-import React, { lazy } from "react";
-const CustomText = lazy(() => import("./Text"));
+import React from "react";
+import CustomText from "./Text";
 
 interface LogoutProps {
   handleLogout: () => void;

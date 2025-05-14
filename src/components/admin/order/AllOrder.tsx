@@ -1,4 +1,4 @@
-import { lazy, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { orderListsColumn } from "../../../utils/admin/order/orderLists";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
@@ -15,12 +15,13 @@ import {
   OrderPaginatedArgs,
   OrderPaginatedFilteredArgs,
 } from "../../../types/order/OrderType";
-const Table = lazy(() => import("../../common/Table"));
-const CustomText = lazy(() => import("../../common/Text"));
-const TableSkeleton = lazy(() => import("../../common/animations/TableSkeleton"));
-const DateFilter = lazy(() => import("../DateFilter"));
-const Pagination = lazy(() => import("../../Pagination"));
-const Reset = lazy(() => import('../../../assets/icons/reset.svg?react'));
+
+import Reset from '../../../assets/icons/reset.svg?react';
+import TableSkeleton from "../../common/animations/TableSkeleton";
+import DateFilter from "../DateFilter";
+import Table from "../../common/Table";
+import Pagination from "../../Pagination";
+import CustomText from "../../common/Text";
 interface AllOrdersProps {
   whichType?:
     | "Processing"

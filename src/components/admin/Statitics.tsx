@@ -1,5 +1,5 @@
 import React, { lazy } from 'react'
-const CustomText = lazy(() => import("../common/Text"));
+import CustomText from '../common/Text';
 
 
 interface StatiticsProps {

@@ -1,9 +1,9 @@
-import React, { lazy } from "react";
+import React from "react";
 import Menu from "../../../assets/icons/about.svg?react";
 import Trash from "../../../assets/icons/trash-filled.svg?react";
 import { useAppDispatch } from "../../../hooks/reduxHooks";
 import { deleteATransaction } from "../../../features/order/orderSlice";
-const CustomText = lazy(() => import("../../common/Text"));
+import CustomText from "../../common/Text";
 
 
 export interface TransactionCardProps {

@@ -15,12 +15,12 @@ import { OrderPaginatedArgs } from "../../../../types/order/OrderType";
 import Reset from '../../../../assets/icons/reset.svg?react'
 import { TransactionDateFilterProps } from "../../../../types/payment/FlutterwavePaymentType";
 import NoResult from "../../header/search/NoResult";
-const DateFilter = lazy(() => import("../../DateFilter"));
-const CustomText = lazy(() => import("../../../common/Text"));
-const TransactionCard = lazy(() => import("../TransactionCard"));
-const Modal = lazy(() => import("../../../common/Modal"));
-const TransactionDetails = lazy(() => import("../TransactionDetails"));
-const TransactionsSkeleton = lazy(() => import("../../../common/animations/TransactionsSkeleton"));
+import TransactionsSkeleton from "../../../common/animations/TransactionsSkeleton";
+import DateFilter from "../../DateFilter";
+import TransactionCard from "../TransactionCard";
+import Modal from "../../../common/Modal";
+import TransactionDetails from "../TransactionDetails";
+import CustomText from "../../../common/Text";
 
 interface AllTransactionsProps {
   whichType?: "pending" | "cancelled" | "successful" | "failed" | "all";

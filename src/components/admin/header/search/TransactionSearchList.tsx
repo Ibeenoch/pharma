@@ -1,7 +1,7 @@
-import React, { lazy } from 'react'
+import React from 'react'
 import { TransactionProps } from '../../../../types/payment/FlutterwavePaymentType';
 import Orders from "../../../../assets/icons/order.svg?react";
-const CustomText = lazy(() => import('../../../common/Text')) ;
+import CustomText from '../../../common/Text';
 
 interface TransactionSearchListProps{
     transaction: TransactionProps;

@@ -1,7 +1,6 @@
-import { lazy } from "react";
 import { links } from "../../utils/listLink";
-const Lists = lazy(() => import("../common/Lists"));
-const SearchBar = lazy(() => import("./SearchBar"));
+import Lists from "../common/Lists";
+import SearchBar from "./SearchBar";
 
 const NavLinks = () => {
 

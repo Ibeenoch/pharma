@@ -1,9 +1,9 @@
-import React, { lazy } from "react";
-const CustomText = lazy(() => import("../../common/Text"));
+import React from "react";
 import { formatDate } from "../../../utils/dateFormatter";
 import { AllOrderResultData } from "../../../types/order/OrderType";
 import { TransactionProps } from "../../../types/payment/FlutterwavePaymentType";
 import { formatWithCommas } from "../../../utils/formatAmount";
+import CustomText from "../../common/Text";
 
 interface TransactionDetailsProps {
   order: AllOrderResultData;
@@ -14,7 +14,7 @@ const TransactionDetails: React.FC<TransactionDetailsProps> = ({
   transactions,
   order,
 }) => {
-  console.log('transactions ', transactions, 'order ', order)
+
   return (
     <div className="">
       <CustomText

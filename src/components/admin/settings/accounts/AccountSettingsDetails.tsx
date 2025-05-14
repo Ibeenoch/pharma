@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   adminDefaultBgColor,
   lightgrayBgColor,
@@ -7,14 +8,13 @@ import img from "../../../../assets/images/noprofileimage.png";
 import LongArrow from "../../../../assets/icons/arrow-up.svg?react";
 import Plus from "../../../../assets/icons/plus-slim.svg?react";
 import Times from "../../../../assets/icons/cancel-close.svg?react";
-import { lazy, useState } from "react";
 import { useAppSelector } from "../../../../hooks/reduxHooks";
 import { selectAuth } from "../../../../features/auth/authSlice";
-const CustomText = lazy(() => import("../../../common/Text"));
-const CustomInput = lazy(() => import("../../../common/Input"));
-const CustomButton = lazy(() => import("../../../common/Button"));
-const Modal = lazy(() => import("../../../common/Modal"));
-const PasswordReset = lazy(() => import("./PasswordReset"));
+import CustomText from "../../../common/Text";
+import CustomInput from "../../../common/Input";
+import CustomButton from "../../../common/Button";
+import Modal from "../../../common/Modal";
+import PasswordReset from "./PasswordReset";
 
 const AccountSettingsDetails = () => {
   const { user } = useAppSelector(selectAuth);

@@ -1,8 +1,8 @@
-import React, { FormEvent, lazy } from "react";
+import React, { FormEvent } from "react";
 import Times from "../../../../assets/icons/cancel-close.svg?react";
-const CustomText = lazy(() => import("../../../common/Text"));
-const CustomInput = lazy(() => import("../../../common/Input"));
-const CustomButton = lazy(() => import("../../../common/Button"));
+import CustomText from "../../../common/Text";
+import CustomInput from "../../../common/Input";
+import CustomButton from "../../../common/Button";
 
 interface PasswordResetProps {
   setCurrentPassword: React.Dispatch<React.SetStateAction<string>>;

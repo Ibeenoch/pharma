@@ -1,8 +1,6 @@
-import { lazy } from 'react';
-const PendingTransactions = lazy(() => import('./PendingTransactions'));
-const AdminLayout = lazy(() => import('../../../../features/admin/dashboard/AdminLayout'));
-const TransactionLayout = lazy(() => import('../TransactionLayout'));
-
+import AdminLayout from "../../../../features/admin/dashboard/AdminLayout"
+import TransactionLayout from "../TransactionLayout"
+import PendingTransactions from "./PendingTransactions"
 
 const PendingTransactionManagement = () => {
   return (

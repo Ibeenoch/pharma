@@ -1,8 +1,8 @@
-import React, { lazy } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { animateTransition, COMPANY_NAME } from "../../constants/appText";
 import Plus from "../../assets/icons/cross-fig.svg?react";
-const CustomText = lazy(() => import("./Text"));
+import CustomText from "./Text";
 
 interface CompanyLogoProps {
   textColor?: string;

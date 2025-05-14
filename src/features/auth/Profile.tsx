@@ -1,4 +1,4 @@
-import { ChangeEvent, lazy, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import img2 from "../../assets/images/noprofileimage.png";
 import Home from "../../assets/icons/home2.svg?react";
 import Cart from "../../assets/icons/cart-shopping.svg?react";
@@ -17,11 +17,10 @@ import { lightgrayBgColor } from "../../constants/appColor";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { addProfilePics, logoutUser, resetUserState, selectAuth, toggleProfileTocheckOut } from "./authSlice";
 import { getShippingDetails, resetShippingDetails, selectOrder } from "../order/orderSlice";
-const LargeImageSize = lazy(() => import("../../components/common/LargeImageSize"));
-const CustomText = lazy(() => import("../../components/common/Text"));
-const ProfileLists = lazy(() => import("../../components/auth/ProfileLists"));
-const Logout = lazy(() => import("../../components/common/Logout"));
-
+import LargeImageSize from "../../components/common/LargeImageSize";
+import CustomText from "../../components/common/Text";
+import ProfileLists from "../../components/auth/ProfileLists";
+import Logout from "../../components/common/Logout";
 
 const Profile = () => {
   const [imageFiles, setImageFiles] = useState<File[]>([])

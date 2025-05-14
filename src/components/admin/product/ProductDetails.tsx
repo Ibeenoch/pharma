@@ -1,6 +1,6 @@
-import React, { lazy } from "react";
-const CustomText = lazy(() => import('../../common/Text'));
+import React from "react";
 import { mappedProductProps } from "../../../types/product/ProductData";
+import CustomText from "../../common/Text";
 
 interface ProductDetailsProps {
   product: mappedProductProps | undefined;

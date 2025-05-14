@@ -1,6 +1,5 @@
-import React, { lazy } from "react";
-const CustomText = lazy(() => import("./Text"));
-
+import React from "react";
+import CustomText from "./Text";
 
 interface DrugTabProps {
   topText: string;

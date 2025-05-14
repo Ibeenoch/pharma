@@ -1,7 +1,7 @@
-import React, { lazy } from 'react'
+import React from 'react'
 import { AllOrderResultData } from '../../../../types/order/OrderType';
-const Cash = lazy(() => import("../../../../assets/icons/cash.svg?react")) ;
-const CustomText = lazy(() => import('../../../common/Text')) ;
+import CustomText from '../../../common/Text';
+import Cash from "../../../../assets/icons/cash.svg?react";
 
 
 interface OrderSearchListProps {

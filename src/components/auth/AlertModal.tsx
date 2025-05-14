@@ -1,6 +1,6 @@
-import React, { lazy } from "react";
-const Mark = lazy(() => import("../../assets/icons/check-mark.svg?react"));
-const Danger = lazy(() => import("../../assets/icons/exclamation-mark.svg?react"));
+import React from "react";
+import Mark from "../../assets/icons/check-mark.svg?react";
+import Danger from "../../assets/icons/exclamation-mark.svg?react";
 
 interface AlertModalProps {
   isSuccess: boolean;

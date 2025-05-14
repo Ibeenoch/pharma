@@ -1,4 +1,4 @@
-import { lazy, useState } from "react";
+import { useState } from "react";
 import Menu from "../../assets/icons/menu.svg?react";
 import Cancel from "../../assets/icons/cancel-close.svg?react";
 import ShoppingCart from "../../assets/icons/cart-shopping.svg?react";
@@ -16,13 +16,14 @@ import {
   selectAuth,
 } from "../../features/auth/authSlice";
 import { selectCart } from "../../features/cart/cartSlice";
-const WishList = lazy(() => import("../common/WishList"));
-const Cart = lazy(() => import("../common/Cart"));
-const CustomButton = lazy(() => import("../common/Button"));
-const MobileNavList = lazy(() => import("./MobileNavList"));
-const Logout = lazy(() => import("../common/Logout"));
-const SearchBar = lazy(() => import("./SearchBar"));
-const ProfilePics = lazy(() => import("./ProfilePics"));
+import WishList from "../common/WishList";
+import Cart from "../common/Cart";
+import Logout from "../common/Logout";
+import ProfilePics from "./ProfilePics";
+import SearchBar from "./SearchBar";
+import MobileNavList from "./MobileNavList";
+import CustomButton from "../common/Button";
+
 
 
 const MobileNav = () => {

@@ -1,12 +1,12 @@
-import React, { lazy } from "react";
+import React from "react";
 import { cartProps, ProductDataProps } from "../../types/product/ProductData";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { addToCart, selectCart } from "../../features/cart/cartSlice";
-const Trash = lazy(() => import("../../assets/icons/trash-filled.svg?react"));
-const ShoppinCart = lazy(() => import("../../assets/icons/cart-fill-white.svg?react"));
-const IconAndText = lazy(() => import("./IconAndText"));
-const CustomButton = lazy(() => import("../common/Button"));
-const CustomText = lazy(() => import("../common/Text"));
+import Trash from "../../assets/icons/trash-filled.svg?react";
+import ShoppinCart from "../../assets/icons/cart-fill-white.svg?react";
+import CustomText from "../common/Text";
+import CustomButton from "../common/Button";
+import IconAndText from "./IconAndText";
 
 interface WishListRowItemProps {
   wishlistData:  ProductDataProps[];

@@ -1,16 +1,16 @@
-import { ChangeEvent, useEffect, useState, lazy } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { MARGIN_TOP } from "../../constants/appText";
 import manWalk from "../../assets/images/resetpassword.png";
-const CustomInput = lazy(() => import('../../components/common/Input'));
-const CustomText = lazy(() => import("../../components/common/Text"));
-const CustomButton = lazy(() => import("../../components/common/Button"));
 import Lock from "../../assets/icons/lock.svg?react";
 import { validator } from "../../utils/validator";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { hidePasswordResetModal, passwordReset, selectAuth } from "./authSlice";
-const AlertModal = lazy(() =>import("../../components/auth/AlertModal"));
-const Toast = lazy(() =>import("../../components/common/Toast"));
+import CustomText from "../../components/common/Text";
+import CustomInput from "../../components/common/Input";
+import Toast from "../../components/common/Toast";
+import AlertModal from "../../components/auth/AlertModal";
+import CustomButton from "../../components/common/Button";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState<string>("");

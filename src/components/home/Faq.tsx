@@ -1,9 +1,9 @@
-import { lazy, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomText from "../common/Text";
 import Cancel from "../../assets/icons/cancel-slim.svg?react"
 import Plus from "../../assets/icons/plus-slim.svg?react"
-const CustomButton = lazy(() =>import("../common/Button"));
+import CustomButton from "../common/Button";
 
 const Faq = () => {
   const [indexClicked, setIndexClicked] = useState<number | null>();

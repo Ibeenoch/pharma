@@ -1,6 +1,6 @@
-import React, { lazy } from "react";
-const CustomText = lazy(() => import("../common/Text"));
+import React from "react";
 import ArrowRight from "../../assets/icons/arrow-right2.svg?react";
+import CustomText from "../common/Text";
 
 interface MobileNavListProps {
   Icon: React.FunctionComponent<

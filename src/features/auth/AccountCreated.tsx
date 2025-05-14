@@ -1,7 +1,6 @@
-import { lazy } from "react";
 import successImg from '../../assets/images/successpay.png';
-const CustomButton = lazy(() =>import('../../components/common/Button'));
-const CustomText = lazy(() =>import('../../components/common/Text'));
+import CustomButton from '../../components/common/Button';
+import CustomText from '../../components/common/Text';
 
 const AccountCreated = () => {
   return (

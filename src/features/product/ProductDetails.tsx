@@ -1,4 +1,4 @@
-import { useState, lazy, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { MARGIN_TOP } from "../../constants/appText";
 import Clock from "../../assets/icons/clock.svg?react";
 import Quantity from "../../assets/icons/product.svg?react";
@@ -26,12 +26,12 @@ import {
 } from "../../types/product/ProductData";
 import CustomText from "../../components/common/Text";
 import CustomButton from "../../components/common/Button";
-const LargeImageSize = lazy(() => import("../../components/common/LargeImageSize"));
-const PreviewImage = lazy(() => import("../../components/common/PreviewImage"));
-const SingleProduct = lazy(() => import("../../components/product/SingleProduct"));
-const IconShowList = lazy(() => import("../../components/product/IconShowList"));
-const QtyProductUpdateBtn = lazy(() => import("../../components/product/QtyProductUpdateBtn"));
-const QtyUpdateBtn = lazy(() => import("../../components/product/QtyUpdateBtn"));
+import LargeImageSize from "../../components/common/LargeImageSize";
+import PreviewImage from "../../components/common/PreviewImage";
+import QtyProductUpdateBtn from "../../components/product/QtyProductUpdateBtn";
+import IconShowList from "../../components/product/IconShowList";
+import QtyUpdateBtn from "../../components/product/QtyUpdateBtn";
+import SingleProduct from "../../components/product/SingleProduct";
 
 const ProductDetails = () => {
   const [qty, setQty] = useState<number>(1);

@@ -1,14 +1,8 @@
-import { FormEvent, lazy, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import {
   lightgrayBgColor,
 } from "../../../constants/appColor";
-
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
-const CustomText = lazy(() => import("../../common/Text"));
-const CustomButton = lazy(() => import("../../common/Button"));
-const CustomInput = lazy(() => import("../../common/Input"));
-const CustomTextArea = lazy(() => import("../../common/TextArea"));
-const SelectedTab = lazy(() => import("../users/SelectedTab"));
 import {
   createPrescription,
   fetchAllPrescriptionsWithoutPagination,
@@ -21,6 +15,11 @@ import { ageRangeArr, dosageArr, dosageFormArr, durationArr, frequencyArr, metho
 import {  selectAuth } from "../../../features/auth/authSlice";
 import { PrescriptionProps } from "../../../types/product/ProductData";
 import { updatePrescription } from "../../../features/admin/product/productSlice";
+import CustomText from "../../common/Text";
+import CustomInput from "../../common/Input";
+import CustomTextArea from "../../common/TextArea";
+import SelectedTab from "../users/SelectedTab";
+import CustomButton from "../../common/Button";
 
 
 

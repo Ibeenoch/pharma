@@ -1,12 +1,12 @@
-import React, { lazy } from "react";
+import React from "react";
 import { lightgrayBgColor } from "../../../constants/appColor";
-const CustomText = lazy(() => import('../../common/Text'));
-const CustomSelect = lazy(() => import("../../common/Select"));
 import { validator } from "../../../utils/validator";
 import {
   productBrands,
   productCategories,
 } from "../../../utils/admin/product/productList";
+import CustomText from "../../common/Text";
+import CustomSelect from "../../common/Select";
 
 interface BrandOrCategoryProps {
   isBrand: boolean;

@@ -1,8 +1,7 @@
-import { lazy } from 'react';
 import { useNavigate } from 'react-router-dom'
 import image404 from '../../assets/images/404.png'
-const CustomButton = lazy(() => import('./Button'));
-const CustomText = lazy(() => import('./Text'));
+import CustomText from './Text'
+import CustomButton from './Button'
 
 
 const NotFound = () => {

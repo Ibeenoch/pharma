@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, lazy, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { validator } from "../../../utils/validator";
 import { lightgrayBgColor } from "../../../constants/appColor";
 import NoImage from "../../../assets/icons/picture-filled.svg?react";
@@ -15,11 +15,11 @@ import {
 } from "../../../features/admin/product/productSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { setTitleIndex } from "../../../features/admin/adminSlice";
-const CustomText = lazy(() => import("../../common/Text"));
-const CustomInput = lazy(() => import("../../common/Input"));
-const CustomTextArea = lazy(() => import("../../common/TextArea"));
-const BrandOrCategory = lazy(() => import("./BrandOrCategory"));
-const CustomButton = lazy(() => import("../../common/Button"));
+import CustomTextArea from "../../common/TextArea";
+import CustomInput from "../../common/Input";
+import CustomText from "../../common/Text";
+import BrandOrCategory from "./BrandOrCategory";
+import CustomButton from "../../common/Button";
 
 const AddProduct = () => {
   const { user } = useAppSelector(selectAuth);

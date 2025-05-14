@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, lazy, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import MaginifyGlass from "../../assets/icons/search-alt-white.svg?react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import {
@@ -7,7 +7,7 @@ import {
 } from "../../features/admin/product/productSlice";
 import { mappedSearchResult } from "../../utils/admin/product/productMap";
 import { useNavigate } from "react-router-dom";
-const SearchResult = lazy(() => import("./SearchResult"));
+import SearchResult from "./SearchResult";
 
 const SearchBar = () => {
   const [searchWord, setSearchWord] = useState<string>("");

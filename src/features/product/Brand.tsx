@@ -1,12 +1,12 @@
-import { lazy, useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { searchedProductBrand, selectproductAdmin } from "../admin/product/productSlice";
 import { CartProductDataProps, cartProps } from "../../types/product/ProductData";
 import { addToCart, addTowishlist } from "../cart/cartSlice";
 import NoResult from "../../components/admin/header/search/NoResult";
-const CustomText = lazy(() => import("../../components/common/Text"));
-const SingleProduct = lazy(() => import("../../components/product/SingleProduct"));
+import CustomText from "../../components/common/Text";
+import SingleProduct from "../../components/product/SingleProduct";
 
 const Brand = () => {
   const { name } = useParams();

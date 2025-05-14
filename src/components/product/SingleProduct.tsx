@@ -1,9 +1,9 @@
-import React, { lazy } from "react";
-const Cart = lazy(() =>import("../../assets/icons/cart-fill-white.svg?react"));
-const Fave = lazy(() =>import("../../assets/icons/heart-fill-3.svg?react"));
-const CustomText = lazy(() =>import('../common/Text'));
+import React from "react";
+import Cart from "../../assets/icons/cart-fill-white.svg?react";
+import Fave from "../../assets/icons/heart-fill-3.svg?react";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { selectCart } from "../../features/cart/cartSlice";
+import CustomText from "../common/Text";
 
 interface SingleProductProps {
   productImage: string;

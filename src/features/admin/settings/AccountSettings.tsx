@@ -1,5 +1,4 @@
-import { lazy } from "react";
-const AccountSettingManagement = lazy(() =>import("../../../components/admin/settings/accounts/AccountSettingManagement"));
+import AccountSettingManagement from "../../../components/admin/settings/accounts/AccountSettingManagement";
 
 const AccountSettings = () => {
   return <AccountSettingManagement />;

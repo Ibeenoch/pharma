@@ -1,4 +1,3 @@
-import { lazy } from "react";
 import {
   Bar,
   BarChart,
@@ -7,7 +6,6 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
-const CustomText = lazy(() => import("../../common/Text"));
 import { salesData } from "../../../utils/admin/dashBoardLists";
 import {
   darkblue,
@@ -16,14 +14,13 @@ import {
   darkyellow,
 } from "../../../constants/appColor";
 import { AllOrderResultData } from "../../../types/order/OrderType";
-import { mappedSales } from "../../../utils/orders/orderHistoryMap";
+import CustomText from "../../common/Text";
 
 interface SalesChartProps{
   orders: AllOrderResultData[]
 }
 
-const SalesChart: React.FC<SalesChartProps> = ({ orders }) => {
-  const orderMapped = mappedSales(orders);
+const SalesChart: React.FC<SalesChartProps> = ({  }) => {
   // Function to transform data into chart format
   const processData = (data: typeof salesData) => {
     

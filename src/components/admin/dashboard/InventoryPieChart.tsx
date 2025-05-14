@@ -2,7 +2,7 @@ import React, { lazy } from "react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { inventoryData } from "../../../utils/admin/dashBoardLists";
 import { ProductDataProps } from "../../../types/product/ProductData";
-const CustomText = lazy(() => import("../../common/Text"));
+import CustomText from "../../common/Text";
 
 interface InventoryPieChartProps {
    allProduct: ProductDataProps[]

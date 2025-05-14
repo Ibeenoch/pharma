@@ -1,16 +1,17 @@
-import { lazy, useEffect } from "react";
+import { useEffect } from "react";
 import { adminDefaultBgColor } from "../../../constants/appColor";
 import { selectproductAdmin } from "../../../features/admin/product/productSlice";
-import { calcualateTotalRevenue, getAllOrder, getAllOrderWithoutPagination, selectOrder } from "../../../features/order/orderSlice";
+import { calcualateTotalRevenue, getAllOrderWithoutPagination, selectOrder } from "../../../features/order/orderSlice";
 import {  useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { cardLists } from "../../../utils/admin/dashBoardLists";
-const BodyCard = lazy(() => import("./BodyCard"));
-const InventoryPieChart = lazy(() => import("./InventoryPieChart"));
-const RecentPayment = lazy(() => import("./RecentPayment"));
-const SalesChart = lazy(() => import("./SalesChart"));
+
 import { formatWithCommas } from "../../../utils/formatAmount";
 import {  selectAuth } from "../../../features/auth/authSlice";
 import { setSideBarIndex } from "../../../features/admin/adminSlice";
+import BodyCard from "./BodyCard";
+import SalesChart from "./SalesChart";
+import InventoryPieChart from "./InventoryPieChart";
+import RecentPayment from "./RecentPayment";
 
 const Body = () => {
   const { allProduct } = useAppSelector(selectproductAdmin);

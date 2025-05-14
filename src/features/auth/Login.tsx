@@ -10,11 +10,11 @@ import { validator } from "../../utils/validator";
 import { useAppDispatch, } from "../../hooks/reduxHooks";
 import { facebookLogin, googleLogin, loginUser, } from "./authSlice";
 import { UserDataProps } from "../../types/auth/UserData";
-const AlertModal = lazy(() =>import("../../components/auth/AlertModal"));
-const Toast = lazy(() =>import("../../components/common/Toast"));
-const CustomInput = lazy(() => import('../../components/common/Input'));
-const CustomText = lazy(() => import("../../components/common/Text"));
-const CustomButton = lazy(() => import("../../components/common/Button"));
+import CustomText from "../../components/common/Text";
+import CustomInput from "../../components/common/Input";
+import CustomButton from "../../components/common/Button";
+import Toast from "../../components/common/Toast";
+import AlertModal from "../../components/auth/AlertModal";
 
 interface LoginProps {
   redirectUrl?: string;

@@ -1,6 +1,6 @@
-import React, { lazy } from 'react'
+import React from 'react'
 import { ProductDataProps } from '../../../../types/product/ProductData'
-const CustomText = lazy((() =>import('../../../common/Text'))) ;
+import CustomText from '../../../common/Text';
 
 interface ProductSearchListProps {
     product: ProductDataProps;

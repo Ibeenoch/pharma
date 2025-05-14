@@ -1,9 +1,9 @@
-import React, { lazy } from "react";
+import React from "react";
 import Mark from "../../assets/icons/check-mark.svg?react";
 import Danger from "../../assets/icons/exclamation-mark.svg?react";
 import Cart from "../../assets/icons/cart-fill-white.svg?react";
 import Fave from "../../assets/icons/heart.svg?react";
-const CustomText = lazy(() => import("./Text"));
+import CustomText from "./Text";
 
 
 interface AnimatedToastProps {

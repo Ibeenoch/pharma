@@ -1,7 +1,7 @@
-import { lazy } from "react";
-const AdminLayout = lazy(() =>import('../dashboard/AdminLayout'));
-const OrderLayout = lazy(() =>import("../../../components/admin/order/OrderLayout"));
-const PendingOrder = lazy(() =>import("../../../components/admin/order/PendingOrder"));
+import OrderLayout from "../../../components/admin/order/OrderLayout";
+import PendingOrder from "../../../components/admin/order/PendingOrder";
+import AdminLayout from "../dashboard/AdminLayout";
+
 
 const PendingOrderManagement = () => {
   return (

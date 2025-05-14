@@ -1,8 +1,8 @@
-import React, { lazy } from 'react'
-const CustomText = lazy(() => import("../../../common/Text"));
-const Users = lazy(() => import('../../../../assets/icons/user.svg?react'));
-const Email = lazy(() => import('../../../../assets/icons/email.svg?react'));
+import React from 'react'
+import Users from '../../../../assets/icons/user.svg?react';
+import Email from '../../../../assets/icons/email.svg?react';
 import { UserDataProps } from '../../../../types/auth/UserData';
+import CustomText from '../../../common/Text';
 
 interface UserSearchListProps {
   user: UserDataProps;

@@ -1,14 +1,15 @@
-import { lazy, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getAllTransaction,  selectOrder, totalTrasactionPages } from "../../../features/order/orderSlice";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
   paymentColumns,
 } from "../../../utils/admin/dashBoardLists";
 import { mappedDashboardRecentTransaction } from "../../../utils/admin/transaction/mappedTransaction";
-const Table = lazy(() => import("../../common/Table"));
-const CustomText = lazy(() => import("../../common/Text"));
-const TableSkeleton = lazy(() => import("../../common/animations/TableSkeleton"));
-const Pagination = lazy(() => import("../../Pagination"));
+import CustomText from "../../common/Text";
+import TableSkeleton from "../../common/animations/TableSkeleton";
+import Table from "../../common/Table";
+import Pagination from "../../Pagination";
+
 
 const RecentPayment = () => {
   const { transactions, totalTransactionPage, status } = useAppSelector(selectOrder);
