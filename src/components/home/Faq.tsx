@@ -1,8 +1,8 @@
 import { lazy, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-const Cancel = lazy(() =>import("../../assets/icons/cancel-slim.svg?react"));
-const Plus = lazy(() =>import("../../assets/icons/plus-slim.svg?react"));
-const CustomText = lazy(() =>import("../../components/common/Text"));
+import CustomText from "../common/Text";
+import Cancel from "../../assets/icons/cancel-slim.svg?react"
+import Plus from "../../assets/icons/plus-slim.svg?react"
 const CustomButton = lazy(() =>import("../common/Button"));
 
 const Faq = () => {

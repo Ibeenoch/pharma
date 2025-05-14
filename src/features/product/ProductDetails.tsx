@@ -24,10 +24,10 @@ import {
   cartProps,
   SimilarProductProps,
 } from "../../types/product/ProductData";
+import CustomText from "../../components/common/Text";
+import CustomButton from "../../components/common/Button";
 const LargeImageSize = lazy(() => import("../../components/common/LargeImageSize"));
 const PreviewImage = lazy(() => import("../../components/common/PreviewImage"));
-const CustomText = lazy(() => import("../../components/common/Text"));
-const CustomButton = lazy(() => import("../../components/common/Button"));
 const SingleProduct = lazy(() => import("../../components/product/SingleProduct"));
 const IconShowList = lazy(() => import("../../components/product/IconShowList"));
 const QtyProductUpdateBtn = lazy(() => import("../../components/product/QtyProductUpdateBtn"));

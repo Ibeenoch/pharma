@@ -1,10 +1,7 @@
-import { lazy } from "react";
 import { navIcons, subNavIcons } from "../../../utils/admin/dashBoardLists";
-const ArrowUp = lazy(() => import("../../../assets/icons/arrow-upicon.svg?react"));
-const ArrowDown = lazy(() => import("../../../assets/icons/arrow-down.svg?react"));
-const Logout = lazy(() => import("../../../assets/icons/logout.svg?react"));
-const CustomText = lazy(() => import("../../common/Text"));
-const SubTitle = lazy(() => import("./SubTitle"));
+import ArrowUp from "../../../assets/icons/arrow-upicon.svg?react";
+import ArrowDown from "../../../assets/icons/arrow-down.svg?react";
+import  Logout from "../../../assets/icons/logout.svg?react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
   selectAdmin,
@@ -12,6 +9,8 @@ import {
   setTitleIndex,
 } from "../../../features/admin/adminSlice";
 import { animateTransition } from "../../../constants/appText";
+import SubTitle from "./SubTitle";
+import CustomText from "../../common/Text";
 
 interface NavIconsProps {
   indexClicked: number;
