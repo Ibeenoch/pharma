@@ -29,7 +29,7 @@ const initialState: productAdminState = {
   productAdmin: [],
   productSimilar: [],
   allProduct: [],
-  hasFetchAllProduct: true,
+  hasFetchAllProduct: false,
   hasFetchAllProductWithoutPagination: false,
   productIndexClicked: "",
   productSubTabIndex: 0,
