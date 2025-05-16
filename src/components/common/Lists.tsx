@@ -39,8 +39,8 @@ const Lists: React.FC<ListProps> = ({
   const { navpageIndex, navpageName } = useAppSelector(selectAuth);
   const navigate = useNavigate();
   const handleActiveTab = (name: string, index: number, route: string) => {
-    dispatch(setNavIndexLink({ name, index }));
     navigate(route);
+    dispatch(setNavIndexLink({ name, index }));
   };
   return (
     <ul
