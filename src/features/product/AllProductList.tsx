@@ -64,7 +64,7 @@ const AllProductList = () => {
   }
 
   // filter what product to show and what not to show
-  let filteredProduct = allProduct && Array.isArray(allProduct) && selectedCategories.length === 1 && selectedCategories[0] === '' ? allProduct : allProduct.filter((p) => {
+  let filteredProduct = allProduct && Array.isArray(allProduct) && selectedCategories.length < 1 ? allProduct : allProduct.filter((p) => {
     return selectedCategories.some((s) => s === p.category);
   });
 
