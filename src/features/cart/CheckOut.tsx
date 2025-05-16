@@ -222,7 +222,7 @@ const CheckOut = () => {
        };
  
        // dispatch the transaction
-       handleTransaction(transactionDetails, hotDealsNum);
+      return handleTransaction(transactionDetails, hotDealsNum);
     
      }
    },
@@ -409,7 +409,7 @@ const CheckOut = () => {
           };
 
             // dispatch the transaction
-            handleTransaction(transactionDetails, hotDealsNum);
+          return  handleTransaction(transactionDetails, hotDealsNum);
           
         }
       },
