@@ -28,8 +28,10 @@ const PrescriptionCard: React.FC<PrescriptionProps> = ({ aboutDrug,ageRange, con
     const handleAddToCart = (e: React.MouseEvent, id: string) => {
       e.stopPropagation();
       const productItem = allProduct.find((item) => {
-       return item.$id === id;
+        console.log('item ', item.$id, ' === ', id, ' id ' )
+        return item.$id === id;
       })!;
+      console.log('id ', id, productItem, allProduct)
       const productCart: CartProductDataProps = {
         ...productItem,
         subtotal:

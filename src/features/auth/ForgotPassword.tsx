@@ -54,7 +54,7 @@ const ForgotPassword = () => {
   };
   return (
     <section
-      className={`h-full pb-6 pt-15 lg:pt-0 lg:grid lg:grid-cols-3 items-center`}
+      className={`h-full pb-6 pt-20 lg:grid lg:grid-cols-3 items-center`}
     >
       <article className=" lg:block">
         <CustomText
