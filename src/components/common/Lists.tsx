@@ -38,17 +38,13 @@ const Lists: React.FC<ListProps> = ({
   const dispatch = useAppDispatch();
   const { navpageIndex, navpageName } = useAppSelector(selectAuth);
   const navigate = useNavigate();
-  const handleActiveTab = (name: string, index: number, route: string) => {
-    navigate(route);
-    dispatch(setNavIndexLink({ name, index }));
-  };
   return (
     <ul
       className={`${showOnMobile ? "flex flex-col my-3" : "hidden"} lg:flex ${isVertical ? "lg:flex-col mt-4" : "items-center"}   gap-4`}
     >
       {lists.map((link, i) => (
         <li
-          onClick={() => handleActiveTab(link.name, i, link.route)}
+          onClick={() => {navigate(link.route); dispatch(setNavIndexLink({ name: link.name, index: i}))}}
           className="cursor-pointer"
         >
           <CustomText
