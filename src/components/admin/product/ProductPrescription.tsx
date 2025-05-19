@@ -123,19 +123,18 @@ const ProductPrescription = () => {
         if(productPrescription && productPrescription.$id){
           
           let arrIngredient = ingredient.split(',');
-          const prescriptionData: PrescriptionProps = { $id: productPrescription.$id, productName: name, productImage, aboutDrug, productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient: arrIngredient, methodOfUsage, productId, whenTakeDosage,  concentration };
+          const prescriptionData: PrescriptionProps = { $id: productPrescription.$id, productName: name, productImage, aboutDrug, productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient: arrIngredient, methodOfUsage, productId, whenTakeDosage,  concentration, sastifiedClient: [] };
     
-          dispatch(updatePrescription(prescriptionData)).then(() => {
-            navigate(`/admin/product/all/${user && user.userId}`);
+          dispatch(updatePrescription(prescriptionData)).then((res) => {
+            navigate(`/admin/product/prescriptions/${user && user.userId}`);
           })
 
         }else{
           
                 let arrIngredient = ingredient.split(',');
                 const prescriptionData: PrescriptionProps = { productName: name, productImage, aboutDrug, productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient: arrIngredient, methodOfUsage, productId, whenTakeDosage,  concentration };
-          
-                dispatch(createPrescription(prescriptionData)).then(() => {
-                  navigate(`/admin/product/all/${user && user.userId}`);
+                dispatch(createPrescription(prescriptionData)).then((res) => {
+                  navigate(`/admin/product/prescriptions/${user && user.userId}`);
                 })
 
         }

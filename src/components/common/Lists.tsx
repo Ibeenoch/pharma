@@ -44,7 +44,7 @@ const Lists: React.FC<ListProps> = ({
     >
       {lists.map((link, i) => (
         <li
-          onClick={() => {navigate(link.route); dispatch(setNavIndexLink({ name: link.name, index: i}))}}
+          onClick={() => { dispatch(setNavIndexLink({ name: link.name, index: i})); navigate(link.route);}}
           className="cursor-pointer"
         >
           <CustomText

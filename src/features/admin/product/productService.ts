@@ -515,7 +515,7 @@ export const addPrescription = async (prescriptionData: PrescriptionProps) => {
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID,  // product collection id
       ID.unique(),
-      { productName, sastifiedClient: 0, productImage, aboutDrug,  productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient, methodOfUsage, productId, whenTakeDosage,  concentration } 
+      { productName, sastifiedClient: [], productImage, aboutDrug,  productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient, methodOfUsage, productId, whenTakeDosage,  concentration } 
     );
 
     return {
@@ -695,6 +695,5 @@ export const deletePrescription = async (productId: string) => {
     return productId;
   } catch (error) {
     throw error;
-    console.log(error);
   }
 };

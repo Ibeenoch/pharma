@@ -284,6 +284,7 @@ const productAdminSlice = createSlice({
         if (state.status === "success" && action.payload !== undefined) {
           state.prescriptionWithoutPagination.push(action.payload);
           state.hasFetchAllPrescriptionWithoutPagination = false;       
+          state.hasFetchAllPrescription = false;       
         }
       })
       .addCase(createPrescription.rejected, (state) => {
@@ -441,7 +442,6 @@ const productAdminSlice = createSlice({
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
           state.prescription = action.payload;
-          console.log('all prescription payload ', action.payload)
         }
       })
       .addCase(fetchAllPrescriptions.rejected, (state) => {
@@ -455,7 +455,6 @@ const productAdminSlice = createSlice({
         if (state.status === "success" && action.payload !== undefined) {
           state.prescriptionWithoutPagination = action.payload;
           state.hasFetchAllPrescriptionWithoutPagination = true;
-          console.log('all prescription payload ', action.payload)
         }
       })
       .addCase(fetchAllPrescriptionsWithoutPagination.rejected, (state) => {

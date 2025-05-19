@@ -23,8 +23,8 @@ const AllPrescription = () => {
   
 
    useEffect(() => {
-    dispatch(totalPrescriptionPages());
-    dispatch(fetchAllPrescriptions(pageNum));
+      dispatch(fetchAllPrescriptions(pageNum));
+      dispatch(totalPrescriptionPages());
    }, [pageNum])
 
      useEffect(() => {
