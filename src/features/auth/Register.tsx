@@ -152,8 +152,10 @@ const Register = () => {
             ? handleErrorSigningUp(payload)
             : navigate("/verify/pending");
         });
+        return;
       } else {
         handleErrorSigningUp("User already exist, please login to continue");
+        return;
       }
     });
   };
