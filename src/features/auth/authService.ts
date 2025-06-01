@@ -71,6 +71,7 @@ export const loginWithGoogle = async () => {
       `${URL}/login`, // failure redirect
       ["openid", "email", "profile"]
     );
+   
   } catch (error) {
     console.log(error);
   }
