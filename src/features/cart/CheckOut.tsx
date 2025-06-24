@@ -167,75 +167,6 @@ const CheckOut = () => {
     });
   }
 
- const makePaymentThroughPayStack = () => {
-   const popup = new Paystack()
- popup.checkout({
-   key: import.meta.env.VITE_PAYSTACK_TEST_PUBLIC_KEY,
-   email: user && user.email,
-   amount: total * 100,
-   // handle successful transaction
-    onSuccess: (reference: PayStackProps) => {
-     let images: string[] = [];
-     cart.forEach((c) => {
-       images.push(c.item.imagesUrl[0]);
-     });
-     let productNames: string[] = [];
-     cart.forEach((c) => {
-       productNames.push(c.item.name);
-     });
-     let productQtys: string[] = [];
-     cart.forEach((c) => {
-       productQtys.push(String(c.qty));
-     });
- 
-     let hotDealsNum: UpdatedHotProductProps[] = [];
-     cart.forEach((c) => {
-      if(c.item.isHotDeal && c.item.$id){
-        hotDealsNum.push({isHotDeal: c.item.isHotDeal, productId: c.item.$id });
-      }
-     });
-
- 
-     setPaymentProcessing(true);
-     if (userId) {
-       const transactionDetails: TransactionProps = {
-         amount: total,
-         payerId: userId,
-         status: reference.status,
-         transactionId: reference.transaction,
-         transactionRef: reference.trxref,
-         payMethod: "Paystack",
-         customerName: `${user && user.firstName} ${user && user.lastName}`,
-         imageUrl: images,
-         productName: productNames,
-         productQty: productQtys,
-         shippingId: `SHIP${generateRandomCode()}`,
-         shippingStatus: "Pending",
-         shippingType:
-           deliveryIndex === 0
-             ? "Glovo"
-             : deliveryIndex === 1
-               ? "ChowDesk"
-               : deliveryIndex === 2
-                 ? "Gokada"
-                 : "Errand360",
-       };
- 
-       // dispatch the transaction
-      return handleTransaction(transactionDetails, hotDealsNum);
-    
-     }
-   },
-   onLoad: () => {
-   },
-   onCancel: () => {
-     setPaymentProcessing(false);
-   },
-   onError: () => {
-     setPaymentProcessing(false);
-   }
- })
- }
 
   const [firstName, setFirstName] = useState<string>(
     user && user.firstName ? user.firstName : ""
@@ -341,6 +272,177 @@ const CheckOut = () => {
     zipcode?: string;
   }>({});
 
+  
+ const makePaymentThroughPayStack = () => {
+   const popup = new Paystack()
+ popup.checkout({
+   key: import.meta.env.VITE_PAYSTACK_TEST_PUBLIC_KEY,
+   email: user && user.email,
+   amount: total * 100,
+   // handle successful transaction
+    onSuccess: (reference: PayStackProps) => {
+     let images: string[] = [];
+     cart.forEach((c) => {
+       images.push(c.item.imagesUrl[0]);
+     });
+     let productNames: string[] = [];
+     cart.forEach((c) => {
+       productNames.push(c.item.name);
+     });
+     let productQtys: string[] = [];
+     cart.forEach((c) => {
+       productQtys.push(String(c.qty));
+     });
+ 
+     let hotDealsNum: UpdatedHotProductProps[] = [];
+    //  cart.forEach((c: ) => {
+    //   console.log('ccc ', c)
+    //   if(c && c.item && c.item.$id  && c.item.isHotDeal  && c.item.isHotDeal >= 0){
+    //     hotDealsNum.push({isHotDeal: c.item.isHotDeal, productId: c.item.$id });
+    //   }
+    //  });
+    cart.forEach((c) => {
+      if (c?.item?.$id !== undefined && c.item.isHotDeal !== undefined) {
+        hotDealsNum.push({
+          isHotDeal: c.item.isHotDeal, // can be 0 or any number
+          productId: c.item.$id,
+        });
+      }
+    });
+
+ console.log('hotDealsNum ', hotDealsNum, cart)
+     setPaymentProcessing(true);
+     if (userId) {
+       const transactionDetails: TransactionProps = {
+         amount: total,
+         payerId: userId,
+         status: reference.status,
+         transactionId: reference.transaction,
+         transactionRef: reference.trxref,
+         payMethod: "Paystack",
+         customerName: `${user && user.firstName} ${user && user.lastName}`,
+         imageUrl: images,
+         productName: productNames,
+         productQty: productQtys,
+         shippingId: `SHIP${generateRandomCode()}`,
+         shippingStatus: "Pending",
+         shippingType:
+           deliveryIndex === 0
+             ? "Glovo"
+             : deliveryIndex === 1
+               ? "ChowDesk"
+               : deliveryIndex === 2
+                 ? "Gokada"
+                 : "Errand360",
+       };
+ 
+       // dispatch the transaction
+       dispatch(postTransaction(transactionDetails)).then(() => {
+
+      // dispatch the cart
+      dispatch(postACart(cart)).then((res) => {
+
+        // dispatch the order
+        if (res.payload !== undefined && userId) {
+          let cartRes = res.payload as CartOrderedPropsData[];
+          const cartIds: string[] = cartRes.map((c) => c.$id);
+          if (
+            transaction &&
+            transaction.$id &&
+            shippingDetail &&
+            shippingDetail.$id &&
+            cartIds.length > 0
+          ) {
+            const order: OrderProps = {
+              cart: cartIds,
+              userId,
+              transaction: {
+                amount: transaction.amount,
+                customerName: transaction.customerName,
+                imageUrl: transaction.imageUrl,
+                payerId: transaction.payerId,
+                payMethod: transaction.payMethod,
+                productName: transaction.productName,
+                productQty: transaction.productQty,
+                shippingId: transaction.shippingId,
+                shippingStatus: transaction.shippingStatus,
+                shippingType: transaction.shippingType,
+                status: transaction.status,
+                transactionId: transaction.transactionId,
+                transactionRef: transaction.transactionRef,
+                createdAt: transaction.createdAt,
+              },
+              shippingDetails: shippingDetail,
+            };
+
+            dispatch(postOrder(order)).then((res) => {
+              console.log('stage 4');
+              let response = res.payload as AllOrderResultData;
+                  console.log('stage 4 response ', response);
+              if (
+                response &&
+                response.transaction &&
+                response.cart &&
+                response.shippingDetails
+              ) {
+
+                
+                // reduce stock quantity
+                cartRes.forEach((c) => {
+                  let qty = c.quantity;
+                  const productId = c.productId;
+                  let productStockUpdataData: UpdateProductCart = {
+                    qty,
+                    productId,
+                  };
+                  dispatch(
+                    updateProductStockQuantity(productStockUpdataData)
+                  ).then((res) => {
+                    console.log('productStockUpdataData ', res, hotDealsNum);
+                   hotDealsNum.forEach((h) => {
+                     let hotDealData: UpdatedHotProductProps = {isHotDeal: h.isHotDeal, productId: h.productId};
+                     dispatch(updateHotProductNum(hotDealData)).then(() => {
+                        const orderNotificationData: NotificationProps = {
+                          message: `${firstName} ${lastName} has ordered ${cart.length} item${cart.length > 1 ? 's': ''}, waiting to be delivered. order id ${response.$id}`,
+                          notificationType: 'order',
+                        }
+                        const transactionNotificationData: NotificationProps = {
+                          message: `A sum of ₦${total} was paid by ${firstName} ${lastName} from ${response.transaction.payMethod} conatining ${cart.length} item${cart.length > 1 ? 's': ''}, waiting to be review.`,
+                          notificationType: 'transaction',
+                        }
+                        dispatch(createNotification(orderNotificationData)).then(() => {
+                          dispatch(createNotification(transactionNotificationData)).then(() => {
+                            dispatch(removeAllItemsInCart());
+                            setPaymentProcessing(false);
+                            navigate(`/payment_status/${userId}/${response.$id}`);
+                          })
+                        })
+                     })
+                   })
+
+                   
+                  });
+                });
+              }
+            });
+          }
+        }
+      });
+    });
+    
+     }
+   },
+   onLoad: () => {
+   },
+   onCancel: () => {
+     setPaymentProcessing(false);
+   },
+   onError: () => {
+     setPaymentProcessing(false);
+   }
+ })
+ }
+
   // initialize payment with flutter wave
   const makePaymentThroughFlutterWave = async () => {
     await loadFlutterwaveScript();
@@ -380,10 +482,19 @@ const CheckOut = () => {
         });
 
         let hotDealsNum: UpdatedHotProductProps[] = [];
-        cart.forEach((c) => {
-        c && c.item && c.item.$id && c.item.isHotDeal && hotDealsNum.push({isHotDeal: c.item.isHotDeal, productId: c.item.$id });
-        });
+        // cart.forEach((c) => {
+        // c && c.item && c.item.$id && c.item.isHotDeal && hotDealsNum.push({isHotDeal: c.item.isHotDeal, productId: c.item.$id });
+        // });
 
+         cart.forEach((c) => {
+            if (c?.item?.$id !== undefined && c.item.isHotDeal !== undefined) {
+              hotDealsNum.push({
+                isHotDeal: c.item.isHotDeal, // can be 0 or any number
+                productId: c.item.$id,
+              });
+            }
+          });
+            console.log(' cvcv ',  hotDealsNum, cart)
         if (userId) {
           let transactionDetails: TransactionProps = {
             transactionId: String(response.transaction_id),
@@ -409,7 +520,97 @@ const CheckOut = () => {
           };
 
             // dispatch the transaction
-          return  handleTransaction(transactionDetails, hotDealsNum);
+            dispatch(postTransaction(transactionDetails)).then(() => {
+
+      // dispatch the cart
+      dispatch(postACart(cart)).then((res) => {
+
+        // dispatch the order
+        if (res.payload !== undefined && userId) {
+          let cartRes = res.payload as CartOrderedPropsData[];
+          const cartIds: string[] = cartRes.map((c) => c.$id);
+          if (
+            transaction &&
+            transaction.$id &&
+            shippingDetail &&
+            shippingDetail.$id &&
+            cartIds.length > 0
+          ) {
+            const order: OrderProps = {
+              cart: cartIds,
+              userId,
+              transaction: {
+                amount: transaction.amount,
+                customerName: transaction.customerName,
+                imageUrl: transaction.imageUrl,
+                payerId: transaction.payerId,
+                payMethod: transaction.payMethod,
+                productName: transaction.productName,
+                productQty: transaction.productQty,
+                shippingId: transaction.shippingId,
+                shippingStatus: transaction.shippingStatus,
+                shippingType: transaction.shippingType,
+                status: transaction.status,
+                transactionId: transaction.transactionId,
+                transactionRef: transaction.transactionRef,
+                createdAt: transaction.createdAt,
+              },
+              shippingDetails: shippingDetail,
+            };
+
+            dispatch(postOrder(order)).then((res) => {
+              console.log('stage 4');
+              let response = res.payload as AllOrderResultData;
+              if (
+                response &&
+                response.transaction &&
+                response.cart &&
+                response.shippingDetails
+              ) {
+
+                
+                // reduce stock quantity
+                cartRes.forEach((c) => {
+                  let qty = c.quantity;
+                  const productId = c.productId;
+                  let productStockUpdataData: UpdateProductCart = {
+                    qty,
+                    productId,
+                  };
+                  dispatch(
+                    updateProductStockQuantity(productStockUpdataData)
+                  ).then(() => {
+                    
+                   hotDealsNum.forEach((h) => {
+                     let hotDealData: UpdatedHotProductProps = {isHotDeal: h.isHotDeal, productId: h.productId};
+                     dispatch(updateHotProductNum(hotDealData)).then(() => {
+                        const orderNotificationData: NotificationProps = {
+                          message: `${firstName} ${lastName} has ordered ${cart.length} item${cart.length > 1 ? 's': ''}, waiting to be delivered. order id ${response.$id}`,
+                          notificationType: 'order',
+                        }
+                        const transactionNotificationData: NotificationProps = {
+                          message: `A sum of ₦${total} was paid by ${firstName} ${lastName} from ${response.transaction.payMethod} conatining ${cart.length} item${cart.length > 1 ? 's': ''}, waiting to be review.`,
+                          notificationType: 'transaction',
+                        }
+                        dispatch(createNotification(orderNotificationData)).then(() => {
+                          dispatch(createNotification(transactionNotificationData)).then(() => {
+                            dispatch(removeAllItemsInCart());
+                            setPaymentProcessing(false);
+                            navigate(`/payment_status/${userId}/${response.$id}`);
+                          })
+                        })
+                     })
+                   })
+
+                   
+                  });
+                });
+              }
+            });
+          }
+        }
+      });
+    });
           
         }
       },

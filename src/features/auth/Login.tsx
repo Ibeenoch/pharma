@@ -1,4 +1,4 @@
-import { FormEvent, lazy, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { COMPANY_NAME, MARGIN_TOP } from "../../constants/appText";
 import manWalk from "../../assets/images/manwalk.png";
 import Email from "../../assets/icons/email.svg?react";
@@ -20,7 +20,7 @@ interface LoginProps {
   redirectUrl?: string;
 }
 
-const Login: React.FC<LoginProps> = ({ redirectUrl }) => {
+const Login: React.FC<LoginProps> = ({  }) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isSubmitting, setisSubmitting] = useState<boolean>(false);
@@ -76,16 +76,13 @@ const Login: React.FC<LoginProps> = ({ redirectUrl }) => {
         password,
       })
     ).then((res) => {
+      console.log('login ', res.payload)
       const payload = res.payload as UserDataProps;
       typeof res.payload === "string"
         ? handleErr()
-        : payload?.role === "Admin"
-          ? redirectUrl
-            ? navigate(redirectUrl)
-            : navigate(`/admin/dashboard/${payload.userId}`)
-          : redirectUrl
-            ? navigate(redirectUrl)
-            : navigate("/");
+        : payload?.role === "Admin" ? window.location.href = `/admin/dashboard/${payload.userId}` : window.location.href = "/";
+
+        setisSubmitting(false);
     });
   };
 
