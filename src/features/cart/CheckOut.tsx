@@ -413,8 +413,8 @@ const CheckOut = () => {
                         dispatch(createNotification(orderNotificationData)).then(() => {
                           dispatch(createNotification(transactionNotificationData)).then(() => {
                             dispatch(removeAllItemsInCart());
-                            setPaymentProcessing(false);
                             navigate(`/payment_status/${userId}/${response.$id}`);
+                            setPaymentProcessing(false);
                           })
                         })
                      })
@@ -595,8 +595,8 @@ const CheckOut = () => {
                         dispatch(createNotification(orderNotificationData)).then(() => {
                           dispatch(createNotification(transactionNotificationData)).then(() => {
                             dispatch(removeAllItemsInCart());
-                            setPaymentProcessing(false);
                             navigate(`/payment_status/${userId}/${response.$id}`);
+                            setPaymentProcessing(false);
                           })
                         })
                      })
