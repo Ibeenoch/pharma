@@ -43,7 +43,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate }) => {
           <CustomText
             text="Your One Stop Pharmacy for Medicines & Daily Essentials"
             textType="superhuge"
-            weightType="medium"
+            weightType="semibold"
           />
         </div>
 
