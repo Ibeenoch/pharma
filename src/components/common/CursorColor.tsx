@@ -14,7 +14,11 @@ const CursorColor = () => {
 
   return (
     <div className="fixed top-0 left-0 pointer-events-none w-full h-full">
-      <div className="transition-transform duration-50 absolute p-3 border-2 border-amber-500/30 rounded-full w-max">
+      <div
+         style={{
+          transform: `translate(${position.x - 8}px, ${position.y - 8}px)`,
+        }}
+        className="transition-transform duration-50 absolute p-3 border-2 border-amber-500/30 rounded-full w-max">
          <div
         className="absolute w-3 h-3 bg-amber-500/30 rounded-full transition-transform duration-50"
         style={{
