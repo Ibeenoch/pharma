@@ -3,12 +3,12 @@ import { COMPANY_NAME, MARGIN_TOP } from "../../constants/appText";
 import manWalk from "../../assets/images/manwalk.png";
 import Email from "../../assets/icons/email.svg?react";
 import Google from "../../assets/icons/google-colored.svg?react";
-import Facebook from "../../assets/icons/facebook-colored.svg?react";
+// import Facebook from "../../assets/icons/facebook-colored.svg?react";
 import Lock from "../../assets/icons/lock.svg?react";
 import { useNavigate } from "react-router-dom";
 import { validator } from "../../utils/validator";
-import { useAppDispatch, } from "../../hooks/reduxHooks";
-import { facebookLogin, googleLogin, loginUser, } from "./authSlice";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { googleLogin, loginUser } from "./authSlice";
 import { UserDataProps } from "../../types/auth/UserData";
 import CustomText from "../../components/common/Text";
 import CustomInput from "../../components/common/Input";
@@ -20,7 +20,7 @@ interface LoginProps {
   redirectUrl?: string;
 }
 
-const Login: React.FC<LoginProps> = ({  }) => {
+const Login: React.FC<LoginProps> = ({}) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isSubmitting, setisSubmitting] = useState<boolean>(false);
@@ -30,7 +30,7 @@ const Login: React.FC<LoginProps> = ({  }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
 
     if (openErrToast) {
       timer = setTimeout(() => {
@@ -76,13 +76,14 @@ const Login: React.FC<LoginProps> = ({  }) => {
         password,
       })
     ).then((res) => {
-      console.log('login ', res.payload)
       const payload = res.payload as UserDataProps;
       typeof res.payload === "string"
         ? handleErr()
-        : payload?.role === "Admin" ? window.location.href = `/admin/dashboard/${payload.userId}` : window.location.href = "/";
+        : payload?.role === "Admin"
+        ? (window.location.href = `/admin/dashboard/${payload.userId}`)
+        : (window.location.href = "/");
 
-        setisSubmitting(false);
+      setisSubmitting(false);
     });
   };
 
@@ -95,13 +96,13 @@ const Login: React.FC<LoginProps> = ({  }) => {
     dispatch(googleLogin());
   };
 
-  const handleFacebookLogin = () => {
-    dispatch(facebookLogin());
-  };
+  // const handleFacebookLogin = () => {
+  //   dispatch(facebookLogin());
+  // };
 
   useEffect(() => {
-    window.scrollTo(0,0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <section className={`h-screen md:grid md:grid-cols-3 items-center `}>
@@ -202,25 +203,25 @@ const Login: React.FC<LoginProps> = ({  }) => {
           />
         </form>
 
-        <article className="mx-auto flex items-center " >
-        <CustomText
-          text={`Don't have an account`}
-          textType="normal"
-          weightType="medium"
-          color="text-gray-600"
-          extraStyle="text-[14px]"
-        />
-        <CustomText
-          textType="normal"
-          weightType="medium"
-          isTwoSpanText={true}
-          leftText="you can"
-          rightText="sign up here!"
-          color="text-gray-600"
-          extraStyle="text-[14px]"
-          rightTextFunc={switchToRegisterPage}
-        />
-      </article>
+        <article className="mx-auto flex items-center ">
+          <CustomText
+            text={`Don't have an account`}
+            textType="normal"
+            weightType="medium"
+            color="text-gray-600"
+            extraStyle="text-[14px]"
+          />
+          <CustomText
+            textType="normal"
+            weightType="medium"
+            isTwoSpanText={true}
+            leftText="you can"
+            rightText="sign up here!"
+            color="text-gray-600"
+            extraStyle="text-[14px]"
+            rightTextFunc={switchToRegisterPage}
+          />
+        </article>
 
         <div className="flex gap-1 my-5 items-center justify-center">
           <div className="w-[35%] border border-gray-300"></div>
@@ -246,7 +247,6 @@ const Login: React.FC<LoginProps> = ({  }) => {
           />
         )}
 
-
         <div className="flex gap-4 items-center justify-center">
           <div
             onClick={handleGoogleLogin}
@@ -255,12 +255,12 @@ const Login: React.FC<LoginProps> = ({  }) => {
             <Google className="w-6 h-6" />
           </div>
 
-          <div
+          {/* <div
             onClick={handleFacebookLogin}
             className="p-3 flex justify-center items-center bg-white cursor-pointer rounded-lg"
           >
             <Facebook className="w-6 h-6" />
-          </div>
+          </div> */}
         </div>
       </section>
     </section>

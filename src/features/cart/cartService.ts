@@ -6,6 +6,17 @@ import {
 } from "../../types/product/ProductData";
 import { CartOrderedPropsData } from "../../types/cart/CartData";
 
+const toInt = (value: string | number) => {
+  const num =
+    typeof value === "string" ? Number(value.replace(/[^0-9.-]+/g, "")) : value;
+
+  if (Number.isNaN(num)) {
+    throw new Error("Invalid number value");
+  }
+
+  return Math.floor(num);
+};
+
 export const postCartOrdered = async (cartData: cartProps[]) => {
   try {
     const cartId = ID.unique();
@@ -32,8 +43,8 @@ export const postCartOrdered = async (cartData: cartProps[]) => {
           name: item.name,
           productSerialNo: item.productSerialNo,
           quantity: qty,
-          subtotal: item.subtotal,
-          total: item.total,
+          subtotal: toInt(item.subtotal),
+          total: toInt(item.total),
         }
       );
     }
@@ -44,7 +55,6 @@ export const postCartOrdered = async (cartData: cartProps[]) => {
       import.meta.env.VITE_APPWRITE_CART_COLLECTION_ID,
       [Query.equal("cartId", cartId)]
     );
-    console.log("allCartsForTheOrder ", allCartsForTheOrder);
     const carts = allCartsForTheOrder.documents.map((cart) => {
       return {
         $id: cart.$id,
@@ -65,7 +75,6 @@ export const postCartOrdered = async (cartData: cartProps[]) => {
       } as CartOrderedPropsData;
     });
 
-    console.log("posted cart fetched is ", carts);
     return carts;
   } catch (error) {
     throw error;
@@ -82,7 +91,6 @@ export const getCartOrdered = async (cartId: string) => {
 
     const allCarts = allCartsForTheOrder.documents;
 
-    console.log(" allCartsForTheOrder ", allCarts);
     const carts = allCarts.map((cart) => {
       return {
         $id: cart.$id,
@@ -103,7 +111,6 @@ export const getCartOrdered = async (cartId: string) => {
         total: cart.total,
       } as CartOrderedPropsData;
     });
-    console.log("cart fetched is ", carts);
 
     return carts;
   } catch (error) {

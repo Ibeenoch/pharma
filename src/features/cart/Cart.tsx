@@ -19,7 +19,7 @@ const IconAndText = lazy(() => import("../../components/cart/IconAndText"));
 const CustomButton = lazy(() => import("../../components/common/Button"));
 const CartTwoText = lazy(() => import("../../components/cart/CartTwoText"));
 const CustomText = lazy(() => import("../../components/common/Text"));
-const CartRowItem = lazy(() =>import("../../components/cart/CartRowItem"));
+const CartRowItem = lazy(() => import("../../components/cart/CartRowItem"));
 
 interface CartProps {
   showCheckOutBtn?: boolean;
@@ -61,11 +61,11 @@ const Cart: React.FC<CartProps> = ({
   };
 
   const proceedCheckOutPage = () => {
-    if(!user || !user.userId){ 
-      navigate('/login')
-    }else{
-        // yes means its coming from profile page 
-      dispatch(toggleProfileTocheckOut('no'));
+    if (!user || !user.userId) {
+      navigate("/login");
+    } else {
+      // yes means its coming from profile page
+      dispatch(toggleProfileTocheckOut("no"));
       user &&
         user.userId &&
         hasPreviousShippingDetails === false &&
@@ -77,8 +77,8 @@ const Cart: React.FC<CartProps> = ({
 
   useEffect(() => {
     // start the page from the top when a user visit the page
-    window.scrollTo(0,0)
-  },[])
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <section
@@ -112,20 +112,17 @@ const Cart: React.FC<CartProps> = ({
               isCheckOutPage={isCheckOutPage}
               isProductdescPage={false}
               removeItemFromCart={() => {
-                console.log('hello');
-                c &&
-                  c.item &&
-                  c.item.$id &&
-                  removeAnItemFromCart(c.item.$id);
-                  
+                c && c.item && c.item.$id && removeAnItemFromCart(c.item.$id);
               }}
               image={c && c.item && c.item.imagesUrl && c.item.imagesUrl[0]}
               itemTitle={c && c.item && c.item.name}
-              itemdesc={`Unit Price: ₦${c &&
+              itemdesc={`Unit Price: ₦${
+                c &&
                 c.item &&
                 c.item.price &&
                 c.item.discount &&
-                c.item.price * Math.abs(1 - c.item.discount / 100)}`}
+                c.item.price * Math.abs(1 - c.item.discount / 100)
+              }`}
               price={`
                 Total: ₦${
                   c &&

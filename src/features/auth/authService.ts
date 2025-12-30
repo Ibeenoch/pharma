@@ -1,6 +1,6 @@
 import { ID, OAuthProvider } from "appwrite";
 import { account, database, storage } from "../../lib/appwriteConfig";
-import { UserDataProps, } from "../../types/auth/UserData";
+import { UserDataProps } from "../../types/auth/UserData";
 import { Query } from "node-appwrite";
 import { URL } from "../../constants/appGeneral";
 import { ITEMS_PER_PAGE } from "../../constants/pagianation";
@@ -17,7 +17,7 @@ export const registerUser = async (userData: UserDataProps) => {
     // after registering log the user in to create a section
 
     await account.createEmailPasswordSession(userData.email, userData.password);
-  
+
     // After user creation, you can store additional data (like firstName, lastName, etc.)
     // You can use the Appwrite database service to store this information
 
@@ -40,7 +40,6 @@ export const registerUser = async (userData: UserDataProps) => {
       }
     );
 
-
     return {
       userId: user.$id,
       email: userCreated.email,
@@ -59,7 +58,6 @@ export const registerUser = async (userData: UserDataProps) => {
     } as UserDataProps;
   } catch (error) {
     throw error;
-    console.log(error);
   }
 };
 
@@ -71,9 +69,8 @@ export const loginWithGoogle = async () => {
       `${URL}/login`, // failure redirect
       ["openid", "email", "profile"]
     );
-   
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 
@@ -86,7 +83,7 @@ export const loginWithFacebook = async () => {
       ["email"]
     );
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 
@@ -97,7 +94,6 @@ export const loginUser = async (userData: UserDataProps) => {
       userData.email,
       userData.password
     );
-    console.log("User login successfully:", usersession);
 
     const sessionId = usersession.$id; // can be treated as access token
 
@@ -120,13 +116,12 @@ export const loginUser = async (userData: UserDataProps) => {
       lastName: customUserData.lastName,
       dob: customUserData.dob,
       gender: customUserData.gender,
-      role: customUserData.role,  
-      $id: customUserData.$id,  
+      role: customUserData.role,
+      $id: customUserData.$id,
       createdAt: customUserData.$createdAt,
       password: "",
     } as UserDataProps;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };
@@ -145,9 +140,7 @@ export const passwordRecoveryLink = async (email: string) => {
   try {
     const res = await account.createRecovery(email, `${URL}/resetpassword`);
     if (res) return true;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const resetPassword = async (resetPasswordData: {
@@ -161,9 +154,7 @@ export const resetPassword = async (resetPasswordData: {
       userId = resetPasswordData.userId;
     const res = await account.updateRecovery(userId, secret, password);
     if (res) return true;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const logOut = async () => {
@@ -180,14 +171,12 @@ export const logOut = async () => {
         gender: "",
         passcode: "",
         password: "",
-        createdAt: '',
-        $id: '',
-        image: '',
+        createdAt: "",
+        $id: "",
+        image: "",
       } as UserDataProps;
     }
-  } catch (error) {
-    console.log("");
-  }
+  } catch (error) {}
 };
 
 export const getCurrentLoginUser = async () => {
@@ -201,7 +190,6 @@ export const getCurrentLoginUser = async () => {
   );
   if (res.documents.length > 0) {
     const userDoc = res.documents[0];
-    console.log("Custom user data:", userDoc);
 
     // Access fields like:
     const firstName = userDoc.firstName;
@@ -245,8 +233,6 @@ export const getCurrentLoginUser = async () => {
   }
 };
 
-
-
 export const checkIfUserExist = async (email: string) => {
   try {
     // fetch all users
@@ -265,14 +251,11 @@ export const checkIfUserExist = async (email: string) => {
 
 export const getAllUsers = async (p: number) => {
   try {
-    const offset = ((p > 0 ? p : 1) - 1) * ITEMS_PER_PAGE;    // fetch all users
+    const offset = ((p > 0 ? p : 1) - 1) * ITEMS_PER_PAGE; // fetch all users
     const user = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID,
       import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID,
-      [
-        Query.limit(ITEMS_PER_PAGE),
-        Query.offset(offset),
-      ]
+      [Query.limit(ITEMS_PER_PAGE), Query.offset(offset)]
     );
     const userFound: UserDataProps[] = user.documents.map((u) => ({
       userId: u.userId,
@@ -296,23 +279,22 @@ export const getAllUsers = async (p: number) => {
 
 export const getTotalUsersPage = async () => {
   try {
-
     // fetch all users
     const user = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID,
       import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID,
-      [
-        Query.limit(1),
-      ]
+      [Query.limit(1)]
     );
-  const totalPage = user.total;
+    const totalPage = user.total;
     return totalPage;
   } catch (error) {
     throw error;
   }
 };
 
-export const getAllUsersWithDateFilter = async (userData: UserDateFilterProps) => {
+export const getAllUsersWithDateFilter = async (
+  userData: UserDateFilterProps
+) => {
   try {
     let offset = (userData.pageNum > 0 ? userData.pageNum : 1) * ITEMS_PER_PAGE;
     // fetch all users
@@ -322,7 +304,7 @@ export const getAllUsersWithDateFilter = async (userData: UserDateFilterProps) =
       [
         Query.limit(ITEMS_PER_PAGE),
         Query.offset(offset),
-        Query.between('$createdAt', userData.start, userData.end)
+        Query.between("$createdAt", userData.start, userData.end),
       ]
     );
     const userFound: UserDataProps[] = user.documents.map((u) => ({
@@ -347,16 +329,12 @@ export const getAllUsersWithDateFilter = async (userData: UserDateFilterProps) =
 
 export const addUserProfilePics = async (userData: FormData) => {
   try {
-
     const data: Record<string, string> = {};
     userData.forEach((val, key) => {
       data[key] = val.toString();
     });
-    const {
-    userId
-    } = data;
+    const { userId } = data;
 
- 
     const imageFiles = userData.getAll("imageFiles") as File[];
 
     let uploadedFiles: {
@@ -366,12 +344,11 @@ export const addUserProfilePics = async (userData: FormData) => {
     }[] = [];
     for (const image of imageFiles) {
       const res = await storage.createFile(
-        import.meta.env.VITE_BUCKET_ID, 
+        import.meta.env.VITE_BUCKET_ID,
         ID.unique(),
         image
       );
 
-      
       uploadedFiles.push({
         fileId: res.$id,
         name: res.name,
@@ -380,7 +357,7 @@ export const addUserProfilePics = async (userData: FormData) => {
     }
 
     let userImages: string[] = [];
-    
+
     for (const fileId of uploadedFiles) {
       const res = storage.getFileDownload(
         import.meta.env.VITE_BUCKET_ID,
@@ -392,30 +369,26 @@ export const addUserProfilePics = async (userData: FormData) => {
     const user = await database.updateDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID,
       import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID,
-        userId,
+      userId,
       {
-        image: userImages[0]
+        image: userImages[0],
       }
     );
 
     return {
-      firstName : user.firstName,
-      lastName : user.lastName,
-      dob : user.dob,
-      gender : user.gender,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      dob: user.dob,
+      gender: user.gender,
       email: user.email,
-      role : user.role,
+      role: user.role,
       passcode: user.passcode,
       userId: user.userId,
       $id: user.$id,
       createdAt: user.$createdAt,
       image: user.image,
     } as UserDataProps;
-   
-    
   } catch (error) {
     throw error;
   }
 };
-
-

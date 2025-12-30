@@ -12,7 +12,10 @@ import {
   ShippingServiceUpdateProps,
   UpdateShippingArgs,
 } from "../../types/order/OrderType";
-import { TransactionDateFilterProps, TransactionProps } from "../../types/payment/FlutterwavePaymentType";
+import {
+  TransactionDateFilterProps,
+  TransactionProps,
+} from "../../types/payment/FlutterwavePaymentType";
 import { ITEMS_PER_PAGE } from "../../constants/pagianation";
 
 // service order
@@ -99,7 +102,6 @@ export const updateShippingDetails = async (
         email: updatedShippingDetails.email,
       }
     );
-    console.log("shippingAddressUpdated ", shippingAddressUpdated);
     if (shippingAddressUpdated) {
       return {
         userId: shippingAddressUpdated.userId,
@@ -121,7 +123,6 @@ export const updateShippingDetails = async (
 
 export const getShippingDetails = async (userId: string) => {
   try {
-    console.log('userId ', userId);
     const shippingAddress = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_SHIPPING_COLLECTION_ID, // collection id
@@ -176,8 +177,6 @@ export const saveTransaction = async (transactionData: TransactionProps) => {
       }
     );
 
-    console.log("get transaction ", transactionCreated);
-
     return {
       $id: transactionCreated.$id,
       payerId: transactionCreated.payerId,
@@ -205,10 +204,7 @@ export const getATransaction = async (id: string) => {
     const transactionarr = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_TRANSACTION_COLLECTION_ID, // collection id
-      [
-        Query.equal("$id", id),  
-        Query.orderDesc('$createdAt')
-      ]
+      [Query.equal("$id", id), Query.orderDesc("$createdAt")]
     );
     const transaction = transactionarr.documents[0];
 
@@ -236,7 +232,7 @@ export const getATransaction = async (id: string) => {
 
 export const deleteTransaction = async (id: string) => {
   try {
-     await database.deleteDocument(
+    await database.deleteDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_TRANSACTION_COLLECTION_ID, // collection id
       id
@@ -248,7 +244,7 @@ export const deleteTransaction = async (id: string) => {
   }
 };
 
-export const getAllTransaction = async (pageNum:  number) => {
+export const getAllTransaction = async (pageNum: number) => {
   try {
     let ItemPerPage = 6;
     let offset = ((pageNum > 0 ? pageNum : 1) - 1) * ItemPerPage;
@@ -258,7 +254,7 @@ export const getAllTransaction = async (pageNum:  number) => {
       [
         Query.limit(ItemPerPage),
         Query.offset(offset),
-        Query.orderDesc('$createdAt')
+        Query.orderDesc("$createdAt"),
       ]
     );
     const transactionDoc = transactionarr.documents;
@@ -283,25 +279,27 @@ export const getAllTransaction = async (pageNum:  number) => {
       } as TransactionProps;
       allTransactions.push(transactionItem);
     });
-    console.log("allTransactions ", allTransactions);
     return allTransactions;
   } catch (error) {
     throw error;
   }
 };
 
-export const getAllTransactionFilteredByDate = async (pageData:  TransactionDateFilterProps) => {
+export const getAllTransactionFilteredByDate = async (
+  pageData: TransactionDateFilterProps
+) => {
   try {
     let ItemPerPage = 6;
-    let offset = ((pageData.pageNum > 0 ? pageData.pageNum : 1) - 1) * ItemPerPage;
+    let offset =
+      ((pageData.pageNum > 0 ? pageData.pageNum : 1) - 1) * ItemPerPage;
     const transactionarr = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_TRANSACTION_COLLECTION_ID, // collection id
       [
         Query.limit(ItemPerPage),
         Query.offset(offset),
-        Query.between('$createdAt', pageData.start, pageData.end),
-        Query.orderDesc('$createdAt')
+        Query.between("$createdAt", pageData.start, pageData.end),
+        Query.orderDesc("$createdAt"),
       ]
     );
     const transactionDoc = transactionarr.documents;
@@ -335,13 +333,10 @@ export const getAllTransactionFilteredByDate = async (pageData:  TransactionDate
 
 export const getAllTransactionWithoutPagination = async () => {
   try {
-
     const transactionarr = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_TRANSACTION_COLLECTION_ID, // collection id
-      [
-        Query.orderDesc('$createdAt')
-      ]
+      [Query.orderDesc("$createdAt")]
     );
     const transactionDoc = transactionarr.documents;
     let allTransactions: TransactionProps[] = [];
@@ -385,7 +380,6 @@ export const createShippingService = async (
         shippingType: shippingData.shippingType,
       }
     );
-    console.log("createShippingService ", shippingCreated);
 
     return {
       $id: shippingCreated.$id,
@@ -407,7 +401,6 @@ export const getAShippingService = async (id: string) => {
       [Query.equal("$id", id)]
     );
     const shipping = shippingArr.documents[0];
-    console.log("service shipped ", shipping);
     return {
       shippingStatus: shipping.shippingStatus,
       shippingType: shipping.shippingType,
@@ -433,7 +426,7 @@ export const updateShippingServiceStatus = async (
         shippingStatus: shippedStatus,
       }
     );
-    console.log("shippingAddressUpdated ", shippingUpdated);
+
     if (shippingUpdated) {
       return {
         shippingStatus: shippingUpdated.shippingStatus,
@@ -486,8 +479,6 @@ export const createOrder = async (orderData: OrderProps) => {
         },
       }
     );
-
-    console.log("created order : ", orderCreated);
 
     return {
       $id: orderCreated.$id,
@@ -568,7 +559,7 @@ export const findAllOrders = async (dataProps: OrderPaginatedArgs) => {
         Query.limit(ITEMS_PER_PAGE),
         Query.offset(offset),
         Query.equal("userId", dataProps.userId),
-        Query.orderDesc('$createdAt')
+        Query.orderDesc("$createdAt"),
       ]
     );
 
@@ -591,10 +582,9 @@ export const findAllOrders = async (dataProps: OrderPaginatedArgs) => {
 
 export const findAllOrdersWithoutPagination = async () => {
   try {
-  
     const orderArr = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
-      import.meta.env.VITE_APPWRITE_ORDER_COLLECTION_ID, // collection id
+      import.meta.env.VITE_APPWRITE_ORDER_COLLECTION_ID // collection id
     );
 
     const allOrder: AllOrderResultData[] = orderArr.documents.map((order) => ({
@@ -614,11 +604,13 @@ export const findAllOrdersWithoutPagination = async () => {
   }
 };
 
-export const filterOrdersWithDate = async (dataProps: OrderPaginatedFilteredArgs) => {
+export const filterOrdersWithDate = async (
+  dataProps: OrderPaginatedFilteredArgs
+) => {
   try {
     const p = dataProps.page;
     const offset = ((p > 0 ? p : 1) - 1) * ITEMS_PER_PAGE;
-    console.log('dataProps ', dataProps)
+
     const orderArr = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_ORDER_COLLECTION_ID, // collection id
@@ -627,7 +619,7 @@ export const filterOrdersWithDate = async (dataProps: OrderPaginatedFilteredArgs
         Query.offset(offset),
         Query.equal("userId", dataProps.userId),
         Query.between("$createdAt", dataProps.start, dataProps.end),
-        Query.orderDesc('$createdAt')
+        Query.orderDesc("$createdAt"),
       ]
     );
 

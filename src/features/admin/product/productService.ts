@@ -1,7 +1,12 @@
 import { ID } from "node-appwrite";
 import { database, storage } from "../../../lib/appwriteConfig";
 import { Query } from "appwrite";
-import { PrescriptionProps, ProductDataProps, SimilarProductProps, UpdatedHotProductProps } from "../../../types/product/ProductData";
+import {
+  PrescriptionProps,
+  ProductDataProps,
+  SimilarProductProps,
+  UpdatedHotProductProps,
+} from "../../../types/product/ProductData";
 import { UpdateProductCart } from "../../../types/cart/CartData";
 import { ITEMS_PER_PAGE } from "../../../constants/pagianation";
 
@@ -35,7 +40,7 @@ export const createProduct = async (productData: FormData) => {
     }[] = [];
     for (const image of imageFiles) {
       const res = await storage.createFile(
-        import.meta.env.VITE_BUCKET_ID, 
+        import.meta.env.VITE_BUCKET_ID,
         ID.unique(),
         image
       );
@@ -56,7 +61,6 @@ export const createProduct = async (productData: FormData) => {
 
       productImages.push(res);
     }
-
 
     const productCreation = await database.createDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
@@ -125,7 +129,6 @@ export const updateProduct = async (productData: FormData) => {
       "uploadedImages"
     ) as string;
     const uploadedImages: string[] = JSON.parse(uploadedImagesJsonString);
-    console.log("uploadedImages ", uploadedImages);
     const imageFiles = productData.getAll("imageFiles") as File[];
     let productImages: string[] = [];
     if (imageFiles) {
@@ -197,21 +200,20 @@ export const updateProduct = async (productData: FormData) => {
     } as ProductDataProps;
   } catch (error) {
     throw error;
-    console.log(error);
   }
 };
 
-export const updateHotProduct = async (updateHotProductData: UpdatedHotProductProps) => {
+export const updateHotProduct = async (
+  updateHotProductData: UpdatedHotProductProps
+) => {
   try {
-  
     let increaseHotDeal = updateHotProductData.isHotDeal + 1;
     const productUpdate = await database.updateDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
       updateHotProductData.productId,
       {
-        isHotDeal: increaseHotDeal
-       
+        isHotDeal: increaseHotDeal,
       }
     );
 
@@ -238,16 +240,15 @@ export const updateHotProduct = async (updateHotProductData: UpdatedHotProductPr
 
 export const deleteProduct = async (productId: string) => {
   try {
-     await database.deleteDocument(
+    await database.deleteDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
       productId
     );
-    
+
     return productId;
   } catch (error) {
     throw error;
-    console.log(error);
   }
 };
 
@@ -266,14 +267,14 @@ export const getTotalProductPages = async () => {
 
 export const allProduct = async (pageNum: number) => {
   try {
-    let offset = ((pageNum > 0 ? pageNum : 1) - 1 ) * ITEMS_PER_PAGE;
+    let offset = ((pageNum > 0 ? pageNum : 1) - 1) * ITEMS_PER_PAGE;
     let allproduct = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
       [
         Query.limit(ITEMS_PER_PAGE),
         Query.offset(offset),
-        Query.orderDesc('$createdAt')
+        Query.orderDesc("$createdAt"),
       ]
     );
 
@@ -303,16 +304,20 @@ export const allProduct = async (pageNum: number) => {
   }
 };
 
-export const similarProduct = async (similarProductData: SimilarProductProps) => {
+export const similarProduct = async (
+  similarProductData: SimilarProductProps
+) => {
   try {
     const queries = [];
 
     if (similarProductData.category) {
-      queries.push(Query.equal('category', similarProductData.category.toLowerCase()));
+      queries.push(
+        Query.equal("category", similarProductData.category.toLowerCase())
+      );
     }
 
     if (similarProductData.brand) {
-      queries.push(Query.notEqual('$id', similarProductData.producTId),);
+      queries.push(Query.notEqual("$id", similarProductData.producTId));
       // queries.push(Query.equal('brand', similarProductData.brand));
     }
 
@@ -322,7 +327,6 @@ export const similarProduct = async (similarProductData: SimilarProductProps) =>
       import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
       queries
     );
-console.log('allproduct ', allproduct)
     const allProductList: ProductDataProps[] = allproduct.documents.map(
       (product: any) => ({
         creator: product?.creator,
@@ -351,13 +355,10 @@ console.log('allproduct ', allproduct)
 
 export const allProductWithoutPagination = async () => {
   try {
- 
     let allproduct = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
-      [
-        Query.orderDesc('$createdAt'),
-      ]
+      [Query.orderDesc("$createdAt")]
     );
 
     const allProductList: ProductDataProps[] = allproduct.documents.map(
@@ -433,9 +434,7 @@ export const searchProduct = async (searchTerm: string) => {
     let allproduct = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_PRODUCT_COLLECTION_ID, // product collection id
-      [
-        Query.orderDesc('$createdAt')
-      ]
+      [Query.orderDesc("$createdAt")]
     );
     const search = allproduct.documents.filter((doc) => {
       return (
@@ -479,9 +478,7 @@ export const searchProductBrand = async (searchTerm: string) => {
     );
 
     const search = allproduct.documents.filter((doc) => {
-      return (
-        doc.brand === searchTerm
-      );
+      return doc.brand === searchTerm;
     });
 
     const productSearched: ProductDataProps[] = search.map((productFound) => ({
@@ -510,12 +507,43 @@ export const searchProductBrand = async (searchTerm: string) => {
 
 export const addPrescription = async (prescriptionData: PrescriptionProps) => {
   try {
-     const { productName, productImage, aboutDrug, productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient, methodOfUsage, productId, whenTakeDosage,  concentration } = prescriptionData;
+    const {
+      productName,
+      productImage,
+      aboutDrug,
+      productSummary,
+      ageRange,
+      dosage,
+      dosageForm,
+      duration,
+      frequency,
+      ingredient,
+      methodOfUsage,
+      productId,
+      whenTakeDosage,
+      concentration,
+    } = prescriptionData;
     const productPresription = await database.createDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
-      import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID,  // product collection id
+      import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID, // product collection id
       ID.unique(),
-      { productName, sastifiedClient: [], productImage, aboutDrug,  productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient, methodOfUsage, productId, whenTakeDosage,  concentration } 
+      {
+        productName,
+        sastifiedClient: [],
+        productImage,
+        aboutDrug,
+        productSummary,
+        ageRange,
+        dosage,
+        dosageForm,
+        duration,
+        frequency,
+        ingredient,
+        methodOfUsage,
+        productId,
+        whenTakeDosage,
+        concentration,
+      }
     );
 
     return {
@@ -537,14 +565,11 @@ export const addPrescription = async (prescriptionData: PrescriptionProps) => {
       whenTakeDosage: productPresription.whenTakeDosage,
       concentration: productPresription.concentration,
       sastifiedClient: productPresription.sastifiedClient,
-    
     } as PrescriptionProps;
-
   } catch (error) {
     throw error;
   }
-}
-
+};
 
 export const getTotalPrescriptionPages = async () => {
   const response = await database.listDocuments(
@@ -559,43 +584,41 @@ export const getTotalPrescriptionPages = async () => {
   return totalPages;
 };
 
-
 export const allPrescription = async (pageNum: number) => {
   try {
-    let offset = ((pageNum > 0 ? pageNum : 1 ) - 1 ) * ITEMS_PER_PAGE;
-    
+    let offset = ((pageNum > 0 ? pageNum : 1) - 1) * ITEMS_PER_PAGE;
+
     let allproduct = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID, // product collection id
       [
         Query.limit(ITEMS_PER_PAGE),
         Query.offset(offset),
-        Query.orderDesc('$createdAt')
+        Query.orderDesc("$createdAt"),
       ]
     );
 
-    const allProductPrescription: PrescriptionProps[] = allproduct.documents.map(
-      (productPresription: any) => ({
+    const allProductPrescription: PrescriptionProps[] =
+      allproduct.documents.map((productPresription: any) => ({
         $id: productPresription.$id,
-      $createdAt: productPresription.$createdAt,
-      $updatedAt: productPresription.$updatedAt,
-      productName: productPresription.productName,
-      productImage: productPresription.productImage,
-      aboutDrug: productPresription.aboutDrug,
-      productSummary: productPresription.productSummary,
-      ageRange: productPresription.ageRange,
-      dosage: productPresription.dosage,
-      dosageForm: productPresription.dosageForm,
-      duration: productPresription.duration,
-      frequency: productPresription.frequency,
-      ingredient: productPresription.ingredient,
-      methodOfUsage: productPresription.methodOfUsage,
-      productId: productPresription.productId,
-      whenTakeDosage: productPresription.whenTakeDosage,
-      concentration: productPresription.concentration,
-      sastifiedClient: productPresription.sastifiedClient
-      })
-    );
+        $createdAt: productPresription.$createdAt,
+        $updatedAt: productPresription.$updatedAt,
+        productName: productPresription.productName,
+        productImage: productPresription.productImage,
+        aboutDrug: productPresription.aboutDrug,
+        productSummary: productPresription.productSummary,
+        ageRange: productPresription.ageRange,
+        dosage: productPresription.dosage,
+        dosageForm: productPresription.dosageForm,
+        duration: productPresription.duration,
+        frequency: productPresription.frequency,
+        ingredient: productPresription.ingredient,
+        methodOfUsage: productPresription.methodOfUsage,
+        productId: productPresription.productId,
+        whenTakeDosage: productPresription.whenTakeDosage,
+        concentration: productPresription.concentration,
+        sastifiedClient: productPresription.sastifiedClient,
+      }));
     return allProductPrescription;
   } catch (error) {
     throw error;
@@ -604,55 +627,84 @@ export const allPrescription = async (pageNum: number) => {
 
 export const allPrescriptionWithoutPagination = async () => {
   try {
-    
     let allproduct = await database.listDocuments(
       import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
       import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID, // product collection id
-      [
-        Query.orderDesc('$createdAt')
-      ]
+      [Query.orderDesc("$createdAt")]
     );
 
-    const allProductPrescription: PrescriptionProps[] = allproduct.documents.map(
-      (productPresription: any) => ({
+    const allProductPrescription: PrescriptionProps[] =
+      allproduct.documents.map((productPresription: any) => ({
         $id: productPresription.$id,
-      $createdAt: productPresription.$createdAt,
-      $updatedAt: productPresription.$updatedAt,
-      productName: productPresription.productName,
-      productImage: productPresription.productImage,
-      aboutDrug: productPresription.aboutDrug,
-      productSummary: productPresription.productSummary,
-      ageRange: productPresription.ageRange,
-      dosage: productPresription.dosage,
-      dosageForm: productPresription.dosageForm,
-      duration: productPresription.duration,
-      frequency: productPresription.frequency,
-      ingredient: productPresription.ingredient,
-      methodOfUsage: productPresription.methodOfUsage,
-      productId: productPresription.productId,
-      whenTakeDosage: productPresription.whenTakeDosage,
-      concentration: productPresription.concentration,
-      sastifiedClient: productPresription.sastifiedClient
-      })
-    );
+        $createdAt: productPresription.$createdAt,
+        $updatedAt: productPresription.$updatedAt,
+        productName: productPresription.productName,
+        productImage: productPresription.productImage,
+        aboutDrug: productPresription.aboutDrug,
+        productSummary: productPresription.productSummary,
+        ageRange: productPresription.ageRange,
+        dosage: productPresription.dosage,
+        dosageForm: productPresription.dosageForm,
+        duration: productPresription.duration,
+        frequency: productPresription.frequency,
+        ingredient: productPresription.ingredient,
+        methodOfUsage: productPresription.methodOfUsage,
+        productId: productPresription.productId,
+        whenTakeDosage: productPresription.whenTakeDosage,
+        concentration: productPresription.concentration,
+        sastifiedClient: productPresription.sastifiedClient,
+      }));
     return allProductPrescription;
   } catch (error) {
     throw error;
   }
 };
 
-export const updatePrescription = async (prescriptionData: PrescriptionProps) => {
+export const updatePrescription = async (
+  prescriptionData: PrescriptionProps
+) => {
   try {
-    const { $id, productName, productImage, aboutDrug, productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient, methodOfUsage, productId, whenTakeDosage,  concentration, sastifiedClient } = prescriptionData;
+    const {
+      $id,
+      productName,
+      productImage,
+      aboutDrug,
+      productSummary,
+      ageRange,
+      dosage,
+      dosageForm,
+      duration,
+      frequency,
+      ingredient,
+      methodOfUsage,
+      productId,
+      whenTakeDosage,
+      concentration,
+      sastifiedClient,
+    } = prescriptionData;
 
-    if($id){
-
+    if ($id) {
       const productPresription = await database.updateDocument(
         import.meta.env.VITE_APPWRITE_DATABASE_ID, // database id
         import.meta.env.VITE_APPWRITE_PRODUCT_PRESCRIPTION_ID, // product collection id
         $id,
-        { productName, sastifiedClient, productImage, aboutDrug,  productSummary, ageRange, dosage, dosageForm, duration, frequency, ingredient, methodOfUsage, productId, whenTakeDosage,  concentration, } 
-  
+        {
+          productName,
+          sastifiedClient,
+          productImage,
+          aboutDrug,
+          productSummary,
+          ageRange,
+          dosage,
+          dosageForm,
+          duration,
+          frequency,
+          ingredient,
+          methodOfUsage,
+          productId,
+          whenTakeDosage,
+          concentration,
+        }
       );
 
       return {
@@ -674,16 +726,12 @@ export const updatePrescription = async (prescriptionData: PrescriptionProps) =>
         whenTakeDosage: productPresription.whenTakeDosage,
         concentration: productPresription.concentration,
         sastifiedClient: productPresription.sastifiedClient,
-      
       } as PrescriptionProps;
-
     }
   } catch (error) {
     throw error;
-    console.log(error);
   }
 };
-
 
 export const deletePrescription = async (productId: string) => {
   try {

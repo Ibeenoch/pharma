@@ -20,12 +20,12 @@ interface authState {
   navpageIndex: number;
   totalUserPage: number;
   navpageName: string;
-  profileToCheckOut: 'yes' | 'no';
+  profileToCheckOut: "yes" | "no";
 }
 
 const initialState: authState = {
   status: "idle",
-  profileToCheckOut: 'no',
+  profileToCheckOut: "no",
   totalUserPage: 0,
   user: {
     userId: "",
@@ -60,7 +60,6 @@ const initialState: authState = {
   refreshAllUsers: false,
   navpageIndex: 0,
   navpageName: "",
-  
 };
 
 export const registerUser = createAsyncThunk(
@@ -80,7 +79,6 @@ export const loginUser = createAsyncThunk(
     try {
       return await api.loginUser(userData);
     } catch (error: any) {
-      console.log("login user reject value", error);
       return rejectWithValue(error.message || "login failed");
     }
   }
@@ -118,7 +116,6 @@ export const getCuurentLoginUserData = createAsyncThunk(
     }
   }
 );
-
 
 export const passwordRecoveryLink = createAsyncThunk(
   "auth/passwordRecoveryLink",
@@ -264,7 +261,7 @@ const authSlice = createSlice({
     hidePasswordResetModal: (state, action: PayloadAction<boolean>) => {
       state.passwordIsReset = action.payload;
     },
-    toggleProfileTocheckOut: (state, action: PayloadAction<'yes'| "no">) => {
+    toggleProfileTocheckOut: (state, action: PayloadAction<"yes" | "no">) => {
       state.profileToCheckOut = action.payload;
     },
   },
@@ -301,7 +298,6 @@ const authSlice = createSlice({
       .addCase(addProfilePics.fulfilled, (state, action) => {
         state.status = "success";
         if (action.payload) {
-          console.log("profile data ", action.payload);
           state.user = action.payload;
         }
       })
@@ -449,6 +445,6 @@ export const {
   hidePasswordResetModal,
   setNavIndexLink,
   resetUserState,
-  toggleProfileTocheckOut
+  toggleProfileTocheckOut,
 } = authSlice.actions;
 export default authSlice.reducer;

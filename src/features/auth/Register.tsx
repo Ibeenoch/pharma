@@ -22,8 +22,8 @@ import CustomText from "../../components/common/Text";
 import CustomInput from "../../components/common/Input";
 import CustomSelect from "../../components/common/Select";
 import CustomButton from "../../components/common/Button";
-const AlertModal = lazy(() =>import("../../components/auth/AlertModal"));
-const Toast = lazy(() =>import("../../components/common/Toast"));
+const AlertModal = lazy(() => import("../../components/auth/AlertModal"));
+const Toast = lazy(() => import("../../components/common/Toast"));
 
 const Register = () => {
   const [firstName, setFirstNamel] = useState<string>("");
@@ -49,7 +49,7 @@ const Register = () => {
   }>({});
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { status } = useAppSelector(selectAuth)
+  const { status } = useAppSelector(selectAuth);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -105,8 +105,7 @@ const Register = () => {
       !passwordValid ||
       !role
     ) {
-      if(status !== 'success'){
-
+      if (status !== "success") {
         setError({
           firstName: firstNameValid ? undefined : "First name is required",
           lastName: lastNameValid ? undefined : "Last name is required",
@@ -147,7 +146,7 @@ const Register = () => {
           })
         ).then((res) => {
           const payload = res.payload as { role?: string };
-          console.log("res payload", res.payload);
+
           typeof payload === "string"
             ? handleErrorSigningUp(payload)
             : navigate("/verify/pending");
@@ -175,9 +174,9 @@ const Register = () => {
   };
 
   useEffect(() => {
-    window.scrollTo(0,0)
-  }, [])
-  
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <section
       className={`h-full lg:grid lg:grid-cols-3 mt-20 items-center pb-8`}
@@ -358,25 +357,25 @@ const Register = () => {
           />
         )}
 
-      <article className="flex items-center " >
-        <CustomText
-          text={`You already have an account ?`}
-          textType="normal"
-          weightType="medium"
-          color="text-gray-600"
-          extraStyle="text-[14px]"
-        />
-        &nbsp;
-        <div onClick={switchToLoginPage}>
+        <article className="flex items-center ">
           <CustomText
-            text={`Login here!`}
+            text={`You already have an account ?`}
             textType="normal"
             weightType="medium"
-            color="text-amber-600"
+            color="text-gray-600"
             extraStyle="text-[14px]"
           />
-        </div>
-        {/* <CustomText
+          &nbsp;
+          <div onClick={switchToLoginPage}>
+            <CustomText
+              text={`Login here!`}
+              textType="normal"
+              weightType="medium"
+              color="text-amber-600"
+              extraStyle="text-[14px]"
+            />
+          </div>
+          {/* <CustomText
           textType="normal"
           weightType="medium"
           isTwoSpanText={true}
@@ -386,7 +385,7 @@ const Register = () => {
           extraStyle="text-[14px]"
           rightTextFunc={switchToLoginPage}
         /> */}
-      </article>
+        </article>
 
         <div className="flex gap-1 my-5 items-center justify-center">
           <div className="w-[35%] border border-gray-300"></div>

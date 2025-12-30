@@ -35,7 +35,7 @@ const initialState: cartState = {
   cartQty: 0,
   wishListQty: 0,
   toastKey: 0,
-  toastMessage: '',
+  toastMessage: "",
   cartIndex: 1,
   wishListIndex: 1,
   showModal: false,
@@ -131,9 +131,7 @@ const cartSlice = createSlice({
       }
     },
     removeFromCart: (state, action: PayloadAction<string>) => {
-      console.log('action payload ', action.payload)
       const index = state.cart.findIndex((c) => c.item.$id === action.payload);
-      console.log('found index ', index);
       state.cart.splice(index, 1);
     },
     removeAllItemsInCart: (state) => {
@@ -157,9 +155,7 @@ const cartSlice = createSlice({
       }
     },
     removeFromwishlist: (state, action: PayloadAction<string>) => {
-      const index = state.wishlist.findIndex(
-        (c) => c.$id === action.payload
-      );
+      const index = state.wishlist.findIndex((c) => c.$id === action.payload);
       state.wishlist.splice(index, 1);
     },
     removeAllItemsInwishlist: (state) => {
@@ -207,7 +203,6 @@ const cartSlice = createSlice({
       const exists = state.wishlist.findIndex((i) => {
         return i.$id === action.payload;
       });
-      console.log("exists in wishlist", exists);
       if (exists !== -1) state.hasItemBeenAddedToWishlist = true;
     },
   },
@@ -219,7 +214,6 @@ const cartSlice = createSlice({
       .addCase(postACart.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
-          console.log("action payload post cart", action.payload);
           state.postedCart = action.payload;
         }
       })
@@ -232,7 +226,6 @@ const cartSlice = createSlice({
       .addCase(getCart.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
-          console.log("action payload get cart", action.payload);
           state.postedCart = action.payload;
         }
       })
@@ -262,6 +255,6 @@ export const {
   calculateTotal,
   checkIfItemHasBeenAddedToCheck,
   checkIfItemHasBeenAddedToWishlist,
-  updateToastKeyAndMsg
+  updateToastKeyAndMsg,
 } = cartSlice.actions;
 export default cartSlice.reducer;

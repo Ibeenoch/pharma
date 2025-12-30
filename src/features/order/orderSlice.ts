@@ -12,7 +12,10 @@ import {
   UpdateShippingArgs,
 } from "../../types/order/OrderType";
 import { RootState } from "../../redux/store";
-import { TransactionDateFilterProps, TransactionProps } from "../../types/payment/FlutterwavePaymentType";
+import {
+  TransactionDateFilterProps,
+  TransactionProps,
+} from "../../types/payment/FlutterwavePaymentType";
 
 interface orderState {
   hasShippingDetailsSubmitted: boolean;
@@ -130,7 +133,7 @@ const initialState: orderState = {
           quantity: 0,
           price: 0,
           subtotal: 0,
-          total: 0
+          total: 0,
         },
       ],
       shippingDetails: {
@@ -188,7 +191,7 @@ const initialState: orderState = {
           quantity: 0,
           price: 0,
           subtotal: 0,
-          total: 0
+          total: 0,
         },
       ],
       shippingDetails: {
@@ -530,7 +533,9 @@ const orderSlice = createSlice({
       .addCase(deleteATransaction.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload) {
-          state.transactions = state.transactions.filter((t) => t.$id !== action.payload);
+          state.transactions = state.transactions.filter(
+            (t) => t.$id !== action.payload
+          );
           state.refreshTransaction = true;
           state.refreshATransaction = true;
           state.refreshOrder = true;
@@ -628,7 +633,6 @@ const orderSlice = createSlice({
       .addCase(getAllFilteredOrderByDate.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload) {
-          console.log('action order ', action.payload);
           state.orders = action.payload;
         }
       })
@@ -664,13 +668,16 @@ const orderSlice = createSlice({
       .addCase(getAllTransactionWithoutPagination.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(getAllTransactionWithoutPagination.fulfilled, (state, action) => {
-        state.status = "success";
-        if (state.status === "success" && action.payload) {
-          state.transactions = action.payload;
-          state.refreshTransaction = false;
+      .addCase(
+        getAllTransactionWithoutPagination.fulfilled,
+        (state, action) => {
+          state.status = "success";
+          if (state.status === "success" && action.payload) {
+            state.transactions = action.payload;
+            state.refreshTransaction = false;
+          }
         }
-      })
+      )
       .addCase(getAllTransactionWithoutPagination.rejected, (state) => {
         state.status = "failure";
       })

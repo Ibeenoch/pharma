@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../../redux/store";
-import { PrescriptionProps, ProductDataProps, SimilarProductProps, UpdatedHotProductProps } from "../../../types/product/ProductData";
+import {
+  PrescriptionProps,
+  ProductDataProps,
+  SimilarProductProps,
+  UpdatedHotProductProps,
+} from "../../../types/product/ProductData";
 import * as api from "./productService";
 import { UpdateProductCart } from "../../../types/cart/CartData";
 
@@ -39,7 +44,7 @@ const initialState: productAdminState = {
   prescriptionWithoutPagination: [],
   hasFetchAllPrescription: false,
   hasFetchAllPrescriptionWithoutPagination: false,
-  productCategoryName: '',
+  productCategoryName: "",
   totalProductPage: 0,
   totalPrescriptionPage: 0,
 };
@@ -283,8 +288,8 @@ const productAdminSlice = createSlice({
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
           state.prescriptionWithoutPagination.push(action.payload);
-          state.hasFetchAllPrescriptionWithoutPagination = false;       
-          state.hasFetchAllPrescription = false;       
+          state.hasFetchAllPrescriptionWithoutPagination = false;
+          state.hasFetchAllPrescription = false;
         }
       })
       .addCase(createPrescription.rejected, (state) => {
@@ -300,7 +305,7 @@ const productAdminSlice = createSlice({
             (p) => p.$id === action.payload?.$id
           );
           state.allProduct[index] = action.payload;
-          state.hasFetchAllProduct = false; 
+          state.hasFetchAllProduct = false;
         }
       })
       .addCase(updateProduct.rejected, (state) => {
@@ -317,7 +322,6 @@ const productAdminSlice = createSlice({
           );
           state.prescriptionWithoutPagination[index] = action.payload;
           state.hasFetchAllPrescriptionWithoutPagination = false;
-          console.log('update prescription ', action.payload)
         }
       })
       .addCase(updatePrescription.rejected, (state) => {
@@ -359,19 +363,17 @@ const productAdminSlice = createSlice({
         state.status = "loading";
       })
       .addCase(deleteproduct.fulfilled, (state, action) => {
-      
         if (action.payload !== undefined) {
-   
-         state.allProduct = state.allProduct.filter((res) => {
-          return res?.$id !== action.payload;
-        });
-        
-         state.productAdmin = state.productAdmin.filter((res) => {
-          return res?.$id !== action.payload;
-        });
-        
+          state.allProduct = state.allProduct.filter((res) => {
+            return res?.$id !== action.payload;
+          });
+
+          state.productAdmin = state.productAdmin.filter((res) => {
+            return res?.$id !== action.payload;
+          });
+
           // state.hasFetchAllProduct = false;
-          }
+        }
         state.status = "success";
       })
       .addCase(deleteproduct.rejected, (state) => {
@@ -383,15 +385,14 @@ const productAdminSlice = createSlice({
       .addCase(deletePrescription.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
-       
-         state.prescriptionWithoutPagination = state.prescriptionWithoutPagination.filter((res) => {
-          return res?.$id !== action.payload;
-        });
-        
-         state.prescription = state.prescription.filter((res) => {
-          return res?.$id !== action.payload;
-        });
-        
+          state.prescriptionWithoutPagination =
+            state.prescriptionWithoutPagination.filter((res) => {
+              return res?.$id !== action.payload;
+            });
+
+          state.prescription = state.prescription.filter((res) => {
+            return res?.$id !== action.payload;
+          });
         }
         // state.hasFetchAllPrescriptionWithoutPagination = false;
       })
@@ -450,17 +451,20 @@ const productAdminSlice = createSlice({
       .addCase(fetchAllPrescriptionsWithoutPagination.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchAllPrescriptionsWithoutPagination.fulfilled, (state, action) => {
-        state.status = "success";
-        if (state.status === "success" && action.payload !== undefined) {
-          state.prescriptionWithoutPagination = action.payload;
-          state.hasFetchAllPrescriptionWithoutPagination = true;
+      .addCase(
+        fetchAllPrescriptionsWithoutPagination.fulfilled,
+        (state, action) => {
+          state.status = "success";
+          if (state.status === "success" && action.payload !== undefined) {
+            state.prescriptionWithoutPagination = action.payload;
+            state.hasFetchAllPrescriptionWithoutPagination = true;
+          }
         }
-      })
+      )
       .addCase(fetchAllPrescriptionsWithoutPagination.rejected, (state) => {
         state.status = "failure";
       })
-    .addCase(totalProductPages.pending, (state) => {
+      .addCase(totalProductPages.pending, (state) => {
         state.status = "loading";
       })
       .addCase(totalProductPages.fulfilled, (state, action) => {
@@ -472,12 +476,11 @@ const productAdminSlice = createSlice({
       .addCase(totalProductPages.rejected, (state) => {
         state.status = "failure";
       })
-    .addCase(totalPrescriptionPages.pending, (state) => {
+      .addCase(totalPrescriptionPages.pending, (state) => {
         state.status = "loading";
       })
       .addCase(totalPrescriptionPages.fulfilled, (state, action) => {
         state.status = "success";
-        console.log("totalPrescriptionPages fulfilled ", action.payload);
         if (state.status === "success" && action.payload) {
           state.totalPrescriptionPage = action.payload;
         }
@@ -491,7 +494,6 @@ const productAdminSlice = createSlice({
       .addCase(searchedProduct.fulfilled, (state, action) => {
         state.status = "success";
         if (state.status === "success" && action.payload !== undefined) {
-          console.log("action.payload  ", action.payload);
           state.productSearched = action.payload;
         }
       })
@@ -520,7 +522,7 @@ export const {
   setProductIndexClicked,
   setProductSubTabIndex,
   setProductSubTabRoute,
-  resetSearchProduct, 
-  setProductCategoryName
+  resetSearchProduct,
+  setProductCategoryName,
 } = productAdminSlice.actions;
 export default productAdminSlice.reducer;

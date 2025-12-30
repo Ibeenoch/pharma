@@ -1,4 +1,11 @@
-import {  FormEvent, lazy, useEffect, useState } from "react";
+import {
+  FormEvent,
+  lazy,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { pageSpacing } from "../../constants/appText";
 import { validator } from "../../utils/validator";
 import User from "../../assets/icons/user.svg?react";
@@ -36,7 +43,7 @@ import {
   ShippingDetailsProps,
   UpdateShippingArgs,
 } from "../../types/order/OrderType";
-import Paystack from '@paystack/inline-js';
+import Paystack from "@paystack/inline-js";
 import { loadFlutterwaveScript } from "../../utils/loadFlutterWave";
 import {
   FlutterWaveDataProps,
@@ -48,20 +55,26 @@ import {
   UpdateProductCart,
 } from "../../types/cart/CartData";
 import { useNavigate, useParams } from "react-router-dom";
-import { updateHotProductNum, updateProductStockQuantity } from "../admin/product/productSlice";
+import {
+  updateHotProductNum,
+  updateProductStockQuantity,
+} from "../admin/product/productSlice";
 import { generateRandomCode } from "../../utils/randomCodeGenerator";
 import { UpdatedHotProductProps } from "../../types/product/ProductData";
 import { NotificationProps } from "../../types/notification/Notification";
 import { createNotification } from "../user/userSlice";
-const DeliveryOption = lazy(() => import("../../components/common/DeliveryOption"));
+const DeliveryOption = lazy(
+  () => import("../../components/common/DeliveryOption")
+);
 const Cart = lazy(() => import("./Cart"));
 const CustomText = lazy(() => import("../../components/common/Text"));
 const CustomInput = lazy(() => import("../../components/common/Input"));
-const PaymentOption = lazy(() => import("../../components/common/PaymentOption"));
+const PaymentOption = lazy(
+  () => import("../../components/common/PaymentOption")
+);
 const CustomSelect = lazy(() => import("../../components/common/Select"));
 const CustomButton = lazy(() => import("../../components/common/Button"));
 const Modal = lazy(() => import("../../components/common/Modal"));
-
 
 const CheckOut = () => {
   const { user, profileToCheckOut } = useAppSelector(selectAuth);
@@ -71,159 +84,40 @@ const CheckOut = () => {
   const [paymentProcessing, setPaymentProcessing] = useState<boolean>(false);
   const { cart, total } = useAppSelector(selectCart);
   const { transaction } = useAppSelector(selectOrder);
-  const { status, hasPreviousShippingDetails, shippingDetail } =  useAppSelector(selectOrder);
+  const { status, hasPreviousShippingDetails, shippingDetail } =
+    useAppSelector(selectOrder);
 
-  const handleTransaction = (transactionDetails:  TransactionProps, hotDealsNum: UpdatedHotProductProps[]) => {
-
-    dispatch(postTransaction(transactionDetails)).then(() => {
-
-      // dispatch the cart
-      dispatch(postACart(cart)).then((res) => {
-
-        // dispatch the order
-        if (res.payload !== undefined && userId) {
-          let cartRes = res.payload as CartOrderedPropsData[];
-          const cartIds: string[] = cartRes.map((c) => c.$id);
-          if (
-            transaction &&
-            transaction.$id &&
-            shippingDetail &&
-            shippingDetail.$id &&
-            cartIds.length > 0
-          ) {
-            const order: OrderProps = {
-              cart: cartIds,
-              userId,
-              transaction: {
-                amount: transaction.amount,
-                customerName: transaction.customerName,
-                imageUrl: transaction.imageUrl,
-                payerId: transaction.payerId,
-                payMethod: transaction.payMethod,
-                productName: transaction.productName,
-                productQty: transaction.productQty,
-                shippingId: transaction.shippingId,
-                shippingStatus: transaction.shippingStatus,
-                shippingType: transaction.shippingType,
-                status: transaction.status,
-                transactionId: transaction.transactionId,
-                transactionRef: transaction.transactionRef,
-                createdAt: transaction.createdAt,
-              },
-              shippingDetails: shippingDetail,
-            };
-
-            dispatch(postOrder(order)).then((res) => {
-              console.log('stage 4');
-              let response = res.payload as AllOrderResultData;
-              if (
-                response &&
-                response.transaction &&
-                response.cart &&
-                response.shippingDetails
-              ) {
-
-                setPaymentProcessing(false);
-                // reduce stock quantity
-                cartRes.forEach((c) => {
-                  let qty = c.quantity;
-                  const productId = c.productId;
-                  let productStockUpdataData: UpdateProductCart = {
-                    qty,
-                    productId,
-                  };
-                  dispatch(
-                    updateProductStockQuantity(productStockUpdataData)
-                  ).then(() => {
-                    
-                   hotDealsNum.forEach((h) => {
-                     let hotDealData: UpdatedHotProductProps = {isHotDeal: h.isHotDeal, productId: h.productId};
-                     dispatch(updateHotProductNum(hotDealData)).then(() => {
-                        const orderNotificationData: NotificationProps = {
-                          message: `${firstName} ${lastName} has ordered ${cart.length} item${cart.length > 1 ? 's': ''}, waiting to be delivered. order id ${response.$id}`,
-                          notificationType: 'order',
-                        }
-                        const transactionNotificationData: NotificationProps = {
-                          message: `A sum of ₦${total} was paid by ${firstName} ${lastName} from ${response.transaction.payMethod} conatining ${cart.length} item${cart.length > 1 ? 's': ''}, waiting to be review.`,
-                          notificationType: 'transaction',
-                        }
-                        dispatch(createNotification(orderNotificationData)).then(() => {
-                          dispatch(createNotification(transactionNotificationData)).then(() => {
-                            dispatch(removeAllItemsInCart());
-                            navigate(`/payment_status/${userId}/${response.$id}`);
-                          })
-                        })
-                     })
-                   })
-
-                   
-                  });
-                });
-              }
-            });
-          }
-        }
-      });
-    });
-  }
-
-
-  const [firstName, setFirstName] = useState<string>(
-    user && user.firstName ? user.firstName : ""
-  );
-  const [lastName, setLastName] = useState<string>(
-    user && user.lastName ? user.lastName : ""
-  );
+  const [firstName, setFirstName] = useState<string>(user?.firstName || "");
+  const [lastName, setLastName] = useState<string>(user?.lastName || "");
 
   useEffect(() => {
     userId &&
       hasPreviousShippingDetails === false &&
       dispatch(getShippingDetails(userId));
-  }, [hasPreviousShippingDetails, shippingDetail]);
+  }, [hasPreviousShippingDetails, shippingDetail, userId, dispatch]);
 
-  const [phone, setPhone] = useState<string>(
-    shippingDetail && shippingDetail && shippingDetail.phoneNumber
-      ? shippingDetail.phoneNumber
-      : ""
-  );
+  const [phone, setPhone] = useState<string>(shippingDetail?.phoneNumber || "");
   const [country, setCountry] = useState<string>(
-    shippingDetail && shippingDetail && shippingDetail.country
-      ? shippingDetail.country
-      : "Nigeria"
+    shippingDetail?.country || "Nigeria"
   );
-  const [state, setState] = useState<string>(
-    shippingDetail && shippingDetail && shippingDetail.state
-      ? shippingDetail.state
-      : ""
-  );
-  const [lga, setLga] = useState<string>(
-    shippingDetail && shippingDetail && shippingDetail.lga
-      ? shippingDetail.lga
-      : ""
-  );
-  const [zipcode, setZipcode] = useState<string>(
-    shippingDetail && shippingDetail && shippingDetail.zipcode
-      ? shippingDetail.zipcode
-      : ""
-  );
-  const [address, setAddress] = useState<string>(
-    shippingDetail && shippingDetail && shippingDetail.address
-      ? shippingDetail.address
-      : ""
-  );
+  const [state, setState] = useState<string>(shippingDetail?.state || "");
+  const [lga, setLga] = useState<string>(shippingDetail?.lga || "");
+
+  const [zipcode, setZipcode] = useState<string>(shippingDetail?.zipcode || "");
+  const [address, setAddress] = useState<string>(shippingDetail?.address || "");
   const [showUpdateShippingDetails, setShowUpdateShippingDetails] =
     useState<boolean>(true);
   const [paymentIndex, setPaymentIndex] = useState<number>(0);
   const [deliveryIndex, setdeliveryIndex] = useState<number>(0);
 
-  const setPaymentMethodIndex = (index: number) => {
+  const setPaymentMethodIndex = useCallback((index: number) => {
     setPaymentIndex(index);
-  };
-  const setDeliveryMethodIndex = (index: number) => {
+  }, []);
+  const setDeliveryMethodIndex = useCallback((index: number) => {
     setdeliveryIndex(index);
-  };
+  }, []);
 
-  const shouldUpdateShippingDetails = () => {
+  const shouldUpdateShippingDetails = useCallback(() => {
     let s = shippingDetail && shippingDetail;
     if (
       (s && s.phoneNumber !== phone) ||
@@ -237,29 +131,40 @@ const CheckOut = () => {
     } else {
       setShowUpdateShippingDetails(false);
     }
-  };
+  }, [shippingDetail]);
 
   useEffect(() => {
     shouldUpdateShippingDetails();
   }, [phone, country, state, lga, zipcode, address]);
 
   // icon displaying the payment icon and text
-  const IconLists = [
-    { icon: PaystackLogo, name: "Pay Stack" },
-    { icon: Flutterwave, name: "Flutterwave" },
-  ];
+  const IconLists = useMemo(() => {
+    return [
+      { icon: PaystackLogo, name: "Pay Stack" },
+      { icon: Flutterwave, name: "Flutterwave" },
+    ];
+  }, []);
   // icon displaying the delivery text and images
 
-  const ImgLists = [
-    { img: glovo, name: "Glovo" },
-    { img: chowDesk, name: "Chow Deck" },
-    { img: gokada, name: "Gokada" },
-    { img: errand360, name: "Errand360" },
-  ];
+  const ImgLists = useMemo(() => {
+    return [
+      { img: glovo, name: "Glovo" },
+      { img: chowDesk, name: "Chow Deck" },
+      { img: gokada, name: "Gokada" },
+      { img: errand360, name: "Errand360" },
+    ];
+  }, []);
   // using to show lists of countries, nigerian state and its respective lga
-  const nigerianState = nigeriaStateAndLga.map((item) => item.state);
-  const stateLgas = nigeriaStateAndLga.find((item) => item.state === state)
-    ?.lgas || ["Select LGA"];
+  const nigerianState = useMemo(() => {
+    return nigeriaStateAndLga.map((item) => item.state);
+  }, [nigeriaStateAndLga]);
+  const stateLgas = useMemo(() => {
+    return (
+      nigeriaStateAndLga.find((item) => item.state === state)?.lgas || [
+        "Select LGA",
+      ]
+    );
+  }, [nigeriaStateAndLga]);
 
   const [error, setError] = useState<{
     firstName?: string;
@@ -272,183 +177,192 @@ const CheckOut = () => {
     zipcode?: string;
   }>({});
 
-  
- const makePaymentThroughPayStack = () => {
-   const popup = new Paystack()
- popup.checkout({
-   key: import.meta.env.VITE_PAYSTACK_TEST_PUBLIC_KEY,
-   email: user && user.email,
-   amount: total * 100,
-   // handle successful transaction
-    onSuccess: (reference: PayStackProps) => {
-     let images: string[] = [];
-     cart.forEach((c) => {
-       images.push(c.item.imagesUrl[0]);
-     });
-     let productNames: string[] = [];
-     cart.forEach((c) => {
-       productNames.push(c.item.name);
-     });
-     let productQtys: string[] = [];
-     cart.forEach((c) => {
-       productQtys.push(String(c.qty));
-     });
- 
-     let hotDealsNum: UpdatedHotProductProps[] = [];
-    //  cart.forEach((c: ) => {
-    //   console.log('ccc ', c)
-    //   if(c && c.item && c.item.$id  && c.item.isHotDeal  && c.item.isHotDeal >= 0){
-    //     hotDealsNum.push({isHotDeal: c.item.isHotDeal, productId: c.item.$id });
-    //   }
-    //  });
-    cart.forEach((c) => {
-      if (c?.item?.$id !== undefined && c.item.isHotDeal !== undefined) {
-        hotDealsNum.push({
-          isHotDeal: c.item.isHotDeal, // can be 0 or any number
-          productId: c.item.$id,
+  const makePaymentThroughPayStack = () => {
+    const popup = new Paystack();
+    popup.checkout({
+      key: import.meta.env.VITE_PAYSTACK_TEST_PUBLIC_KEY,
+      email: user && user.email,
+      amount: total * 100,
+      // handle successful transaction
+      onSuccess: async (reference: PayStackProps) => {
+        let images: string[] = [];
+        cart.forEach((c) => {
+          images.push(c.item.imagesUrl[0]);
         });
-      }
-    });
+        let productNames: string[] = [];
+        cart.forEach((c) => {
+          productNames.push(c.item.name);
+        });
+        let productQtys: string[] = [];
+        cart.forEach((c) => {
+          productQtys.push(String(c.qty));
+        });
 
- console.log('hotDealsNum ', hotDealsNum, cart)
-     setPaymentProcessing(true);
-     if (userId) {
-       const transactionDetails: TransactionProps = {
-         amount: total,
-         payerId: userId,
-         status: reference.status,
-         transactionId: reference.transaction,
-         transactionRef: reference.trxref,
-         payMethod: "Paystack",
-         customerName: `${user && user.firstName} ${user && user.lastName}`,
-         imageUrl: images,
-         productName: productNames,
-         productQty: productQtys,
-         shippingId: `SHIP${generateRandomCode()}`,
-         shippingStatus: "Pending",
-         shippingType:
-           deliveryIndex === 0
-             ? "Glovo"
-             : deliveryIndex === 1
-               ? "ChowDesk"
-               : deliveryIndex === 2
-                 ? "Gokada"
-                 : "Errand360",
-       };
- 
-       // dispatch the transaction
-       dispatch(postTransaction(transactionDetails)).then(() => {
+        let hotDealsNum: UpdatedHotProductProps[] = [];
 
-      // dispatch the cart
-      dispatch(postACart(cart)).then((res) => {
-
-        // dispatch the order
-        if (res.payload !== undefined && userId) {
-          let cartRes = res.payload as CartOrderedPropsData[];
-          const cartIds: string[] = cartRes.map((c) => c.$id);
-          if (
-            transaction &&
-            transaction.$id &&
-            shippingDetail &&
-            shippingDetail.$id &&
-            cartIds.length > 0
-          ) {
-            const order: OrderProps = {
-              cart: cartIds,
-              userId,
-              transaction: {
-                amount: transaction.amount,
-                customerName: transaction.customerName,
-                imageUrl: transaction.imageUrl,
-                payerId: transaction.payerId,
-                payMethod: transaction.payMethod,
-                productName: transaction.productName,
-                productQty: transaction.productQty,
-                shippingId: transaction.shippingId,
-                shippingStatus: transaction.shippingStatus,
-                shippingType: transaction.shippingType,
-                status: transaction.status,
-                transactionId: transaction.transactionId,
-                transactionRef: transaction.transactionRef,
-                createdAt: transaction.createdAt,
-              },
-              shippingDetails: shippingDetail,
-            };
-
-            dispatch(postOrder(order)).then((res) => {
-              console.log('stage 4');
-              let response = res.payload as AllOrderResultData;
-                  console.log('stage 4 response ', response);
-              if (
-                response &&
-                response.transaction &&
-                response.cart &&
-                response.shippingDetails
-              ) {
-
-                
-                // reduce stock quantity
-                cartRes.forEach((c) => {
-                  let qty = c.quantity;
-                  const productId = c.productId;
-                  let productStockUpdataData: UpdateProductCart = {
-                    qty,
-                    productId,
-                  };
-                  dispatch(
-                    updateProductStockQuantity(productStockUpdataData)
-                  ).then((res) => {
-                    console.log('productStockUpdataData ', res, hotDealsNum);
-                   hotDealsNum.forEach((h) => {
-                     let hotDealData: UpdatedHotProductProps = {isHotDeal: h.isHotDeal, productId: h.productId};
-                     dispatch(updateHotProductNum(hotDealData)).then(() => {
-                        const orderNotificationData: NotificationProps = {
-                          message: `${firstName} ${lastName} has ordered ${cart.length} item${cart.length > 1 ? 's': ''}, waiting to be delivered. order id ${response.$id}`,
-                          notificationType: 'order',
-                        }
-                        const transactionNotificationData: NotificationProps = {
-                          message: `A sum of ₦${total} was paid by ${firstName} ${lastName} from ${response.transaction.payMethod} conatining ${cart.length} item${cart.length > 1 ? 's': ''}, waiting to be review.`,
-                          notificationType: 'transaction',
-                        }
-                        dispatch(createNotification(orderNotificationData)).then(() => {
-                          dispatch(createNotification(transactionNotificationData)).then(() => {
-                            dispatch(removeAllItemsInCart());
-                            navigate(`/payment_status/${userId}/${response.$id}`);
-                            setPaymentProcessing(false);
-                          })
-                        })
-                     })
-                   })
-
-                   
-                  });
-                });
-              }
+        cart.forEach((c) => {
+          if (c?.item?.$id !== undefined && c.item.isHotDeal !== undefined) {
+            hotDealsNum.push({
+              isHotDeal: c.item.isHotDeal, // can be 0 or any number
+              productId: c.item.$id,
             });
           }
+        });
+
+        setPaymentProcessing(true);
+        if (userId) {
+          const transactionDetails: TransactionProps = {
+            amount: total,
+            payerId: userId,
+            status: reference.status,
+            transactionId: reference.transaction,
+            transactionRef: reference.trxref,
+            payMethod: "Paystack",
+            customerName: `${user && user.firstName} ${user && user.lastName}`,
+            imageUrl: images,
+            productName: productNames,
+            productQty: productQtys,
+            shippingId: `SHIP${generateRandomCode()}`,
+            shippingStatus: "Pending",
+            shippingType:
+              deliveryIndex === 0
+                ? "Glovo"
+                : deliveryIndex === 1
+                ? "ChowDesk"
+                : deliveryIndex === 2
+                ? "Gokada"
+                : "Errand360",
+          };
+
+          // dispatch the transaction
+          dispatch(postTransaction(transactionDetails)).then(async () => {
+            // dispatch the cart
+            await dispatch(postACart(cart)).then((res) => {
+              // dispatch the order
+              if (res.payload !== undefined && userId) {
+                let cartRes = res.payload as CartOrderedPropsData[];
+                const cartIds: string[] = cartRes.map((c) => c.$id);
+                if (
+                  transaction &&
+                  transaction.$id &&
+                  shippingDetail &&
+                  shippingDetail.$id &&
+                  cartIds.length > 0
+                ) {
+                  const order: OrderProps = {
+                    cart: cartIds,
+                    userId,
+                    transaction: {
+                      amount: transaction.amount,
+                      customerName: transaction.customerName,
+                      imageUrl: transaction.imageUrl,
+                      payerId: transaction.payerId,
+                      payMethod: transaction.payMethod,
+                      productName: transaction.productName,
+                      productQty: transaction.productQty,
+                      shippingId: transaction.shippingId,
+                      shippingStatus: transaction.shippingStatus,
+                      shippingType: transaction.shippingType,
+                      status: transaction.status,
+                      transactionId: transaction.transactionId,
+                      transactionRef: transaction.transactionRef,
+                      createdAt: transaction.createdAt,
+                    },
+                    shippingDetails: shippingDetail,
+                  };
+
+                  dispatch(postOrder(order)).then((res) => {
+                    let response = res.payload as AllOrderResultData;
+                    if (
+                      response &&
+                      response.transaction &&
+                      response.cart &&
+                      response.shippingDetails
+                    ) {
+                      // reduce stock quantity
+                      cartRes.forEach((c) => {
+                        let qty = c.quantity;
+                        const productId = c.productId;
+                        let productStockUpdataData: UpdateProductCart = {
+                          qty,
+                          productId,
+                        };
+                        dispatch(
+                          updateProductStockQuantity(productStockUpdataData)
+                        ).then(() => {
+                          hotDealsNum.forEach((h) => {
+                            let hotDealData: UpdatedHotProductProps = {
+                              isHotDeal: h.isHotDeal,
+                              productId: h.productId,
+                            };
+                            dispatch(updateHotProductNum(hotDealData)).then(
+                              () => {
+                                const orderNotificationData: NotificationProps =
+                                  {
+                                    message: `${firstName} ${lastName} has ordered ${
+                                      cart.length
+                                    } item${
+                                      cart.length > 1 ? "s" : ""
+                                    }, waiting to be delivered. order id ${
+                                      response.$id
+                                    }`,
+                                    notificationType: "order",
+                                  };
+                                const transactionNotificationData: NotificationProps =
+                                  {
+                                    message: `A sum of ₦${total} was paid by ${firstName} ${lastName} from ${
+                                      response.transaction.payMethod
+                                    } conatining ${cart.length} item${
+                                      cart.length > 1 ? "s" : ""
+                                    }, waiting to be review.`,
+                                    notificationType: "transaction",
+                                  };
+                                dispatch(
+                                  createNotification(orderNotificationData)
+                                ).then(() => {
+                                  dispatch(
+                                    createNotification(
+                                      transactionNotificationData
+                                    )
+                                  ).then(() => {
+                                    dispatch(removeAllItemsInCart());
+                                    navigate(
+                                      `/payment_status/${userId}/${response.$id}`
+                                    );
+                                    setPaymentProcessing(false);
+                                  });
+                                });
+                              }
+                            );
+                          });
+                        });
+                      });
+                    }
+                  });
+                }
+              }
+            });
+          });
         }
-      });
+      },
+      onLoad: () => {},
+      onCancel: () => {
+        setPaymentProcessing(false);
+      },
+      onError: () => {
+        setPaymentProcessing(false);
+      },
     });
-    
-     }
-   },
-   onLoad: () => {
-   },
-   onCancel: () => {
-     setPaymentProcessing(false);
-   },
-   onError: () => {
-     setPaymentProcessing(false);
-   }
- })
- }
+  };
+
+  let flutterwaveHandler: any;
 
   // initialize payment with flutter wave
   const makePaymentThroughFlutterWave = async () => {
     await loadFlutterwaveScript();
     setPaymentProcessing(true);
     // @ts-ignore: TS doesn't know FlutterwaveCheckout is on window
-    window.FlutterwaveCheckout({
+    flutterwaveHandler = window.FlutterwaveCheckout({
       public_key: import.meta.env.VITE_FLUTTER_PUBLIC_KEY,
       tx_ref: "Tx-" + Date.now().toString(),
       amount: total,
@@ -468,6 +382,10 @@ const CheckOut = () => {
         logo: CompanyIcon,
       },
       callback: function (response: FlutterWaveDataProps) {
+        // CLOSE MODAL IMMEDIATELY
+        if (flutterwaveHandler) {
+          flutterwaveHandler.close();
+        }
         let images: string[] = [];
         cart.forEach((c) => {
           images.push(c.item.imagesUrl[0]);
@@ -486,15 +404,14 @@ const CheckOut = () => {
         // c && c.item && c.item.$id && c.item.isHotDeal && hotDealsNum.push({isHotDeal: c.item.isHotDeal, productId: c.item.$id });
         // });
 
-         cart.forEach((c) => {
-            if (c?.item?.$id !== undefined && c.item.isHotDeal !== undefined) {
-              hotDealsNum.push({
-                isHotDeal: c.item.isHotDeal, // can be 0 or any number
-                productId: c.item.$id,
-              });
-            }
-          });
-            console.log(' cvcv ',  hotDealsNum, cart)
+        cart.forEach((c) => {
+          if (c?.item?.$id !== undefined && c.item.isHotDeal !== undefined) {
+            hotDealsNum.push({
+              isHotDeal: c.item.isHotDeal, // can be 0 or any number
+              productId: c.item.$id,
+            });
+          }
+        });
         if (userId) {
           let transactionDetails: TransactionProps = {
             transactionId: String(response.transaction_id),
@@ -513,105 +430,121 @@ const CheckOut = () => {
               deliveryIndex === 0
                 ? "Glovo"
                 : deliveryIndex === 1
-                  ? "ChowDesk"
-                  : deliveryIndex === 2
-                    ? "Gokada"
-                    : "Errand360",
+                ? "ChowDesk"
+                : deliveryIndex === 2
+                ? "Gokada"
+                : "Errand360",
           };
 
-            // dispatch the transaction
-            dispatch(postTransaction(transactionDetails)).then(() => {
-
-      // dispatch the cart
-      dispatch(postACart(cart)).then((res) => {
-
-        // dispatch the order
-        if (res.payload !== undefined && userId) {
-          let cartRes = res.payload as CartOrderedPropsData[];
-          const cartIds: string[] = cartRes.map((c) => c.$id);
-          if (
-            transaction &&
-            transaction.$id &&
-            shippingDetail &&
-            shippingDetail.$id &&
-            cartIds.length > 0
-          ) {
-            const order: OrderProps = {
-              cart: cartIds,
-              userId,
-              transaction: {
-                amount: transaction.amount,
-                customerName: transaction.customerName,
-                imageUrl: transaction.imageUrl,
-                payerId: transaction.payerId,
-                payMethod: transaction.payMethod,
-                productName: transaction.productName,
-                productQty: transaction.productQty,
-                shippingId: transaction.shippingId,
-                shippingStatus: transaction.shippingStatus,
-                shippingType: transaction.shippingType,
-                status: transaction.status,
-                transactionId: transaction.transactionId,
-                transactionRef: transaction.transactionRef,
-                createdAt: transaction.createdAt,
-              },
-              shippingDetails: shippingDetail,
-            };
-
-            dispatch(postOrder(order)).then((res) => {
-              console.log('stage 4');
-              let response = res.payload as AllOrderResultData;
-              if (
-                response &&
-                response.transaction &&
-                response.cart &&
-                response.shippingDetails
-              ) {
-
-                
-                // reduce stock quantity
-                cartRes.forEach((c) => {
-                  let qty = c.quantity;
-                  const productId = c.productId;
-                  let productStockUpdataData: UpdateProductCart = {
-                    qty,
-                    productId,
+          // dispatch the transaction
+          dispatch(postTransaction(transactionDetails)).then(() => {
+            // dispatch the cart
+            dispatch(postACart(cart)).then((res) => {
+              // dispatch the order
+              if (res.payload !== undefined && userId) {
+                let cartRes = res.payload as CartOrderedPropsData[];
+                const cartIds: string[] = cartRes.map((c) => c.$id);
+                if (
+                  transaction &&
+                  transaction.$id &&
+                  shippingDetail &&
+                  shippingDetail.$id &&
+                  cartIds.length > 0
+                ) {
+                  const order: OrderProps = {
+                    cart: cartIds,
+                    userId,
+                    transaction: {
+                      amount: transaction.amount,
+                      customerName: transaction.customerName,
+                      imageUrl: transaction.imageUrl,
+                      payerId: transaction.payerId,
+                      payMethod: transaction.payMethod,
+                      productName: transaction.productName,
+                      productQty: transaction.productQty,
+                      shippingId: transaction.shippingId,
+                      shippingStatus: transaction.shippingStatus,
+                      shippingType: transaction.shippingType,
+                      status: transaction.status,
+                      transactionId: transaction.transactionId,
+                      transactionRef: transaction.transactionRef,
+                      createdAt: transaction.createdAt,
+                    },
+                    shippingDetails: shippingDetail,
                   };
-                  dispatch(
-                    updateProductStockQuantity(productStockUpdataData)
-                  ).then(() => {
-                    
-                   hotDealsNum.forEach((h) => {
-                     let hotDealData: UpdatedHotProductProps = {isHotDeal: h.isHotDeal, productId: h.productId};
-                     dispatch(updateHotProductNum(hotDealData)).then(() => {
-                        const orderNotificationData: NotificationProps = {
-                          message: `${firstName} ${lastName} has ordered ${cart.length} item${cart.length > 1 ? 's': ''}, waiting to be delivered. order id ${response.$id}`,
-                          notificationType: 'order',
-                        }
-                        const transactionNotificationData: NotificationProps = {
-                          message: `A sum of ₦${total} was paid by ${firstName} ${lastName} from ${response.transaction.payMethod} conatining ${cart.length} item${cart.length > 1 ? 's': ''}, waiting to be review.`,
-                          notificationType: 'transaction',
-                        }
-                        dispatch(createNotification(orderNotificationData)).then(() => {
-                          dispatch(createNotification(transactionNotificationData)).then(() => {
-                            dispatch(removeAllItemsInCart());
-                            navigate(`/payment_status/${userId}/${response.$id}`);
-                            setPaymentProcessing(false);
-                          })
-                        })
-                     })
-                   })
 
-                   
+                  dispatch(postOrder(order)).then((res) => {
+                    let response = res.payload as AllOrderResultData;
+                    if (
+                      response &&
+                      response.transaction &&
+                      response.cart &&
+                      response.shippingDetails
+                    ) {
+                      // reduce stock quantity
+                      cartRes.forEach((c) => {
+                        let qty = c.quantity;
+                        const productId = c.productId;
+                        let productStockUpdataData: UpdateProductCart = {
+                          qty,
+                          productId,
+                        };
+                        dispatch(
+                          updateProductStockQuantity(productStockUpdataData)
+                        ).then(() => {
+                          hotDealsNum.forEach((h) => {
+                            let hotDealData: UpdatedHotProductProps = {
+                              isHotDeal: h.isHotDeal,
+                              productId: h.productId,
+                            };
+                            dispatch(updateHotProductNum(hotDealData)).then(
+                              () => {
+                                const orderNotificationData: NotificationProps =
+                                  {
+                                    message: `${firstName} ${lastName} has ordered ${
+                                      cart.length
+                                    } item${
+                                      cart.length > 1 ? "s" : ""
+                                    }, waiting to be delivered. order id ${
+                                      response.$id
+                                    }`,
+                                    notificationType: "order",
+                                  };
+                                const transactionNotificationData: NotificationProps =
+                                  {
+                                    message: `A sum of ₦${total} was paid by ${firstName} ${lastName} from ${
+                                      response.transaction.payMethod
+                                    } conatining ${cart.length} item${
+                                      cart.length > 1 ? "s" : ""
+                                    }, waiting to be review.`,
+                                    notificationType: "transaction",
+                                  };
+                                dispatch(
+                                  createNotification(orderNotificationData)
+                                ).then(() => {
+                                  dispatch(
+                                    createNotification(
+                                      transactionNotificationData
+                                    )
+                                  ).then(() => {
+                                    dispatch(removeAllItemsInCart());
+                                    navigate(
+                                      `/payment_status/${userId}/${response.$id}`
+                                    );
+                                    setPaymentProcessing(false);
+                                  });
+                                });
+                              }
+                            );
+                          });
+                        });
+                      });
+                    }
                   });
-                });
+                }
               }
             });
-          }
-        }
-      });
-    });
-          
+          });
         }
       },
       onclose: function () {
@@ -620,11 +553,10 @@ const CheckOut = () => {
     });
   };
 
-  
-    useEffect(() => {
-      // start the page from the top when a user visit the page
-      window.scrollTo(0,0)
-    },[])
+  useEffect(() => {
+    // start the page from the top when a user visit the page
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -697,16 +629,15 @@ const CheckOut = () => {
         shippingId: shippingID,
       };
       dispatch(updateShippingDetails(updateShippindData)).then((res) => {
-
         res &&
           res.payload &&
           res.payload !== undefined &&
           setShowUpdateShippingDetails(false);
-          if(profileToCheckOut === "yes"){
-            dispatch(toggleProfileTocheckOut('no'));
-            if(user && user.userId)dispatch(getShippingDetails(user.userId));
-            navigate(`/profile/${user.$id}`);
-          }
+        if (profileToCheckOut === "yes") {
+          dispatch(toggleProfileTocheckOut("no"));
+          if (user && user.userId) dispatch(getShippingDetails(user.userId));
+          navigate(`/profile/${user.$id}`);
+        }
       });
     }
     // create shipping address
@@ -723,16 +654,15 @@ const CheckOut = () => {
         email: user && user.email,
       };
       dispatch(postShippingDetails(shippingDetails)).then((res) => {
-
         res &&
           res.payload &&
           res.payload !== undefined &&
           setShowUpdateShippingDetails(false);
-          if(profileToCheckOut === "yes"){
-            if(user && user.userId)dispatch(getShippingDetails(user.userId));
-            navigate(`/profile/${user.$id}`);
-            dispatch(toggleProfileTocheckOut('no'));
-          }
+        if (profileToCheckOut === "yes") {
+          if (user && user.userId) dispatch(getShippingDetails(user.userId));
+          navigate(`/profile/${user.$id}`);
+          dispatch(toggleProfileTocheckOut("no"));
+        }
       });
     }
   };
@@ -938,101 +868,105 @@ const CheckOut = () => {
             </div>
           </div>
 
-       { profileToCheckOut === 'no' && (   
-        <>
-        <div className="bg-white rounded-xl p-4 md:p-6 my-5">
-            <CustomText
-              text="Delivery Timelines & Shipping Method"
-              textType="medium"
-              weightType="semibold"
-              extraStyle="my-5"
-            />
-            <CustomText
-              text="Orders placed before 4:00 PM will be delivered within 3 to 48 hours in Lagos, while deliveries outside Lagos typically take between 3 to 5 business days. If you need your order sooner, consider returning to your cart and using the chat button to explore express delivery options. Once your order has been shipped, tracking details will be provided. Please note that delivery times may be affected by factors such as product availability or weather conditions. If you have any questions or require assistance, feel free to reach out via chat or WhatsApp at +234-081-7200-5311."
-              textType="small"
-              weightType="normal"
-              extraStyle="my-3"
-              color="text-gray-500"
-            />
-            {/* Delivery method  */}
-            <div className="bg-white rounded-xl py-4">
-              <CustomText
-                text="Choose Delivery Method"
-                textType="medium"
-                weightType="semibold"
-                extraStyle="my-2"
-              />
-              <CustomText
-                text="We Offer the best delivery services across Nigeria."
-                textType="small"
-                weightType="normal"
-                extraStyle="my-2"
-                color="text-gray-500"
-              />
-              <div className="flex gap-2 items-center overflow-x-auto">
-                {ImgLists.map((Item, index) => (
-                  <div onClick={() => setDeliveryMethodIndex(index)}>
-                    <DeliveryOption
-                      img={Item}
-                      active={deliveryIndex === index}
-                    />
+          {profileToCheckOut === "no" && (
+            <>
+              <div className="bg-white rounded-xl p-4 md:p-6 my-5">
+                <CustomText
+                  text="Delivery Timelines & Shipping Method"
+                  textType="medium"
+                  weightType="semibold"
+                  extraStyle="my-5"
+                />
+                <CustomText
+                  text="Orders placed before 4:00 PM will be delivered within 3 to 48 hours in Lagos, while deliveries outside Lagos typically take between 3 to 5 business days. If you need your order sooner, consider returning to your cart and using the chat button to explore express delivery options. Once your order has been shipped, tracking details will be provided. Please note that delivery times may be affected by factors such as product availability or weather conditions. If you have any questions or require assistance, feel free to reach out via chat or WhatsApp at +234-081-7200-5311."
+                  textType="small"
+                  weightType="normal"
+                  extraStyle="my-3"
+                  color="text-gray-500"
+                />
+                {/* Delivery method  */}
+                <div className="bg-white rounded-xl py-4">
+                  <CustomText
+                    text="Choose Delivery Method"
+                    textType="medium"
+                    weightType="semibold"
+                    extraStyle="my-2"
+                  />
+                  <CustomText
+                    text="We Offer the best delivery services across Nigeria."
+                    textType="small"
+                    weightType="normal"
+                    extraStyle="my-2"
+                    color="text-gray-500"
+                  />
+                  <div className="flex gap-2 items-center overflow-x-auto">
+                    {ImgLists.map((Item, index) => (
+                      <div onClick={() => setDeliveryMethodIndex(index)}>
+                        <DeliveryOption
+                          img={Item}
+                          active={deliveryIndex === index}
+                        />
+                      </div>
+                    ))}
                   </div>
-                ))}
+
+                  <Modal
+                    isOpen={paymentProcessing}
+                    nowhiteBg={true}
+                    onClose={() => {}}
+                    children={
+                      <div>
+                        <Spinner className="w-24 h-24 text-white" />
+                      </div>
+                    }
+                  />
+                </div>
               </div>
-
-              <Modal
-                isOpen={paymentProcessing}
-                nowhiteBg={true}
-                onClose={() => {}}
-                children={
-                  <div>
-                    <Spinner className="w-24 h-24 text-white" />
-                  </div>
-                }
-              />
-            </div>
-          </div>
-          {/* payment method  */}
-          <div className="bg-white rounded-xl p-4 md:p-6">
-            <CustomText
-              text="Select Payment Method"
-              textType="medium"
-              weightType="semibold"
-              extraStyle="my-5"
-            />
-            <CustomText
-              text="All transactions are secure and encrypted."
-              textType="small"
-              weightType="normal"
-              extraStyle="my-3"
-              color="text-gray-500"
-            />
-            <div className="flex gap-2 items-center overflow-x-auto">
-              {IconLists.map((Item, index) => (
-                <div onClick={() => setPaymentMethodIndex(index)}>
-                  <PaymentOption Item={Item} active={paymentIndex === index} />
+              {/* payment method  */}
+              <div className="bg-white rounded-xl p-4 md:p-6">
+                <CustomText
+                  text="Select Payment Method"
+                  textType="medium"
+                  weightType="semibold"
+                  extraStyle="my-5"
+                />
+                <CustomText
+                  text="All transactions are secure and encrypted."
+                  textType="small"
+                  weightType="normal"
+                  extraStyle="my-3"
+                  color="text-gray-500"
+                />
+                <div className="flex gap-2 items-center overflow-x-auto">
+                  {IconLists.map((Item, index) => (
+                    <div onClick={() => setPaymentMethodIndex(index)}>
+                      <PaymentOption
+                        Item={Item}
+                        active={paymentIndex === index}
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
 
-            <Modal
-              isOpen={paymentProcessing}
-              nowhiteBg={true}
-              onClose={() => {}}
-              children={
-                <div>
-                  <Spinner className="w-24 h-24 text-white" />
-                </div>
-              }
-            />
-          </div>
-          </>
-        )
-          }
+                <Modal
+                  isOpen={paymentProcessing}
+                  nowhiteBg={true}
+                  onClose={() => {}}
+                  children={
+                    <div>
+                      <Spinner className="w-24 h-24 text-white" />
+                    </div>
+                  }
+                />
+              </div>
+            </>
+          )}
         </div>
       </section>
 
-   {profileToCheckOut === 'no' &&  <Cart isCheckOutPage={true} showCheckOutBtn={false} />}
+      {profileToCheckOut === "no" && (
+        <Cart isCheckOutPage={true} showCheckOutBtn={false} />
+      )}
     </form>
   );
 };

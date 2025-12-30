@@ -11,7 +11,7 @@ const Toast: React.FC<ToastProps> = ({ isOpen, onClose, children }) => {
   return (
     <div
       onClick={onClose}
-      className="fixed right-0 top-[10%] lg:top-[30%] flex items-center justify-center "
+      className="fixed right-0 top-[20%] lg:top-[30%] flex items-center justify-center "
     >
       {/* Toast content */}
       <div
