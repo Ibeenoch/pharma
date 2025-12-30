@@ -52,7 +52,7 @@ const Register = () => {
   const { status } = useAppSelector(selectAuth);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
 
     if (showErrModal) {
       timer = setTimeout(() => {
@@ -147,11 +147,16 @@ const Register = () => {
         ).then((res) => {
           const payload = res.payload as { role?: string };
 
-          typeof payload === "string"
-            ? handleErrorSigningUp(payload)
-            : navigate("/verify/pending");
+          if (typeof payload === "string") {
+            handleErrorSigningUp(payload);
+            return;
+          }
+
+          if (typeof payload === "object") {
+            navigate("/verify/pending");
+            return;
+          }
         });
-        return;
       } else {
         handleErrorSigningUp("User already exist, please login to continue");
         return;
@@ -277,6 +282,7 @@ const Register = () => {
               label="Gender"
               required={true}
               Id="gender"
+              name="gender"
               showFullWidth={true}
               prefixIcon={<Gender className="w-4 h-4" />}
               validate={(value) => validator(value, "others")}
@@ -291,6 +297,7 @@ const Register = () => {
               label="Role"
               required={true}
               Id="role"
+              name="role"
               showFullWidth={true}
               prefixIcon={<User className="w-4 h-4" />}
               validate={(value) => validator(value, "others")}

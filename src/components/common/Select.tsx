@@ -11,6 +11,7 @@ interface CustomSelectProps {
   onChange: (value: string) => void;
   className?: string; // additional styles
   label?: string;
+  name?: string;
   labelStyle?: string;
   Id?: string;
   required?: boolean;
@@ -29,6 +30,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   countriesOptions,
   otherOptions,
   value,
+  name,
   onChange,
   className,
   label,
@@ -53,7 +55,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     <div className="w-full">
       {label && (
         <label
-          className={`block mt-3 mb-1 flex gap-1  ${
+          className={`mt-3 mb-1 flex gap-1  ${
             labelStyle === "default" ? "text-sm font-bold mb-2" : labelStyle
           }`}
           htmlFor={Id}
@@ -77,8 +79,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
             onBlur={() => setIsTouch(true)}
             onFocus={() => setIsTouch(false)}
             value={value}
-            name={value}
-            id={value}
+            name={name}
+            id={Id}
             className={`${
               showFullWidth ? "w-full" : "w-auto"
             } text-xs bg-transparent outline-none focus-none placeholder-gray-400 ${className}`}

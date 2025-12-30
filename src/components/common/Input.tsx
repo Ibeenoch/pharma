@@ -69,7 +69,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
     <div className="w-full">
       {label && (
         <label
-          className={`block mt-3 mb-1 flex gap-1  ${
+          className={`mt-3 mb-1 flex gap-1  ${
             labelStyle === "default" ? "text-sm font-bold mb-2" : labelStyle
           }`}
           htmlFor={Id}
@@ -117,13 +117,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
               />
             ))}
         </div>
-        <div className="hidden md:block">
-        {showSideBtn && sideBtn}
-        </div>
+        <div className="hidden md:block">{showSideBtn && sideBtn}</div>
       </div>
-      <div className="block w-[194px] md:hidden">
-        {showSideBtn && sideBtn}
-        </div>
+      <div className="block w-[194px] md:hidden">{showSideBtn && sideBtn}</div>
       {hasError && ignoreEmptyTextfield === false && (
         <div className="pt-[0.5px] flex gap-1 item-center">
           <div className="mt-[1.8px]">
