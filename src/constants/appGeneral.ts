@@ -1,1 +1,1 @@
-export const URL = "http://local history:5173";
+export const URL = "http://localhost:5173";
