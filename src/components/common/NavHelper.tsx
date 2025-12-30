@@ -1,9 +1,28 @@
+import { useEffect, useState } from "react";
 import ArrowUp from "../../assets/icons/arrow-up.svg?react";
 
 const NavHelper = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
   const navigateToTop = () => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const screenHeight = window.innerHeight;
+
+      setIsVisible(scrollY > screenHeight / 6);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  if (!isVisible) return null;
+
   return (
     <div
       onClick={navigateToTop}
